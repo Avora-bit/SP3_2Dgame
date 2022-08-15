@@ -66,19 +66,10 @@ public:
 	// PostRender
 	void PostRender(void);
 
-	bool thrown;
-
 protected:
-	enum DIRECTION
-	{
-		LEFT = 0,
-		RIGHT = 1,
-		UP = 2,
-		DOWN = 3,
-		NUM_DIRECTIONS
-	};
 
 	glm::vec2 vec2OldIndex;
+	float rotation = 0.f;		//radian?
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
@@ -88,7 +79,6 @@ protected:
 	Camera* camera;
 
 	double distanceTravelled;
-	double slashTimer;
 
 	//DIRECTION direction;
 	// Animated Sprite
@@ -98,9 +88,6 @@ protected:
 	CKeyboardController* cKeyboardController;
 
 	CSoundController* cSoundController;
-
-	//CS: The quadMesh for drawing the tiles
-	CMesh* quadMesh;
 
 	CPhysics2D cPhysics2D;
 
@@ -113,14 +100,7 @@ protected:
 	// Destructor
 	virtual ~CSword2D(void);
 
-	// Constraint the player's position within a boundary
-	bool Constraint(DIRECTION eDirection = LEFT);
-
 	void InteractWithMap(void);
-
-	bool CheckPosition(DIRECTION eDirection);
-
-	bool IsMidAir(void);
 
 };
 

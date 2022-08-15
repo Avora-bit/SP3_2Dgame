@@ -169,5 +169,7 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
+
+	float speed_multiplier = 0.25f;
 };
 

@@ -99,9 +99,7 @@ bool CSword2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
-	thrown = false;
 	distanceTravelled = 0;
-	slashTimer = 0;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -118,7 +116,6 @@ bool CSword2D::Init(void)
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the player texture
 	// Load the ground texture
@@ -128,12 +125,8 @@ bool CSword2D::Init(void)
 		std::cout << "Failed to load swordLeft tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 5, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("down", 0, 0);
-	animatedSprites->AddAnimation("left", 1, 1);
-	animatedSprites->AddAnimation("right", 2, 2);
-	animatedSprites->AddAnimation("leftSlash", 3, 3);
-	animatedSprites->AddAnimation("rightSlash", 4, 4);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("self", 0, 0);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -177,7 +170,7 @@ void CSword2D::Update(const double dElapsedTime)
 	vec2OldIndex = vec2Index;
 	if (!cPlayer2D->getBowForce())
 	{
-		if (!thrown && cPlayer2D->getBowForce() >= 1.5)
+		if (cPlayer2D->getBowForce() >= 1.5)
 		{
 			cPhysics2D.SetTime((float)dElapsedTime);
 			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getBowForce(), 0.0f));
@@ -187,7 +180,7 @@ void CSword2D::Update(const double dElapsedTime)
 			int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
 			switch (cPlayer2D->getAttackDirection())
 			{
-			case LEFT:
+			/*case LEFT:
 				if (vec2Index.x >= 0)
 				{
 					vec2NumMicroSteps.x -= fabs(iDisplacement_MicroSteps);
@@ -199,7 +192,7 @@ void CSword2D::Update(const double dElapsedTime)
 					}
 				}
 
-				if (!CheckPosition(LEFT) || !Constraint(LEFT) || distanceTravelled >= cPlayer2D->getBowForce()+1)
+				if (!CheckPosition(LEFT) || !Constraint(LEFT) || distanceTravelled >= cPlayer2D->getBowForce() + 1)
 				{
 					vec2Index = vec2OldIndex;
 					vec2NumMicroSteps.x = 0;
@@ -208,8 +201,6 @@ void CSword2D::Update(const double dElapsedTime)
 					thrown = true;
 					distanceTravelled = 0;
 				}
-
-				animatedSprites->PlayAnimation("left", -1, -1.0f);
 				break;
 			case RIGHT:
 				if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
@@ -223,7 +214,7 @@ void CSword2D::Update(const double dElapsedTime)
 					}
 				}
 
-				if (!CheckPosition(RIGHT) || !Constraint(RIGHT) || distanceTravelled >= cPlayer2D->getBowForce()+1)
+				if (!CheckPosition(RIGHT) || !Constraint(RIGHT) || distanceTravelled >= cPlayer2D->getBowForce() + 1)
 				{
 					if (Constraint(RIGHT))
 						vec2Index = vec2OldIndex;
@@ -233,76 +224,43 @@ void CSword2D::Update(const double dElapsedTime)
 					thrown = true;
 					distanceTravelled = 0;
 				}
-
-				animatedSprites->PlayAnimation("right", -1, -1.0f);
-				break;
+				break;*/
 			}
 		}
 		else
 		{
 			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
-			{
-				animatedSprites->PlayAnimation("down", -1, -1.0f);
 				cPhysics2D.SetTime((float)dElapsedTime);
-				cPhysics2D.Update();
-				glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-				int iIndex_YAxis_OLD = vec2Index.y;
-				int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
+			cPhysics2D.Update();
+			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+			int iIndex_YAxis_OLD = vec2Index.y;
+			int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
+			{
+				if (vec2Index.y >= 0)
 				{
-					if (vec2Index.y >= 0)
+					vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
+					if (vec2NumMicroSteps.y < 0)
 					{
-						vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-						if (vec2NumMicroSteps.y < 0)
-						{
-							vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-							vec2Index.y--;
-						}
-					}
-				}
-				Constraint(DOWN);
-				int iIndex_YAxis_Proposed = vec2Index.y;
-				for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
-				{
-					vec2Index.y = i;
-					if (CheckPosition(DOWN) == false)
-					{
-						if (i != iIndex_YAxis_OLD)
-							vec2Index.y = i + 1;
-						cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
-						vec2NumMicroSteps.y = 0;
-						break;
+						vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+						vec2Index.y--;
 					}
 				}
 			}
-			if (vec2Index == cPlayer2D->vec2Index)
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
 			{
-				cSoundController->PlaySoundByID(11);
-
-				thrown = false;
+				vec2Index.y = i;
+				/*if (CheckPosition(DOWN) == false)
+				{
+					if (i != iIndex_YAxis_OLD)
+						vec2Index.y = i + 1;
+					cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
+					vec2NumMicroSteps.y = 0;
+					break;
+				}*/
 			}
 		}
 	}
-	/*else if (cPlayer2D->getSlash())
-	{
-		slashTimer += dElapsedTime;
-		vec2Index = cPlayer2D->vec2Index;
-		switch (cPlayer2D->getAttackDirection())
-		{
-		case LEFT:
-			vec2Index.x--;
-			animatedSprites->PlayAnimation("leftSlash", -1, -1.0f);
-			break;
-		case RIGHT:
-			vec2Index.x++;
-			animatedSprites->PlayAnimation("rightSlash", -1, -1.0f);
-			break;
-		}
-		if (slashTimer > 0.1)
-		{
-			cPlayer2D->setSlash(false);
-			slashTimer = 0;
-		}
-	}*/
 	else
 	{
 		vec2Index = cPlayer2D->vec2Index;
@@ -343,10 +301,10 @@ void CSword2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
+	transform = glm::rotate(transform, rotation, glm::vec3(0, 0, 1));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
@@ -381,55 +339,55 @@ void CSword2D::PostRender(void)
  @brief Constraint the player's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool CSword2D::Constraint(DIRECTION eDirection)
-{
-	if (eDirection == LEFT)
-	{
-		if (vec2Index.x < 0)
-		{
-			vec2Index.x = 0;
-			vec2NumMicroSteps.x = 0;
-
-			return false;
-		}
-	}
-	else if (eDirection == RIGHT)
-	{
-		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
-		{
-			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS - 1);
-			vec2NumMicroSteps.x = 0;
-
-			return false;
-		}
-	}
-	else if (eDirection == UP)
-	{
-		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
-		{
-			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS - 1);
-			vec2NumMicroSteps.y = 0;
-
-			return false;
-		}
-	}
-	else if (eDirection == DOWN)
-	{
-		if (vec2Index.y < 0)
-		{
-			vec2Index.y = 0;
-			vec2NumMicroSteps.y = 0;
-
-			return false;
-		}
-	}
-	else
-	{
-		cout << "CSword::Constraint: Unknown Direction" << endl;
-	}
-	return true;
-}
-
+//bool CSword2D::Constraint(DIRECTION eDirection)
+//{
+//	if (eDirection == LEFT)
+//	{
+//		if (vec2Index.x < 0)
+//		{
+//			vec2Index.x = 0;
+//			vec2NumMicroSteps.x = 0;
+//
+//			return false;
+//		}
+//	}
+//	else if (eDirection == RIGHT)
+//	{
+//		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
+//		{
+//			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS - 1);
+//			vec2NumMicroSteps.x = 0;
+//
+//			return false;
+//		}
+//	}
+//	else if (eDirection == UP)
+//	{
+//		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
+//		{
+//			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS - 1);
+//			vec2NumMicroSteps.y = 0;
+//
+//			return false;
+//		}
+//	}
+//	else if (eDirection == DOWN)
+//	{
+//		if (vec2Index.y < 0)
+//		{
+//			vec2Index.y = 0;
+//			vec2NumMicroSteps.y = 0;
+//
+//			return false;
+//		}
+//	}
+//	else
+//	{
+//		cout << "CSword::Constraint: Unknown Direction" << endl;
+//	}
+//	return true;
+//}
+//
 void CSword2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
@@ -439,105 +397,89 @@ void CSword2D::InteractWithMap(void)
 		vec2NumMicroSteps.x = 0;
 
 		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		if (slashTimer == 0)
-		{
-			thrown = true;
-			distanceTravelled = 0;
-		}
+		distanceTravelled = 0;
 		break;
 	}
 }
-
-bool CSword2D::CheckPosition(DIRECTION eDirection)
-{
-	if (eDirection == LEFT)
-	{
-		if (vec2NumMicroSteps.y == 0)
-		{
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && 
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
-				return false;
-		}
-		else if (vec2NumMicroSteps.y != 0)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x)>= 100)&&
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) != 101))
-				return false;
-		}
-	}
-	
-	else if (eDirection == RIGHT)
-	{
-		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
-		{
-			vec2NumMicroSteps.x = 0;
-			return true;
-		}
-		if (vec2NumMicroSteps.y == 0)
-		{
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && 
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
-				return false;
-		}
-		else if (vec2NumMicroSteps.y != 0)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100)&&
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) != 101))
-				return false;
-		}
-	}
-
-	else if (eDirection == UP)
-	{
-		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
-		{
-			vec2NumMicroSteps.y = 0;
-			return true;
-		}
-		if (vec2NumMicroSteps.x == 0)
-		{
-			if (cMap2D->GetMapInfo(vec2Index.y+1, vec2Index.x) >= 100 &&
-				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) != 101)
-				return false;
-		}
-		else if (vec2NumMicroSteps.x != 0)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y+1, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x+1) >= 100)&&
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) != 101))
-				return false;
-		}
-	}
-
-	else if (eDirection == DOWN)
-	{
-		if (vec2NumMicroSteps.x == 0)
-		{
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 &&
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
-				return false;
-		}
-		else if (vec2NumMicroSteps.y != 0)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x+1) >= 100)&&
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) != 101))
-				return false;
-		}
-	}
-	else
-	{
-		cout << "CSword2D::CheckPosition: Unknown direction." << endl;
-	}
-	return true;
-}
-
-
-bool CSword2D::IsMidAir(void)
-{
-	if (vec2Index.y == 0)
-		return false;
-
-	if ((vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
-		return true;
-	return false;
-}
+//
+//bool CSword2D::CheckPosition(DIRECTION eDirection)
+//{
+//	if (eDirection == LEFT)
+//	{
+//		if (vec2NumMicroSteps.y == 0)
+//		{
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && 
+//				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
+//				return false;
+//		}
+//		else if (vec2NumMicroSteps.y != 0)
+//		{
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x)>= 100)&&
+//				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) != 101))
+//				return false;
+//		}
+//	}
+//	
+//	else if (eDirection == RIGHT)
+//	{
+//		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+//		{
+//			vec2NumMicroSteps.x = 0;
+//			return true;
+//		}
+//		if (vec2NumMicroSteps.y == 0)
+//		{
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && 
+//				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
+//				return false;
+//		}
+//		else if (vec2NumMicroSteps.y != 0)
+//		{
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100)&&
+//				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) != 101))
+//				return false;
+//		}
+//	}
+//
+//	else if (eDirection == UP)
+//	{
+//		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+//		{
+//			vec2NumMicroSteps.y = 0;
+//			return true;
+//		}
+//		if (vec2NumMicroSteps.x == 0)
+//		{
+//			if (cMap2D->GetMapInfo(vec2Index.y+1, vec2Index.x) >= 100 &&
+//				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) != 101)
+//				return false;
+//		}
+//		else if (vec2NumMicroSteps.x != 0)
+//		{
+//			if ((cMap2D->GetMapInfo(vec2Index.y+1, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x+1) >= 100)&&
+//				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) != 101))
+//				return false;
+//		}
+//	}
+//
+//	else if (eDirection == DOWN)
+//	{
+//		if (vec2NumMicroSteps.x == 0)
+//		{
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 &&
+//				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 101)
+//				return false;
+//		}
+//		else if (vec2NumMicroSteps.y != 0)
+//		{
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) >= 100 || (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x+1) >= 100)&&
+//				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x)) != 101 && (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) != 101))
+//				return false;
+//		}
+//	}
+//	else
+//	{
+//		cout << "CSword2D::CheckPosition: Unknown direction." << endl;
+//	}
+//	return true;
+//}

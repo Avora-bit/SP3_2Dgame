@@ -30,6 +30,7 @@ class Camera;
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+#include "Inputs\MouseController.h"
 
 #include "..\SoundController\SoundController.h"
 // Include AnimatedSprites
@@ -86,8 +87,8 @@ protected:
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
-	//CS: The quadMesh for drawing the tiles
-	CMesh* quadMesh;
+	// Mouse Controller singleton instance
+	CMouseController* cMouseController;
 
 	CPhysics2D cPhysics2D;
 

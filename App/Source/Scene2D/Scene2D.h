@@ -34,6 +34,7 @@
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
+#include "Inputs\MouseController.h"
 
 #include "..\SoundController\SoundController.h"
 
@@ -88,6 +89,9 @@ protected:
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
+
+	// Mouse Controller singleton instance
+	CMouseController* cMouseController;
 
 	CSoundController* cSoundController;
 

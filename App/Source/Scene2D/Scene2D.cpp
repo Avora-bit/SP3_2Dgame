@@ -283,12 +283,9 @@ void CScene2D::Render(void)
 	cPlayer2D->Render();
 	cPlayer2D->PostRender();
 
-	if ((!cPlayer2D->getHasSword() && !cPlayer2D->getChargeSword()) || cPlayer2D->getSlash())
-	{
-		cSword2D->PreRender();
-		cSword2D->Render();
-		cSword2D->PostRender();
-	}
+	cSword2D->PreRender();
+	cSword2D->Render();
+	cSword2D->PostRender();
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{

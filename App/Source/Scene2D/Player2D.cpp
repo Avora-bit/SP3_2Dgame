@@ -120,7 +120,6 @@ bool CPlayer2D::Init(void)
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the player texture
 	// Load the ground texture
@@ -338,18 +337,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
 		{
 			if (BowForce < 7)
-				BowForce += (dElapsedTime * 10);
+				BowForce += (dElapsedTime * 5);
 		}
 		else
 		{
 			attackDirection = direction;
 			if (BowForce < 1.5)
 			{
-				cSoundController->PlaySoundByID(9);			//replace with bow release sound
+				//cSoundController->PlaySoundByID(9);			//replace with bow release sound
 			}
 			else
 			{
-				cSoundController->PlaySoundByID(10);		//replace with fire sound
+				//cSoundController->PlaySoundByID(10);		//replace with fire sound
 				//reduce arrow count
 			}
 			BowForce = 0;
