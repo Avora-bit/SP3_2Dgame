@@ -88,26 +88,22 @@ protected:
 	enum DIRECTION
 	{
 		LEFT = 0,
-		RIGHT = 1,
-		UP = 2,
-		DOWN = 3,
+		RIGHT,
+		UP,
+		DOWN,
 		NUM_DIRECTIONS
 	};
 
 	enum FSM
 	{
 		IDLE = 0,
-		PATROL = 1,
-		CHASE = 2,
-		ATTACK = 3,
+		PATROL,
+		CHASE,
+		ATTACK,
 		NUM_FSM
 	};
 
 	glm::vec2 vec2OldIndex;
-
-	//CS: The quadMesh for drawing the tiles
-	CMesh* quadMesh;
-
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
@@ -165,20 +161,11 @@ protected:
 	// Check if a position is possible to move into
 	bool CheckPosition(DIRECTION eDirection);
 
-	// Check if the enemy2D is in mid-air
-	bool IsMidAir(void);
-
-	// Update Jump or Fall
-	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
-
 	// Let enemy2D interact with the player
 	bool InteractWithPlayer(void);
 
 	// Update direction
 	void UpdateDirection(void);
-
-	// Flip horizontal direction. For patrol use only
-	void FlipHorizontalDirection(void);
 
 	// Update position
 	void UpdatePosition(void);

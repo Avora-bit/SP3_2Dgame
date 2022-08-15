@@ -93,8 +93,6 @@ bool CPlayer2D::Init(void)
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
-	iJumpCount = 0;
-
 	hasSword = true;
 	slash = false;
 	chargeSword = false;
@@ -159,7 +157,6 @@ bool CPlayer2D::Init(void)
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
 	cPhysics2D.Init();
-	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
 	cInventoryManager = CInventoryManager::GetInstance();
 
@@ -194,8 +191,6 @@ bool CPlayer2D::Reset()
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
-
-	iJumpCount = 0;
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);

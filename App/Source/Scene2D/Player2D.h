@@ -102,8 +102,6 @@ protected:
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
-	int iJumpCount;
-
 	bool chargeSword;
 	bool hasSword;
 	bool slash;

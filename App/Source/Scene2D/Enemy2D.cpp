@@ -36,7 +36,6 @@ CEnemy2D::CEnemy2D(void)
 	, cSword2D(NULL)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
-	, quadMesh(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
 
@@ -58,13 +57,6 @@ CEnemy2D::CEnemy2D(void)
  */
 CEnemy2D::~CEnemy2D(void)
 {
-	// Delete the quadMesh
-	if (quadMesh)
-	{
-		delete quadMesh;
-		quadMesh = NULL;
-	}
-
 	// We won't delete this since it was created elsewhere
 	cPlayer2D = NULL;
 
@@ -135,9 +127,7 @@ bool CEnemy2D::Init(void)
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
-	// Set the Physics to fall status by default
 	cPhysics2D.Init();
-	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
@@ -218,143 +208,121 @@ void CEnemy2D::Update(const double dElapsedTime)
 			}
 		} // if player spotted, go into chase
 		else if ((cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f &&
-				((vec2Direction.x < 0 && vec2Index.x - cPlayer2D->vec2Index.x < 0) ||
-				(vec2Direction.x >= 0 && vec2Index.x - cPlayer2D->vec2Index.x >= 0)))||
-				cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.0f)
+			((vec2Direction.x < 0 && vec2Index.x - cPlayer2D->vec2Index.x < 0) ||
+				(vec2Direction.x >= 0 && vec2Index.x - cPlayer2D->vec2Index.x >= 0))) ||
+			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.0f)
 		{
-				timer = 0;
-				sCurrentFSM = CHASE;
-				iFSMCounter = 0;
-				break;
+			timer = 0;
+			sCurrentFSM = CHASE;
+			iFSMCounter = 0;
+			break;
 		} // move around
-		else
-		{
-			// Patrol around
-			// Update the Enemy2D's position for patrol
-			//UpdatePosition();
-			// Store the old position
-			vec2OldIndex = vec2Index;
-
-			if (vec2Direction.x < 0)
-			{
-				// Move left
-				const int iOldIndex = vec2Index.x;
-				if (vec2Index.x >= 0)
-				{
-					vec2NumMicroSteps.x--;
-					if (vec2NumMicroSteps.x < 0)
-					{
-						vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-						vec2Index.x--;
-					}
-				}
-
-				// Constraint the enemy2D's position within the screen boundary
-				Constraint(LEFT);
-
-				// Find a feasible position for the enemy2D's current position
-				if (CheckPosition(LEFT) == false)
-				{
-					// if blocks can be jumped above, jump (2 blocks leeway)
-					if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE && jumpCooldown >= 1)
-					{
-						
-						cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-						cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-						jumpCooldown = 0;
-
-						if (iFSMCounter > iMaxFSMCounter)
-						{
-							timer = 0;
-							sCurrentFSM = IDLE;
-							iFSMCounter = 0;
-							//cout << "Switching to Idle State" << endl;
-							break;
-						}
-					}
-					else
-					{
-						FlipHorizontalDirection();
-						vec2Index = vec2OldIndex;
-						vec2NumMicroSteps.x = 0;
-					}
-				}
-
-				// Check if enemy2D is in mid-air, such as walking off a platform
-
-				// Interact with the Player
-				//InteractWithPlayer();
-			}
-			else if (vec2Direction.x > 0)
-			{
-				// Move right
-				const int iOldIndex = vec2Index.x;
-				if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-				{
-					vec2NumMicroSteps.x++;
-
-					if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-					{
-						vec2NumMicroSteps.x = 0;
-						vec2Index.x++;
-					}
-				}
-
-				// Constraint the enemy2D's position within the screen boundary
-				Constraint(RIGHT);
-
-				// Find a feasible position for the enemy2D's current position
-				if (CheckPosition(RIGHT) == false)
-				{
-					// if blocks can be jumped above, jump (2 blocks leeway)
-					if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE && jumpCooldown >= 1)
-					{
-						jumpCooldown = 0;
-						cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-						cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-
-						if (iFSMCounter > iMaxFSMCounter)
-						{
-							timer = 0;
-							sCurrentFSM = IDLE;
-							iFSMCounter = 0;
-							//cout << "Switching to Idle State" << endl;
-							break;
-						}
-					}
-					else
-					{
-						FlipHorizontalDirection();
-						vec2Index = vec2OldIndex;
-						vec2NumMicroSteps.x = 0;
-					}
-
-					// Check if enemy2D is in mid-air, such as walking off a platform
-
-					// Interact with the Player
-					//InteractWithPlayer();
-				}
-
-				// if the player is above the enemy2D, then jump to attack
-				if (vec2Direction.y > 0)
-				{
-					if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-					{
-						cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-						cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-					}
-				}
-
-			}
-			else
-			{
-				if (CheckPosition(LEFT))
-					vec2Direction.x = -1;
-				else if (CheckPosition(RIGHT))
-					vec2Direction.x = 1;
-			}
-			
-		}
+		//else
+		//{
+		//	// Patrol around
+		//	// Update the Enemy2D's position for patrol
+		//	//UpdatePosition();
+		//	// Store the old position
+		//	vec2OldIndex = vec2Index;
+		//	if (vec2Direction.x < 0)
+		//	{
+		//		// Move left
+		//		const int iOldIndex = vec2Index.x;
+		//		if (vec2Index.x >= 0)
+		//		{
+		//			vec2NumMicroSteps.x--;
+		//			if (vec2NumMicroSteps.x < 0)
+		//			{
+		//				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+		//				vec2Index.x--;
+		//			}
+		//		}
+		//		// Constraint the enemy2D's position within the screen boundary
+		//		Constraint(LEFT);
+		//		// Find a feasible position for the enemy2D's current position
+		//		if (CheckPosition(LEFT) == false)
+		//		{
+		//			// if blocks can be jumped above, jump (2 blocks leeway)
+		//			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE && jumpCooldown >= 1)
+		//			{
+		//				if (iFSMCounter > iMaxFSMCounter)
+		//				{
+		//					timer = 0;
+		//					sCurrentFSM = IDLE;
+		//					iFSMCounter = 0;
+		//					//cout << "Switching to Idle State" << endl;
+		//					break;
+		//				}
+		//			}
+		//			else
+		//			{
+		//				vec2Index = vec2OldIndex;
+		//				vec2NumMicroSteps.x = 0;
+		//			}
+		//		}
+		//		// Interact with the Player
+		//		//InteractWithPlayer();
+		//	}
+		//	else if (vec2Direction.x > 0)
+		//	{
+		//		// Move right
+		//		const int iOldIndex = vec2Index.x;
+		//		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+		//		{
+		//			vec2NumMicroSteps.x++;
+		//			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+		//			{
+		//				vec2NumMicroSteps.x = 0;
+		//				vec2Index.x++;
+		//			}
+		//		}
+		//		// Constraint the enemy2D's position within the screen boundary
+		//		Constraint(RIGHT);
+		//		// Find a feasible position for the enemy2D's current position
+		//		if (CheckPosition(RIGHT) == false)
+		//		{
+		//			// if blocks can be jumped above, jump (2 blocks leeway)
+		//			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE && jumpCooldown >= 1)
+		//			{
+		//				jumpCooldown = 0;
+		//				cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+		//				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
+		//				if (iFSMCounter > iMaxFSMCounter)
+		//				{
+		//					timer = 0;
+		//					sCurrentFSM = IDLE;
+		//					iFSMCounter = 0;
+		//					//cout << "Switching to Idle State" << endl;
+		//					break;
+		//				}
+		//			}
+		//			else
+		//			{
+		//				vec2Index = vec2OldIndex;
+		//				vec2NumMicroSteps.x = 0;
+		//			}
+		//			// Check if enemy2D is in mid-air, such as walking off a platform
+		//			// Interact with the Player
+		//			//InteractWithPlayer();
+		//		}
+		//		// if the player is above the enemy2D, then jump to attack
+		//		if (vec2Direction.y > 0)
+		//		{
+		//			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
+		//			{
+		//				cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+		//				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
+		//			}
+		//		}
+		//	}
+		//	else
+		//	{
+		//		if (CheckPosition(LEFT))
+		//			vec2Direction.x = -1;
+		//		else if (CheckPosition(RIGHT))
+		//			vec2Direction.x = 1;
+		//	}
+		//}
 		iFSMCounter++;
 		break;
 	}
@@ -392,13 +360,11 @@ void CEnemy2D::Update(const double dElapsedTime)
 				//cout << "StartPos: " << vec2Index.x << ", " << vec2Index.y << endl;
 				//cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " << cPlayer2D->vec2Index.y << endl;
 			auto path = cMap2D->PathFind(vec2Index,
-				cPlayer2D->vec2Index, heuristic::euclidean, 10);
-			//cout << "=== Printing out the path ===" << endl;
+				cPlayer2D->vec2Index, heuristic::manhattan, 10);
 
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					vec2Destination = coord;
@@ -443,7 +409,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 				cPlayer2D->LoseHealth(15);
 				attackTimer = 0;
 			}
-
 		}
 		else
 		{
@@ -458,13 +423,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 	default:
 		break;
 	}
-
-	if (IsMidAir() == true)
-	{
-		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-	}
-	// Update Jump or Fall
-	UpdateJumpFall(dElapsedTime);
 
 	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
@@ -520,7 +478,6 @@ void CEnemy2D::Render(void)
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
 	// Render the tile
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	animatedSprites->Render();
 
 	glBindVertexArray(0);
@@ -735,130 +692,6 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	return true;
 }
 
-// Check if the enemy2D is in mid-air
-bool CEnemy2D::IsMidAir(void)
-{
-	// if the player is at the bottom row, then he is not in mid-air for sure
-	if (vec2Index.y == 0)
-		return false;
-
-	// Check if the tile below the player's current position is empty
-	if ((vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) <= 100))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-// Update Jump or Fall
-void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
-{
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
-	{
-		// Update the elapsed time to the physics engine
-		cPhysics2D.SetTime((float)dElapsedTime);
-		// Call the physics engine update method to calculate the final velocity and displacement
-		cPhysics2D.Update();
-		// Get the displacement from the physics engine
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-
-		// Store the current vec2Index.y
-		int iIndex_YAxis_OLD = vec2Index.y;
-
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-		{
-			vec2NumMicroSteps.y += iDisplacement_MicroSteps;
-			if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-			{
-				vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
-				if (vec2NumMicroSteps.y < 0)
-					vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
-			}
-		}
-
-		// Constraint the player's position within the screen boundary
-		Constraint(UP);
-
-		// Iterate through all rows until the proposed row
-		// Check if the player will hit a tile; stop jump if so.
-		int iIndex_YAxis_Proposed = vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
-		{
-			// Change the player's index to the current i value
-			vec2Index.y = i;
-			// If the new position is not feasible, then revert to old position
-			if (CheckPosition(UP) == false)
-			{
-				// Align with the row
-				vec2NumMicroSteps.y = 0;
-				// Set the Physics to fall status
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-				break;
-			}
-		}
-
-		// If the player is still jumping and the initial velocity has reached zero or below zero, 
-		// then it has reach the peak of its jump
-		if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetInitialVelocity().y <= 0.0f))
-		{
-			// Set status to fall
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		}
-	}
-	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
-	{
-		// Update the elapsed time to the physics engine
-		cPhysics2D.SetTime((float)dElapsedTime);
-		// Call the physics engine update method to calculate the final velocity and displacement
-		cPhysics2D.Update();
-		// Get the displacement from the physics engine
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-
-		// Store the current vec2Index.y
-		int iIndex_YAxis_OLD = vec2Index.y;
-
-		// Translate the displacement from pixels to indices
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
-
-		if (vec2Index.y >= 0)
-		{
-			vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-			if (vec2NumMicroSteps.y < 0)
-			{
-				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				vec2Index.y--;
-			}
-		}
-
-		// Constraint the player's position within the screen boundary
-		Constraint(DOWN);
-
-		// Iterate through all rows until the proposed row
-		// Check if the player will hit a tile; stop fall if so.
-		int iIndex_YAxis_Proposed = vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
-		{
-			// Change the player's index to the current i value
-			vec2Index.y = i;
-			// If the new position is not feasible, then revert to old position
-			if (CheckPosition(DOWN) == false)
-			{
-				// Revert to the previous position
-				if (i != iIndex_YAxis_OLD)
-					vec2Index.y = i + 1;
-				// Set the Physics to idle status
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-				vec2NumMicroSteps.y = 0;
-				break;
-			}
-		}
-	}
-}
-
 /**
  @brief Let enemy2D interact with the player.
  */
@@ -909,19 +742,6 @@ void CEnemy2D::UpdateDirection(void)
 	}
 }
 
-
-/**
- @brief Flip horizontal direction. For patrol use only
- */
-void CEnemy2D::FlipHorizontalDirection(void)
-{
-	vec2Direction.x *= -1;
-	if (vec2Direction.x > 0)
-		animatedSprites->PlayAnimation("idleRight", -1, 0.3f);
-	else
-		animatedSprites->PlayAnimation("idleLeft", -1, 0.3f);
-}
-
 /**
 @brief Update position.
 */
@@ -929,8 +749,62 @@ void CEnemy2D::UpdatePosition(void)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
+	if (vec2Direction.y < 0)
+	{
+		// Move left
+		const int iOldIndex = vec2Index.y;
+		if (vec2Index.y >= 0)
+		{
+			vec2NumMicroSteps.y--;
+			if (vec2NumMicroSteps.y < 0)
+			{
+				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				vec2Index.y--;
+			}
+		}
 
-	// if the player is to the left or right of the enemy2D, then jump to attack
+		// Constraint the enemy2D's position within the screen boundary
+		Constraint(DOWN);
+
+		// Find a feasible position for the enemy2D's current position
+		if (CheckPosition(DOWN) == false)
+		{
+			vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.x = 0;
+		}
+
+		// Interact with the Player
+		//InteractWithPlayer();
+	}
+	else if (vec2Direction.y > 0)
+	{
+		// Move right
+		const int iOldIndex = vec2Index.y;
+		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		{
+			vec2NumMicroSteps.y++;
+
+			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+			{
+				vec2NumMicroSteps.y = 0;
+				vec2Index.y++;
+			}
+		}
+
+		// Constraint the enemy2D's position within the screen boundary
+		Constraint(UP);
+
+		// Find a feasible position for the enemy2D's current position
+		if (CheckPosition(UP) == false)
+		{
+			//vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.x = 0;
+		}
+
+
+		// Interact with the Player
+		//InteractWithPlayer();
+	}
 	if (vec2Direction.x < 0)
 	{
 		// Move left
@@ -951,15 +825,8 @@ void CEnemy2D::UpdatePosition(void)
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(LEFT) == false)
 		{
-			FlipHorizontalDirection();
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
-		}
-
-		// Check if enemy2D is in mid-air, such as walking off a platform
-		if (IsMidAir() == true)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 		}
 		
 		// Interact with the Player
@@ -986,16 +853,10 @@ void CEnemy2D::UpdatePosition(void)
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
-			FlipHorizontalDirection();
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
 
-		// Check if enemy2D is in mid-air, such as walking off a platform
-		if (IsMidAir() == true)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		}
 		
 		// Interact with the Player
 		//InteractWithPlayer();
