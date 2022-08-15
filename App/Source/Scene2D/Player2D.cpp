@@ -211,14 +211,65 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_R))
-		Reset();
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
+	{
+		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		{
+			vec2NumMicroSteps.y += speed_multiplier;
+			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+			{
+				vec2NumMicroSteps.y = 0;
+				vec2Index.y++;
+			}
+		}
 
+		if (!CheckPosition(UP))
+		{
+			vec2NumMicroSteps.y = 0;
+		}
+
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+		Constraint(UP);
+
+		if (hasSword || chargeSword)
+			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
+		else
+			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);
+
+		direction = UP;
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
+		if (vec2Index.y >= 0)
+		{
+			vec2NumMicroSteps.y -= speed_multiplier;
+			if (vec2NumMicroSteps.y < 0)
+			{
+				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				vec2Index.y--;
+			}
+		}
+
+		if (!CheckPosition(DOWN))
+		{
+			vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.y = 0;
+		}
+
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+		Constraint(DOWN);
+
+		if (hasSword || chargeSword)
+			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+		else
+			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);
+
+		direction = DOWN;
+	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--;
+			vec2NumMicroSteps.x -= speed_multiplier;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -246,7 +297,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x += speed_multiplier;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
 				vec2NumMicroSteps.x = 0;
@@ -271,19 +322,23 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else
 	{
-		switch (direction)
+		switch (direction)			//hold weapon
 		{
-		case LEFT:
+		case UP:
 			if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-			else
-				animatedSprites->PlayAnimation("idleLeft", -1, -1.0f);
+			break;
+		case DOWN:
+			if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
+			break;
+		case LEFT:			
+			if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
 			break;
 		case RIGHT:
 			if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			else
-				animatedSprites->PlayAnimation("idleRight", -1, -1.0f);
 			break;
 		}
 	}
@@ -317,38 +372,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		hasSword = false;
 	}
 
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE))
-	{
-		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-			iJumpCount += 1;
-
-			cSoundController->PlaySoundByID(6);
-		}
-		else
-		{
-			if (iJumpCount < 2)
-			{
-				cSoundController->PlaySoundByID(6);
-
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-				iJumpCount += 1;
-			}
-		}
-	}
-	if (IsMidAir())
-	{
-		if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP)
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-	}
-
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
 
-	UpdateJumpFall(dElapsedTime);
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);
@@ -587,80 +613,6 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	return true;
 }
 
-void CPlayer2D::UpdateJumpFall(const double dElapsedTime)
-{
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
-	{
-		cPhysics2D.SetTime((float)dElapsedTime);
-		cPhysics2D.Update();
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-		int iIndex_YAxis_OLD = vec2Index.y;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-		{
-			vec2NumMicroSteps.y += iDisplacement_MicroSteps;
-			if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-			{
-				vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
-				if (vec2NumMicroSteps.y < 0)
-					vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
-			}
-		}
-		Constraint(UP);
-		int iIndex_YAxis_Proposed = vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i <= iIndex_YAxis_Proposed; i++)
-		{
-			vec2Index.y = i;
-			if (CheckPosition(UP) == false)
-			{
-				vec2NumMicroSteps.y = 0;
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-				break;
-			}
-		}
-		if ((cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) && (cPhysics2D.GetDisplacement().y <= 0.0f))
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-		}
-	}
-	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
-	{
-		cPhysics2D.SetTime((float)dElapsedTime);
-		cPhysics2D.Update();
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-		int iIndex_YAxis_OLD = vec2Index.y;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
-		{
-			if (vec2Index.y >= 0)
-			{
-				vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-				if (vec2NumMicroSteps.y < 0)
-				{
-					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-					vec2Index.y--;
-				}
-			}
-		}
-		Constraint(DOWN);
-		int iIndex_YAxis_Proposed = vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
-		{
-			vec2Index.y = i;
-			if (CheckPosition(DOWN) == false)
-			{
-				if (i != iIndex_YAxis_OLD)
-					vec2Index.y = i + 1;
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-				iJumpCount = 0;
-				vec2NumMicroSteps.y = 0;
-				break;
-			}
-		}
-	}
-
-}
-
 void CPlayer2D::UpdateHealthLives(void)
 {
 	cInventoryItem = cInventoryManager->GetItem("Health");
@@ -677,17 +629,6 @@ void CPlayer2D::UpdateHealthLives(void)
 			CGameManager::GetInstance()->bPlayerLost = true;
 		}
 	}
-}
-
-bool CPlayer2D::IsMidAir(void)
-{
-	if (vec2Index.y == 0)
-		return false;
-
-	if ((vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) <= 100))
-		return true;
-	return false;
 }
 
 CPlayer2D::DIRECTION CPlayer2D::getAttackDirection(void)

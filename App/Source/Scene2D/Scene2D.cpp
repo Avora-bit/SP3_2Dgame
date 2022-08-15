@@ -118,16 +118,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 	
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_LOSE.csv", 2) == false)
-	{
-		return false;
-	}
-	
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_WIN.csv", 3) == false)
-	{
-		return false;
-	}
-	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 
 	cPlayer2D = CPlayer2D::GetInstance();
@@ -188,14 +178,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Romance in the Air.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
-	// SFX
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Grab.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Jump.ogg"), 6, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Slam.ogg"), 7, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Block.ogg"), 8, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Slash.ogg"), 9, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 10, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Pickup.ogg"), 11, true);
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
@@ -269,17 +251,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bLevelCompleted = false;
-	}
-
-	if (cGameManager->bPlayerWon)
-	{
-		cMap2D->SetCurrentLevel(3);
-	}
-	else if (cGameManager->bPlayerLost)
-	{
-		cMap2D->SetCurrentLevel(2);
-		//cSoundController->PlaySoundByID(2);
-		return false;
 	}
 }
 

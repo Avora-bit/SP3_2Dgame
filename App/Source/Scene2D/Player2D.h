@@ -125,11 +125,7 @@ protected:
 
 	bool CheckPosition(DIRECTION eDirection);
 
-	void UpdateJumpFall(const double dElapsedTime);
-
 	void UpdateHealthLives(void);
-
-	bool IsMidAir(void);
 
 public:
 	bool getHasSword(void);
@@ -144,5 +140,7 @@ public:
 
 	void LoseHealth(float health);
 
+
+	float speed_multiplier = 0.25f;
 };
 
