@@ -93,10 +93,7 @@ bool CPlayer2D::Init(void)
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
-	hasSword = true;
-	slash = false;
-	chargeSword = false;
-	swordForce = 0;
+	BowForce = 0;
 
 	direction = RIGHT;
 
@@ -226,10 +223,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		Constraint(UP);
 
-		if (hasSword || chargeSword)
+		/*if (hasSword || chargeSword)
 			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
 		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);
+			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
 
 		direction = UP;
 	}
@@ -253,10 +250,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		Constraint(DOWN);
 
-		if (hasSword || chargeSword)
+		/*if (hasSword || chargeSword)
 			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
 		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);
+			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
 		direction = DOWN;
 	}
@@ -281,10 +278,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		Constraint(LEFT);
 
-		if (hasSword || chargeSword)
+		/*if (hasSword || chargeSword)
 			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
 		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);
+			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
 		direction = LEFT;
 	}
@@ -308,10 +305,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 		Constraint(RIGHT);
 
-		if (hasSword || chargeSword)
+		/*if (hasSword || chargeSword)
 			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
 		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);
+			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
 
 		direction = RIGHT;
 	}
@@ -319,7 +316,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		switch (direction)			//hold weapon
 		{
-		case UP:
+		/*case UP:
 			if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
 			break;
@@ -334,39 +331,31 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case RIGHT:
 			if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			break;
+			break;*/
 		}
 	}
-
-	if (chargeSword)
-	{
+	{		//bow logic
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
 		{
-			if (swordForce < 7)
-				swordForce += (dElapsedTime * 10);
+			if (BowForce < 7)
+				BowForce += (dElapsedTime * 10);
 		}
 		else
 		{
 			attackDirection = direction;
-			chargeSword = false;
-			if (swordForce < 1.5)
+			if (BowForce < 1.5)
 			{
-				cSoundController->PlaySoundByID(9);
-				hasSword = true;
-				slash = true;
+				cSoundController->PlaySoundByID(9);			//replace with bow release sound
 			}
 			else
-				cSoundController->PlaySoundByID(10);
+			{
+				cSoundController->PlaySoundByID(10);		//replace with fire sound
+				//reduce arrow count
+			}
+			BowForce = 0;
 		}
 	}
 	
-	if (hasSword && cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
-	{
-		swordForce = 0;
-		chargeSword = true;
-		hasSword = false;
-	}
-
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
 
@@ -521,8 +510,6 @@ void CPlayer2D::InteractWithMap(void)
 		if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
 		{
 			cSoundController->PlaySoundByID(7);
-			if (!hasSword)
-				hasSword = true;
 			CGameManager::GetInstance()->bLevelCompleted = true;
 		}
 		break;
@@ -631,38 +618,13 @@ CPlayer2D::DIRECTION CPlayer2D::getAttackDirection(void)
 	return attackDirection;
 }
 
-bool CPlayer2D::getChargeSword()
+double CPlayer2D::getBowForce()
 {
-	return chargeSword;
-}
-
-double CPlayer2D::getSwordForce()
-{
-	return swordForce;
+	return BowForce;
 }
 
 void CPlayer2D::LoseHealth(float health)
 {
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	cInventoryItem->Remove(health);
-}
-
-bool CPlayer2D::getHasSword(void)
-{
-	return hasSword;
-}
-
-void CPlayer2D::SetHasSword(bool hasSword)
-{
-	this->hasSword = hasSword;
-}
-
-bool CPlayer2D::getSlash(void)
-{
-	return slash;
-}
-
-void CPlayer2D::setSlash(bool slash)
-{
-	this->slash = slash;
 }

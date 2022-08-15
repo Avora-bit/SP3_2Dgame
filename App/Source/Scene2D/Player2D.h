@@ -102,10 +102,7 @@ protected:
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
-	bool chargeSword;
-	bool hasSword;
-	bool slash;
-	double swordForce;
+	double BowForce;
 
 	// Player's colour
 	glm::vec4 runtimeColour;
@@ -126,15 +123,8 @@ protected:
 	void UpdateHealthLives(void);
 
 public:
-	bool getHasSword(void);
-	void SetHasSword(bool hasSword);
-
-	bool getSlash(void);
-	void setSlash(bool slash);
-
 	DIRECTION getAttackDirection();
-	bool getChargeSword();
-	double getSwordForce();
+	double getBowForce();
 
 	void LoseHealth(float health);
 

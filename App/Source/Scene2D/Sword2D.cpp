@@ -175,12 +175,12 @@ bool CSword2D::Reset()
 void CSword2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
-	if (!cPlayer2D->getHasSword() && !cPlayer2D->getChargeSword())
+	if (!cPlayer2D->getBowForce())
 	{
-		if (!thrown && cPlayer2D->getSwordForce() >= 1.5)
+		if (!thrown && cPlayer2D->getBowForce() >= 1.5)
 		{
 			cPhysics2D.SetTime((float)dElapsedTime);
-			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getSwordForce(), 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getBowForce(), 0.0f));
 			cPhysics2D.Update();
 			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 			int iIndex_XAxis_OLD = vec2Index.x;
@@ -199,7 +199,7 @@ void CSword2D::Update(const double dElapsedTime)
 					}
 				}
 
-				if (!CheckPosition(LEFT) || !Constraint(LEFT) || distanceTravelled >= cPlayer2D->getSwordForce()+1)
+				if (!CheckPosition(LEFT) || !Constraint(LEFT) || distanceTravelled >= cPlayer2D->getBowForce()+1)
 				{
 					vec2Index = vec2OldIndex;
 					vec2NumMicroSteps.x = 0;
@@ -223,7 +223,7 @@ void CSword2D::Update(const double dElapsedTime)
 					}
 				}
 
-				if (!CheckPosition(RIGHT) || !Constraint(RIGHT) || distanceTravelled >= cPlayer2D->getSwordForce()+1)
+				if (!CheckPosition(RIGHT) || !Constraint(RIGHT) || distanceTravelled >= cPlayer2D->getBowForce()+1)
 				{
 					if (Constraint(RIGHT))
 						vec2Index = vec2OldIndex;
@@ -278,12 +278,11 @@ void CSword2D::Update(const double dElapsedTime)
 			{
 				cSoundController->PlaySoundByID(11);
 
-				cPlayer2D->SetHasSword(true);
 				thrown = false;
 			}
 		}
 	}
-	else if (cPlayer2D->getSlash())
+	/*else if (cPlayer2D->getSlash())
 	{
 		slashTimer += dElapsedTime;
 		vec2Index = cPlayer2D->vec2Index;
@@ -303,7 +302,7 @@ void CSword2D::Update(const double dElapsedTime)
 			cPlayer2D->setSlash(false);
 			slashTimer = 0;
 		}
-	}
+	}*/
 	else
 	{
 		vec2Index = cPlayer2D->vec2Index;

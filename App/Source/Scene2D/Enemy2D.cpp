@@ -152,7 +152,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 	if (health <= 0)
 		bIsActive = false;
 
-	if (cPlayer2D->getSlash())
+	/*if (cPlayer2D->getSlash())
 	{
 		static float dmgTimer = 0;
 		dmgTimer += dElapsedTime;
@@ -161,12 +161,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 			health -= 20;
 			dmgTimer = 0;
 		}
-	}
+	}*/
 
-	if (!cSword2D->thrown && !cPlayer2D->getHasSword() && cSword2D->vec2Index == vec2Index && cSword2D->vec2Index != cPlayer2D->vec2Index)
+	/*if (!cSword2D->thrown && !cPlayer2D->getHasSword() && cSword2D->vec2Index == vec2Index && cSword2D->vec2Index != cPlayer2D->vec2Index)
 	{
 		health -= 40;
-	}
+	}*/
 	switch (sCurrentFSM)
 	{
 	case IDLE:
