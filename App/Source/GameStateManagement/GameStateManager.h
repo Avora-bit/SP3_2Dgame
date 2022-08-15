@@ -27,6 +27,8 @@ public:
 	bool SetActiveGameState(const std::string& _name);
 	bool CheckGameStateExist(const std::string& _name);
 	bool SetPauseGameState(const std::string& _name);
+	bool SetCraftingGameState(const std::string& _name);
+
 	void OffPauseGameState(void);
 
 protected:
@@ -38,5 +40,5 @@ protected:
 	// The map of CGameStates
 	std::map<std::string, CGameStateBase*> GameStateMap;
 	// The handlers containing the active and next CGameState
-	CGameStateBase* activeGameState, *nextGameState, *prevGameState, *pauseGameState;
+	CGameStateBase* activeGameState, *nextGameState, *prevGameState, *pauseGameState, *craftingGameState;
 };

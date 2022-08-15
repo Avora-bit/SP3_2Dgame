@@ -81,6 +81,15 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading PauseState" << endl;
 		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
 	}
+	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_F1))
+	{
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+
+		// Load the menu state
+		cout << "Loading CraftingState" << endl;
+		CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
+	}
 
 	if (cGameManager->bPlayerLost)
 	{
