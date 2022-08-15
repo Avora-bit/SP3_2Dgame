@@ -1,0 +1,126 @@
+/**
+ CSword2D
+ By: Toh Da Jun
+ Date: Mar 2020
+ */
+#pragma once
+
+// Include Singleton template
+#include "DesignPatterns\SingletonTemplate.h"
+
+// Include GLEW
+#ifndef GLEW_STATIC
+#include <GL/glew.h>
+#define GLEW_STATIC
+#endif
+
+// Include GLM
+#include <includes/glm.hpp>
+#include <includes/gtc/matrix_transform.hpp>
+#include <includes/gtc/type_ptr.hpp>
+
+// Include CEntity2D
+#include "Primitives/Entity2D.h"
+#include "Primitives/SpriteAnimation.h"
+
+#include "..\SoundController\SoundController.h"
+
+// Include the Map2D as we will use it to check the player's movements and actions
+class CMap2D;
+class CPlayer2D;
+class Camera;
+
+// Include Keyboard controller
+#include "Inputs\KeyboardController.h"
+
+// Include AnimatedSprites
+#include "Primitives/SpriteAnimation.h"
+
+#include "Physics2D.h"
+
+#include "Camera.h"
+
+#include "InventoryManager.h"
+#include "GameManager.h"
+
+class CSword2D : public CSingletonTemplate<CSword2D>, public CEntity2D
+{
+	friend CSingletonTemplate<CSword2D>;
+public:
+
+	// Init
+	bool Init(void);
+
+	// Reset
+	bool Reset(void);
+
+	// Update
+	void Update(const double dElapsedTime);
+
+	// PreRender
+	void PreRender(void);
+
+	// Render
+	void Render(void);
+
+	// PostRender
+	void PostRender(void);
+
+	bool thrown;
+
+protected:
+	enum DIRECTION
+	{
+		LEFT = 0,
+		RIGHT = 1,
+		UP = 2,
+		DOWN = 3,
+		NUM_DIRECTIONS
+	};
+
+	glm::vec2 vec2OldIndex;
+
+	// Handler to the CMap2D instance
+	CMap2D* cMap2D;
+
+	CPlayer2D* cPlayer2D;
+
+	Camera* camera;
+
+	double distanceTravelled;
+	double slashTimer;
+
+	//DIRECTION direction;
+	// Animated Sprite
+	CSpriteAnimation* animatedSprites;
+
+	// Keyboard Controller singleton instance
+	CKeyboardController* cKeyboardController;
+
+	CSoundController* cSoundController;
+
+	//CS: The quadMesh for drawing the tiles
+	CMesh* quadMesh;
+
+	CPhysics2D cPhysics2D;
+
+	// Player's colour
+	glm::vec4 runtimeColour;
+
+	// Constructor
+	CSword2D(void);
+
+	// Destructor
+	virtual ~CSword2D(void);
+
+	// Constraint the player's position within a boundary
+	bool Constraint(DIRECTION eDirection = LEFT);
+
+	void InteractWithMap(void);
+
+	bool CheckPosition(DIRECTION eDirection);
+
+	bool IsMidAir(void);
+
+};
+
