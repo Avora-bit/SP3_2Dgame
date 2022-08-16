@@ -1,5 +1,5 @@
 /**
- CSword2D
+ CShivs2D
  By: Toh Da Jun
  Date: Mar 2020
  */
@@ -43,9 +43,9 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
-class CSword2D : public CSingletonTemplate<CSword2D>, public CEntity2D
+class CShivs2D : public CSingletonTemplate<CShivs2D>, public CEntity2D
 {
-	friend CSingletonTemplate<CSword2D>;
+	friend CSingletonTemplate<CShivs2D>;
 public:
 
 	// Init
@@ -95,10 +95,10 @@ protected:
 	glm::vec4 runtimeColour;
 
 	// Constructor
-	CSword2D(void);
+	CShivs2D(void);
 
 	// Destructor
-	virtual ~CSword2D(void);
+	virtual ~CShivs2D(void);
 
 	void InteractWithMap(void);
 

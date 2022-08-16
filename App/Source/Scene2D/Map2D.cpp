@@ -146,52 +146,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(102, iTextureID));
 	}
 
-	// Load the tree texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/bouquet.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/bouquet.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
-	}
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/spikes.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/spikes.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(20, iTextureID));
-	}
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Spa.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_Spa.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(21, iTextureID));
-	}
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/mango.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/mango.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(22, iTextureID));
-	}
-
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/door.tga", true);
 	if (iTextureID == 0)
 	{
@@ -497,7 +451,7 @@ void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
 		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
 	{
 		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
-		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
+ 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
 
 		glBindVertexArray(VAO);
 		//CS: Render the tile

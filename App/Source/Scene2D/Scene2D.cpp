@@ -19,7 +19,7 @@ using namespace std;
 CScene2D::CScene2D(void)
 	:cMap2D(NULL)
 	, cPlayer2D(NULL)
-	, cSword2D(NULL)
+	, CShivs2D(NULL)
 	, cGUI_Scene2D(NULL)
 	, camera(NULL)
 	, cKeyboardController(NULL)
@@ -62,10 +62,10 @@ CScene2D::~CScene2D(void)
 		cPlayer2D = NULL;
 	}
 
-	if (cSword2D)
+	if (CShivs2D)
 	{
-		cSword2D->Destroy();
-		cSword2D = NULL;
+		CShivs2D->Destroy();
+		CShivs2D = NULL;
 	}
 
 	for (int i = 0; i < enemyVector.size(); i++)
@@ -130,13 +130,13 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	cSword2D = CSword2D::GetInstance();
+	CShivs2D = CShivs2D::GetInstance();
 
-	cSword2D->SetShader("Shader2D_Colour");
+	CShivs2D->SetShader("Shader2D_Colour");
 
-	if (!cSword2D->Init())
+	if (!CShivs2D->Init())
 	{
-		cout << "Failed to load CSword2D" << endl;
+		cout << "Failed to load CShivs2D" << endl;
 		return false;
 	}
 
@@ -197,7 +197,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	
 	cPlayer2D->Update(dElapsedTime);
 	
-	cSword2D->Update(dElapsedTime);
+	CShivs2D->Update(dElapsedTime);
 
 	cMap2D->Update(dElapsedTime);
 
@@ -283,9 +283,9 @@ void CScene2D::Render(void)
 	cPlayer2D->Render();
 	cPlayer2D->PostRender();
 
-	cSword2D->PreRender();
-	cSword2D->Render();
-	cSword2D->PostRender();
+	CShivs2D->PreRender();
+	CShivs2D->Render();
+	CShivs2D->PostRender();
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{

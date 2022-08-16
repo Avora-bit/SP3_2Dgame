@@ -159,9 +159,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Bouquet", "Image/bouquet.tga", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -483,35 +480,8 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 2:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-
-		cInventoryItem = cInventoryManager->GetItem("Bouquet");
-		cInventoryItem->Add(1);
-
-		cSoundController->PlaySoundByID(5);
-		break;
-	case 20:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
-		break;
-	case 22:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-		{
-			cSoundController->PlaySoundByID(5);
-
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			cInventoryItem->Add(50);
-		}
-		break;
 	case 98:
-		cInventoryItem = cInventoryManager->GetItem("Bouquet");
-		if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
-		{
-			cSoundController->PlaySoundByID(7);
-			CGameManager::GetInstance()->bLevelCompleted = true;
-		}
+		CGameManager::GetInstance()->bLevelCompleted = true;
 		break;
 	case 99:
 		CGameManager::GetInstance()->bPlayerWon = true;
