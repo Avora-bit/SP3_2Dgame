@@ -86,9 +86,6 @@ bool CGUI_Scene2D::Init(void)
 
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
-	// Add a Tree as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Tree", "Image/Scene2D_TreeTile.tga", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cPlayer2D = CPlayer2D::GetInstance();
 
@@ -125,60 +122,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	// Display the FPS
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 	
-	// Render a progress bar
-
-	
-	m_fProgressBar += 0.001f;
-	if (m_fProgressBar > 1.0f)
-		m_fProgressBar = 0.0f;
 	ImVec4 col = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 	col = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	// Render the inventory items
-	cInventoryItem = cInventoryManager->GetItem("Bouquet");
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags inventoryWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Image", NULL, inventoryWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.75f, cSettings->iWindowHeight * 0.85f));
-	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-		ImVec2(cInventoryItem->vec2Size.x * relativeScale_x, cInventoryItem->vec2Size.y * relativeScale_y),
-		ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar(cInventoryItem->GetCount() /
-		(float)cInventoryItem->GetMaxCount(), ImVec2(100.0f * relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Bouquet: %d / %d",
-		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
-	ImGui::PopStyleColor();
-	ImGui::End();
 	ImGui::End();
 
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags objectivesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Objectives", NULL, objectivesWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f));
-	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.3f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Objectives:\n-Collect flower bouquets\n-Enter door\n-Give flower bouquets\nto Princess",
-		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
-	ImGui::PopStyleColor();
-	ImGui::End();
-
-	// sword force
+	// charge meter
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 	ImGuiWindowFlags swordForceFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoTitleBar |

@@ -479,20 +479,6 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 20:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
-		break;
-	case 22:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-		{
-			cSoundController->PlaySoundByID(5);
-
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			cInventoryItem->Add(50);
-		}
-		break;
 	case 98:
 		CGameManager::GetInstance()->bLevelCompleted = true;
 		break;
