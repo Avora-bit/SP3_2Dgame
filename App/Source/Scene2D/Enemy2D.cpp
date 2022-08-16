@@ -33,7 +33,7 @@ CEnemy2D::CEnemy2D(void)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, cSword2D(NULL)
+	, CShivs2D(NULL)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 {
@@ -60,7 +60,7 @@ CEnemy2D::~CEnemy2D(void)
 	// We won't delete this since it was created elsewhere
 	cPlayer2D = NULL;
 
-	cSword2D = NULL;
+	CShivs2D = NULL;
 
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
@@ -86,7 +86,7 @@ bool CEnemy2D::Init(void)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
-	cSword2D = CSword2D::GetInstance();
+	CShivs2D = CShivs2D::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
@@ -163,7 +163,7 @@ void CEnemy2D::Update(const double dElapsedTime)
 		}
 	}*/
 
-	/*if (!cSword2D->thrown && !cPlayer2D->getHasSword() && cSword2D->vec2Index == vec2Index && cSword2D->vec2Index != cPlayer2D->vec2Index)
+	/*if (!CShivs2D->thrown && !cPlayer2D->getHasSword() && CShivs2D->vec2Index == vec2Index && CShivs2D->vec2Index != cPlayer2D->vec2Index)
 	{
 		health -= 40;
 	}*/
@@ -755,7 +755,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
-			vec2NumMicroSteps.y--;
+			vec2NumMicroSteps.y -= speed_multiplier;
 			if (vec2NumMicroSteps.y < 0)
 			{
 				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -782,7 +782,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y++;
+			vec2NumMicroSteps.y += speed_multiplier;
 
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
@@ -811,7 +811,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--;
+			vec2NumMicroSteps.x -= speed_multiplier;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -838,7 +838,7 @@ void CEnemy2D::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x += speed_multiplier;
 
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
@@ -860,15 +860,5 @@ void CEnemy2D::UpdatePosition(void)
 		
 		// Interact with the Player
 		//InteractWithPlayer();
-	}
-
-	// if the player is above the enemy2D, then jump to attack
-	if (vec2Direction.y > 0)
-	{
-		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.0f));
-		}
 	}
 }

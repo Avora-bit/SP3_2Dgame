@@ -1,10 +1,10 @@
 ﻿/**
- Sword2D
+ Shivs2D
  @brief A class representing the player object
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Sword2D.h"
+#include "Shivs2D.h"
 
 #include <iostream>
 using namespace std;
@@ -23,7 +23,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CSword2D::CSword2D(void)
+CShivs2D::CShivs2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -46,7 +46,7 @@ CSword2D::CSword2D(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CSword2D::~CSword2D(void)
+CShivs2D::~CShivs2D(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
@@ -74,7 +74,7 @@ CSword2D::~CSword2D(void)
 /**
   @brief Initialise this instance
   */
-bool CSword2D::Init(void)
+bool CShivs2D::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -90,7 +90,7 @@ bool CSword2D::Init(void)
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to cSword2D
+	// Find the indices for the player in arrMapInfo, and assign it to CShivs2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 
@@ -132,7 +132,6 @@ bool CSword2D::Init(void)
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
 	cPhysics2D.Init();
-	cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
 
 	cSoundController = CSoundController::GetInstance();
 
@@ -142,7 +141,7 @@ bool CSword2D::Init(void)
 /**
  @brief Reset this instance
  */
-bool CSword2D::Reset()
+bool CShivs2D::Reset()
 {
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
@@ -165,7 +164,7 @@ bool CSword2D::Reset()
 /**
  @brief Update this instance
  */
-void CSword2D::Update(const double dElapsedTime)
+void CShivs2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
 	if (!cPlayer2D->getBowForce())
@@ -229,8 +228,6 @@ void CSword2D::Update(const double dElapsedTime)
 		}
 		else
 		{
-			if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
-				cPhysics2D.SetTime((float)dElapsedTime);
 			cPhysics2D.Update();
 			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 			int iIndex_YAxis_OLD = vec2Index.y;
@@ -277,7 +274,7 @@ void CSword2D::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CSword2D::PreRender(void)
+void CShivs2D::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -290,7 +287,7 @@ void CSword2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CSword2D::Render(void)
+void CShivs2D::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -329,7 +326,7 @@ void CSword2D::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CSword2D::PostRender(void)
+void CShivs2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
@@ -339,7 +336,7 @@ void CSword2D::PostRender(void)
  @brief Constraint the player's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-//bool CSword2D::Constraint(DIRECTION eDirection)
+//bool CShivs2D::Constraint(DIRECTION eDirection)
 //{
 //	if (eDirection == LEFT)
 //	{
@@ -388,7 +385,7 @@ void CSword2D::PostRender(void)
 //	return true;
 //}
 //
-void CSword2D::InteractWithMap(void)
+void CShivs2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -396,13 +393,12 @@ void CSword2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		vec2NumMicroSteps.x = 0;
 
-		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 		distanceTravelled = 0;
 		break;
 	}
 }
 //
-//bool CSword2D::CheckPosition(DIRECTION eDirection)
+//bool CShivs2D::CheckPosition(DIRECTION eDirection)
 //{
 //	if (eDirection == LEFT)
 //	{
@@ -479,7 +475,7 @@ void CSword2D::InteractWithMap(void)
 //	}
 //	else
 //	{
-//		cout << "CSword2D::CheckPosition: Unknown direction." << endl;
+//		cout << "CShivs2D::CheckPosition: Unknown direction." << endl;
 //	}
 //	return true;
 //}

@@ -29,7 +29,7 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-#include "Sword2D.h"
+#include "Shivs2D.h"
 
 #include "Primitives/SpriteAnimation.h"
 
@@ -139,7 +139,7 @@ protected:
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
 
-	CSword2D* cSword2D;
+	CShivs2D* CShivs2D;
 
 	Camera* camera;
 
