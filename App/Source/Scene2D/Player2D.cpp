@@ -161,6 +161,11 @@ bool CPlayer2D::Init(void)
 
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	
+	//debug shivs
+	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 
 	cSoundController = CSoundController::GetInstance();
 

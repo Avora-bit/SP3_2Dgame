@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Shivs2D.h"
+#include "Projectile2D.h"
 
 #include <iostream>
 using namespace std;
@@ -23,7 +23,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CShivs2D::CShivs2D(void)
+CProjectile2D::CProjectile2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -46,7 +46,7 @@ CShivs2D::CShivs2D(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CShivs2D::~CShivs2D(void)
+CProjectile2D::~CProjectile2D(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
@@ -74,7 +74,7 @@ CShivs2D::~CShivs2D(void)
 /**
   @brief Initialise this instance
   */
-bool CShivs2D::Init(void)
+bool CProjectile2D::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -142,7 +142,7 @@ bool CShivs2D::Init(void)
 /**
  @brief Update this instance
  */
-void CShivs2D::Update(const double dElapsedTime)
+void CProjectile2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
 	if (!cPlayer2D->getBowForce())
@@ -252,7 +252,7 @@ void CShivs2D::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CShivs2D::PreRender(void)
+void CProjectile2D::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -265,7 +265,7 @@ void CShivs2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CShivs2D::Render(void)
+void CProjectile2D::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -298,7 +298,7 @@ void CShivs2D::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CShivs2D::PostRender(void)
+void CProjectile2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);

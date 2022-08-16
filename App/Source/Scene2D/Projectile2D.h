@@ -19,7 +19,9 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-#include "Projectile2D.h"
+// Include CEntity2D
+#include "Primitives/Entity2D.h"
+#include "Primitives/SpriteAnimation.h"
 
 #include "..\SoundController\SoundController.h"
 
@@ -41,9 +43,9 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
-class CShivs2D : public CSingletonTemplate<CShivs2D>, public CEntity2D
+class CProjectile2D : public CSingletonTemplate<CProjectile2D>, public CEntity2D
 {
-	friend CSingletonTemplate<CShivs2D>;
+	friend CSingletonTemplate<CProjectile2D>;
 public:
 
 	// Init
@@ -91,10 +93,10 @@ protected:
 	glm::vec4 runtimeColour;
 
 	// Constructor
-	CShivs2D(void);
+	CProjectile2D(void);
 
 	// Destructor
-	virtual ~CShivs2D(void);
+	virtual ~CProjectile2D(void);
 
 	void InteractWithMap(void);
 
