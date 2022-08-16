@@ -200,6 +200,8 @@ bool CCraftingState::Update(const double dElapsedTime)
 		// Load the menu state
 		cout << "UnLoading CraftState" << endl;
 		CGameStateManager::GetInstance()->SetCraftingGameState(nullptr);
+		//CGameStateManager::GetInstance()->OffCraftingGameState();
+
 		return true;
 	}
 
