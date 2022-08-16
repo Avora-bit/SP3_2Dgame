@@ -36,6 +36,9 @@
 #include "../SoundController/SoundController.h"
 
 #include <iostream>
+
+#include <string>
+
 using namespace std;
 
 /**
@@ -66,7 +69,10 @@ bool CCraftingState::Init(void)
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	
-
+	for (int i = 0; i < 9; i++)
+	{
+		butnum[i] = i + 1;
+	}
 
 	return true;
 }
@@ -110,25 +116,79 @@ bool CCraftingState::Update(const double dElapsedTime)
 		// Drag and Drop
 	// - If you stop calling BeginDragDropSource() the payload is preserved however it won't have a preview tooltip 
 	// (we currently display a fallback "..." tooltip as replacement)
+	
 		//IMGUI_API bool          BeginDragDropSource(ImGuiDragDropFlags flags = 0);                                      
 		// // call when the current item is active. If this return true, you can call SetDragDropPayload() + EndDragDropSource()
+		
 		//IMGUI_API bool          SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond = 0);  
 		// // type is a user defined string of maximum 32 characters. Strings starting with '_' are reserved for dear imgui internal types. Data is copied and held by imgui.
+		
 		//IMGUI_API void          EndDragDropSource();                                                                    
 		// // only call EndDragDropSource() if BeginDragDropSource() returns true!
+		
 		//IMGUI_API bool                  BeginDragDropTarget();                                                          
 		// // call after submitting an item that may receive a payload. If this returns true, you can call AcceptDragDropPayload() + EndDragDropTarget()
+		
 		//IMGUI_API const ImGuiPayload* AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags = 0);          
 		// // accept contents of a given type. If ImGuiDragDropFlags_AcceptBeforeDelivery is set you can peek into the payload before the mouse button is released.
+
 		//IMGUI_API void                  EndDragDropTarget();                                                            
 		// // only call EndDragDropTarget() if BeginDragDropTarget() returns true!
+		
 		//IMGUI_API const ImGuiPayload* GetDragDropPayload();                                                           
 		// peek directly into the current payload from anywhere. may return NULL. use ImGuiPayload::IsDataType() to test for the payload type.
 
-		
 
+		char y[9];
+		for (int i = 0; i < 9; i++)
+		{
+			/*const */string x = to_string(butnum[i]);
+			//y[i] = x;
+
+			strcpy(y, x.c_str());
+			//cout << y << endl;
+
+			ImGui::Button(y, ImVec2(50, 50));
+			if (ImGui::BeginDragDropSource())
+			{
+				//SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond = 0);
+				ImGui::SetDragDropPayload(y, y, (butnum + 1) - butnum);
+
+
+				//when hold click, delete the button from imgui
+				//put pointer into mouse
+				//when hover over item, push item backwards
+				//append value of mouse into array
+
+				ImGui::Button(y, ImVec2(50, 50));
+				ImGui::EndDragDropSource();
+			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+
+				cout << butnum[i] << endl;
+
+				///*int payload = */ImGui::AcceptDragDropPayload(y);
+				if (ImGui::AcceptDragDropPayload(y) != NULL)
+				{
+					/*ssert(payload.DataSize == ffi.sizeof"int");
+					local numptr = ffi.cast("int*", payload.Data);*/
+					//swap numbers
+					//butnum[numptr[0]], butnum[i] = butnum[i], butnum[numptr[0]];
+					butnum[i] = butnum[0];
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}
 		
-	ImGui::End();
+		/*float currentvol = 0;
+		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))
+		{
+
+		}*/
+
+		ImGui::End();
 	}
 
 	//For keyboard controls

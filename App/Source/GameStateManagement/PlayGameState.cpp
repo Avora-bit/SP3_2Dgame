@@ -81,7 +81,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading PauseState" << endl;
 		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
 	}
-	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_F1))
+	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_Q))
 	{
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
@@ -99,6 +99,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading GameOverState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("GameOverState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
+		CGameStateManager::GetInstance()->OffCraftingGameState();
+
 		return true;
 	}
 	if (cGameManager->bPlayerWon)
@@ -109,6 +111,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading VictoryState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("VictoryState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
+		CGameStateManager::GetInstance()->OffCraftingGameState();
+
 		return true;
 	}
 	// Call the cScene2D's Update method

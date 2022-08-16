@@ -81,7 +81,7 @@ bool CGameStateManager::Update(const double dElapsedTime)
 				//cout << "pauseGameState->Update" << endl;
 				pauseGameState->Update(dElapsedTime);
 			}
-			else if (craftingGameState)
+			if (craftingGameState)
 			{
 				//cout << "pauseGameState->Update" << endl;
 				craftingGameState->Update(dElapsedTime);
@@ -227,7 +227,7 @@ bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 	if (!CheckGameStateExist(_name))
 	{
 		// If it does not exist, then unable to proceed
-		cout << "CGameStateManager::SetPauseGameState - scene name does not exists" << endl;
+		cout << "CGameStateManager::SetCraftingGameState - scene name does not exists" << endl;
 		return false;
 	}
 
@@ -243,3 +243,9 @@ void CGameStateManager::OffPauseGameState(void)
 {
 	pauseGameState = nullptr;
 }
+
+void CGameStateManager::OffCraftingGameState(void)
+{
+	craftingGameState = nullptr;
+}
+

@@ -42,4 +42,6 @@ public:
 	virtual void Destroy(void);
 
 protected:
+	ImGuiPayload ig;
+	int butnum[];
 };

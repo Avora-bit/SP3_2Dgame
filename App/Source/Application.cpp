@@ -43,6 +43,10 @@
 
 #include "GameStateManagement/PauseState.h"
 
+
+#include "GameStateManagement/CraftingState.h"
+
+
 #include <iostream>
 using namespace std;
 
@@ -239,8 +243,11 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("PlayGameState", new CPlayGameState());
 	CGameStateManager::GetInstance()->AddGameState("GameOverState", new CGameOverState());
 	CGameStateManager::GetInstance()->AddGameState("VictoryState", new CVictoryState());
-
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
+
+	CGameStateManager::GetInstance()->AddGameState("CraftingState", new CCraftingState());
+
+
 
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 

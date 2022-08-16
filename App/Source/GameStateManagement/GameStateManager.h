@@ -30,6 +30,7 @@ public:
 	bool SetCraftingGameState(const std::string& _name);
 
 	void OffPauseGameState(void);
+	void OffCraftingGameState(void);
 
 protected:
 	// Constructor
