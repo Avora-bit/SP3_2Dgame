@@ -15,4 +15,5 @@
 *.obj
 *.vsidx
 *.recipe
+.vs/NYP_Framework/v16/.suo
 .vs/NYP_Framework/v17/.suo
