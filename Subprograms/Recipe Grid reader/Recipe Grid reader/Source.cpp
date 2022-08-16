@@ -64,7 +64,6 @@ public:
 			bool check = true;
 			for (int i = 1; i < 10; i++) {
 				if (tempRecipe.GetRecipeIndex(i) != it->GetRecipeIndex(i)) {
-					std::cout << tempRecipe.GetRecipeIndex(i) << ", " << it->GetRecipeIndex(i) << std::endl;
 					check = false;
 					break;
 				}
