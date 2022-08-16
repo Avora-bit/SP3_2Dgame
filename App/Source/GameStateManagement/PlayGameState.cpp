@@ -70,6 +70,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading MenuState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
+		CGameStateManager::GetInstance()->OffCraftingGameState();
+
 		return true;
 	}
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_F10))
