@@ -17,6 +17,7 @@
 #include <includes/gtc/type_ptr.hpp>
 
 #include "Inputs\KeyboardController.h"
+#include "Inputs\MouseController.h"
 
 #include "GameControl\Settings.h"
 
@@ -42,5 +43,6 @@ protected:
 	virtual ~Camera(void);
 
 	CKeyboardController* cKeyboardController;
+	CMouseController* cMouseController;
 	CSettings* cSettings;
 };

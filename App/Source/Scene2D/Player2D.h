@@ -130,6 +130,6 @@ public:
 	void LoseHealth(float health);
 
 
-	float speed_multiplier = 0.25f;
+	//float speed_multiplier = 0.25f;
 };
 

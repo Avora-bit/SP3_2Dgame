@@ -3,6 +3,7 @@
 #include <iostream>
 Camera::Camera(void)
 	:cKeyboardController(NULL),
+	 cMouseController(NULL),
 	 cSettings(NULL)
 {
 	vec2Index = glm::vec2(0.0f, 0.0f);
@@ -12,11 +13,13 @@ Camera::Camera(void)
 Camera::~Camera(void)
 {
 	cKeyboardController = NULL;
+	cMouseController = NULL;
 }
 
 bool Camera::Init(void)
 {
 	cKeyboardController = CKeyboardController::GetInstance();
+	cMouseController = CMouseController::GetInstance();
 	cSettings = CSettings::GetInstance();
 
 	return true;
@@ -30,7 +33,7 @@ bool Camera::Reset(void)
 void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 {
 	float bounds = (zoom - 1) / zoom;
-
+	/*
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_UP) && vec2Index.y > -bounds)
 	{
 		vec2Index.y -= 0.015;
@@ -58,13 +61,17 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 	}
 	//else if (cKeyboardController->IsKeyDown(GLFW_KEY_RIGHT))
 	//	vec2Index.x = -0.24 * zoom;
-
-	float newPosX = playerPos.x - cSettings->NUM_TILES_XAXIS / 2;
-	float newPosY = playerPos.y - cSettings->NUM_TILES_YAXIS / 2;
-	vec2Index = glm::vec2(-newPosX*(bounds*2/ cSettings->NUM_TILES_XAXIS), -newPosY*(bounds*2/cSettings->NUM_TILES_YAXIS));
+	*/
+	//float newPosX = playerPos.x - cSettings->NUM_TILES_XAXIS / 2;
+	//float newPosY = playerPos.y - cSettings->NUM_TILES_YAXIS / 2;
+	//vec2Index = glm::vec2(-newPosX*(bounds*2/ cSettings->NUM_TILES_XAXIS), -newPosY*(bounds*2/cSettings->NUM_TILES_YAXIS));
+	
+	float newPosX = playerPos.x;
+	float newPosY = playerPos.y;
+	vec2Index = glm::vec2(1-newPosX/(cSettings->NUM_TILES_XAXIS/2), 1-newPosY / (cSettings->NUM_TILES_YAXIS/2));
 	//std::cout << vec2Index.x << " " << vec2Index.y << std::endl;
-
-
+	
+	
 	if (vec2Index.y < -bounds)
 		vec2Index.y = -bounds;
 	if (vec2Index.y > bounds)
