@@ -46,6 +46,7 @@ int RecipeBook::CheckRecipe(Recipe tempRecipe) {
 			}
 		}
 		if (check) {
+			//print out the value stored in the index
 			output = it->GetRecipeIndex(0);
 			return output;
 		}

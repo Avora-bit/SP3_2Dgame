@@ -31,6 +31,8 @@
     <ClCompile Include="Source\Scene2D\Map2D.cpp" />
     <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
     <ClCompile Include="Source\Scene2D\Player2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Recipe.cpp" />
+    <ClCompile Include="Source\Scene2D\RecipeBook.cpp" />
     <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
     <ClCompile Include="Source\Scene2D\Shivs2D.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
@@ -56,6 +58,8 @@
     <ClInclude Include="Source\Scene2D\Map2D.h" />
     <ClInclude Include="Source\Scene2D\Physics2D.h" />
     <ClInclude Include="Source\Scene2D\Player2D.h" />
+    <ClInclude Include="Source\Scene2D\Recipe.h" />
+    <ClInclude Include="Source\Scene2D\RecipeBook.h" />
     <ClInclude Include="Source\Scene2D\Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Shivs2D.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
