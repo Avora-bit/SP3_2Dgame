@@ -159,11 +159,13 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Bouquet", "Image/bouquet.tga", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	
+	//debug shivs
+	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 
 	cSoundController = CSoundController::GetInstance();
 
@@ -202,11 +204,67 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	{
+		if (vec2Index.x >= 0)
+		{
+			vec2NumMicroSteps.x--; //speed_multiplier;
+			if (vec2NumMicroSteps.x < 0)
+			{
+				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+				vec2Index.x--;
+			}
+		}
+
+		if (!CheckPosition(LEFT))
+		{
+			vec2Index.x = vec2OldIndex.x;
+			vec2NumMicroSteps.x = 0;
+		}
+
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+		Constraint(LEFT);
+
+		/*if (hasSword || chargeSword)
+			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+		else
+			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+		direction = LEFT;
+	}
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
+		if (vec2Index.y >= 0)
+		{
+			vec2NumMicroSteps.y--; //speed_multiplier;
+			if (vec2NumMicroSteps.y < 0)
+			{
+				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				vec2Index.y--;
+			}
+		}
+
+		if (!CheckPosition(DOWN))
+		{
+			vec2Index.y = vec2OldIndex.y;
+			vec2NumMicroSteps.y = 0;
+		}
+
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+		Constraint(DOWN);
+
+		/*if (hasSword || chargeSword)
+			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+		else
+			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+		direction = DOWN;
+	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y += speed_multiplier;
+			vec2NumMicroSteps.y++;// speed_multiplier;
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
 				vec2NumMicroSteps.y = 0;
@@ -229,66 +287,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		direction = UP;
 	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
-		if (vec2Index.y >= 0)
-		{
-			vec2NumMicroSteps.y -= speed_multiplier;
-			if (vec2NumMicroSteps.y < 0)
-			{
-				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				vec2Index.y--;
-			}
-		}
-
-		if (!CheckPosition(DOWN))
-		{
-			vec2Index = vec2OldIndex;
-			vec2NumMicroSteps.y = 0;
-		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(DOWN);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		direction = DOWN;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
-	{
-		if (vec2Index.x >= 0)
-		{
-			vec2NumMicroSteps.x -= speed_multiplier;
-			if (vec2NumMicroSteps.x < 0)
-			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
-			}
-		}
-
-		if (!CheckPosition(LEFT))
-		{
-			vec2Index = vec2OldIndex;
-			vec2NumMicroSteps.x = 0;
-		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(LEFT);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		direction = LEFT;
-	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x += speed_multiplier;
+			vec2NumMicroSteps.x++;// speed_multiplier;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
 				vec2NumMicroSteps.x = 0;
@@ -311,7 +314,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		direction = RIGHT;
 	}
-	else
+	
 	{
 		switch (direction)			//hold weapon
 		{
@@ -482,35 +485,8 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 2:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-
-		cInventoryItem = cInventoryManager->GetItem("Bouquet");
-		cInventoryItem->Add(1);
-
-		cSoundController->PlaySoundByID(5);
-		break;
-	case 20:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
-		break;
-	case 22:
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		if (cInventoryItem->GetCount() < cInventoryItem->GetMaxCount())
-		{
-			cSoundController->PlaySoundByID(5);
-
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			cInventoryItem->Add(50);
-		}
-		break;
 	case 98:
-		cInventoryItem = cInventoryManager->GetItem("Bouquet");
-		if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount())
-		{
-			cSoundController->PlaySoundByID(7);
-			CGameManager::GetInstance()->bLevelCompleted = true;
-		}
+		CGameManager::GetInstance()->bLevelCompleted = true;
 		break;
 	case 99:
 		CGameManager::GetInstance()->bPlayerWon = true;

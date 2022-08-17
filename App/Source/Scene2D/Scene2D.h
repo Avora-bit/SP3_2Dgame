@@ -41,7 +41,7 @@
 // Map2D to check player's movements and actions
 #include "Map2D.h"
 #include "Player2D.h"
-#include "Sword2D.h"
+#include "Shivs2D.h"
 #include "Enemy2D.h"
 #include "GUI_Scene2D.h"
 #include "Camera.h"
@@ -77,7 +77,7 @@ protected:
 
 	CPlayer2D* cPlayer2D;
 
-	CSword2D* cSword2D;
+	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
 

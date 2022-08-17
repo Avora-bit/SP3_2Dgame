@@ -16,9 +16,6 @@ public:
 	enum STATUS
 	{
 		IDLE = 0,
-		JUMP,
-		FALL,
-		FLY,
 		NUM_STATUS
 	};
 
