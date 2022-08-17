@@ -44,5 +44,5 @@ protected:
 
 	CKeyboardController* cKeyboardController;
 	CMouseController* cMouseController;
-	CSettings* cSettings;
+	float mouseWeight;
 };
