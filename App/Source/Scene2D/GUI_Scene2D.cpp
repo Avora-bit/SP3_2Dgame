@@ -100,7 +100,18 @@ bool CGUI_Scene2D::Init(void)
 	m_fProgressBar = 0.0f;
 
 
+	il = CImageLoader::GetInstance();
 
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		hbcells[i].itemID = 7;
+		
+
+		hbcells[i].loadimagebasedID(hbcells[i].itemID);
+		hbcells[i] .textureID = il->LoadTextureGetID(hbcells[i].fileName.c_str(), false);
+	}
 
 	return true;
 }
@@ -273,7 +284,90 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 
-	
+	//RENDER HOTBAR
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+	ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
+	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+
+	char y[3];
+	for (int n = 0; n < 3; n++)
+	{
+		ImGui::PushID(n);
+
+		//don't break line if doesn't reach 3 cells
+		if ((n % 3) != 0)
+			ImGui::SameLine();
+
+
+		string x = to_string(n);
+		//string x = to_string(hbcells[n].itemID);
+
+		strcpy(y, x.c_str());
+
+		//ImGui::Button(y, ImVec2(50, 50));
+		//construct 9 buttons
+
+		/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
+			int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
+
+		if (n >= 3)
+		{
+			ImGui::ImageButton((ImTextureID)hbcells[n].textureID, ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+				-1, ImVec4(1, 1, 0, 1));
+
+			/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
+				CSettings::GetInstance()->iWindowHeight / 2.0));*/
+
+		}
+		else
+		{
+			ImGui::ImageButton((ImTextureID)hbcells[n].textureID, ImVec2(50, 50));
+
+		}
+
+
+		if (hbcells[n].itemID != 0)
+		{
+			// Our buttons are both drag sources and drag targets here!
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			{
+				// Set payload to carry the index of our item (could be anything)
+				//&n is to get the data directly from IMGUI
+				ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
+				ImGui::Text("Check %s", y);
+				ImGui::EndDragDropSource();
+			}
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			//get with the id
+			//when mouse is released
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+			{
+				IM_ASSERT(payload->DataSize == sizeof(int));
+				int payload_n = *(const int*)payload->Data;
+
+				//swap images and itemId inside
+				HotBarCells tmp = hbcells[n];
+				hbcells[n] = hbcells[payload_n];
+				hbcells[payload_n] = tmp;
+
+				cout << endl;
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::PopID();
+
+	}
+	ImGui::PopStyleColor();
+	ImGui::End();
 
 
 
@@ -306,4 +400,9 @@ void CGUI_Scene2D::Render(void)
  */
 void CGUI_Scene2D::PostRender(void)
 {
+}
+
+int CGUI_Scene2D::return_hbcellid(int arr)
+{
+	return hbcells[arr].getitemID();
 }

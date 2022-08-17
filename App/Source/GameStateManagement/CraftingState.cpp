@@ -19,8 +19,7 @@
 
 // Include Mesh Builder
 #include "Primitives/MeshBuilder.h"
-// Include ImageLoader
-#include "System\ImageLoader.h"
+
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 
@@ -110,7 +109,10 @@ bool CCraftingState::Init(void)
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
 
-	CImageLoader* il = CImageLoader::GetInstance();
+
+	guiscene2d = CGUI_Scene2D::GetInstance();
+
+	il = CImageLoader::GetInstance();
 	
 	recipebook = new RecipeBook("Recipes.txt");
 	recipebook->CreateRecipe();
@@ -118,23 +120,31 @@ bool CCraftingState::Init(void)
 
 	gridrecipe.SetRecipeIndex(0, 0);
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 12; i++)
 	{
-		if (i % 2 == 0)
+		if (i < 9)
 		{
-			butnum[i].itemID = 1;
+			if (i % 2 == 0)
+			{
+				butnum[i].itemID = 1;
+			}
+			else
+			{
+				//butnum[i].itemID = 2;
+				butnum[i].itemID = 0;
+
+
+			}
 		}
 		else
 		{
-			butnum[i].itemID = 2;
+			butnum[i].itemID = guiscene2d->return_hbcellid(i - 9);
 
 		}
 
 		gridrecipe.SetRecipeIndex(i + 1, butnum[i].itemID);
 		butnum[i].loadimagebasedID(butnum[i].itemID);
 		butnum[i].textureID = il->LoadTextureGetID(butnum[i].fileName.c_str(), false);
-		//cout << "Index " << i << "TextureID: " << butnum[i].itemID << endl;
-		//cout << gridrecipe.GetRecipeIndex(i) << endl;
 	}
 
 	output.itemID = 0;
@@ -181,7 +191,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		
 		// by tohdj
 		char y[9];
-		for (int n = 0; n < 9; n++)
+		for (int n = 0; n < 12; n++)
 		{
 			ImGui::PushID(n);
 
@@ -196,31 +206,46 @@ bool CCraftingState::Update(const double dElapsedTime)
 			strcpy(y, x.c_str());
 
 			//ImGui::Button(y, ImVec2(50, 50));
-			ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50));
+			//construct 9 buttons
 
+			/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
+				int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
 
-			if (cMouseController->IsButtonDown(1))
+			if (n >= 9)
 			{
+				ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
+					-1, ImVec4(1, 1, 0, 1) );
+
+				/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
+					CSettings::GetInstance()->iWindowHeight / 2.0));*/
+
+			}
+			else
+			{
+				ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50));
 
 			}
 
-			// Our buttons are both drag sources and drag targets here!
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			
+			if (butnum[n].itemID != 0)
 			{
-				// Set payload to carry the index of our item (could be anything)
-				//&n is to get the data directly from IMGUI
-				ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-				ImGui::Text("Check %s", y);
-				ImGui::EndDragDropSource();
+				// Our buttons are both drag sources and drag targets here!
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+				{
+					// Set payload to carry the index of our item (could be anything)
+					//&n is to get the data directly from IMGUI
+					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
+					ImGui::Text("Check %s", y);
+					ImGui::EndDragDropSource();
+				}
 			}
-			//when mouse is released
 			if (ImGui::BeginDragDropTarget())
 			{
 				//get with the id
+				//when mouse is released
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
 				{
 					IM_ASSERT(payload->DataSize == sizeof(int));
-
 					int payload_n = *(const int*)payload->Data;
 
 					//swap images and itemId inside
@@ -240,6 +265,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
+
 		}
 		
 
@@ -248,13 +274,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 		//render the output button
 		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
-		std::cout << output.itemID << std::endl;*/
-
-
-		//output.itemID = recipebook->CheckRecipe(gridrecipe);
-
-		//output.loadimagebasedID(output.itemID);
-		//output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);
+		output.itemID = recipebook->CheckRecipe(gridrecipe);
+		output.loadimagebasedID(output.itemID);
+		output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);*/
 		
 		/*float currentvol = 0;
 		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))
@@ -300,5 +322,14 @@ void CCraftingState::Destroy(void)
 {
 	// cout << "CCraftingState::Destroy()\n" << endl;
 	delete recipebook;
+
+
+	/*for (int i = 0; i < 12; i++)
+	{
+		delete butnum[i];
+	}*/
 	recipebook = nullptr;
+
+	/*delete il;
+	il = nullptr;*/
 }

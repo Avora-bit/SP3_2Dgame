@@ -7,6 +7,10 @@
  Date: July 2021
  */
 
+
+ // Include ImageLoader
+#include "System\ImageLoader.h"
+
 #include "GameStateBase.h"
 
 #include "Primitives/Mesh.h"
@@ -19,6 +23,9 @@
 #include <string>
 #include "../Scene2D/RecipeBook.h"
 #include "../Scene2D/Recipe.h"
+
+
+#include"../Scene2D/GUI_Scene2D.h"
 
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
@@ -68,15 +75,15 @@ protected:
 			case 2:
 				fileName = "Image\\Sp3Images\\Base\\wood.png";
 				break;
-
 			case 0:
 				fileName = "Image\\Sp3Images\\blank_output.png";
 				break;
-
 			case 6:
 				fileName = "Image\\Sp3Images\\Weapons\\sword.png";
 				break;
-
+			case 7:
+				fileName = "Image\\Sp3Images\\Weapons\\bow.png";
+				break;
 			default:
 				break;
 			}
@@ -87,16 +94,18 @@ protected:
 			return itemID;
 		}
 
-		
 	};
 
-	//int butnum[];
+
+	CGUI_Scene2D* guiscene2d;
+
+	CImageLoader* il;
 
 	RecipeBook* recipebook;
 
 	Recipe gridrecipe;
 
-	ButtonData butnum[9];
+	ButtonData butnum[12];
 
 	ButtonData output;
 };
