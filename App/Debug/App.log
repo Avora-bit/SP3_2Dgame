@@ -1,2 +1,63 @@
-﻿  RecipeBook.cpp
+﻿  Shivs2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(157,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(212,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(217,59): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(220,72): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(225,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(228,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(249,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(250,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(206,4): warning C4060: switch statement contains no 'case' or 'default' labels
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(363,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(363,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(366,44): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(366,31): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
   App.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\App.exe

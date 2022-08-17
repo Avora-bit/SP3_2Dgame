@@ -16,13 +16,9 @@
 
 #include <fstream>
 #include <vector>
+#include <string>
 #include "../Scene2D/RecipeBook.h"
 #include "../Scene2D/Recipe.h"
-
-
-
-#include <string>
-
 
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
@@ -61,7 +57,6 @@ protected:
 		unsigned textureID;
 		unsigned int itemID;
 
-
 		void loadimagebasedID(int itemid)
 		{
 			switch (itemid)
@@ -85,12 +80,7 @@ protected:
 			default:
 				break;
 			}
-
-
-
-				
 		}
-
 
 		int getitemID()
 		{
@@ -101,8 +91,6 @@ protected:
 	};
 
 	//int butnum[];
-
-
 
 	RecipeBook* recipebook;
 

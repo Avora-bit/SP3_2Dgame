@@ -85,12 +85,6 @@ std::cout << recipebook->CheckRecipe(gridrecipe) << std::endl;
 //delete all new arrays
 delete recipebook;*/
 
-
-
-
-
-
-
 /**
  @brief Destructor
  */
@@ -305,4 +299,6 @@ void CCraftingState::Render(void)
 void CCraftingState::Destroy(void)
 {
 	// cout << "CCraftingState::Destroy()\n" << endl;
+	delete recipebook;
+	recipebook = nullptr;
 }

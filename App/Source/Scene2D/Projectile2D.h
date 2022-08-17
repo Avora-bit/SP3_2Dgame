@@ -67,7 +67,7 @@ protected:
 
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 direction;		//direction of movement
-	float rotation = 0.f;		//calculated based on direction
+	float angle = 0.f;		//calculated based on direction
 
 	double distanceTravelled;
 
