@@ -37,7 +37,11 @@
 
 #include <iostream>
 
+
 #include <string>
+
+
+
 
 using namespace std;
 
@@ -49,6 +53,55 @@ CCraftingState::CCraftingState(void)
 {
 
 }
+
+
+
+
+
+
+//text file reader for minecraft like recipes
+
+/*RecipeBook* recipebook = new RecipeBook("Recipes.txt");
+recipebook->CreateRecipe();
+
+recipebook->PrintBook();
+Recipe gridrecipe;
+
+//column zero is always 0
+gridrecipe.SetRecipeIndex(0, 0);
+
+//set the ingredients required
+gridrecipe.SetRecipeIndex(1, 2);
+gridrecipe.SetRecipeIndex(2, 2);
+gridrecipe.SetRecipeIndex(3, 2);
+gridrecipe.SetRecipeIndex(4, 2);
+gridrecipe.SetRecipeIndex(5, 2);
+gridrecipe.SetRecipeIndex(6, 2);
+gridrecipe.SetRecipeIndex(7, 2);
+gridrecipe.SetRecipeIndex(8, 2);
+gridrecipe.SetRecipeIndex(9, 4);
+//hardcode value for recipe
+std::cout << recipebook->CheckRecipe(gridrecipe) << std::endl;
+
+
+
+//create large vector for all recipes
+
+//create temporary recipe class
+//fill recipe with recipe from crafting grid
+
+//compare temporary recipe with all recipes
+//get result of the comparison and check if its true
+
+
+//delete all new arrays
+delete recipebook;*/
+
+
+
+
+
+
 
 /**
  @brief Destructor
@@ -63,6 +116,9 @@ CCraftingState::~CCraftingState(void)
  */
 bool CCraftingState::Init(void)
 {
+
+
+
 	cout << "CCraftingState::Init()\n" << endl;
 
 	CShaderManager::GetInstance()->Use("Shader2D");
@@ -70,8 +126,6 @@ bool CCraftingState::Init(void)
 
 
 	cMouseController = CMouseController::GetInstance();
-
-	
 	/*VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton2.png";
 	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
@@ -79,22 +133,41 @@ bool CCraftingState::Init(void)
 
 	CImageLoader* il = CImageLoader::GetInstance();
 	
+	recipebook = new RecipeBook("Recipes.txt");
+	recipebook->PrintBook();
+
+	gridrecipe.SetRecipeIndex(0, 0);
+
 	for (int i = 0; i < 9; i++)
 	{
-
 		if (i % 2 == 0)
 		{
-			butnum[i].fileName = "Image\\Sp3Images\\Base\\stick.png";
+			butnum[i].itemID = 1;
 		}
 		else
 		{
-			butnum[i].fileName = "Image\\Sp3Images\\Base\\wood.png";
+			butnum[i].itemID = 2;
 
 		}
-		butnum[i].textureID = il->LoadTextureGetID(butnum[i].fileName.c_str(), false);
 
-		cout << "Index " << i << "TexttureID: " << butnum[i].textureID << endl;
+		gridrecipe.SetRecipeIndex(i + 1, butnum[i].itemID);
+		butnum[i].loadimagebasedID(butnum[i].itemID);
+		butnum[i].textureID = il->LoadTextureGetID(butnum[i].fileName.c_str(), false);
+		//cout << "Index " << i << "TextureID: " << butnum[i].itemID << endl;
+		//cout << gridrecipe.GetRecipeIndex(i) << endl;
 	}
+
+	recipebook->CreateRecipe();
+
+
+
+
+
+
+	output.itemID = 0;
+	output.loadimagebasedID(output.itemID);
+	output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);
+
 
 	return true;
 }
@@ -145,8 +218,8 @@ bool CCraftingState::Update(const double dElapsedTime)
 				ImGui::SameLine();
 
 
-			//string x = to_string(butnum[n]);
 			string x = to_string(n);
+			//string x = to_string(butnum[n].itemID);
 
 			strcpy(y, x.c_str());
 
@@ -174,78 +247,42 @@ bool CCraftingState::Update(const double dElapsedTime)
 				//get with the id
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
 				{
-					//IM_ASSERT(payload->DataSize == sizeof(int));
 					IM_ASSERT(payload->DataSize == sizeof(int));
 
 					int payload_n = *(const int*)payload->Data;
 
-					//swap values inside
-					unsigned tmp = butnum[n].textureID;
-					butnum[n].textureID = butnum[payload_n].textureID;
-					butnum[payload_n].textureID = tmp;
+					//swap images and itemId inside
+					ButtonData tmp = butnum[n];
+					butnum[n] = butnum[payload_n];
+					butnum[payload_n] = tmp;
+
+					//set new values for each index
+					for (int i = 1; i < 10; i++)
+					{
+						gridrecipe.SetRecipeIndex(i, butnum[i - 1].itemID);
+						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
+					}
+
+					cout << endl;
 				}
 				ImGui::EndDragDropTarget();
 			}
-
-
 			ImGui::PopID();
-
-
-			cout << butnum[n].fileName << endl;
 		}
+		
+
+		//print out the value of recipebook index 0
+		cout << recipebook->CheckRecipe(gridrecipe) << endl;
+
+		//render the output button
+		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
+		std::cout << output.itemID << std::endl;*/
 
 
+		//output.itemID = recipebook->CheckRecipe(gridrecipe);
 
-
-
-
-		// By Reagan (wrong)
-		/*char y[9];
-		for (int i = 0; i < 9; i++)
-		{
-			string x = to_string(butnum[i]);
-			strcpy(y, x.c_str());
-			//cout << y << endl;
-
-			//construct 9 buttons
-			ImGui::Button(y, ImVec2(50, 50));
-
-			//when hold click, delete the button from imgui
-			//put pointer into mouse
-			//when hover over item, push item backwards
-			//append value of mouse into array
-				
-			//when mouse is hold
-			if (ImGui::BeginDragDropSource())
-			{
-				ImGui::SetDragDropPayload(y, &y, (butnum + 1) - butnum);
-
-				//button is dragged along with mouse, but it's stil at it's initial position
-				ImGui::Button(y, ImVec2(50, 50));
-				ImGui::SetWindowPos(ImVec2(cMouseController->GetMousePositionX() * 0.03,
-				cMouseController->GetMousePositionY() * 0.6));
-				
-				ImGui::EndDragDropSource();
-			}
-
-			//if key is released
-			if (ImGui::BeginDragDropTarget())
-			{
-				cout << butnum[i] << endl;
-				//ImGui::Get
-
-				///*int payload = ImGui::AcceptDragDropPayload(y);
-				if (ImGui::AcceptDragDropPayload(y) != NULL)
-				{
-					ssert(payload.DataSize == ffi.sizeof"int");
-					local numptr = ffi.cast("int*", payload.Data);
-					//swap numbers
-					//butnum[numptr[0]], butnum[i] = butnum[i], butnum[numptr[0]];
-					//butnum[i] = butnum[0];
-				}
-				ImGui::EndDragDropTarget();
-			}
-		}*/
+		//output.loadimagebasedID(output.itemID);
+		//output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);
 		
 		/*float currentvol = 0;
 		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))

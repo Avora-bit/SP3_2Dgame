@@ -14,6 +14,13 @@
 
 #include "Inputs/MouseController.h"
 
+#include <fstream>
+#include <vector>
+#include "../Scene2D/RecipeBook.h"
+#include "../Scene2D/Recipe.h"
+
+
+
 #include <string>
 
 
@@ -52,9 +59,56 @@ protected:
 	{
 		std::string fileName;
 		unsigned textureID;
+		unsigned int itemID;
+
+
+		void loadimagebasedID(int itemid)
+		{
+			switch (itemid)
+			{
+
+			case 1:
+				fileName = "Image\\Sp3Images\\Base\\stick.png";
+				break;
+			case 2:
+				fileName = "Image\\Sp3Images\\Base\\wood.png";
+				break;
+
+			case 0:
+				fileName = "Image\\Sp3Images\\blank_output.png";
+				break;
+
+			case 6:
+				fileName = "Image\\Sp3Images\\Weapons\\sword.png";
+				break;
+
+			default:
+				break;
+			}
+
+
+
+				
+		}
+
+
+		int getitemID()
+		{
+			return itemID;
+		}
+
+		
 	};
 
 	//int butnum[];
 
+
+
+	RecipeBook* recipebook;
+
+	Recipe gridrecipe;
+
 	ButtonData butnum[9];
+
+	ButtonData output;
 };
