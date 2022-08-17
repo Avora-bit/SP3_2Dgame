@@ -36,12 +36,7 @@
 #include "../SoundController/SoundController.h"
 
 #include <iostream>
-
-
 #include <string>
-
-
-
 
 using namespace std;
 
@@ -53,11 +48,6 @@ CCraftingState::CCraftingState(void)
 {
 
 }
-
-
-
-
-
 
 //text file reader for minecraft like recipes
 
@@ -82,8 +72,6 @@ gridrecipe.SetRecipeIndex(8, 2);
 gridrecipe.SetRecipeIndex(9, 4);
 //hardcode value for recipe
 std::cout << recipebook->CheckRecipe(gridrecipe) << std::endl;
-
-
 
 //create large vector for all recipes
 
@@ -116,9 +104,6 @@ CCraftingState::~CCraftingState(void)
  */
 bool CCraftingState::Init(void)
 {
-
-
-
 	cout << "CCraftingState::Init()\n" << endl;
 
 	CShaderManager::GetInstance()->Use("Shader2D");
@@ -134,6 +119,7 @@ bool CCraftingState::Init(void)
 	CImageLoader* il = CImageLoader::GetInstance();
 	
 	recipebook = new RecipeBook("Recipes.txt");
+	recipebook->CreateRecipe();
 	recipebook->PrintBook();
 
 	gridrecipe.SetRecipeIndex(0, 0);
@@ -157,17 +143,9 @@ bool CCraftingState::Init(void)
 		//cout << gridrecipe.GetRecipeIndex(i) << endl;
 	}
 
-	recipebook->CreateRecipe();
-
-
-
-
-
-
 	output.itemID = 0;
 	output.loadimagebasedID(output.itemID);
 	output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);
-
 
 	return true;
 }

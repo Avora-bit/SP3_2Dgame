@@ -1,9 +1,5 @@
 #include "RecipeBook.h"
 
-
-
-
-
 RecipeBook::RecipeBook(string txtfilename) {
 	filename = txtfilename;
 }
