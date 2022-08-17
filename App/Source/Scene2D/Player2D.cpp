@@ -95,6 +95,14 @@ bool CPlayer2D::Init(void)
 
 	BowForce = 0;
 
+	angle = 0;
+
+	health = 100.f;
+	defence = 0.f;
+	movementSpeed = 1.0f;
+	stamina = 100.f;
+	hunger = 100.f;
+
 	direction = RIGHT;
 
 	// Erase the value of the player in the arrMapInfo
@@ -124,15 +132,17 @@ bool CPlayer2D::Init(void)
 	// Load the player texture
 	// Load the ground texture
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/charSprite.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
 	}
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idle", 0, 0);
+	animatedSprites->PlayAnimation("idle", -1, 0.3f);
 
-
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
 	animatedSprites->AddAnimation("idleRight", 0, 0);
 	animatedSprites->AddAnimation("walkLeft", 2, 3);
@@ -147,7 +157,7 @@ bool CPlayer2D::Init(void)
 	animatedSprites->AddAnimation("jumpLeftSW", 7, 7);
 	animatedSprites->AddAnimation("jumpRightSW", 5, 5);
 
-	animatedSprites->PlayAnimation("idleRightSW", -1, 0.3f);
+	animatedSprites->PlayAnimation("idleRightSW", -1, 0.3f);*/
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -201,9 +211,45 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
+	// vitals
+	static float hungerTimer = 0;
+	hungerTimer += dElapsedTime;
+	if (hungerTimer >= 10 && hunger > 0)
+	{
+		hunger -= 5;
+		hungerTimer = 0;
+
+		if (hunger < 0)
+		{
+			hunger = 0;
+		}
+	}
+	
+	static float starveTimer = 0;
+	if (hunger <= 0)
+	{
+		starveTimer += dElapsedTime;
+		if (starveTimer >= 1)
+		{
+			starveTimer = 0;
+			health -= 5;
+		}
+	}
+	else if (hunger > 0 && starveTimer > 0)
+		starveTimer = 0;
+
+	//std::cout << "Hunger: " << hunger << std::endl;
+	//std::cout << "Health: " << health << std::endl;
+
+	if (health <= 0)
+	{
+		// lose cond
+
+		health = 0;
+	}
+
 	// Store the old position
 	vec2OldIndex = vec2Index;
-
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
@@ -231,6 +277,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else
 			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
+		angle = 270;
 		direction = LEFT;
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
@@ -258,6 +305,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else
 			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
+		angle = 0;
 		direction = DOWN;
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -285,6 +333,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else
 			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
 
+		angle = 180;
 		direction = UP;
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
@@ -311,9 +360,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
 		else
 			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-
+		angle = 90;
 		direction = RIGHT;
 	}
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
+		angle = 135;
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
+		angle = 45;
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
+		angle = 315;
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
+		angle = 225;
 	
 	{
 		switch (direction)			//hold weapon
@@ -401,6 +459,8 @@ void CPlayer2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
+
+	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 
 	// Update the shaders with the latest transform

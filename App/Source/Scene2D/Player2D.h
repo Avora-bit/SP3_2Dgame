@@ -105,6 +105,16 @@ protected:
 
 	double BowForce;
 
+	// vitals
+	float health;
+	float defence; // reduces damage taken
+	float stamina;
+	float hunger;
+	float movementSpeed; 
+
+	//render
+	float angle;
+
 	// Player's colour
 	glm::vec4 runtimeColour;
 
