@@ -16,7 +16,7 @@
   Mesh.cpp
   MeshBuilder.cpp
   SpriteAnimation.cpp
-E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.cpp(75,62): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.cpp(75,62): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
   ShaderManager.cpp
   ImageLoader.cpp
   Generating Code...
@@ -25,4 +25,4 @@ E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\P
   FPSCounter.cpp
   StopWatch.cpp
   Generating Code...
-  Library.vcxproj -> E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Debug\Library.lib
+  Library.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.lib

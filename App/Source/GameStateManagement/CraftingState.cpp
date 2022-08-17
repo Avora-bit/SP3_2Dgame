@@ -68,10 +68,32 @@ bool CCraftingState::Init(void)
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
+
+	cMouseController = CMouseController::GetInstance();
+
+	
+	/*VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton2.png";
+	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
+	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
+	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
+
+	CImageLoader* il = CImageLoader::GetInstance();
 	
 	for (int i = 0; i < 9; i++)
 	{
-		butnum[i] = i + 1;
+
+		if (i % 2 == 0)
+		{
+			butnum[i].fileName = "Image\\Sp3Images\\Base\\stick.png";
+		}
+		else
+		{
+			butnum[i].fileName = "Image\\Sp3Images\\Base\\wood.png";
+
+		}
+		butnum[i].textureID = il->LoadTextureGetID(butnum[i].fileName.c_str(), false);
+
+		cout << "Index " << i << "TexttureID: " << butnum[i].textureID << endl;
 	}
 
 	return true;
@@ -112,75 +134,118 @@ bool CCraftingState::Update(const double dElapsedTime)
 		// Display the FPS
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Crafting Menu");
 		
-
-		// Drag and Drop
-	// - If you stop calling BeginDragDropSource() the payload is preserved however it won't have a preview tooltip 
-	// (we currently display a fallback "..." tooltip as replacement)
-	
-		//IMGUI_API bool          BeginDragDropSource(ImGuiDragDropFlags flags = 0);                                      
-		// // call when the current item is active. If this return true, you can call SetDragDropPayload() + EndDragDropSource()
-		
-		//IMGUI_API bool          SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond = 0);  
-		// // type is a user defined string of maximum 32 characters. Strings starting with '_' are reserved for dear imgui internal types. Data is copied and held by imgui.
-		
-		//IMGUI_API void          EndDragDropSource();                                                                    
-		// // only call EndDragDropSource() if BeginDragDropSource() returns true!
-		
-		//IMGUI_API bool                  BeginDragDropTarget();                                                          
-		// // call after submitting an item that may receive a payload. If this returns true, you can call AcceptDragDropPayload() + EndDragDropTarget()
-		
-		//IMGUI_API const ImGuiPayload* AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags = 0);          
-		// // accept contents of a given type. If ImGuiDragDropFlags_AcceptBeforeDelivery is set you can peek into the payload before the mouse button is released.
-
-		//IMGUI_API void                  EndDragDropTarget();                                                            
-		// // only call EndDragDropTarget() if BeginDragDropTarget() returns true!
-		
-		//IMGUI_API const ImGuiPayload* GetDragDropPayload();                                                           
-		// peek directly into the current payload from anywhere. may return NULL. use ImGuiPayload::IsDataType() to test for the payload type.
-
-
+		// by tohdj
 		char y[9];
-		for (int i = 0; i < 9; i++)
+		for (int n = 0; n < 9; n++)
 		{
-			/*const */string x = to_string(butnum[i]);
-			//y[i] = x;
+			ImGui::PushID(n);
+
+			//don't break line if doesn't reach 3 cells
+			if ((n % 3) != 0)
+				ImGui::SameLine();
+
+
+			//string x = to_string(butnum[n]);
+			string x = to_string(n);
 
 			strcpy(y, x.c_str());
-			//cout << y << endl;
 
-			ImGui::Button(y, ImVec2(50, 50));
-			if (ImGui::BeginDragDropSource())
+			//ImGui::Button(y, ImVec2(50, 50));
+			ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50));
+
+
+			if (cMouseController->IsButtonDown(1))
 			{
-				//SetDragDropPayload(const char* type, const void* data, size_t sz, ImGuiCond cond = 0);
-				ImGui::SetDragDropPayload(y, y, (butnum + 1) - butnum);
 
-
-				//when hold click, delete the button from imgui
-				//put pointer into mouse
-				//when hover over item, push item backwards
-				//append value of mouse into array
-
-				ImGui::Button(y, ImVec2(50, 50));
-				ImGui::EndDragDropSource();
 			}
 
+			// Our buttons are both drag sources and drag targets here!
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			{
+				// Set payload to carry the index of our item (could be anything)
+				//&n is to get the data directly from IMGUI
+				ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
+				ImGui::Text("Check %s", y);
+				ImGui::EndDragDropSource();
+			}
+			//when mouse is released
 			if (ImGui::BeginDragDropTarget())
 			{
-
-				cout << butnum[i] << endl;
-
-				///*int payload = */ImGui::AcceptDragDropPayload(y);
-				if (ImGui::AcceptDragDropPayload(y) != NULL)
+				//get with the id
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
 				{
-					/*ssert(payload.DataSize == ffi.sizeof"int");
-					local numptr = ffi.cast("int*", payload.Data);*/
-					//swap numbers
-					//butnum[numptr[0]], butnum[i] = butnum[i], butnum[numptr[0]];
-					butnum[i] = butnum[0];
+					//IM_ASSERT(payload->DataSize == sizeof(int));
+					IM_ASSERT(payload->DataSize == sizeof(int));
+
+					int payload_n = *(const int*)payload->Data;
+
+					//swap values inside
+					unsigned tmp = butnum[n].textureID;
+					butnum[n].textureID = butnum[payload_n].textureID;
+					butnum[payload_n].textureID = tmp;
 				}
 				ImGui::EndDragDropTarget();
 			}
+
+
+			ImGui::PopID();
+
+
+			cout << butnum[n].fileName << endl;
 		}
+
+
+
+
+
+
+		// By Reagan (wrong)
+		/*char y[9];
+		for (int i = 0; i < 9; i++)
+		{
+			string x = to_string(butnum[i]);
+			strcpy(y, x.c_str());
+			//cout << y << endl;
+
+			//construct 9 buttons
+			ImGui::Button(y, ImVec2(50, 50));
+
+			//when hold click, delete the button from imgui
+			//put pointer into mouse
+			//when hover over item, push item backwards
+			//append value of mouse into array
+				
+			//when mouse is hold
+			if (ImGui::BeginDragDropSource())
+			{
+				ImGui::SetDragDropPayload(y, &y, (butnum + 1) - butnum);
+
+				//button is dragged along with mouse, but it's stil at it's initial position
+				ImGui::Button(y, ImVec2(50, 50));
+				ImGui::SetWindowPos(ImVec2(cMouseController->GetMousePositionX() * 0.03,
+				cMouseController->GetMousePositionY() * 0.6));
+				
+				ImGui::EndDragDropSource();
+			}
+
+			//if key is released
+			if (ImGui::BeginDragDropTarget())
+			{
+				cout << butnum[i] << endl;
+				//ImGui::Get
+
+				///*int payload = ImGui::AcceptDragDropPayload(y);
+				if (ImGui::AcceptDragDropPayload(y) != NULL)
+				{
+					ssert(payload.DataSize == ffi.sizeof"int");
+					local numptr = ffi.cast("int*", payload.Data);
+					//swap numbers
+					//butnum[numptr[0]], butnum[i] = butnum[i], butnum[numptr[0]];
+					//butnum[i] = butnum[0];
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}*/
 		
 		/*float currentvol = 0;
 		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))

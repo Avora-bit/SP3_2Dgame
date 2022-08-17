@@ -12,6 +12,8 @@
 #include "Primitives/Mesh.h"
 #include "../Scene2D/BackgroundEntity.h"
 
+#include "Inputs/MouseController.h"
+
 #include <string>
 
 
@@ -43,5 +45,16 @@ public:
 
 protected:
 	ImGuiPayload ig;
-	int butnum[];
+
+	CMouseController* cMouseController;
+
+	struct ButtonData
+	{
+		std::string fileName;
+		unsigned textureID;
+	};
+
+	//int butnum[];
+
+	ButtonData butnum[9];
 };

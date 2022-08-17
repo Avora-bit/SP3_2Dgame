@@ -119,14 +119,15 @@ bool CShivs2D::Init(void)
 
 	// Load the player texture
 	// Load the ground texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/sword.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Weapons/Shiv.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load swordLeft tile texture" << std::endl;
+		std::cout << "Failed to load Shiv tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("self", 0, 0);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("hold", 0, 0);
+	animatedSprites->AddAnimation("throw", 1, 1);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -134,29 +135,6 @@ bool CShivs2D::Init(void)
 	cPhysics2D.Init();
 
 	cSoundController = CSoundController::GetInstance();
-
-	return true;
-}
-
-/**
- @brief Reset this instance
- */
-bool CShivs2D::Reset()
-{
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::i32vec2(0, 0);
-	//CS: Init the color to white
-	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
 	return true;
 }
@@ -298,8 +276,8 @@ void CShivs2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
-													vec2UVCoordinate.y + camera->vec2Index.y,
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
+													vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
 													0.0f));
 	transform = glm::rotate(transform, rotation, glm::vec3(0, 0, 1));
 	// Update the shaders with the latest transform
@@ -310,12 +288,6 @@ void CShivs2D::Render(void)
 	glActiveTexture(GL_TEXTURE0);
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
-
-	/*
-		//Render the Player sprite
-		glBindVertexArray(VAO);
-		quadMesh->Render();
-	*/
 
 	animatedSprites->Render();
 

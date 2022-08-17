@@ -19,9 +19,7 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-// Include CEntity2D
-#include "Primitives/Entity2D.h"
-#include "Primitives/SpriteAnimation.h"
+#include "Projectile2D.h"
 
 #include "..\SoundController\SoundController.h"
 
@@ -51,9 +49,6 @@ public:
 	// Init
 	bool Init(void);
 
-	// Reset
-	bool Reset(void);
-
 	// Update
 	void Update(const double dElapsedTime);
 
@@ -68,8 +63,11 @@ public:
 
 protected:
 
-	glm::vec2 vec2OldIndex;
-	float rotation = 0.f;		//radian?
+	glm::vec2 vec2OldIndex;		//coords
+	glm::vec2 direction;		//direction of movement
+	float rotation = 0.f;		//calculated based on direction
+
+	double distanceTravelled;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
@@ -77,8 +75,6 @@ protected:
 	CPlayer2D* cPlayer2D;
 
 	Camera* camera;
-
-	double distanceTravelled;
 
 	//DIRECTION direction;
 	// Animated Sprite
