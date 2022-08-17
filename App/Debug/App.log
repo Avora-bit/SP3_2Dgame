@@ -1,10 +1,8 @@
 ﻿  CraftingState.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.h(46,6): warning C4200: nonstandard extension used: zero-sized array in struct/union
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.h(46,6): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(105,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(104,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(106,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(106,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(130,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(129,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(131,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(131,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   App.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe

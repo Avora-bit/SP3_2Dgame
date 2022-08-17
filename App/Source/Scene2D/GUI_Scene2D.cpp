@@ -99,6 +99,9 @@ bool CGUI_Scene2D::Init(void)
 
 	m_fProgressBar = 0.0f;
 
+
+
+
 	return true;
 }
 
@@ -126,8 +129,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 	
 	// Render a progress bar
-
-	
 	m_fProgressBar += 0.001f;
 	if (m_fProgressBar > 1.0f)
 		m_fProgressBar = 0.0f;
@@ -242,7 +243,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 	*/
-
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 	ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
@@ -269,6 +270,17 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::End();
+
+
+
+	
+
+
+
+
+
+	ImGui::PopStyleColor();
+	//ImGui::End();
 }
 
 
