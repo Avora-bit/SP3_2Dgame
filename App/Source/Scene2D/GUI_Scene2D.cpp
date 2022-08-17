@@ -134,7 +134,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		m_fProgressBar = 0.0f;
 	ImVec4 col = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
 	col = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-
+	/*
 	// Render the inventory items
 	//cInventoryItem = cInventoryManager->GetItem("Bouquet");
 	//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
@@ -161,7 +161,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//ImGui::PopStyleColor();
 	//ImGui::End();
 	ImGui::End();
-
+	*/
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 	ImGuiWindowFlags objectivesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoTitleBar |
@@ -280,7 +280,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 	ImGui::PopStyleColor();
-	//ImGui::End();
+	ImGui::End();
 }
 
 

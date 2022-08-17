@@ -15,6 +15,9 @@
 *.obj
 *.vsidx
 *.recipe
-.vs/NYP_Framework/v16/.suo
 .vs/NYP_Framework/v17/.suo
+App/Debug/App.log
+.vs/NYP_Framework/v16/.suo
 .vs/NYP_Framework/v16/Browse.VC.db
+Library/Debug/Library.log
+Library/Debug/Library.Build.CppClean.log
