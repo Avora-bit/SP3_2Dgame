@@ -42,6 +42,8 @@
 #include "GameControl/Settings.h"
 
 
+#include "../Scene2D/slot.h"
+
 #include "System\ImageLoader.h"
 
 #include <string>
@@ -68,9 +70,11 @@ public:
 
 
 	int return_hbcellid(int arr);
-	/*{
-		return hotbarcells[arr].getitemID;
-	}*/
+
+	unsigned return_textid(int arr);
+
+	void set_hbcellid(int arr, int itemid);
+
 
 protected:
 
@@ -96,45 +100,10 @@ protected:
 	// The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
 	
-	struct HotBarCells
-	{
-		std::string fileName;
-		unsigned textureID;
-		unsigned int itemID;
-
-		void loadimagebasedID(int itemid)
-		{
-			switch (itemid)
-			{
-
-			case 1:
-				fileName = "Image\\Sp3Images\\Base\\stick.png";
-				break;
-			case 2:
-				fileName = "Image\\Sp3Images\\Base\\wood.png";
-				break;
-			case 0:
-				fileName = "Image\\Sp3Images\\blank_output.png";
-				break;
-			case 6:
-				fileName = "Image\\Sp3Images\\Weapons\\sword.png";
-				break;
-			case 7:
-				fileName = "Image\\Sp3Images\\Weapons\\bow.png";
-				break;
-			default:
-				break;
-			}
-		}
-		int getitemID()
-		{
-			return itemID;
-		}
+	//for hotbar
+	slot hbcells[3];
 
 
-		
-	};
-	HotBarCells hbcells[3];
 	CImageLoader* il;
 
 

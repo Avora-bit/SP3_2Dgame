@@ -7,12 +7,13 @@ using namespace std;
 /**
  @brief Constructor
  */
-CGameStateManager::CGameStateManager(void) 
+CGameStateManager::CGameStateManager(void)
 	: activeGameState(nullptr)
 	, nextGameState(nullptr)
 	, prevGameState(nullptr)
 	, pauseGameState(nullptr)
 	, craftingGameState(nullptr)
+	, inventoryGameState(nullptr)
 {
 }
 
@@ -34,6 +35,8 @@ void CGameStateManager::Destroy(void)
 	prevGameState = nullptr;
 	pauseGameState = nullptr;
 	craftingGameState = nullptr;
+	inventoryGameState = nullptr;
+
 
 	// Delete all scenes stored and empty the entire map
 	std::map<std::string, CGameStateBase*>::iterator it, end;
@@ -86,6 +89,11 @@ bool CGameStateManager::Update(const double dElapsedTime)
 				//cout << "pauseGameState->Update" << endl;
 				craftingGameState->Update(dElapsedTime);
 			}
+			if (inventoryGameState)
+			{
+				//cout << "pauseGameState->Update" << endl;
+				inventoryGameState->Update(dElapsedTime);
+			}
 		}
 	}
 
@@ -104,7 +112,8 @@ void CGameStateManager::Render(void)
 		pauseGameState->Render();
 	if (craftingGameState)
 		craftingGameState->Render();
-
+	if (inventoryGameState)
+		inventoryGameState->Render();
 }
 
 /**
@@ -239,6 +248,31 @@ bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 	return true; 
 }
 
+bool CGameStateManager::SetInventoryGameState(const std::string& _name)
+{
+	// Toggle to nullptr if pauseGameState already is in use
+	if (inventoryGameState != nullptr)
+	{
+		inventoryGameState = nullptr;
+		return true;
+	}
+
+	// Check if this _name does not exists in the map...
+	if (!CheckGameStateExist(_name))
+	{
+		// If it does not exist, then unable to proceed
+		cout << "CGameStateManager::SetInventoryState - scene name does not exists" << endl;
+		return false;
+	}
+
+	// Scene exist, set the next scene pointer to that scene
+	inventoryGameState = GameStateMap[_name];
+	// Init the new pause CGameState
+	inventoryGameState->Init();
+
+	return true;
+}
+
 void CGameStateManager::OffPauseGameState(void)
 {
 	pauseGameState = nullptr;
@@ -247,5 +281,10 @@ void CGameStateManager::OffPauseGameState(void)
 void CGameStateManager::OffCraftingGameState(void)
 {
 	craftingGameState = nullptr;
+}
+
+void CGameStateManager::OffInventoryGameState(void)
+{
+	inventoryGameState = nullptr;
 }
 

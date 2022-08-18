@@ -12,7 +12,7 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-#include "CraftingState.h"
+#include "InventoryState.h"
 
 // Include CGameStateManager
 #include "GameStateManager.h"
@@ -42,7 +42,7 @@ using namespace std;
 /**
  @brief Constructor
  */
-CCraftingState::CCraftingState(void)
+CInventoryState::CInventoryState(void)
 	//: background(NULL)
 {
 
@@ -53,7 +53,7 @@ CCraftingState::CCraftingState(void)
 /**
  @brief Destructor
  */
-CCraftingState::~CCraftingState(void)
+CInventoryState::~CInventoryState(void)
 {
 
 }
@@ -61,34 +61,25 @@ CCraftingState::~CCraftingState(void)
 /**
  @brief Init this class instance
  */
-bool CCraftingState::Init(void)
+bool CInventoryState::Init(void)
 {
-	cout << "CCraftingState::Init()\n" << endl;
+	cout << "CInventoryState::Init()\n" << endl;
 
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 
 	cMouseController = CMouseController::GetInstance();
-	/*VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton2.png";
-	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
-	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
-	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
-
-
 	guiscene2d = CGUI_Scene2D::GetInstance();
 
 	il = CImageLoader::GetInstance();
 	
-	recipebook = new RecipeBook("Recipes.txt");
-	recipebook->CreateRecipe();
-	recipebook->PrintBook();
+	
 
-	gridrecipe.SetRecipeIndex(0, 0);
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		if (i < 9)
+		if (i > 2)
 		{
 			if (i % 2 == 0)
 			{
@@ -98,19 +89,18 @@ bool CCraftingState::Init(void)
 			{
 				butnum[i].setitemID(2);
 			}
-			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
+
 		}
 		else
 		{
-			//hotbar
-			butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
+			//the first three items are from the hotbar
+			butnum[i].setitemID(guiscene2d->return_hbcellid(i));
 		}
 
 		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 	}
 
-	output.setitemID(0);
-	output.loadimagebasedID(output.getitemID(), il);
+	
 
 	return true;
 }
@@ -118,7 +108,7 @@ bool CCraftingState::Init(void)
 /**
  @brief Update this class instance
  */
-bool CCraftingState::Update(const double dElapsedTime)
+bool CInventoryState::Update(const double dElapsedTime)
 {
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -138,7 +128,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		static int counter = 0;
 
 		// Create a window called "Hello, world!" and append into it.
-		ImGui::Begin("Crafting", NULL, window_flags);
+		ImGui::Begin("Inventory", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
 			CSettings::GetInstance()->iWindowHeight/3.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
@@ -148,11 +138,11 @@ bool CCraftingState::Update(const double dElapsedTime)
 		style.FrameRounding = 200.0f;
 
 		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Crafting Menu");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Inventory Menu");
 		
 		// by tohdj
 		char y[9];
-		for (int n = 0; n < 12; n++)
+		for (int n = 0; n < 9; n++)
 		{
 			ImGui::PushID(n);
 
@@ -160,26 +150,16 @@ bool CCraftingState::Update(const double dElapsedTime)
 			if ((n % 3) != 0)
 				ImGui::SameLine();
 
-
 			string x = to_string(n);
-			//string x = to_string(butnum[n].itemID);
-
 			strcpy(y, x.c_str());
 
-			//ImGui::Button(y, ImVec2(50, 50));
-			//construct 9 buttons
 
-			/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
-				int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
 
-			if (n >= 9)
+			//render the bar yellow if it's hotbasr
+			if (n >= 3)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
-
-				/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
-					CSettings::GetInstance()->iWindowHeight / 2.0));*/
-
 			}
 			else
 			{
@@ -214,25 +194,18 @@ bool CCraftingState::Update(const double dElapsedTime)
 					butnum[n] = butnum[payload_n];
 					butnum[payload_n] = tmp;
 
-					//set new values for each index
-					for (int i = 1; i < 10; i++)
-					{
-						gridrecipe.SetRecipeIndex(i, butnum[i - 1].getitemID());
-						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
-					}
-
 					//payload is what is selected to drag
 					// n is what it's being dragged to
 					
 					//set the hotbar to the item
-					if (n >= 9)
+					if (n < 3)
 					{
-						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
+						guiscene2d->set_hbcellid(n, butnum[n].getitemID());
 
 					}
-					else if (payload_n >= 9)
+					else if (payload_n < 3)
 					{
-						guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
+						guiscene2d->set_hbcellid(payload_n, butnum[payload_n].getitemID());
 
 					}
 
@@ -245,22 +218,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 			ImGui::PopID();
 
 		}
-		
-
-		//print out the value of recipebook index 0
-		//cout << recipebook->CheckRecipe(gridrecipe) << endl;
-
-		//render the output button
-		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
-		output.itemID = recipebook->CheckRecipe(gridrecipe);
-		output.loadimagebasedID(output.itemID);
-		output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);*/
-		
-		/*float currentvol = 0;
-		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))
-		{
-
-		}*/
+	
 
 		ImGui::End();
 	}
@@ -272,9 +230,8 @@ bool CCraftingState::Update(const double dElapsedTime)
 		CKeyboardController::GetInstance()->Reset();
 
 		// Load the menu state
-		cout << "UnLoading CraftState" << endl;
-		CGameStateManager::GetInstance()->SetCraftingGameState(nullptr);
-		//CGameStateManager::GetInstance()->OffCraftingGameState();
+		cout << "UnLoading InventoryState" << endl;
+		CGameStateManager::GetInstance()->SetInventoryGameState(nullptr);
 
 		return true;
 	}
@@ -285,29 +242,20 @@ bool CCraftingState::Update(const double dElapsedTime)
 /**
  @brief Render this class instance
  */
-void CCraftingState::Render(void)
+void CInventoryState::Render(void)
 {
 	// Clear the screen and buffer
 	glClearColor(0.0f, 0.55f, 1.00f, 1.00f);
 
-	//cout << "CCraftingState::Render()\n" << endl;
+	//cout << "CInventoryState::Render()\n" << endl;
 }
 
 /**
  @brief Destroy this class instance
  */
-void CCraftingState::Destroy(void)
+void CInventoryState::Destroy(void)
 {
-	// cout << "CCraftingState::Destroy()\n" << endl;
-	delete recipebook;
-	recipebook = nullptr;
-
-
-	/*delete guiscene2d;
-	guiscene2d = nullptr;*/
-
-
-
+	
 	delete il;
 	il = nullptr;
 

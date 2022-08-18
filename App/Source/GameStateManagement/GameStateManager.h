@@ -26,11 +26,15 @@ public:
 	bool RemoveGameState(const std::string& _name);
 	bool SetActiveGameState(const std::string& _name);
 	bool CheckGameStateExist(const std::string& _name);
+
+
 	bool SetPauseGameState(const std::string& _name);
 	bool SetCraftingGameState(const std::string& _name);
-
+	bool SetInventoryGameState(const std::string& _name);
 	void OffPauseGameState(void);
 	void OffCraftingGameState(void);
+	void OffInventoryGameState(void);
+
 
 protected:
 	// Constructor
@@ -41,5 +45,5 @@ protected:
 	// The map of CGameStates
 	std::map<std::string, CGameStateBase*> GameStateMap;
 	// The handlers containing the active and next CGameState
-	CGameStateBase* activeGameState, *nextGameState, *prevGameState, *pauseGameState, *craftingGameState;
+	CGameStateBase* activeGameState, *nextGameState, *prevGameState, *pauseGameState, *craftingGameState, *inventoryGameState;
 };
