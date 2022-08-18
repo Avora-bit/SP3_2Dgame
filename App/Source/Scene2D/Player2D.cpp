@@ -97,12 +97,6 @@ bool CPlayer2D::Init(void)
 
 	angle = 0;
 
-	health = 100.f;
-	defence = 0.f;
-	movementSpeed = 1.0f;
-	stamina = 100.f;
-	hunger = 100.f;
-
 	direction = RIGHT;
 
 	// Erase the value of the player in the arrMapInfo
@@ -165,11 +159,18 @@ bool CPlayer2D::Init(void)
 	cPhysics2D.Init();
 
 	cInventoryManager = CInventoryManager::GetInstance();
-
+	/*
 	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
+	*/
+	// vitals
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("Stamina", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("Hunger", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	
 	//debug shivs
@@ -214,39 +215,33 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// vitals
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
-	if (hungerTimer >= 10 && hunger > 0)
+	
+	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
 	{
-		hunger -= 5;
+		cInventoryManager->GetItem("Hunger")->Remove(5);
 		hungerTimer = 0;
-
-		if (hunger < 0)
-		{
-			hunger = 0;
-		}
 	}
 	
 	static float starveTimer = 0;
-	if (hunger <= 0)
+	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
 	{
 		starveTimer += dElapsedTime;
 		if (starveTimer >= 1)
 		{
 			starveTimer = 0;
-			health -= 5;
+			cInventoryManager->GetItem("Health")->Remove(5);
 		}
 	}
-	else if (hunger > 0 && starveTimer > 0)
+	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
 		starveTimer = 0;
 
-	//std::cout << "Hunger: " << hunger << std::endl;
-	//std::cout << "Health: " << health << std::endl;
 
-	if (health <= 0)
-	{
-		// lose cond
+	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
+		CGameManager::GetInstance()->bPlayerLost = true;
 
-		health = 0;
-	}
+	std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
+	std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
+
 
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -415,9 +410,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			BowForce = 0;
 		}
 	}
-	
-	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
-		CGameManager::GetInstance()->bPlayerLost = true;
+
 
 	InteractWithMap();
 
