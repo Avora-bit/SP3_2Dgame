@@ -303,7 +303,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		string x = to_string(n);
 		strcpy(y, x.c_str());
 
-
 		ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
 
 		cout << hbcells[2].getitemID() << endl;
@@ -340,7 +339,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGui::EndDragDropTarget();
 		}
 		ImGui::PopID();
-
 	}
 	ImGui::PopStyleColor();
 	ImGui::End();

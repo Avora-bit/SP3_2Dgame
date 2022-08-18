@@ -99,7 +99,6 @@ bool CCraftingState::Init(void)
 				butnum[i].setitemID(2);
 			}
 			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
-
 		}
 		else
 		{
@@ -222,20 +221,22 @@ bool CCraftingState::Update(const double dElapsedTime)
 						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
 					}
 
-
+					//payload is what is selected to drag
+					// n is what it's being dragged to
+					
 					//set the hotbar to the item
 					if (n >= 9)
 					{
-						//butnum[payload_n];
 						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
-						//cout << guiscene2d->return_hbcellid(n - 9) << endl;
 
 					}
-					/*void CGUI_Scene2D::set_hbcellid(int arr, int itemid)
+					else if (payload_n >= 9)
 					{
-						hbcells[arr].setitemID(itemid);
-						hbcells[arr].loadimagebasedID(hbcells->getitemID(), il);
-					}*/
+						guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
+
+					}
+
+					cout << "Payload n " << payload_n << endl;
 
 					cout << endl;
 				}

@@ -15,12 +15,9 @@ private:
 	unsigned textureID;
 	unsigned int itemID;
 
-
-
 public:
 	slot();
 	~slot();
-
 
 
 	void loadimagebasedID(int itemid, CImageLoader* il);

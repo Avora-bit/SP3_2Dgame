@@ -29,7 +29,7 @@ public:
 
 	// Load an image and return as a Texture ID
 	unsigned int LoadTextureGetID(const char* filename, const bool bInvert);
-public:
+//public:
 	// Constructor
 	CImageLoader(void);
 

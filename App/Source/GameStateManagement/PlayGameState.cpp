@@ -71,6 +71,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
 		CGameStateManager::GetInstance()->OffCraftingGameState();
+		CGameStateManager::GetInstance()->OffInventoryGameState();
 
 		return true;
 	}
@@ -83,6 +84,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading PauseState" << endl;
 		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
 	}
+	//set crafting screen
+
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_Q))
 	{
 		// Reset the CKeyboardController
@@ -92,6 +95,17 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		cout << "Loading CraftingState" << endl;
 		CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
 	}
+	//set inventory screen
+	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_I))
+	{
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+
+		// Load the menu state
+		cout << "Loading InventoryState" << endl;
+		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
+	}
+
 
 	if (cGameManager->bPlayerLost)
 	{
@@ -102,6 +116,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetActiveGameState("GameOverState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
 		CGameStateManager::GetInstance()->OffCraftingGameState();
+		CGameStateManager::GetInstance()->OffInventoryGameState();
+
 
 		return true;
 	}
@@ -114,6 +130,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetActiveGameState("VictoryState");
 		CGameStateManager::GetInstance()->OffPauseGameState();
 		CGameStateManager::GetInstance()->OffCraftingGameState();
+		CGameStateManager::GetInstance()->OffInventoryGameState();
+
 
 		return true;
 	}
