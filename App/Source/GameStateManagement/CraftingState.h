@@ -60,43 +60,7 @@ protected:
 
 	CMouseController* cMouseController;
 
-	struct ButtonData
-	{
-		std::string fileName;
-		unsigned textureID;
-		unsigned int itemID;
-
-		void loadimagebasedID(int itemid)
-		{
-			switch (itemid)
-			{
-
-			case 1:
-				fileName = "Image\\Sp3Images\\Base\\stick.png";
-				break;
-			case 2:
-				fileName = "Image\\Sp3Images\\Base\\wood.png";
-				break;
-			case 0:
-				fileName = "Image\\Sp3Images\\blank_output.png";
-				break;
-			case 6:
-				fileName = "Image\\Sp3Images\\Weapons\\sword.png";
-				break;
-			case 7:
-				fileName = "Image\\Sp3Images\\Weapons\\bow.png";
-				break;
-			default:
-				break;
-			}
-		}
-
-		int getitemID()
-		{
-			return itemID;
-		}
-
-	};
+	
 
 
 	CGUI_Scene2D* guiscene2d;
