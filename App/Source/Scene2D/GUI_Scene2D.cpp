@@ -282,6 +282,28 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::PopStyleColor();
 	ImGui::End();
 
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+	ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+
+	ImGui::Begin("Stamina", NULL, staminaFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SameLine();
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	cInventoryItem = cInventoryManager->GetItem("Stamina");
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+	ImGui::ProgressBar(cInventoryItem->GetCount() /
+		(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+			relativeScale_x, 20.0f * relativeScale_y));
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+	ImGui::End();
+
 
 
 	//RENDER HOTBAR

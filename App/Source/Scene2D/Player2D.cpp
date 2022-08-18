@@ -212,161 +212,492 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-	// vitals
-	static float hungerTimer = 0;
-	hungerTimer += dElapsedTime;
-	
-	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
-	{
-		cInventoryManager->GetItem("Hunger")->Remove(5);
-		hungerTimer = 0;
-	}
-	
-	static float starveTimer = 0;
-	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
-	{
-		starveTimer += dElapsedTime;
-		if (starveTimer >= 1)
-		{
-			starveTimer = 0;
-			cInventoryManager->GetItem("Health")->Remove(5);
-		}
-	}
-	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
-		starveTimer = 0;
-
-
-	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
-		CGameManager::GetInstance()->bPlayerLost = true;
-
-	std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	static float staminaTimer = 0;
+	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
-		if (vec2Index.x >= 0)
+		staminaTimer += dElapsedTime;
+		if (cInventoryManager->GetItem("Stamina")->GetCount() < cInventoryManager->GetItem("Stamina")->GetMaxCount()) // stamina
 		{
-			vec2NumMicroSteps.x--; //speed_multiplier;
-			if (vec2NumMicroSteps.x < 0)
+			if (staminaTimer >= 0.05)
 			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
+				cInventoryManager->GetItem("Stamina")->Add(1);
+				staminaTimer = 0;
 			}
 		}
 
-		if (!CheckPosition(LEFT))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 		{
-			vec2Index.x = vec2OldIndex.x;
-			vec2NumMicroSteps.x = 0;
-		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(LEFT);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		angle = 270;
-		direction = LEFT;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
-		if (vec2Index.y >= 0)
-		{
-			vec2NumMicroSteps.y--; //speed_multiplier;
-			if (vec2NumMicroSteps.y < 0)
+			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				vec2Index.y--;
+				vec2NumMicroSteps.x--; //speed_multiplier;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
 			}
+
+			if (!CheckPosition(LEFT))
+			{
+				vec2Index.x = vec2OldIndex.x;
+				vec2NumMicroSteps.x = 0;
+			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(LEFT);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+			angle = 270;
+			direction = LEFT;
 		}
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y--; //speed_multiplier;
+				if (vec2NumMicroSteps.y < 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
 
-		if (!CheckPosition(DOWN))
-		{
-			vec2Index.y = vec2OldIndex.y;
-			vec2NumMicroSteps.y = 0;
+			if (!CheckPosition(DOWN))
+			{
+				vec2Index.y = vec2OldIndex.y;
+				vec2NumMicroSteps.y = 0;
+			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(DOWN);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+			angle = 0;
+			direction = DOWN;
 		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(DOWN);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		angle = 0;
-		direction = DOWN;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
-	{
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 		{
-			vec2NumMicroSteps.y++;// speed_multiplier;
-			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y++;// speed_multiplier;
+				if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+
+			if (!CheckPosition(UP))
 			{
 				vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
 			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(UP);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
+
+			angle = 180;
+			direction = UP;
 		}
-
-		if (!CheckPosition(UP))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 		{
-			vec2NumMicroSteps.y = 0;
-		}
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x++;// speed_multiplier;
+				if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
 
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(UP);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-
-		angle = 180;
-		direction = UP;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
-	{
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			vec2NumMicroSteps.x++;// speed_multiplier;
-			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+			if (!CheckPosition(RIGHT))
 			{
 				vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
 			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(RIGHT);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
+			angle = 90;
+			direction = RIGHT;
 		}
 
-		if (!CheckPosition(RIGHT))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
 		{
-			vec2NumMicroSteps.x = 0;
+			direction = TOP_RIGHT;
+			angle = 135;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
+		{
+			direction = BOTTOM_RIGHT;
+			angle = 45;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
+		{
+			direction = BOTTOM_LEFT;
+			angle = 315;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
+		{
+			direction = TOP_LEFT;
+			angle = 225;
 		}
 
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(RIGHT);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-		angle = 90;
-		direction = RIGHT;
+		static bool dodgeKeyDown = false;
+		if ((cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) || cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT)) && !dodgeKeyDown && 
+			cInventoryManager->GetItem("Stamina")->GetCount() >= 30.f)
+		{
+			cInventoryManager->GetItem("Stamina")->Remove(30.f);
+			dodgeKeyDown = true;
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+		}
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
+			dodgeKeyDown = false;
 	}
+	//std::cout << cInventoryManager->GetItem("Stamina")->GetCount() << std::endl;
+	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
+	{
+		if (staminaTimer > 0)
+			staminaTimer = 0;
+		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
+		cPhysics2D.SetTime(float(dElapsedTime));
+		cPhysics2D.Update();
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+		glm::vec2 iIndex_OLD = vec2Index;
+		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+		switch (direction)
+		{
+		case UP:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case DOWN:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case LEFT:
+		{
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case RIGHT:
+		{
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case TOP_LEFT:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f))*iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
-		angle = 135;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
-		angle = 45;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
-		angle = 315;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
-		angle = 225;
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f))*iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case BOTTOM_LEFT:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f))*iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case TOP_RIGHT:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f))*iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case BOTTOM_RIGHT:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++; 
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		}
+
+		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
+		if (cPhysics2D.GetInitialVelocity().x >= -0.2 && cPhysics2D.GetInitialVelocity().x <= 0.2)
+		{
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+		}
+	}
 	
 	{
 		switch (direction)			//hold weapon
@@ -411,6 +742,36 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
+
+	// vitals
+	static float hungerTimer = 0;
+	hungerTimer += dElapsedTime;
+
+	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
+	{
+		cInventoryManager->GetItem("Hunger")->Remove(5);
+		hungerTimer = 0;
+	}
+
+	static float starveTimer = 0;
+	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
+	{
+		starveTimer += dElapsedTime;
+		if (starveTimer >= 1)
+		{
+			starveTimer = 0;
+			cInventoryManager->GetItem("Health")->Remove(5);
+		}
+	}
+	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
+		starveTimer = 0;
+
+
+	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
+		CGameManager::GetInstance()->bPlayerLost = true;
+
+	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
+	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	InteractWithMap();
 
