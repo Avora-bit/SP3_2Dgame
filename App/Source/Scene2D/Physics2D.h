@@ -16,6 +16,7 @@ public:
 	enum STATUS
 	{
 		IDLE = 0,
+		DODGE = 1,
 		NUM_STATUS
 	};
 

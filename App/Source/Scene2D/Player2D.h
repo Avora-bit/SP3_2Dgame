@@ -107,9 +107,9 @@ protected:
 
 	// vitals
 	float health;
-	float defence; // reduces damage taken
 	float stamina;
 	float hunger;
+
 	float movementSpeed; 
 
 	//render

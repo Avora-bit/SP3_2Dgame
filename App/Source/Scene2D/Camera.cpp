@@ -41,10 +41,10 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 
 	float newPosX = playerPos.x; // camera pos in vec2index
 	float newPosY = playerPos.y;
-	if ((mousePos.x < CSettings::GetInstance()->iWindowWidth/2 && 
-		mousePos.x > -((float)CSettings::GetInstance()->iWindowWidth/2)) &&
-		(mousePos.y < CSettings::GetInstance()->iWindowHeight/2 && 
-		mousePos.y > -((float)CSettings::GetInstance()->iWindowHeight/2))) // within window
+	//if ((mousePos.x < CSettings::GetInstance()->iWindowWidth/2 && 
+	//	mousePos.x > -((float)CSettings::GetInstance()->iWindowWidth/2)) &&
+	//	(mousePos.y < CSettings::GetInstance()->iWindowHeight/2 && 
+	//	mousePos.y > -((float)CSettings::GetInstance()->iWindowHeight/2))) // within window
 	{
 		newPosX += mousePos.x / CSettings::GetInstance()->NUM_TILES_XAXIS * mouseWeight;
 		newPosY -= mousePos.y / CSettings::GetInstance()->NUM_TILES_YAXIS * mouseWeight;
