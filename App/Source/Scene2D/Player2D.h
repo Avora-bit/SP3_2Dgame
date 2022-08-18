@@ -6,7 +6,7 @@
  */
 #pragma once
 
-// Include Singleton template
+ // Include Singleton template
 #include "DesignPatterns\SingletonTemplate.h"
 
 // Include GLEW
@@ -101,16 +101,14 @@ protected:
 	Camera* camera;
 
 	DIRECTION direction;
-	DIRECTION attackDirection;
 
-	double BowForce;
+	//combat
+	DIRECTION attackDirection;
+	double maxPForce = 10;
+	double ProjectileForce;
 
 	// vitals
-	float health;
-	float stamina;
-	float hunger;
-
-	float movementSpeed; 
+	float movementSpeed;
 
 	//render
 	float angle;
@@ -135,11 +133,9 @@ protected:
 
 public:
 	DIRECTION getAttackDirection();
-	double getBowForce();
+	double getProjectileForce();
 
 	void LoseHealth(float health);
 
-
-	//float speed_multiplier = 0.25f;
 };
 

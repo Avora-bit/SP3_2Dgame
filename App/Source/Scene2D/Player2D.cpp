@@ -93,9 +93,11 @@ bool CPlayer2D::Init(void)
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
-	BowForce = 0;
+	ProjectileForce = 0.f;
 
 	angle = 0;
+
+	movementSpeed = 1.0f;
 
 	direction = RIGHT;
 
@@ -109,22 +111,6 @@ bool CPlayer2D::Init(void)
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
-	// Load the player texture 
-	/*
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2D_player.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_PlayerTile.tga" << endl;
-		return false;
-	}
-	*/
-	// Create the quad mesh for the player
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// Load the player texture
-	// Load the ground texture
 
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
 	if (iTextureID == 0)
@@ -212,36 +198,37 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-	// vitals
-	static float hungerTimer = 0;
-	hungerTimer += dElapsedTime;
-	
-	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
-	{
-		cInventoryManager->GetItem("Hunger")->Remove(5);
-		hungerTimer = 0;
-	}
-	
-	static float starveTimer = 0;
-	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
-	{
-		starveTimer += dElapsedTime;
-		if (starveTimer >= 1)
-		{
-			starveTimer = 0;
-			cInventoryManager->GetItem("Health")->Remove(5);
-		}
-	}
-	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
-		starveTimer = 0;
-
-
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
 
+	// hunger
+	{
+		static float hungerTimer = 0;
+		hungerTimer += dElapsedTime;
+
+		if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
+		{
+			cInventoryManager->GetItem("Hunger")->Remove(5);
+			hungerTimer = 0;
+		}
+
+		static float starveTimer = 0;
+		if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
+		{
+			starveTimer += dElapsedTime;
+			if (starveTimer >= 1)
+			{
+				starveTimer = 0;
+				cInventoryManager->GetItem("Health")->Remove(5);
+			}
+		}
+		else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
+			starveTimer = 0;
+
+	}
+
 	std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
-
 
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -250,7 +237,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--; //speed_multiplier;
+			vec2NumMicroSteps.x -= movementSpeed;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -278,7 +265,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 		if (vec2Index.y >= 0)
 		{
-			vec2NumMicroSteps.y--; //speed_multiplier;
+			vec2NumMicroSteps.y -= movementSpeed;
 			if (vec2NumMicroSteps.y < 0)
 			{
 				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -307,7 +294,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y++;// speed_multiplier;
+			vec2NumMicroSteps.y += movementSpeed;
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
 				vec2NumMicroSteps.y = 0;
@@ -335,7 +322,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;// speed_multiplier;
+			vec2NumMicroSteps.x += movementSpeed;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
 				vec2NumMicroSteps.x = 0;
@@ -368,6 +355,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
 		angle = 225;
 	
+	//held item render + animation
 	{
 		switch (direction)			//hold weapon
 		{
@@ -389,25 +377,35 @@ void CPlayer2D::Update(const double dElapsedTime)
 			break;*/
 		}
 	}
-	{		//bow logic
+
+	//spawn projectile logic
+	{
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
 		{
-			if (BowForce < 7)
-				BowForce += (dElapsedTime * 5);
+
+			if (ProjectileForce < maxPForce)
+				ProjectileForce += (dElapsedTime * 5);
 		}
-		else
+		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER))
 		{
+			std::cout << "Enter UP" << std::endl;
+			//replace with mouse position
 			attackDirection = direction;
-			if (BowForce < 1.5)
+			//min force
+			if (ProjectileForce < 2)
 			{
-				//cSoundController->PlaySoundByID(9);			//replace with bow release sound
+				ProjectileForce = 2;
 			}
-			else
-			{
-				//cSoundController->PlaySoundByID(10);		//replace with fire sound
-				//reduce arrow count
-			}
-			BowForce = 0;
+			
+			//cSoundController->PlaySoundByID(10);		//replace with fire sound
+			//reduce ammo count
+			cInventoryItem = cInventoryManager->GetItem("Shivs");
+			cInventoryItem->Remove(1);
+			//spawn projectile
+
+
+			//reset force
+			ProjectileForce = 0;
 		}
 	}
 
@@ -646,9 +644,9 @@ CPlayer2D::DIRECTION CPlayer2D::getAttackDirection(void)
 	return attackDirection;
 }
 
-double CPlayer2D::getBowForce()
+double CPlayer2D::getProjectileForce()
 {
-	return BowForce;
+	return ProjectileForce;
 }
 
 void CPlayer2D::LoseHealth(float health)

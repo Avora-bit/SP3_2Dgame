@@ -200,7 +200,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar((float)(cPlayer2D->getBowForce() / 7 * 100) /
+	ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
 		100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
