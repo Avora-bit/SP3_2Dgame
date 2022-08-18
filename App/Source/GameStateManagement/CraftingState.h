@@ -27,6 +27,8 @@
 
 #include"../Scene2D/GUI_Scene2D.h"
 
+#include "../Scene2D/slot.h"
+
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
 #ifndef IMGUI_ACTIVE
@@ -105,7 +107,7 @@ protected:
 
 	Recipe gridrecipe;
 
-	ButtonData butnum[12];
+	slot butnum[12];
 
-	ButtonData output;
+	slot output;
 };

@@ -48,41 +48,7 @@ CCraftingState::CCraftingState(void)
 
 }
 
-//text file reader for minecraft like recipes
 
-/*RecipeBook* recipebook = new RecipeBook("Recipes.txt");
-recipebook->CreateRecipe();
-
-recipebook->PrintBook();
-Recipe gridrecipe;
-
-//column zero is always 0
-gridrecipe.SetRecipeIndex(0, 0);
-
-//set the ingredients required
-gridrecipe.SetRecipeIndex(1, 2);
-gridrecipe.SetRecipeIndex(2, 2);
-gridrecipe.SetRecipeIndex(3, 2);
-gridrecipe.SetRecipeIndex(4, 2);
-gridrecipe.SetRecipeIndex(5, 2);
-gridrecipe.SetRecipeIndex(6, 2);
-gridrecipe.SetRecipeIndex(7, 2);
-gridrecipe.SetRecipeIndex(8, 2);
-gridrecipe.SetRecipeIndex(9, 4);
-//hardcode value for recipe
-std::cout << recipebook->CheckRecipe(gridrecipe) << std::endl;
-
-//create large vector for all recipes
-
-//create temporary recipe class
-//fill recipe with recipe from crafting grid
-
-//compare temporary recipe with all recipes
-//get result of the comparison and check if its true
-
-
-//delete all new arrays
-delete recipebook;*/
 
 /**
  @brief Destructor
@@ -126,30 +92,26 @@ bool CCraftingState::Init(void)
 		{
 			if (i % 2 == 0)
 			{
-				butnum[i].itemID = 1;
+				butnum[i].setitemID(1);
 			}
 			else
 			{
-				//butnum[i].itemID = 2;
-				butnum[i].itemID = 0;
-
-
+				butnum[i].setitemID(2);
 			}
+			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
+
 		}
 		else
 		{
-			butnum[i].itemID = guiscene2d->return_hbcellid(i - 9);
-
+			//hotbar
+			butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
 		}
 
-		gridrecipe.SetRecipeIndex(i + 1, butnum[i].itemID);
-		butnum[i].loadimagebasedID(butnum[i].itemID);
-		butnum[i].textureID = il->LoadTextureGetID(butnum[i].fileName.c_str(), false);
+		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 	}
 
-	output.itemID = 0;
-	output.loadimagebasedID(output.itemID);
-	output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);
+	output.setitemID(0);
+	output.loadimagebasedID(output.getitemID(), il);
 
 	return true;
 }
@@ -213,7 +175,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 			if (n >= 9)
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
 
 				/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
@@ -222,12 +184,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].textureID, ImVec2(50, 50));
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
 
 			}
 
 			
-			if (butnum[n].itemID != 0)
+			if (butnum[n].getitemID() != 0)
 			{
 				// Our buttons are both drag sources and drag targets here!
 				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
@@ -249,16 +211,31 @@ bool CCraftingState::Update(const double dElapsedTime)
 					int payload_n = *(const int*)payload->Data;
 
 					//swap images and itemId inside
-					ButtonData tmp = butnum[n];
+					slot tmp = butnum[n];
 					butnum[n] = butnum[payload_n];
 					butnum[payload_n] = tmp;
 
 					//set new values for each index
 					for (int i = 1; i < 10; i++)
 					{
-						gridrecipe.SetRecipeIndex(i, butnum[i - 1].itemID);
+						gridrecipe.SetRecipeIndex(i, butnum[i - 1].getitemID());
 						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
 					}
+
+
+					//set the hotbar to the item
+					if (n >= 9)
+					{
+						//butnum[payload_n];
+						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
+						//cout << guiscene2d->return_hbcellid(n - 9) << endl;
+
+					}
+					/*void CGUI_Scene2D::set_hbcellid(int arr, int itemid)
+					{
+						hbcells[arr].setitemID(itemid);
+						hbcells[arr].loadimagebasedID(hbcells->getitemID(), il);
+					}*/
 
 					cout << endl;
 				}
@@ -270,7 +247,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		
 
 		//print out the value of recipebook index 0
-		cout << recipebook->CheckRecipe(gridrecipe) << endl;
+		//cout << recipebook->CheckRecipe(gridrecipe) << endl;
 
 		//render the output button
 		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
@@ -322,13 +299,21 @@ void CCraftingState::Destroy(void)
 {
 	// cout << "CCraftingState::Destroy()\n" << endl;
 	delete recipebook;
+	recipebook = nullptr;
 
+
+	/*delete guiscene2d;
+	guiscene2d = nullptr;*/
+
+
+
+	delete il;
+	il = nullptr;
 
 	/*for (int i = 0; i < 12; i++)
 	{
 		delete butnum[i];
 	}*/
-	recipebook = nullptr;
 
 	/*delete il;
 	il = nullptr;*/
