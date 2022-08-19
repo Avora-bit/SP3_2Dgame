@@ -1,8 +1,77 @@
-﻿  InventoryState.cpp
+﻿  Application.cpp
+  PlayGameState.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(132,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(131,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(133,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(133,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  App.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+  Octopus.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(69,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(147,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(170,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(171,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(180,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(180,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(186,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(229,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(229,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(282,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(282,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(288,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(330,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(330,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Scene2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(72,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(79,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(224,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(229,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(308,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(315,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(273): warning C4715: 'CScene2D::Update': not all control paths return a value
+  App.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\App.exe

@@ -1,3 +1,43 @@
+<<<<<<< HEAD
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.pdb
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.idb
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\player2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\physics2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\map2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorymanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventoryitem.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gui_scene2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gamemanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\enemy2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\camera.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\backgroundentity.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\main.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\victorystate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\playgamestate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\pausestate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\menustate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\introstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gamestatemanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gameoverstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\craftingstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\application.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundinfo.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundcontroller.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\shivs2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\scene2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipebook.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipe.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\octopus.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.exe
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.ilk
+d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.pdb
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.command.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.read.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.write.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\link.command.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\link.read.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\link.write.1.tlog
+=======
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\vc142.pdb
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\vc142.idb
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\player2d.obj
@@ -32,6 +72,7 @@ e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\debug\app.pdb
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.read.1.tlog
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.write.1.tlog
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.command.1.tlog
+e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.command.1.tlog
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.read.1.tlog
 e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.write.1.tlog
-e:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.command.1.tlog
+>>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b

@@ -11,8 +11,6 @@
 *.idb
 *.pdb
 *.exe
-*.pdb
-*.obj
 *.vsidx
 *.recipe
 .vs/NYP_Framework/v17/.suo
