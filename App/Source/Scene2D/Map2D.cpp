@@ -177,7 +177,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	m_nrOfDirections = 4;
 	m_directions = { { -1, 0 }, { 1, 0 }, { 0, 1 }, { 0, -1 },
 						{ -1, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 } };
-	//SetDiagonalMovement(true);
+	/*SetDiagonalMovement(true);*/
 
 	// Resize these 2 lists
 	m_cameFromList.resize(cSettings->NUM_TILES_YAXIS* cSettings->NUM_TILES_XAXIS);

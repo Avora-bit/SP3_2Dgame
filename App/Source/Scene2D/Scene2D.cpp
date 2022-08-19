@@ -146,13 +146,13 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	enemyVector.clear();
 	while (true)
 	{
-		CEnemy2D* cEnemy2D = new CEnemy2D();
-		cEnemy2D->SetShader("Shader2D_Colour");
+		Octopus* octo = new Octopus();
+		octo->SetShader("Shader2D_Colour");
 		
-		if (cEnemy2D->Init())
+		if (octo->Init())
 		{
-			cEnemy2D->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(cEnemy2D);
+			octo->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(octo);
 		}
 		else
 			break;

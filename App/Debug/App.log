@@ -1,20 +1,64 @@
-﻿  Application.cpp
-  CraftingState.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(182,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(181,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(183,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(183,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  PlayGameState.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-  GUI_Scene2D.cpp
-  Scene2D.cpp
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(71,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(211,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(290,20): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(255): warning C4715: 'CScene2D::Update': not all control paths return a value
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  App.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe
+﻿  Octopus.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(71,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(149,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(172,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(173,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(182,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(182,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(188,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(231,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(231,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(284,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(284,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(290,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(332,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(332,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe
