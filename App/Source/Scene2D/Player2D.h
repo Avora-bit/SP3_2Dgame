@@ -108,7 +108,9 @@ protected:
 
 	//combat
 	DIRECTION attackDirection;
+	bool throwing = false;
 	double maxPForce = 10;
+	double minPForce = 2.f;
 	double ProjectileForce;
 
 	// vitals

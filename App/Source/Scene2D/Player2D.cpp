@@ -688,54 +688,51 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		switch (direction)			//hold weapon
 		{
-		/*case UP:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-			break;
-		case DOWN:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			break;
-		case LEFT:			
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-			break;
-		case RIGHT:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			break;*/
+			/*case UP:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
+				break;
+			case DOWN:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
+				break;
+			case LEFT:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
+				break;
+			case RIGHT:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
+				break;*/
 		}
 	}
 
 	//spawn projectile logic
 	{
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
-
 			if (ProjectileForce < maxPForce)
 				ProjectileForce += (dElapsedTime * 5);
+			throwing = true;
 		}
-		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER))
+		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
 		{
-			std::cout << "Enter UP" << std::endl;
 			//replace with mouse position
 			attackDirection = direction;
 			//min force
-			if (ProjectileForce < 2)
-			{
-				ProjectileForce = 2;
+			if (ProjectileForce > minPForce) {		//throw if force is high enough
+				//cSoundController->PlaySoundByID(10);		//replace with fire sound
+				//reduce ammo count
+				cInventoryItem = cInventoryManager->GetItem("Shivs");
+				cInventoryItem->Remove(1);
+				//spawn projectile
+
 			}
-			
-			//cSoundController->PlaySoundByID(10);		//replace with fire sound
-			//reduce ammo count
-			cInventoryItem = cInventoryManager->GetItem("Shivs");
-			cInventoryItem->Remove(1);
-			//spawn projectile
-
-
 			//reset force
+			throwing = false;
 			ProjectileForce = 0;
 		}
+		std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
 	}
 
 
