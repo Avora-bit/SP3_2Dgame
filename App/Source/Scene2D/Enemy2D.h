@@ -93,6 +93,7 @@ protected:
 		PATROL,
 		CHASE,
 		ATTACK,
+		RUN,
 		NUM_FSM
 	};
 

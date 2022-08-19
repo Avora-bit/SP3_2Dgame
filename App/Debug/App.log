@@ -1,453 +1,127 @@
-<<<<<<< HEAD
-﻿  Octopus.cpp
+﻿  Chicken.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(71,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(173,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(174,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(183,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(183,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(189,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(232,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(232,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(285,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(285,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(291,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(333,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(333,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Octopus.cpp
 D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(71,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(149,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(172,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-=======
-﻿  Player2D.cpp
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(208,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(225,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(147,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(169,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(173,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(253,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(170,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(182,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(356,50): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(382,58): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(179,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(182,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(392,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(179,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(188,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(393,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(185,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(231,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(395,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(228,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(231,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(409,58): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(228,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(284,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(412,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(281,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(284,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(417,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(281,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(290,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(418,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(287,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(332,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(420,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(329,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(332,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(434,58): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Octopus.cpp(329,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-<<<<<<< HEAD
+  Generating Code...
   App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe
-=======
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(437,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(442,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(443,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(445,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(459,58): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(469,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(470,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(472,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(496,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(497,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(499,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(513,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(518,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(519,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(521,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(538,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(543,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(544,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(546,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(560,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(565,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(566,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(568,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(592,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(593,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(595,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(616,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(617,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(619,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(636,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(641,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(642,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(644,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(665,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(666,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(668,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(743,29): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(754,30): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(776,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(777,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(707,3): warning C4060: switch statement contains no 'case' or 'default' labels
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(864,51): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(873,51): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(895,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(895,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(914,49): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(914,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(919,50): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(919,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(919,111): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(919,97): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(933,52): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(933,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(938,53): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(938,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(938,118): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(938,101): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(952,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(952,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(957,52): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(957,39): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(957,115): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(957,99): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(966,49): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(966,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(971,50): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(971,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(971,109): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(971,94): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1013,25): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
-  App.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\App.exe
->>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b

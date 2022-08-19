@@ -87,7 +87,6 @@ void Octopus::Update(const double dElapsedTime)
 					timer = 0;
 					sCurrentFSM = CHASE;
 					iFSMCounter = 0;
-					cout << "chasing" << endl;
 				}
 			}
 			iFSMCounter++;
@@ -103,7 +102,6 @@ void Octopus::Update(const double dElapsedTime)
 					timer = 0;
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
-					cout << "atk" << endl;
 					break;
 				}
 			}
@@ -160,7 +158,6 @@ void Octopus::Update(const double dElapsedTime)
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 				timer = 0;
-				cout << "Idling" << endl;
 				break;
 			}
 			iFSMCounter++;
