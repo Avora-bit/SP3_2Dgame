@@ -1,4 +1,5 @@
 ﻿  Settings.cpp
+<<<<<<< HEAD
   imgui_impl_glfw.cpp
   imgui_impl_opengl3.cpp
   imgui.cpp
@@ -26,3 +27,6 @@ D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.
   StopWatch.cpp
   Generating Code...
   Library.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.lib
+=======
+  Library.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\Library.lib
+>>>>>>> ef0106e4b83781ca96a585a7f43950e980df3f4d

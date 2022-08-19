@@ -12,7 +12,6 @@ public:
 	void UpdatePosition(void);
 private:
 	bool stuck;
-	bool collided;
 	DIRECTION stuckDirection;
 	glm::vec2 stuckPosition;
 };

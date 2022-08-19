@@ -109,7 +109,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cMap2D->SetShader("Shader2D");
 
-	if (cMap2D->Init(4, CSettings::GetInstance()->NUM_TILES_YAXIS,
+	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
@@ -138,6 +138,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
+	//debug shivs
 	CShivs2D = CShivs2D::GetInstance();
 
 	CShivs2D->SetShader("Shader2D_Colour");

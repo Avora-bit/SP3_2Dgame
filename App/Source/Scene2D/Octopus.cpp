@@ -60,7 +60,6 @@ bool Octopus::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	timer = 0;
-	collided = false;
 	stuck = false;
 
 	return true;

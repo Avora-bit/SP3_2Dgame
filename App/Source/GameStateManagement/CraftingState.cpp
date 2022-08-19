@@ -48,8 +48,6 @@ CCraftingState::CCraftingState(void)
 
 }
 
-
-
 /**
  @brief Destructor
  */
@@ -302,11 +300,8 @@ void CCraftingState::Destroy(void)
 	delete recipebook;
 	recipebook = nullptr;
 
-
 	/*delete guiscene2d;
 	guiscene2d = nullptr;*/
-
-
 
 	delete il;
 	il = nullptr;

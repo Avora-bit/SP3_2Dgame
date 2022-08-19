@@ -779,7 +779,6 @@ void CEnemy2D::UpdatePosition(void)
 			vec2NumMicroSteps.y = 0;
 		}
 
-
 		// Interact with the Player
 		//InteractWithPlayer();
 	}

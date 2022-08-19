@@ -142,7 +142,7 @@ void Chicken::Update(const double dElapsedTime)
 					vec2Destination = coord;
 
 					if (!stuck)
-						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = vec2Destination + vec2Index;
 					bFirstPosition = false;
 				}
 				else
@@ -163,7 +163,7 @@ void Chicken::Update(const double dElapsedTime)
 			UpdatePosition();
 			
 			if (!stuck)
-				vec2Direction = vec2Index - cPlayer2D->vec2Index;
+				vec2Direction = vec2Index + cPlayer2D->vec2Index;
 			iFSMCounter++;
 			break;
 		}
