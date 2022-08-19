@@ -102,15 +102,10 @@ bool CGUI_Scene2D::Init(void)
 
 	il = CImageLoader::GetInstance();
 
-
-
 	for (int i = 0; i < 3; i++)
 	{
-		hbcells[i].itemID = 7;
-		
-
-		hbcells[i].loadimagebasedID(hbcells[i].itemID);
-		hbcells[i] .textureID = il->LoadTextureGetID(hbcells[i].fileName.c_str(), false);
+		hbcells[i].setitemID(7);
+		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 	}
 
 	return true;
@@ -205,7 +200,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar((float)(cPlayer2D->getBowForce() / 7 * 100) /
+	ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
 		100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
@@ -282,6 +277,28 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::PopStyleColor();
 	ImGui::End();
 
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+	ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+
+	ImGui::Begin("Stamina", NULL, staminaFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SameLine();
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	cInventoryItem = cInventoryManager->GetItem("Stamina");
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+	ImGui::ProgressBar(cInventoryItem->GetCount() /
+		(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+			relativeScale_x, 20.0f * relativeScale_y));
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
+	ImGui::End();
+
 
 
 	//RENDER HOTBAR
@@ -305,35 +322,14 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		if ((n % 3) != 0)
 			ImGui::SameLine();
 
-
 		string x = to_string(n);
-		//string x = to_string(hbcells[n].itemID);
-
 		strcpy(y, x.c_str());
 
-		//ImGui::Button(y, ImVec2(50, 50));
-		//construct 9 buttons
+		ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
 
-		/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
-			int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
+		cout << hbcells[2].getitemID() << endl;
 
-		if (n >= 3)
-		{
-			ImGui::ImageButton((ImTextureID)hbcells[n].textureID, ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
-				-1, ImVec4(1, 1, 0, 1));
-
-			/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
-				CSettings::GetInstance()->iWindowHeight / 2.0));*/
-
-		}
-		else
-		{
-			ImGui::ImageButton((ImTextureID)hbcells[n].textureID, ImVec2(50, 50));
-
-		}
-
-
-		if (hbcells[n].itemID != 0)
+		if (hbcells[n].getitemID() != 0)
 		{
 			// Our buttons are both drag sources and drag targets here!
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
@@ -355,23 +351,19 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				int payload_n = *(const int*)payload->Data;
 
 				//swap images and itemId inside
-				HotBarCells tmp = hbcells[n];
+				slot tmp = hbcells[n];
 				hbcells[n] = hbcells[payload_n];
 				hbcells[payload_n] = tmp;
+
 
 				cout << endl;
 			}
 			ImGui::EndDragDropTarget();
 		}
 		ImGui::PopID();
-
 	}
 	ImGui::PopStyleColor();
 	ImGui::End();
-
-
-
-
 
 	ImGui::PopStyleColor();
 	ImGui::End();
@@ -406,3 +398,21 @@ int CGUI_Scene2D::return_hbcellid(int arr)
 {
 	return hbcells[arr].getitemID();
 }
+
+unsigned CGUI_Scene2D::return_textid(int arr)
+{
+	return hbcells[arr].gettextureID();
+}
+
+void CGUI_Scene2D::set_hbcellid(int arr, int itemid)
+{
+	hbcells[arr].setitemID(itemid);
+	hbcells[arr].loadimagebasedID(hbcells[arr].getitemID(), il);
+}
+
+
+//for (int i = 0; i < 3; i++)
+//{
+//	hbcells[i].setitemID(7);
+//	hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+//}

@@ -43,6 +43,7 @@
 
 #include "GameStateManagement/PauseState.h"
 
+#include "GameStateManagement/InventoryState.h"
 
 #include "GameStateManagement/CraftingState.h"
 
@@ -246,6 +247,7 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
 
 	CGameStateManager::GetInstance()->AddGameState("CraftingState", new CCraftingState());
+	CGameStateManager::GetInstance()->AddGameState("InventoryState", new CInventoryState());
 
 
 

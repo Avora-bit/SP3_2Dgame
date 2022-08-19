@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
       <FullPath>D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe</FullPath>
+=======
+      <FullPath>C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\App.exe</FullPath>
+>>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
