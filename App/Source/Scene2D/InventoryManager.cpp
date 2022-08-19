@@ -65,6 +65,11 @@ CInventoryItem* CInventoryManager::Add(	const std::string& _name,
 	return cNewItem;
 }
 
+void CInventoryManager::Add(CInventoryItem* item)
+{
+	inventoryMap[item->sName] = item;
+}
+
 /**
 @brief Remove an item from this Inventory Manager
 */

@@ -19,6 +19,10 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 
+#include "Sword2D.h"
+#include "WoodenHilt2D.h"
+#include "SwordBlade2D.h"
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -163,7 +167,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CSwordBlade2D());
 
+	//cInventoryManager->Add(*sword);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
 	return true;
@@ -356,7 +363,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			dodgeKeyDown = true;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
-			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.2f, 0.0f));
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;

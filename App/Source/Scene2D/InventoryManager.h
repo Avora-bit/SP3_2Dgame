@@ -24,6 +24,7 @@ public:
 							const char* imagePath, 
 							const int iItemMaxCount, 
 							const int iItemCount = 0);
+	void Add(CInventoryItem* item);
 	// Remove an item
 	bool Remove(const std::string& _name);
 	// Check if an item exists in inventoryMap
