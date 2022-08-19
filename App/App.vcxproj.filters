@@ -98,12 +98,18 @@
     <ClCompile Include="Source\Scene2D\RecipeBook.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="Source\Scene2D\Octopus.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+=======
     <ClCompile Include="Source\Scene2D\slot.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
+>>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -181,11 +187,16 @@
     <ClInclude Include="Source\Scene2D\RecipeBook.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="Source\Scene2D\Octopus.h">
+      <Filter>Header Files</Filter>
+=======
     <ClInclude Include="Source\Scene2D\slot.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\InventoryState.h">
       <Filter>GameStateManagement</Filter>
+>>>>>>> 1adfa2a260108446eb1825e390a485cd857a518b
     </ClInclude>
   </ItemGroup>
 </Project>
