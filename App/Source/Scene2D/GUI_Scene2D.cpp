@@ -8,6 +8,9 @@
 
 #include <iostream>
 using namespace std;
+#include <sstream>
+
+
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -104,7 +107,7 @@ bool CGUI_Scene2D::Init(void)
 
 	for (int i = 0; i < 3; i++)
 	{
-		hbcells[i].setitemID(7);
+		hbcells[i].setitemID( cPlayer2D->getitemval(i));
 		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 	}
 
@@ -116,6 +119,14 @@ bool CGUI_Scene2D::Init(void)
  */
 void CGUI_Scene2D::Update(const double dElapsedTime)
 {
+
+	for (int i = 0; i < 3; i++)
+	{
+		hbcells[i].setitemID(cPlayer2D->getitemval(i));
+		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+	}
+
+
 	// Calculate the relative scale to our default windows width
 	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
 	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
@@ -295,18 +306,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	for (int n = 0; n < 3; n++)
 	{
 		ImGui::PushID(n);
-
 		//don't break line if doesn't reach 3 cells
 		if ((n % 3) != 0)
 			ImGui::SameLine();
-
 		string x = to_string(n);
 		strcpy(y, x.c_str());
-
 		ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
-
-		cout << hbcells[2].getitemID() << endl;
-
 		if (hbcells[n].getitemID() != 0)
 		{
 			// Our buttons are both drag sources and drag targets here!
@@ -332,8 +337,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				slot tmp = hbcells[n];
 				hbcells[n] = hbcells[payload_n];
 				hbcells[payload_n] = tmp;
-
-
 				cout << endl;
 			}
 			ImGui::EndDragDropTarget();
@@ -342,6 +345,38 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	ImGui::PopStyleColor();
 	ImGui::End();
+
+
+
+
+	////PRINT FRAME RATE
+
+	////ostringstream ss;
+	///*string ss;
+	//char yy[9];
+	//ss = "FPS:" + to_string(1/dElapsedTime);
+	//strcpy(yy, ss.c_str());*/
+
+	//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+	//ImGuiWindowFlags framerateWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+	//	ImGuiWindowFlags_NoTitleBar |
+	//	ImGuiWindowFlags_NoMove |
+	//	ImGuiWindowFlags_NoResize |
+	//	ImGuiWindowFlags_NoCollapse |
+	//	ImGuiWindowFlags_NoScrollbar;
+	//ImGui::Begin("FFPS", NULL, framerateWindowFlags);
+	//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 100));
+	//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 2.0f * relativeScale_y));
+	//ImGui::SameLine();
+	//ImGui::SetWindowFontScale(1.f * relativeScale_y);
+	//ImGui::TextColored(ImVec4(1, 1, 1, 1), "FPS: %d", 1 / dElapsedTime);
+	//ImGui::PopStyleColor();
+	//ImGui::End();
+
+
+
+
+
 
 	ImGui::PopStyleColor();
 	ImGui::End();

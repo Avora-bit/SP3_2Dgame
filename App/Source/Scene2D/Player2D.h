@@ -43,6 +43,10 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
+
+
+#include "slot.h"
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -98,6 +102,7 @@ protected:
 
 	CSoundController* cSoundController;
 
+
 	Camera* camera;
 
 	DIRECTION direction;
@@ -133,11 +138,35 @@ protected:
 
 	void UpdateHealthLives(void);
 
+
+
+	slot inventorySlots[9];
+	CImageLoader* il;
+
+
+
 public:
 	DIRECTION getAttackDirection();
 	double getBowForce();
 
 	void LoseHealth(float health);
+
+
+
+
+
+	void AddItem(int itemid);
+
+	slot getitem(int arr);
+	void setitem(int arr, int itemid);
+
+
+
+	int getitemval(int arr);
+
+
+	int getx();
+	int gety();
 
 
 	//float speed_multiplier = 0.25f;

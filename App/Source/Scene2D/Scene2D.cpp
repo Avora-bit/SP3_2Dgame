@@ -186,6 +186,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cSoundController->SetMasterVolume(0.01f);
 
+
+
 	return true;
 }
 
@@ -194,7 +196,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
-	
 	cPlayer2D->Update(dElapsedTime);
 	
 	CShivs2D->Update(dElapsedTime);
@@ -252,6 +253,9 @@ bool CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bLevelCompleted = false;
 	}
+
+
+	
 }
 
 /**
@@ -305,3 +309,4 @@ void CScene2D::Render(void)
 void CScene2D::PostRender(void)
 {
 }
+

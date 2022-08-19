@@ -168,6 +168,21 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
 	}
 
+
+
+	//FOR INVENTORY TESTING PURPOSES - REAGAN
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
+		return false;
+	}
+	else
+	{
+		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+	}
+	//
+
 	// Initialise the variables for AStar
 	m_weight = 1;
 	m_startPos = glm::vec2(0, 0);
