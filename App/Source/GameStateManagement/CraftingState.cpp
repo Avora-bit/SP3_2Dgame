@@ -88,14 +88,17 @@ bool CCraftingState::Init(void)
 	{
 		if (i < 9)
 		{
-			if (i % 2 == 0)
+			/*if (i % 2 == 0)
 			{
 				butnum[i].setitemID(1);
 			}
 			else
 			{
 				butnum[i].setitemID(2);
-			}
+			}*/
+
+			//set crafting system to 0
+			butnum[i].setitemID(0);
 			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
 		}
 		else

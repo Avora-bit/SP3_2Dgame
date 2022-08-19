@@ -50,6 +50,10 @@
 
 #include "GameManager.h"
 
+
+
+#include "../GameStateManagement/InventoryState.h"
+
 // Add your include files here
 
 class CScene2D : public CSingletonTemplate<CScene2D>
@@ -72,6 +76,8 @@ public:
 
 	// PostRender
 	void PostRender(void);
+
+
 
 protected:
 	// The handler containing the instance of the 2D map
@@ -105,6 +111,10 @@ protected:
 	// Add your variables and methods here.
 
 	float m_fProgressBar;
+
+
+
+
 
 	// Constructor
 	CScene2D(void);

@@ -9,6 +9,8 @@
 
 #include "GameStateBase.h"
 
+
+
 #include "..\Scene2D\Scene2D.h"
 
 class CPlayGameState : public CGameStateBase
@@ -28,9 +30,14 @@ public:
 	// Destroy this class instance
 	virtual void Destroy(void);
 
+
+
+
 protected:
 	// The handler to the CScene2D instance
 	CScene2D* cScene2D;
+
+
 
 	CGameManager* cGameManager;
 };
