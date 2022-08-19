@@ -86,6 +86,7 @@ CScene2D::~CScene2D(void)
 		cGameManager->Destroy();
 		cGameManager = NULL;
 	}
+
 }
 
 /**

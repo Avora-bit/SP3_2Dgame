@@ -276,6 +276,9 @@ void CInventoryState::Render(void)
 void CInventoryState::Destroy(void)
 {
 	
+	/*delete cPlayer2D;
+	cPlayer2D = nullptr;*/
+
 	delete il;
 	il = nullptr;
 

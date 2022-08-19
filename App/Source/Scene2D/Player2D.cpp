@@ -180,8 +180,6 @@ bool CPlayer2D::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-
-
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
