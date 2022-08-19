@@ -6,8 +6,8 @@ using namespace std;
 CSettings::CSettings(void)
 	: pWindow(NULL)
 	, logl_root(NULL)
-	, NUM_TILES_XAXIS(100)
-	, NUM_TILES_YAXIS(100)
+	, NUM_TILES_XAXIS(50)
+	, NUM_TILES_YAXIS(50)
 	, TILE_WIDTH(0.02f)		//1/NUM_TILES_XAXIS*2
 	, TILE_HEIGHT(0.02f)		//1/NUM_TILES_YAXIS*2
 	, NUM_STEPS_PER_TILE_XAXIS(5.0f)
