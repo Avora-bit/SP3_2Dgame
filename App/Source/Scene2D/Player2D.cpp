@@ -350,7 +350,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 
 		static bool dodgeKeyDown = false;
-		if ((cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) || cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT)) && !dodgeKeyDown && 
+		if ((cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) || cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT)) && !dodgeKeyDown &&
 			cInventoryManager->GetItem("Stamina")->GetCount() >= 30.f)
 		{
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
@@ -483,7 +483,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 			{
-				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f))*iDisplacement_MicroSteps);
+				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
 				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
 				{
 					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
@@ -507,7 +507,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f))*iDisplacement_MicroSteps);
+				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
 				if (vec2NumMicroSteps.x <= 0)
 				{
 					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -532,7 +532,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.y >= 0)
 			{
-				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f))*iDisplacement_MicroSteps);
+				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
 				if (vec2NumMicroSteps.y <= 0)
 				{
 					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -603,7 +603,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
-				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f))*iDisplacement_MicroSteps);
+				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
 				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
 				{
 					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
@@ -658,7 +658,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
 					if (vec2NumMicroSteps.x < 0)
 						vec2NumMicroSteps.x = 0;
-					vec2Index.x++; 
+					vec2Index.x++;
 				}
 			}
 			Constraint(RIGHT);
@@ -683,7 +683,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 	}
-	
+
 	//held item render + animation
 	{
 		switch (direction)			//hold weapon
@@ -732,37 +732,37 @@ void CPlayer2D::Update(const double dElapsedTime)
 			throwing = false;
 			ProjectileForce = 0;
 		}
-		std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+		//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
 	}
 
-
-	// vitals
-	static float hungerTimer = 0;
-	hungerTimer += dElapsedTime;
-
-	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
+	// hunger
 	{
-		cInventoryManager->GetItem("Hunger")->Remove(5);
-		hungerTimer = 0;
-	}
+		static float hungerTimer = 0;
+		hungerTimer += dElapsedTime;
 
-	static float starveTimer = 0;
-	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
-	{
-		starveTimer += dElapsedTime;
-		if (starveTimer >= 1)
+		if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
 		{
-			starveTimer = 0;
-			cInventoryManager->GetItem("Health")->Remove(5);
+			cInventoryManager->GetItem("Hunger")->Remove(5);
+			hungerTimer = 0;
 		}
+
+		static float starveTimer = 0;
+		if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
+		{
+			starveTimer += dElapsedTime;
+			if (starveTimer >= 1)
+			{
+				starveTimer = 0;
+				cInventoryManager->GetItem("Health")->Remove(5);
+			}
+		}
+		else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
+			starveTimer = 0;
+
+
+		if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
+			CGameManager::GetInstance()->bPlayerLost = true;
 	}
-	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
-		starveTimer = 0;
-
-
-	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
-		CGameManager::GetInstance()->bPlayerLost = true;
-
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
@@ -884,7 +884,7 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CPLayer::Constraint: Unknown Direction" << endl;
+		//cout << "CPLayer::Constraint: Unknown Direction" << endl;
 	}
 }
 
@@ -972,7 +972,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
+		//cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
 	}
 	return true;
 }
