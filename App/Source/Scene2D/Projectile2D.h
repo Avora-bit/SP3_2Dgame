@@ -99,6 +99,5 @@ protected:
 	virtual ~CProjectile2D(void);
 
 	void InteractWithMap(void);
-
 };
 

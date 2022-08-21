@@ -1,75 +1,132 @@
-﻿  InventoryState.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(126,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(125,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(127,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(127,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Projectile2D.cpp
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(148,18): error C2039: 'getBowForce': is not a member of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Player2D.h(47): message : see declaration of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(150,18): error C2039: 'getBowForce': is not a member of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Player2D.h(47): message : see declaration of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(153,55): error C2039: 'getBowForce': is not a member of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Player2D.h(47): message : see declaration of 'CPlayer2D'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(156,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+﻿  Projectile2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(156,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(211,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(211,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(216,59): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(216,59): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(219,72): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(219,72): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(224,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(224,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(227,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(227,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(248,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(248,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(249,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(249,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(362,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(205,4): warning C4060: switch statement contains no 'case' or 'default' labels
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(362,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(362,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(362,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(365,44): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(365,44): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(365,31): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(365,31): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Scene2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(71,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(213,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(295,20): warning C4018: '<': signed/unsigned mismatch
+  Shivs2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(156,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(211,25): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(216,59): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(219,72): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(224,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(227,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(248,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(249,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(205,4): warning C4060: switch statement contains no 'case' or 'default' labels
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(362,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(362,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(365,44): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Shivs2D.cpp(365,31): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
           with
           [
               T=float
           ]
   Generating Code...
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(260): warning C4715: 'CScene2D::Update': not all control paths return a value
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  App.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\Debug\App.exe
