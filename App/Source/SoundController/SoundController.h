@@ -41,6 +41,10 @@ public:
 
 	// Play a sound by its ID
 	void PlaySoundByID(const int ID);
+
+
+	ISound* PlaySoundByID_2(const int ID);
+
 	// Stop a sound by its ID
 	void StopPlayByID(const int ID);
 
@@ -62,6 +66,8 @@ public:
 
 	bool AddToPlaylist(const int ID);
 
+
+
 	void Update(const double dElapsedTime);
 
 	// For 3D sounds only
@@ -70,6 +76,67 @@ public:
 	// Set Listener direction
 	void SetListenerDirection(const float x, const float y, const float z);
 
+	
+
+
+
+	void setVolume(int soundID, ISound* sfx, float vol);
+	int return_currentMusic();
+
+	
+
+	
+	//if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+	//{
+	//	ISound* jumpsnd =
+	//		cSoundController->PlaySoundByID(3);
+
+	//	if (jumpsnd != nullptr)
+	//	{
+	//		jumpSfx = jumpsnd;
+	//	}
+
+	//	if (jumpSfx != nullptr)
+	//	{
+	//		jumpSfx->setVolume(soundEffectsvol);
+	//	}
+	//	//*soundEffectsvol
+	//}
+
+
+	//ISound* snd = cSoundController->PlaySoundByID(5);
+	//if (snd != nullptr)
+	//{
+	//	bombSfx = snd;
+	//}
+	////TIMER FOR BOMB
+	//if (bomb_timer > 0)
+	//{
+	//	bomb_timer -= 1 * (float)dElapsedTime;
+	//	//as long as sound is still playing, deccrease it
+	//	//must reset volume
+
+	//	if (bombSfx != nullptr)
+	//	{
+	//		//bombSfx->setVolume(bombVol);
+	//		bombSfx->setVolume(bombVol * soundEffectsvol);
+	//		bombVol += (bomb_timer / 1000) /** dElapsedTime*/;
+	//		bombVol = max(0, bombVol * soundEffectsvol);
+	//	}
+	//}
+
+
+
+
+	/*ISound* musicsnd = cSoundController->PlaySoundByID(7);
+	if (musicsnd != nullptr)
+	{
+		musicSfx = musicsnd;
+	}
+	if (musicSfx != nullptr)
+	{
+		musicSfx->setVolume(musicvol);
+	}*/
 
 protected:
 	// Constructor
@@ -77,6 +144,9 @@ protected:
 
 	// Destructor
 	virtual ~CSoundController(void);
+
+
+	static int currentmusic;
 
 	// Get an sound from this map
 	CSoundInfo* GetSound(const int ID);

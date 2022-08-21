@@ -62,6 +62,10 @@ bool CSoundController::Init(void)
 		return false;
 	}
 	return true;
+
+
+
+	//currentmusic = 0;
 }
 
 /**
@@ -143,6 +147,39 @@ void CSoundController::PlaySoundByID(const int ID)
 								pSoundInfo->GetPosition(), 
 								pSoundInfo->GetLoopStatus());
 	}
+}
+
+ISound* CSoundController::PlaySoundByID_2(const int ID)
+{
+	ISound* pSound = nullptr;
+	//this is set in a way to return null when sound is playing, hence volumedecrease() register it as null
+	CSoundInfo* pSoundInfo = GetSound(ID);
+	if (!pSoundInfo)
+	{
+		cout << "Sound #" << ID << " is not playable." << endl;
+		return pSound;
+	}
+	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
+	{
+		cout << "Sound #" << ID << " is currently being played." << endl;
+		return pSound;
+	}
+
+	if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_2D)
+	{
+		pSound = cSoundEngine->play2D(pSoundInfo->GetSound(),
+			pSoundInfo->GetLoopStatus(), false, true, true);
+	}
+	else if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_3D)
+	{
+		cSoundEngine->setListenerPosition(vec3dfListenerPos, vec3dfListenerDir);
+		pSound = cSoundEngine->play3D(pSoundInfo->GetSound(),
+			pSoundInfo->GetPosition(),
+			pSoundInfo->GetLoopStatus());
+	}
+
+	return pSound;
+
 }
 
 /**
@@ -330,6 +367,10 @@ bool CSoundController::AddToPlaylist(const int ID)
 	}
 }
 
+
+
+
+//TZE TING'S UPDATE
 void CSoundController::Update(const double dElapsedTime)
 {
 	if (musicPlaylist.size() > 0)
@@ -364,7 +405,50 @@ void CSoundController::Update(const double dElapsedTime)
 
 	}
 }
+//
 
+
+//REAGAN'S UPDATE
+//void CSoundController::Update(const double dElapsedTime)
+//{
+//	if (musicPlaylist.size() > 0)
+//	{
+//		ISoundSource* currentSong = GetSound(musicPlaylist[currentmusic])->GetSound();
+//		currentSongDuration += (dElapsedTime * 1000);
+//		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentmusic])->GetSound()))
+//		{
+//			PlaySoundByID(musicPlaylist[currentmusic]);
+//			currentSong->setDefaultVolume(0.001f);
+//		}
+//
+//		if (currentSong->getDefaultVolume() < cSoundEngine->getSoundVolume())
+//		{
+//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() + 0.001f);
+//		}
+//		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
+//		{
+//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() - 0.001f);
+//		}
+//
+//		if (currentSongDuration >= GetSound(musicPlaylist[currentmusic])->GetSound()->getPlayLength())
+//		{
+//			if (currentmusic <= musicPlaylist.size() - 1)
+//				currentmusic++;
+//			else
+//				currentmusic = 0;
+//
+//			currentSongDuration = 0;
+//		}
+//
+//	}
+//}
+//
+
+
+//int CSoundController::return_currentMusic()
+//{
+//	return currentmusic;
+//}
 // For 3D sounds only
 /**
  @brief Set Listener position
@@ -387,6 +471,43 @@ void CSoundController::SetListenerDirection(const float x, const float y, const 
 {
 	vec3dfListenerDir.set(x, y, z);
 }
+
+
+//MY OWN VERSION OF SETVOLUME - REAGAN
+void CSoundController::setVolume(int soundID, ISound* sfx, float vol)
+{
+	ISound* snd = PlaySoundByID_2(soundID);
+	if (snd != nullptr)
+	{
+		sfx = snd;
+	}
+		
+	if (sfx != nullptr)
+	{
+		sfx->setVolume(vol);
+		//vol = max(0, vol);
+	}
+}
+//
+
+//void CSoundController::decreasevolume(ISound* snd, int soundID, ISound* sfx, float vol)
+//{
+//	snd = PlaySoundByID(soundID);
+//	if (snd != nullptr)
+//	{
+//		sfx = snd;
+//	}
+//	
+//
+//	if (sfx != nullptr)
+//	{
+//		//bombSfx->setVolume(bombVol);
+//		sfx->setVolume(vol * soundEffectsvol);
+//		 //vol+= (bomb_timer / 1000) /** dElapsedTime*/;
+//		vol = max(0, vol * soundEffectsvol);
+//	}
+//	
+//}
 
 /**
  @brief Get an sound from this map

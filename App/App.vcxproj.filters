@@ -32,12 +32,6 @@
     <ClCompile Include="Source\Scene2D\Map2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Player2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene2D\InventoryItem.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
@@ -104,6 +98,12 @@
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Player2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -163,9 +163,6 @@
     <ClInclude Include="Source\Scene2D\Enemy2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\InventoryItem.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
@@ -185,6 +182,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Shivs2D.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>

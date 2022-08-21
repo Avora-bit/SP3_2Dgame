@@ -311,26 +311,33 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	//RENDER HOTBAR
 	{
+
+		char y[3];
 		for (int i = 0; i < 3; i++) {
-			ImGui::PushID(n);
+
+
+			ImGui::PushID(i);
 
 			//don't break line if doesn't reach 3 cells
-			if ((n % 3) != 0) {
+			if ((i % 3) != 0) {
 				ImGui::SameLine();
 			}
 			
-			string x = to_string(n);
+			string x = to_string(i);
 			strcpy(y, x.c_str());
 
-			ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
+			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
 
 			cout << hbcells[2].getitemID() << endl;
 
-			if (hbcells[n].getitemID() != 0)
+			if (hbcells[i].getitemID() != 0)
 			{
 				hbcells[i].setitemID(cPlayer2D->getitemval(i));
 				hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 			}
+
+			ImGui::PopID();
+
 		}
 			
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
@@ -344,7 +351,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
 		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
 
-		char y[3];
 		for (int n = 0; n < 3; n++)
 		{
 			ImGui::PushID(n);
@@ -412,10 +418,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 
-	ImGui::PopStyleColor();
-	ImGui::End();
+	/*ImGui::PopStyleColor();
+	ImGui::End();*/
 
-	ImGui::PopStyleColor();
+	//ImGui::PopStyleColor();
 	ImGui::End();
 }
 

@@ -48,12 +48,14 @@ CInventoryState::CInventoryState(void)
 
 }
 
+
+
 /**
  @brief Destructor
  */
 CInventoryState::~CInventoryState(void)
 {
-
+	cSettings = NULL;
 }
 
 /**
@@ -71,6 +73,7 @@ bool CInventoryState::Init(void)
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
 
+	cSettings = CSettings::GetInstance();
 
 
 	for (int i = 0; i < 9; i++)
@@ -96,6 +99,11 @@ bool CInventoryState::Init(void)
  */
 bool CInventoryState::Update(const double dElapsedTime)
 {
+
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -113,6 +121,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		//cout << "player array" << i << " is " << cPlayer2D->getitemval(i) << endl;
 		//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
 		cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
+
 	}
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
@@ -146,15 +155,39 @@ bool CInventoryState::Update(const double dElapsedTime)
 			string x = to_string(n);
 			strcpy(y, x.c_str());
 
+
+
+
+
+
 			//render the bar yellow if it's hotbar
 			if (n >= 3)
 			{
+				
+
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
+
+
+				
 			}
 			else
 			{
+				//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+				//ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				//	ImGuiWindowFlags_NoTitleBar |
+				//	ImGuiWindowFlags_NoMove |
+				//	ImGuiWindowFlags_NoResize |
+				//	ImGuiWindowFlags_NoCollapse |
+				//	ImGuiWindowFlags_NoScrollbar;
+				//ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
+				//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f / 2, cSettings->iWindowHeight * 0.01f + 500));
+				//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
+
+				//ImGui::PopStyleColor();
+				//ImGui::End();
 			}
 
 			
@@ -169,6 +202,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 					{
 						butnum[n].setitemID(0);
 						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+
+						cPlayer2D->setitem(n , 0);
 
 						//set hotbar to 0
 						if (n <= 2)

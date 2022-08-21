@@ -22,6 +22,7 @@
 #include "../Scene2D/slot.h"
 
 
+#include "GameControl/Settings.h"
 
 #include "../Scene2D/Player2D.h"
 
@@ -65,6 +66,7 @@ protected:
 
 	CImageLoader* il;
 
+	CSettings* cSettings;
 
 	slot butnum[9];
 
