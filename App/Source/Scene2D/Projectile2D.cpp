@@ -357,7 +357,7 @@ void CProjectile2D::PostRender(void)
 //	return true;
 //}
 //
-void CShivs2D::InteractWithMap(void)
+void CProjectile2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
