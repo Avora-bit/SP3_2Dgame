@@ -101,7 +101,7 @@ bool CGUI_Scene2D::Init(void)
 
 	for (int i = 0; i < 3; i++)
 	{
-		hbcells[i].setitemID(7);
+		hbcells[i].setitemID( cPlayer2D->getitemval(i));
 		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 	}
 
@@ -365,13 +365,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
-				//swap images and itemId inside
-				slot tmp = hbcells[n];
-				//hbcells[n] = hbcells[payload_n];
-				//hbcells[payload_n] = tmp;
-
-
-				std::cout << endl;
 			}
 			if (ImGui::BeginDragDropTarget())
 			{

@@ -68,14 +68,6 @@ CScene2D::~CScene2D(void)
 		CShivs2D = NULL;
 	}
 
-	//projectile vector
-	for (int i = 0; i < projectileVector.size(); i++)
-	{
-		delete projectileVector[i];
-		projectileVector[i] = NULL;
-	}
-	projectileVector.clear();
-
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		delete enemyVector[i];
@@ -110,7 +102,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cMap2D->SetShader("Shader2D");
 
-	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
+	if (cMap2D->Init(4, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
@@ -139,7 +131,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	//debug shivs
 	CShivs2D = CShivs2D::GetInstance();
 
 	CShivs2D->SetShader("Shader2D_Colour");
@@ -153,19 +144,16 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	camera = Camera::GetInstance();
 	camera->Init();
 
-	//projectile vector
-	projectileVector.clear();
-
 	enemyVector.clear();
 	while (true)
 	{
-		Octopus* octo = new Octopus();
-		octo->SetShader("Shader2D_Colour");
+		CEnemy2D* cEnemy2D = new CEnemy2D();
+		cEnemy2D->SetShader("Shader2D_Colour");
 		
-		if (octo->Init())
+		if (cEnemy2D->Init())
 		{
-			octo->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(octo);
+			cEnemy2D->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(cEnemy2D);
 		}
 		else
 			break;
@@ -221,12 +209,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	float trackingPosY = cPlayer2D->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
 
 	camera->Update(dElapsedTime, glm::vec2(trackingPosX, trackingPosY));
-
-	//projectile vector
-	for (int i = 0; i < projectileVector.size(); i++)
-	{
-		projectileVector[i]->Update(dElapsedTime);
-	}
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
@@ -309,13 +291,6 @@ void CScene2D::Render(void)
 	CShivs2D->PreRender();
 	CShivs2D->Render();
 	CShivs2D->PostRender();
-
-	for (int i = 0; i < projectileVector.size(); i++)
-	{
-		projectileVector[i]->PreRender();
-		projectileVector[i]->Render();
-		projectileVector[i]->PostRender();
-	}
 
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
