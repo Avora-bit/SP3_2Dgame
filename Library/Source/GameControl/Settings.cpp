@@ -6,7 +6,6 @@ using namespace std;
 CSettings::CSettings(void)
 	: pWindow(NULL)
 	, logl_root(NULL)
-<<<<<<< HEAD
 	, NUM_TILES_XAXIS(50)
 	, NUM_TILES_YAXIS(50)
 	, TILE_WIDTH(2 / NUM_TILES_XAXIS)
@@ -15,16 +14,6 @@ CSettings::CSettings(void)
 	, NUM_STEPS_PER_TILE_YAXIS(5.0f)
 	, MICRO_STEP_XAXIS(TILE_WIDTH / NUM_STEPS_PER_TILE_XAXIS)
 	, MICRO_STEP_YAXIS(TILE_HEIGHT / NUM_STEPS_PER_TILE_YAXIS)
-=======
-	, NUM_TILES_XAXIS(100)
-	, NUM_TILES_YAXIS(100)
-	, TILE_WIDTH(0.02f)		//1/NUM_TILES_XAXIS*2
-	, TILE_HEIGHT(0.02f)		//1/NUM_TILES_YAXIS*2
-	, NUM_STEPS_PER_TILE_XAXIS(5.0f)
-	, NUM_STEPS_PER_TILE_YAXIS(5.0f)
-	, MICRO_STEP_XAXIS(0.004f)			//TILE_WIDTH/NUM_STEPS_PER_TILE_XAXIS
-	, MICRO_STEP_YAXIS(0.004f)			//TILE_HEIGHT/NUM_STEPS_PER_TILE_YAXIS
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
 {
 }
 
