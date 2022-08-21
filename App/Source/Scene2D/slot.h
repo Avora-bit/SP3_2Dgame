@@ -1,15 +1,12 @@
 #pragma once
 
-
-
-using namespace std;
 #include <string>
 #include "System\ImageLoader.h"
 
+using namespace std;
 
 class slot
 {
-
 private:
 	string fileName;
 	unsigned textureID;
@@ -18,7 +15,6 @@ private:
 public:
 	slot();
 	~slot();
-
 
 	void loadimagebasedID(int itemid, CImageLoader* il);
 	int getitemID();

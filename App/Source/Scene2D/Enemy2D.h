@@ -31,20 +31,16 @@ class CMap2D;
 
 #include "Shivs2D.h"
 
-#include "Primitives/SpriteAnimation.h"
-
-#include "Camera.h"
-
-// Include the Map2D as we will use it to check the player's movements and actions
-#include "Map2D.h"
-
-// Include ImageLoader
-#include "System\ImageLoader.h"
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 // Include Mesh Builder
 #include "Primitives/MeshBuilder.h"
+// Include Sprite Animations
+#include "Primitives/SpriteAnimation.h"
+
+#include "Camera.h"
+
+#include "Map2D.h"
 
 
 class CEnemy2D : public CEntity2D
@@ -57,7 +53,7 @@ public:
 	virtual ~CEnemy2D(void);
 
 	// Init
-	virtual bool Init(void);
+	bool Init(void);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -144,7 +140,6 @@ protected:
 	int iFSMCounter;
 
 	float health;
-	float atk;
 
 	float timer;
 	// Max count in a state
@@ -165,11 +160,7 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	void setHealth(float num);
-	float getHealth();
-	void setAtk(float num);
-	float getAtk();
-
 	float speed_multiplier = 0.25f;
+	float atk;
 };
 

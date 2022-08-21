@@ -1,5 +1,5 @@
 /**
- CShivs2D
+ CSword2D
  By: Toh Da Jun
  Date: Mar 2020
  */
@@ -19,10 +19,6 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
-// Include CEntity2D
-#include "Primitives/Entity2D.h"
-#include "Primitives/SpriteAnimation.h"
-
 #include "..\SoundController\SoundController.h"
 
 // Include the Map2D as we will use it to check the player's movements and actions
@@ -40,12 +36,14 @@ class Camera;
 
 #include "Camera.h"
 
-#include "InventoryManager.h"
+#include "InventoryItem.h"
 #include "GameManager.h"
 
-class CProjectile2D : public CSingletonTemplate<CProjectile2D>, public CEntity2D
+#include "Hilt2D.h"
+#include "Blade2D.h"
+
+class CSword2D : public CInventoryItem
 {
-	friend CSingletonTemplate<CProjectile2D>;
 public:
 
 	// Init
@@ -63,13 +61,16 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	// Constructor
+	CSword2D(CHilt2D* hilt, CBlade2D* blade);
+
+	// Destructor
+	virtual ~CSword2D(void);
+
 protected:
 
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 direction;		//direction of movement
-	float angle = 0.f;		//calculated based on direction
-
-	double distanceTravelled;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
@@ -77,6 +78,9 @@ protected:
 	CPlayer2D* cPlayer2D;
 
 	Camera* camera;
+
+	CHilt2D* hilt;
+	CBlade2D* blade;
 
 	//DIRECTION direction;
 	// Animated Sprite
@@ -92,12 +96,7 @@ protected:
 	// Player's colour
 	glm::vec4 runtimeColour;
 
-	// Constructor
-	CProjectile2D(void);
-
-	// Destructor
-	virtual ~CProjectile2D(void);
-
 	void InteractWithMap(void);
+
 };
 

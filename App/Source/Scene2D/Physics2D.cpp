@@ -38,7 +38,7 @@ bool CPhysics2D::Init(void)
 	// Reset these variables
 	v2InitialVelocity = glm::vec2(0.0f);
 	v2FinalVelocity = glm::vec2(0.0f);
-	v2Acceleration = glm::vec2(0.0f);		// Acceleration does not need to be reset here.
+	//v2Acceleration = glm::vec2(0.0f);		// Acceleration does not need to be reset here.
 	v2Displacement = glm::vec2(0.0f);
 	v2PrevDisplacement = glm::vec2(0.0f);
 	fTime = 0.0f;
@@ -157,8 +157,7 @@ void CPhysics2D::Update(void)
 	v2Displacement = v2InitialVelocity * fTime;
 
 	// Update v2InitialVelocity
-	//v2FinalVelocity = v2InitialVelocity + (v2Gravity * fTime) + (v2Acceleration * fTime);
-	v2FinalVelocity = v2InitialVelocity + (v2Acceleration * fTime);
+	v2InitialVelocity = v2InitialVelocity + v2Gravity * fTime;
 }
 
 // Add elapsed time

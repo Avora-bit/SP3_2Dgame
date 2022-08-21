@@ -1,10 +1,10 @@
 ﻿/**
- Shivs2D
+ Sword2D
  @brief A class representing the player object
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Shivs2D.h"
+#include "Sword2D.h"
 
 #include <iostream>
 using namespace std;
@@ -23,7 +23,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CShivs2D::CShivs2D(void)
+CSword2D::CSword2D(CHilt2D* hilt, CBlade2D* blade)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -41,17 +41,20 @@ CShivs2D::CShivs2D(void)
 
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
+
+	this->hilt = hilt;
+	this->blade = blade;
 }
 
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CShivs2D::~CShivs2D(void)
+CSword2D::~CSword2D(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
 
-	// We won't delete this since it was created elsewhere
+	// We won't delete this since it was created elsewherex
 	cMap2D = NULL;
 
 	camera = NULL;
@@ -67,6 +70,18 @@ CShivs2D::~CShivs2D(void)
 		animatedSprites = NULL;
 	}
 
+	if (hilt)
+	{
+		delete hilt;
+		hilt = NULL;
+	}
+
+	if (blade)
+	{
+		delete blade;
+		blade = NULL;
+	}
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 }
@@ -74,7 +89,7 @@ CShivs2D::~CShivs2D(void)
 /**
   @brief Initialise this instance
   */
-bool CShivs2D::Init(void)
+bool CSword2D::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -90,7 +105,7 @@ bool CShivs2D::Init(void)
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to CShivs2D
+	// Find the indices for the player in arrMapInfo, and assign it to CSword2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 
@@ -98,8 +113,6 @@ bool CShivs2D::Init(void)
 	vec2Index = cPlayer2D->vec2Index;
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
-
-	distanceTravelled = 0;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -142,7 +155,7 @@ bool CShivs2D::Init(void)
 /**
  @brief Update this instance
  */
-void CShivs2D::Update(const double dElapsedTime)
+void CSword2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
 	if (!cPlayer2D->getProjectileForce())
@@ -252,7 +265,7 @@ void CShivs2D::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CShivs2D::PreRender(void)
+void CSword2D::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -265,7 +278,7 @@ void CShivs2D::PreRender(void)
 /**
  @brief Render this instance
  */
-void CShivs2D::Render(void)
+void CSword2D::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -276,10 +289,11 @@ void CShivs2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
+
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-													vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
-													0.0f));
-	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
+				vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
+				0.0f));
+
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
@@ -298,7 +312,7 @@ void CShivs2D::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CShivs2D::PostRender(void)
+void CSword2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
@@ -308,7 +322,7 @@ void CShivs2D::PostRender(void)
  @brief Constraint the player's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-//bool CShivs2D::Constraint(DIRECTION eDirection)
+//bool CSword2D::Constraint(DIRECTION eDirection)
 //{
 //	if (eDirection == LEFT)
 //	{
@@ -357,7 +371,7 @@ void CShivs2D::PostRender(void)
 //	return true;
 //}
 //
-void CShivs2D::InteractWithMap(void)
+void CSword2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -365,12 +379,11 @@ void CShivs2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		vec2NumMicroSteps.x = 0;
 
-		distanceTravelled = 0;
 		break;
 	}
 }
 //
-//bool CShivs2D::CheckPosition(DIRECTION eDirection)
+//bool CSword2D::CheckPosition(DIRECTION eDirection)
 //{
 //	if (eDirection == LEFT)
 //	{
@@ -447,7 +460,7 @@ void CShivs2D::InteractWithMap(void)
 //	}
 //	else
 //	{
-//		cout << "CShivs2D::CheckPosition: Unknown direction." << endl;
+//		cout << "CSword2D::CheckPosition: Unknown direction." << endl;
 //	}
 //	return true;
 //}

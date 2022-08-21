@@ -48,8 +48,6 @@ CInventoryState::CInventoryState(void)
 
 }
 
-
-
 /**
  @brief Destructor
  */
@@ -64,43 +62,31 @@ CInventoryState::~CInventoryState(void)
 bool CInventoryState::Init(void)
 {
 	cout << "CInventoryState::Init()\n" << endl;
-
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
-
 	cMouseController = CMouseController::GetInstance();
-	guiscene2d = CGUI_Scene2D::GetInstance();
-
 	il = CImageLoader::GetInstance();
 	
-	
+	hotbar = CGUI_Scene2D::GetInstance();
+	cPlayer2D = CPlayer2D::GetInstance();
+
 
 
 	for (int i = 0; i < 9; i++)
 	{
-		if (i > 2)
-		{
-			if (i % 2 == 0)
-			{
-				butnum[i].setitemID(1);
-			}
-			else
-			{
-				butnum[i].setitemID(2);
-			}
-
-		}
-		else
-		{
-			//the first three items are from the hotbar
-			butnum[i].setitemID(guiscene2d->return_hbcellid(i));
-		}
+		/*if (i > 2)
+		{*/
+			butnum[i].setitemID(cPlayer2D->getitemval(i));
+		//}
+		//else
+		//{
+		//	//the first three items are from the hotbar
+		//	butnum[i].setitemID(hotbar->return_hbcellid(i));
+		//}
 
 		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 	}
-
-	
 
 	return true;
 }
@@ -121,6 +107,13 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 	float buttonWidth = 256;
 	float buttonHeight = 128;
+
+	for (int i = 0; i < 9; i++)
+	{
+		//cout << "player array" << i << " is " << cPlayer2D->getitemval(i) << endl;
+		//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
+		cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
+	}
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -153,9 +146,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			string x = to_string(n);
 			strcpy(y, x.c_str());
 
-
-
-			//render the bar yellow if it's hotbasr
+			//render the bar yellow if it's hotbar
 			if (n >= 3)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
@@ -164,15 +155,34 @@ bool CInventoryState::Update(const double dElapsedTime)
 			else
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
-
 			}
 
 			
 			if (butnum[n].getitemID() != 0)
 			{
+				//Discard items
+				if (ImGui::IsItemHovered())
+				{
+					//ImGui::Text("Check %s", butnum[n].getitemID());
+
+					if (cMouseController->IsButtonDown(1))
+					{
+						butnum[n].setitemID(0);
+						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+
+						//set hotbar to 0
+						if (n <= 2)
+						{
+							hotbar->set_hbcellid(n, butnum[n].getitemID());
+						}
+
+					}
+				}
+
 				// Our buttons are both drag sources and drag targets here!
 				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 				{
+
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
 					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
@@ -182,6 +192,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			}
 			if (ImGui::BeginDragDropTarget())
 			{
+
 				//get with the id
 				//when mouse is released
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
@@ -194,32 +205,35 @@ bool CInventoryState::Update(const double dElapsedTime)
 					butnum[n] = butnum[payload_n];
 					butnum[payload_n] = tmp;
 
+					//cPlayer2D->setitem
+
+
 					//payload is what is selected to drag
 					// n is what it's being dragged to
-					
+					cPlayer2D->setitem(n, butnum[n].getitemID());
+					cPlayer2D->setitem(payload_n, butnum[payload_n].getitemID());
+
+
 					//set the hotbar to the item
 					if (n < 3)
 					{
-						guiscene2d->set_hbcellid(n, butnum[n].getitemID());
+						hotbar->set_hbcellid(n, butnum[n].getitemID());
+						//cPlayer2D->setitem(n, butnum[n].getitemID());
 
 					}
 					else if (payload_n < 3)
 					{
-						guiscene2d->set_hbcellid(payload_n, butnum[payload_n].getitemID());
+						hotbar->set_hbcellid(payload_n, butnum[payload_n].getitemID());
+						//cPlayer2D->setitem(payload_n, butnum[payload_n].getitemID());
 
 					}
-
-					cout << "Payload n " << payload_n << endl;
 
 					cout << endl;
 				}
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
-
 		}
-	
-
 		ImGui::End();
 	}
 
@@ -256,14 +270,14 @@ void CInventoryState::Render(void)
 void CInventoryState::Destroy(void)
 {
 	
+	/*delete cPlayer2D;
+	cPlayer2D = nullptr;*/
+
 	delete il;
 	il = nullptr;
 
-	/*for (int i = 0; i < 12; i++)
-	{
-		delete butnum[i];
-	}*/
-
-	/*delete il;
-	il = nullptr;*/
 }
+
+
+
+

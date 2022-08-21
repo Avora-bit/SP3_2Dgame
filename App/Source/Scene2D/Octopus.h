@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy2D.h"
 
-class Octopus : public CEnemy2D
+class Octopus : protected CEnemy2D
 {
 public:
 	Octopus();
