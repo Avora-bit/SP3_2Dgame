@@ -67,7 +67,7 @@ protected:
 	glm::vec2 direction;		//direction of movement
 	float angle = 0.f;		//calculated based on direction
 
-	double distanceTravelled;
+	double distance = 0.f;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
@@ -97,6 +97,8 @@ protected:
 	virtual ~CShivs2D(void);
 
 	void InteractWithMap(void);
+
+	bool thrown = false;
 
 };
 

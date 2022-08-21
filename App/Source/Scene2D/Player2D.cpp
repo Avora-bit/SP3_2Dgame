@@ -93,9 +93,11 @@ bool CPlayer2D::Init(void)
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
-	BowForce = 0;
+	ProjectileForce = 0.f;
 
 	angle = 0;
+
+	movementSpeed = 1.0f;
 
 	direction = RIGHT;
 
@@ -109,22 +111,6 @@ bool CPlayer2D::Init(void)
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
-	// Load the player texture 
-	/*
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2D_player.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_PlayerTile.tga" << endl;
-		return false;
-	}
-	*/
-	// Create the quad mesh for the player
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// Load the player texture
-	// Load the ground texture
 
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
 	if (iTextureID == 0)
@@ -172,7 +158,7 @@ bool CPlayer2D::Init(void)
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
+	
 	//debug shivs
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -180,6 +166,7 @@ bool CPlayer2D::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
+<<<<<<< HEAD
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
@@ -190,6 +177,8 @@ bool CPlayer2D::Init(void)
 
 	il = CImageLoader::GetInstance();
 
+=======
+>>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
 	return true;
 }
 
@@ -223,212 +212,572 @@ bool CPlayer2D::Reset()
 void CPlayer2D::Update(const double dElapsedTime)
 {
 
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	cout << "PA" << i << " is " << getitemval(i) << endl;
-	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
-
-	//}
-
-	// vitals
-	static float hungerTimer = 0;
-	hungerTimer += dElapsedTime;
-	
-	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
-	{
-		cInventoryManager->GetItem("Hunger")->Remove(5);
-		hungerTimer = 0;
-	}
-	
-	static float starveTimer = 0;
-	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
-	{
-		starveTimer += dElapsedTime;
-		if (starveTimer >= 1)
-		{
-			starveTimer = 0;
-			cInventoryManager->GetItem("Health")->Remove(5);
-		}
-	}
-	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
-		starveTimer = 0;
-
-
-	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
-		CGameManager::GetInstance()->bPlayerLost = true;
-
-	std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
-
-
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	static float staminaTimer = 0;
+	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
-		if (vec2Index.x >= 0)
+		staminaTimer += dElapsedTime;
+		if (cInventoryManager->GetItem("Stamina")->GetCount() < cInventoryManager->GetItem("Stamina")->GetMaxCount()) // stamina
 		{
-			vec2NumMicroSteps.x--; //speed_multiplier;
-			if (vec2NumMicroSteps.x < 0)
+			if (staminaTimer >= 0.05)
 			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
+				cInventoryManager->GetItem("Stamina")->Add(1);
+				staminaTimer = 0;
 			}
 		}
 
-		if (!CheckPosition(LEFT))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 		{
-			vec2Index.x = vec2OldIndex.x;
-			vec2NumMicroSteps.x = 0;
-		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(LEFT);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		angle = 270;
-		direction = LEFT;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
-		if (vec2Index.y >= 0)
-		{
-			vec2NumMicroSteps.y--; //speed_multiplier;
-			if (vec2NumMicroSteps.y < 0)
+			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				vec2Index.y--;
+				vec2NumMicroSteps.x--; //speed_multiplier;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
 			}
+
+			if (!CheckPosition(LEFT))
+			{
+				vec2Index.x = vec2OldIndex.x;
+				vec2NumMicroSteps.x = 0;
+			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(LEFT);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+			angle = 270;
+			direction = LEFT;
 		}
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y--; //speed_multiplier;
+				if (vec2NumMicroSteps.y < 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
 
-		if (!CheckPosition(DOWN))
-		{
-			vec2Index.y = vec2OldIndex.y;
-			vec2NumMicroSteps.y = 0;
+			if (!CheckPosition(DOWN))
+			{
+				vec2Index.y = vec2OldIndex.y;
+				vec2NumMicroSteps.y = 0;
+			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(DOWN);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
+
+			angle = 0;
+			direction = DOWN;
 		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(DOWN);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-		angle = 0;
-		direction = DOWN;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
-	{
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 		{
-			vec2NumMicroSteps.y++;// speed_multiplier;
-			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y++;// speed_multiplier;
+				if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+
+			if (!CheckPosition(UP))
 			{
 				vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
 			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(UP);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
+
+			angle = 180;
+			direction = UP;
 		}
-
-		if (!CheckPosition(UP))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 		{
-			vec2NumMicroSteps.y = 0;
-		}
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x++;// speed_multiplier;
+				if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
 
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(UP);
-
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-
-		angle = 180;
-		direction = UP;
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
-	{
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			vec2NumMicroSteps.x++;// speed_multiplier;
-			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+			if (!CheckPosition(RIGHT))
 			{
 				vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
 			}
+
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+			Constraint(RIGHT);
+
+			/*if (hasSword || chargeSword)
+				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
+			else
+				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
+			angle = 90;
+			direction = RIGHT;
 		}
 
-		if (!CheckPosition(RIGHT))
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
 		{
-			vec2NumMicroSteps.x = 0;
+			direction = TOP_RIGHT;
+			angle = 135;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
+		{
+			direction = BOTTOM_RIGHT;
+			angle = 45;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
+		{
+			direction = BOTTOM_LEFT;
+			angle = 315;
+		}
+		else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
+		{
+			direction = TOP_LEFT;
+			angle = 225;
 		}
 
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(RIGHT);
+		static bool dodgeKeyDown = false;
+		if ((cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) || cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT)) && !dodgeKeyDown &&
+			cInventoryManager->GetItem("Stamina")->GetCount() >= 30.f)
+		{
+			cInventoryManager->GetItem("Stamina")->Remove(30.f);
+			dodgeKeyDown = true;
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+		}
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
+			dodgeKeyDown = false;
+	}
+	//std::cout << cInventoryManager->GetItem("Stamina")->GetCount() << std::endl;
+	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
+	{
+		if (staminaTimer > 0)
+			staminaTimer = 0;
+		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
+		cPhysics2D.SetTime(float(dElapsedTime));
+		cPhysics2D.Update();
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+		glm::vec2 iIndex_OLD = vec2Index;
+		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+		switch (direction)
+		{
+		case UP:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case DOWN:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case LEFT:
+		{
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case RIGHT:
+		{
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case TOP_LEFT:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
 
-		/*if (hasSword || chargeSword)
-			animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-		else
-			animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-		angle = 90;
-		direction = RIGHT;
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case BOTTOM_LEFT:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x >= 0)
+			{
+				vec2NumMicroSteps.x -= fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x <= 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
+			}
+			Constraint(LEFT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(LEFT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case TOP_RIGHT:
+		{
+			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+			{
+				vec2NumMicroSteps.y += fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y > (int)cSettings->NUM_STEPS_PER_TILE_YAXIS)
+				{
+					vec2NumMicroSteps.y -= cSettings->NUM_STEPS_PER_TILE_YAXIS;
+					if (vec2NumMicroSteps.y < 0)
+						vec2NumMicroSteps.y = 0;
+					vec2Index.y++;
+				}
+			}
+			Constraint(UP);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(UP) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		case BOTTOM_RIGHT:
+		{
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y -= fabs(sin(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y <= 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			Constraint(DOWN);
+			int iIndex_YAxis_Proposed = vec2Index.y;
+			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			{
+				vec2Index.y = i;
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index.y = vec2OldIndex.y;
+					vec2NumMicroSteps.y = 0;
+					break;
+				}
+			}
+
+			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+			{
+				vec2NumMicroSteps.x += fabs(cos(glm::radians(45.f)) * iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				{
+					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+					if (vec2NumMicroSteps.x < 0)
+						vec2NumMicroSteps.x = 0;
+					vec2Index.x++;
+				}
+			}
+			Constraint(RIGHT);
+			int iIndex_XAxis_Proposed = vec2Index.x;
+			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			{
+				vec2Index.x = i;
+				if (CheckPosition(RIGHT) == false)
+				{
+					vec2Index.x = vec2OldIndex.x;
+					vec2NumMicroSteps.x = 0;
+					break;
+				}
+			}
+			break;
+		}
+		}
+
+		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
+		if (cPhysics2D.GetInitialVelocity().x >= -0.2 && cPhysics2D.GetInitialVelocity().x <= 0.2)
+		{
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
-		angle = 135;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
-		angle = 45;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
-		angle = 315;
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
-		angle = 225;
-	
+	//held item render + animation
 	{
 		switch (direction)			//hold weapon
 		{
-		/*case UP:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-			break;
-		case DOWN:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			break;
-		case LEFT:			
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-			break;
-		case RIGHT:
-			if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-			break;*/
-		}
-	}
-	{		//bow logic
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
-		{
-			if (BowForce < 7)
-				BowForce += (dElapsedTime * 5);
-		}
-		else
-		{
-			attackDirection = direction;
-			if (BowForce < 1.5)
-			{
-				//cSoundController->PlaySoundByID(9);			//replace with bow release sound
-			}
-			else
-			{
-				//cSoundController->PlaySoundByID(10);		//replace with fire sound
-				//reduce arrow count
-			}
-			BowForce = 0;
+			/*case UP:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
+				break;
+			case DOWN:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
+				break;
+			case LEFT:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
+				break;
+			case RIGHT:
+				if (hasSword || chargeSword)
+					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
+				break;*/
 		}
 	}
 
+	//spawn projectile logic
+	{
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		{
+			if (ProjectileForce < maxPForce)
+				ProjectileForce += (dElapsedTime * 5);
+			throwing = true;
+		}
+		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
+		{
+			//replace with mouse position
+			attackDirection = direction;
+			//min force
+			if (ProjectileForce > minPForce) {		//throw if force is high enough
+				//cSoundController->PlaySoundByID(10);		//replace with fire sound
+				//reduce ammo count
+				cInventoryItem = cInventoryManager->GetItem("Shivs");
+				cInventoryItem->Remove(1);
+				//spawn projectile
+
+			}
+			//reset force
+			throwing = false;
+			ProjectileForce = 0;
+		}
+		//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+	}
+
+	// hunger
+	{
+		static float hungerTimer = 0;
+		hungerTimer += dElapsedTime;
+
+		if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
+		{
+			cInventoryManager->GetItem("Hunger")->Remove(5);
+			hungerTimer = 0;
+		}
+
+		static float starveTimer = 0;
+		if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
+		{
+			starveTimer += dElapsedTime;
+			if (starveTimer >= 1)
+			{
+				starveTimer = 0;
+				cInventoryManager->GetItem("Health")->Remove(5);
+			}
+		}
+		else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
+			starveTimer = 0;
+
+
+		if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
+			CGameManager::GetInstance()->bPlayerLost = true;
+	}
+	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
+	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	InteractWithMap();
 
@@ -548,7 +897,7 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CPLayer::Constraint: Unknown Direction" << endl;
+		//cout << "CPLayer::Constraint: Unknown Direction" << endl;
 	}
 }
 
@@ -562,12 +911,6 @@ void CPlayer2D::InteractWithMap(void)
 	case 99:
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;
-	//FOR INVENTORY PURPOSES - REAGAN
-	case 1:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-		AddItem(1);
-		break;
-	//
 	default:
 		break;
 	}
@@ -642,7 +985,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	}
 	else
 	{
-		cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
+		//cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
 	}
 	return true;
 }
@@ -670,56 +1013,13 @@ CPlayer2D::DIRECTION CPlayer2D::getAttackDirection(void)
 	return attackDirection;
 }
 
-double CPlayer2D::getBowForce()
+double CPlayer2D::getProjectileForce()
 {
-	return BowForce;
+	return ProjectileForce;
 }
 
 void CPlayer2D::LoseHealth(float health)
 {
 	cInventoryItem = cInventoryManager->GetItem("Health");
 	cInventoryItem->Remove(health);
-}
-
-
-void CPlayer2D::AddItem(int itemid)
-{
-	for (int i = 0; i < 9; i++)
-	{
-		if (inventorySlots[i].getitemID() == 0)
-		{
-			inventorySlots[i].setitemID(itemid);
-			inventorySlots[i].loadimagebasedID(itemid, il);
-
-			break;
-		}
-	}
-}
-
-slot CPlayer2D::getitem(int arr)
-{
-	return inventorySlots[arr];
-}
-
-void CPlayer2D::setitem(int arr, int itemid)
-{
-	inventorySlots[arr].setitemID(itemid);
-	inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
-
-}
-
-int CPlayer2D::getitemval(int arr)
-{
-	return inventorySlots[arr].getitemID();
-}
-
-
-int CPlayer2D::getx()
-{
-	return vec2Index.x;
-}
-
-int CPlayer2D::gety()
-{
-	return vec2Index.y;
 }

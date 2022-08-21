@@ -6,7 +6,7 @@
  */
 #pragma once
 
-// Include Singleton template
+ // Include Singleton template
 #include "DesignPatterns\SingletonTemplate.h"
 
 // Include GLEW
@@ -43,10 +43,6 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
-
-
-#include "slot.h"
-
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -77,6 +73,10 @@ protected:
 		RIGHT = 1,
 		UP = 2,
 		DOWN = 3,
+		TOP_LEFT = 4,
+		BOTTOM_LEFT = 5,
+		TOP_RIGHT = 6,
+		BOTTOM_RIGHT = 7,
 		NUM_DIRECTIONS
 	};
 
@@ -102,20 +102,19 @@ protected:
 
 	CSoundController* cSoundController;
 
-
 	Camera* camera;
 
 	DIRECTION direction;
-	DIRECTION attackDirection;
 
-	double BowForce;
+	//combat
+	DIRECTION attackDirection;
+	bool throwing = false;
+	double maxPForce = 10;
+	double minPForce = 2.f;
+	double ProjectileForce;
 
 	// vitals
-	float health;
-	float stamina;
-	float hunger;
-
-	float movementSpeed; 
+	float movementSpeed;
 
 	//render
 	float angle;
@@ -138,37 +137,11 @@ protected:
 
 	void UpdateHealthLives(void);
 
-
-
-	slot inventorySlots[9];
-	CImageLoader* il;
-
-
-
 public:
 	DIRECTION getAttackDirection();
-	double getBowForce();
+	double getProjectileForce();
 
 	void LoseHealth(float health);
 
-
-
-
-
-	void AddItem(int itemid);
-
-	slot getitem(int arr);
-	void setitem(int arr, int itemid);
-
-
-
-	int getitemval(int arr);
-
-
-	int getx();
-	int gety();
-
-
-	//float speed_multiplier = 0.25f;
 };
 

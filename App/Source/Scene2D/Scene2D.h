@@ -42,7 +42,9 @@
 #include "Map2D.h"
 #include "Player2D.h"
 #include "Shivs2D.h"
+#include "Projectile2D.h"
 #include "Enemy2D.h"
+#include "Octopus.h"
 #include "GUI_Scene2D.h"
 #include "Camera.h"
 
@@ -83,9 +85,11 @@ protected:
 
 	CPlayer2D* cPlayer2D;
 
+	//debug shivs
 	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
+	vector<CEntity2D*> projectileVector;
 
 	Camera* camera;
 

@@ -35,6 +35,17 @@ class CMap2D;
 
 #include "Camera.h"
 
+// Include the Map2D as we will use it to check the player's movements and actions
+#include "Map2D.h"
+
+// Include ImageLoader
+#include "System\ImageLoader.h"
+
+// Include Shader Manager
+#include "RenderControl\ShaderManager.h"
+// Include Mesh Builder
+#include "Primitives/MeshBuilder.h"
+
 
 class CEnemy2D : public CEntity2D
 {
@@ -46,7 +57,7 @@ public:
 	virtual ~CEnemy2D(void);
 
 	// Init
-	bool Init(void);
+	virtual bool Init(void);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -59,24 +70,6 @@ public:
 
 	// PostRender
 	void PostRender(void);
-
-	// Set the indices of the enemy2D
-	void Setvec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
-
-	// Set the number of microsteps of the enemy2D
-	void Setvec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
-
-	// Set the UV coordinates of the enemy2D
-	void Setvec2UVCoordinates(const float fUVCoordinate_XAxis, const float fUVCoordinate_YAxis);
-
-	// Get the indices of the enemy2D
-	glm::vec2 Getvec2Index(void) const;
-
-	// Get the number of microsteps of the enemy2D
-	glm::vec2 Getvec2NumMicroSteps(void) const;
-
-	// Set the UV coordinates of the enemy2D
-	glm::vec2 Getvec2UVCoordinates(void) const;
 
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
@@ -150,6 +143,7 @@ protected:
 	int iFSMCounter;
 
 	float health;
+	float atk;
 
 	float timer;
 	// Max count in a state
@@ -169,6 +163,11 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
+
+	void setHealth(float num);
+	float getHealth();
+	void setAtk(float num);
+	float getAtk();
 
 	float speed_multiplier = 0.25f;
 };

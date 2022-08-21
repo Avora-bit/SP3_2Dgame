@@ -99,7 +99,7 @@ bool CShivs2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
-	distanceTravelled = 0;
+	distance = 0;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -145,12 +145,12 @@ bool CShivs2D::Init(void)
 void CShivs2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
-	if (!cPlayer2D->getBowForce())
+	if (!cPlayer2D->getProjectileForce())
 	{
-		if (cPlayer2D->getBowForce() >= 1.5)
+		if (cPlayer2D->getProjectileForce() >= 1.5)
 		{
 			cPhysics2D.SetTime((float)dElapsedTime);
-			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getBowForce(), 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getProjectileForce(), 0.0f));
 			cPhysics2D.Update();
 			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 			int iIndex_XAxis_OLD = vec2Index.x;
@@ -276,9 +276,17 @@ void CShivs2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-													vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
-													0.0f));
+
+	if (thrown) {
+		transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
+					vec2UVCoordinate.y + camera->vec2Index.y, 0.0f));
+	}
+	else {
+		transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
+					vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
+					0.0f));
+	}
+	
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -365,7 +373,7 @@ void CShivs2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
 		vec2NumMicroSteps.x = 0;
 
-		distanceTravelled = 0;
+		distance = 0;
 		break;
 	}
 }
