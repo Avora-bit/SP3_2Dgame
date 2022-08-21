@@ -93,7 +93,7 @@ bool CPlayer2D::Init(void)
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
-	BowForce = 0;
+	ProjectileForce = 0;
 
 	angle = 0;
 
@@ -404,25 +404,35 @@ void CPlayer2D::Update(const double dElapsedTime)
 			break;*/
 		}
 	}
-	{		//bow logic
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER))
+
+	//spawn projectile logic
+	{
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
-			if (BowForce < 7)
-				BowForce += (dElapsedTime * 5);
+			if (ProjectileForce < maxPForce)
+				ProjectileForce += (dElapsedTime * 5);
+			throwing = true;
 		}
-		else
+		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
 		{
+			//replace with mouse position
 			attackDirection = direction;
-			if (BowForce < 1.5)
-			{
-				//cSoundController->PlaySoundByID(9);			//replace with bow release sound
-			}
-			else
-			{
+			//min force
+			if (ProjectileForce > minPForce) {		//throw if force is high enough
 				//cSoundController->PlaySoundByID(10);		//replace with fire sound
 				//reduce arrow count
+				//reduce ammo count
+				cInventoryItem = cInventoryManager->GetItem("Shivs");
+				cInventoryItem->Remove(1);
+				//spawn projectile
+
 			}
-			BowForce = 0;
+			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+		}
+		else {
+			//reset force
+			throwing = false;
+			ProjectileForce = 0;
 		}
 	}
 
@@ -667,9 +677,9 @@ CPlayer2D::DIRECTION CPlayer2D::getAttackDirection(void)
 	return attackDirection;
 }
 
-double CPlayer2D::getBowForce()
+double CPlayer2D::getProjectileForce()
 {
-	return BowForce;
+	return ProjectileForce;
 }
 
 void CPlayer2D::LoseHealth(float health)

@@ -145,12 +145,12 @@ bool CShivs2D::Init(void)
 void CShivs2D::Update(const double dElapsedTime)
 {
 	vec2OldIndex = vec2Index;
-	if (!cPlayer2D->getBowForce())
+	if (!cPlayer2D->getProjectileForce())
 	{
-		if (cPlayer2D->getBowForce() >= 1.5)
+		if (cPlayer2D->getProjectileForce() >= 1.5)
 		{
 			cPhysics2D.SetTime((float)dElapsedTime);
-			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getBowForce(), 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getProjectileForce(), 0.0f));
 			cPhysics2D.Update();
 			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 			int iIndex_XAxis_OLD = vec2Index.x;

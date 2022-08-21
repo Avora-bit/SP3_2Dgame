@@ -105,7 +105,10 @@ protected:
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
-	double BowForce;
+	bool throwing = false;
+	double maxPForce = 10;
+	double minPForce = 2.f;
+	double ProjectileForce;
 
 	// vitals
 	float health;
@@ -140,8 +143,16 @@ protected:
 
 public:
 	DIRECTION getAttackDirection();
-	double getBowForce();
+	double getProjectileForce();
 
 	void LoseHealth(float health);
+
+	void CPlayer2D::AddItem(int itemid);
+	slot CPlayer2D::getitem(int arr);
+	void CPlayer2D::setitem(int arr, int itemid);
+	int CPlayer2D::getitemval(int arr);
+
+	int CPlayer2D::getx();
+	int CPlayer2D::gety();
 };
 
