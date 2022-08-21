@@ -93,8 +93,6 @@ bool CEnemy2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
 
-	
-
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 

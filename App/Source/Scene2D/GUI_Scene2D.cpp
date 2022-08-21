@@ -8,10 +8,7 @@
 
 #include <iostream>
 using namespace std;
-<<<<<<< HEAD
 #include <sstream>
-=======
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -179,44 +176,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//ImGui::PopStyleColor();
 	//ImGui::End();
 
-	// projectile force
-	{
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-		ImGuiWindowFlags swordForceFlags = ImGuiWindowFlags_AlwaysAutoResize |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoScrollbar;
-
-		ImGui::Begin("Force", NULL, swordForceFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
-		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-		ImGui::SameLine();
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-		ImGui::ProgressBar((float)(cPlayer2D->getBowForce() / 7 * 100) /
-			100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::End();
-	}
-
-<<<<<<< HEAD
-=======
-	ImGui::Begin("Force", NULL, swordForceFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
-		100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
-	
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
 	/*
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! 
 	// You can browse its code to learn more about Dear ImGui!).
@@ -261,7 +220,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	*/
 
-<<<<<<< HEAD
 	//health bar
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
@@ -324,56 +282,57 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}
-=======
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
 
-	ImGui::Begin("Stamina", NULL, staminaFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	cInventoryItem = cInventoryManager->GetItem("Stamina");
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar(cInventoryItem->GetCount() /
-		(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
-			relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
+	//stamina
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
 
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
+		ImGui::Begin("Stamina", NULL, staminaFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItem = cInventoryManager->GetItem("Stamina");
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+		ImGui::ProgressBar(cInventoryItem->GetCount() /
+			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
 
 
 	//RENDER HOTBAR
 	{
-<<<<<<< HEAD
-		for (int i = 0; i < 3; i++)
-=======
-		ImGui::PushID(n);
+		for (int i = 0; i < 3; i++) {
+			ImGui::PushID(n);
 
-		//don't break line if doesn't reach 3 cells
-		if ((n % 3) != 0)
-			ImGui::SameLine();
+			//don't break line if doesn't reach 3 cells
+			if ((n % 3) != 0) {
+				ImGui::SameLine();
+			}
+			
+			string x = to_string(n);
+			strcpy(y, x.c_str());
 
-		string x = to_string(n);
-		strcpy(y, x.c_str());
+			ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
 
-		ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
+			cout << hbcells[2].getitemID() << endl;
 
-		//cout << hbcells[2].getitemID() << endl;
-
-		if (hbcells[n].getitemID() != 0)
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
-		{
-			hbcells[i].setitemID(cPlayer2D->getitemval(i));
-			hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+			if (hbcells[n].getitemID() != 0)
+			{
+				hbcells[i].setitemID(cPlayer2D->getitemval(i));
+				hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+			}
 		}
+			
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoTitleBar |
@@ -385,7 +344,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
 		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
 
-<<<<<<< HEAD
 		char y[3];
 		for (int n = 0; n < 3; n++)
 		{
@@ -407,15 +365,13 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
-=======
 				//swap images and itemId inside
 				slot tmp = hbcells[n];
-				hbcells[n] = hbcells[payload_n];
-				hbcells[payload_n] = tmp;
+				//hbcells[n] = hbcells[payload_n];
+				//hbcells[payload_n] = tmp;
 
 
-				cout << endl;
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
+				std::cout << endl;
 			}
 			if (ImGui::BeginDragDropTarget())
 			{
@@ -430,7 +386,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					slot tmp = hbcells[n];
 					hbcells[n] = hbcells[payload_n];
 					hbcells[payload_n] = tmp;
-					cout << endl;
+					std::cout << endl;
 				}
 				ImGui::EndDragDropTarget();
 			}
@@ -439,13 +395,34 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}
-<<<<<<< HEAD
-=======
+
+	// projectile force
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags ProjectileForceFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+
+		ImGui::Begin("Force", NULL, ProjectileForceFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+		ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
+			100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
+
 	ImGui::PopStyleColor();
 	ImGui::End();
 
 	ImGui::PopStyleColor();
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
 	ImGui::End();
 }
 

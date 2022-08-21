@@ -43,6 +43,8 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
+#include "slot.h"
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -142,6 +144,5 @@ public:
 	double getProjectileForce();
 
 	void LoseHealth(float health);
-
 };
 

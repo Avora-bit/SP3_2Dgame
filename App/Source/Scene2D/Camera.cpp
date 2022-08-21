@@ -6,7 +6,7 @@ Camera::Camera(void)
 	 cMouseController(NULL)
 {
 	vec2Index = glm::vec2(0.0f, 0.0f);
-	zoom = 8.f;
+	zoom = 5.f;
 	mouseWeight = 0.1;
 }
 

@@ -166,19 +166,13 @@ bool CPlayer2D::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-<<<<<<< HEAD
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		inventorySlots[i].setitemID(0);
+		//inventorySlots[i].setitemID(0);
 	}
 
-
-
-	il = CImageLoader::GetInstance();
-
-=======
->>>>>>> parent of 66fb9ca (Revert "Merge branch 'main' of https://github.com/Avora-bit/SP3_2Dgame")
+	//il = CImageLoader::GetInstance();
 	return true;
 }
 

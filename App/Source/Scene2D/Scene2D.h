@@ -50,8 +50,6 @@
 
 #include "GameManager.h"
 
-
-
 #include "../GameStateManagement/InventoryState.h"
 
 // Add your include files here
