@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy2D.h"
+#include <stdlib.h>
 
 class Chicken:public CEnemy2D
 {
@@ -10,9 +11,7 @@ public:
 	bool Init(void);
 	void Update(const double dElapsedTime);
 	void UpdatePosition(void);
+	bool randomDirection();
 private:
-	bool stuck;
-	bool collided;
-	DIRECTION stuckDirection;
-	glm::vec2 stuckPosition;
+
 };

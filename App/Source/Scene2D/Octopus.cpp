@@ -266,8 +266,6 @@ void Octopus::UpdatePosition(void)
 					vec2Direction = glm::vec2(-1, 0);
 			}
 		}
-		else
-			stuck = false;
 
 		// Interact with the Player
 		//InteractWithPlayer();

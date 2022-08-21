@@ -43,8 +43,8 @@
 #include "Player2D.h"
 #include "Shivs2D.h"
 #include "Projectile2D.h"
-#include "Enemy2D.h"
 #include "Octopus.h"
+#include "Chicken.h"
 #include "GUI_Scene2D.h"
 #include "Camera.h"
 

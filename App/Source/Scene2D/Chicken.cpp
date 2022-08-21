@@ -43,14 +43,20 @@ bool Chicken::Init(void)
 	//CS: Create the Quad Mesh using the mesh builder
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/Chicken.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/chicken.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load enemy tile texture" << std::endl;
+		std::cout << "Failed to load chicken tile texture" << std::endl;
 		return false;
 	}
 
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+
+	animatedSprites->AddAnimation("idle", 1, 4);
+	animatedSprites->AddAnimation("moveLeft", 4, 8);
+	animatedSprites->AddAnimation("sitLeft", 8, 12);
+	animatedSprites->AddAnimation("moveRight", 12, 16);
+	animatedSprites->PlayAnimation("idle", -1, 0.3f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -60,8 +66,6 @@ bool Chicken::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	timer = 0;
-	collided = false;
-	stuck = false;
 
 	return true;
 }
@@ -114,6 +118,7 @@ void Chicken::Update(const double dElapsedTime)
 			{
 				// Patrol around
 				// Update the Enemy2D's position for patrol
+				randomDirection();
 				UpdatePosition();
 			}
 			iFSMCounter++;
@@ -121,6 +126,8 @@ void Chicken::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::RUN:
 		{
+			vec2Direction = vec2Index + cPlayer2D->vec2Index;
+			vec2Direction = -vec2Direction;
 			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 40.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
@@ -141,8 +148,8 @@ void Chicken::Update(const double dElapsedTime)
 				{
 					vec2Destination = coord;
 
-					if (!stuck)
-						vec2Direction = vec2Destination + vec2Index;
+					vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = -vec2Direction;
 					bFirstPosition = false;
 				}
 				else
@@ -155,20 +162,12 @@ void Chicken::Update(const double dElapsedTime)
 						break;
 				}
 			}
-			if (stuck)
-			{
-				if (CheckPosition(stuckDirection))
-					stuck = false;
-			}
 			UpdatePosition();
-			
-			if (!stuck)
-				vec2Direction = vec2Index + cPlayer2D->vec2Index;
 			iFSMCounter++;
 			break;
 		}
 	}
-	/*animatedSprites->Update(dElapsedTime);*/
+	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
@@ -200,28 +199,7 @@ void Chicken::UpdatePosition(void)
 		{
 			vec2Index.y = vec2OldIndex.y;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y < 0)
-			{
-				stuck = true;
-				stuckDirection = DOWN;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
+			randomDirection();
 		}
 
 		// Interact with the Player
@@ -250,31 +228,7 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y > 0)
-			{
-				stuck = true;
-				stuckDirection = UP;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
 		}
-		else
-			stuck = false;
 
 		// Interact with the Player
 		//InteractWithPlayer();
@@ -302,26 +256,6 @@ void Chicken::UpdatePosition(void)
 		{
 			vec2Index.x = vec2OldIndex.x;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x < 0)
-			{
-				stuck = true;
-				stuckDirection = LEFT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
-			}
 		}
 
 		// Interact with the Player
@@ -351,28 +285,49 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x > 0)
-			{
-				stuck = true;
-				stuckDirection = RIGHT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
-			}
 		}
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
+}
+
+bool Chicken::randomDirection()
+{
+	int i = rand() % 4;
+	switch (i)
+	{
+		case 0:
+		{
+			if (CheckPosition(DOWN))
+			{
+				vec2Direction = glm::vec2(0, -1);
+				return true;
+			}
+		}
+		case 1:
+		{
+			if (CheckPosition(UP))
+			{
+				vec2Direction = glm::vec2(0, 1);
+				return true;
+			}
+		}
+		case 2:
+		{
+			if (CheckPosition(LEFT))
+			{
+				vec2Direction = glm::vec2(-1, 0);
+				return true;
+			}
+		}
+		case 3:
+		{
+			if (CheckPosition(RIGHT))
+			{
+				vec2Direction = glm::vec2(1, 0);
+				return true;
+			}
+		}
+	}
+	return false;
 }

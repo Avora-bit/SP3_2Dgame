@@ -169,6 +169,19 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		else
 			break;
 	}
+	while (true)
+	{
+		Chicken* chicken = new Chicken();
+		chicken->SetShader("Shader2D_Colour");
+
+		if (chicken->Init())
+		{
+			chicken->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(chicken);
+		}
+		else
+			break;
+	}
 
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 

@@ -1,6 +1,6 @@
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.pdb
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.idb
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\physics2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\octopus.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\map2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorymanager.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventoryitem.obj
@@ -14,6 +14,7 @@ d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\victorystate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\playgamestate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\pausestate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\menustate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorystate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\introstate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gamestatemanager.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gameoverstate.obj
@@ -21,12 +22,14 @@ d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\craftingstate.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\application.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundinfo.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundcontroller.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\slot.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\shivs2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\scene2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipebook.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipe.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\player2d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\octopus.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\physics2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\chicken.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.exe
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.ilk
 d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.pdb
