@@ -21,6 +21,10 @@
 #include"../Scene2D/GUI_Scene2D.h"
 #include "../Scene2D/slot.h"
 
+
+
+#include "../Scene2D/Player2D.h"
+
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
 #ifndef IMGUI_ACTIVE
@@ -30,7 +34,7 @@
 #define IMGUI_ACTIVE
 #endif
 
-class CInventoryState : public CGameStateBase
+class CInventoryState : public CGameStateBase, public CSingletonTemplate<CInventoryState>
 {
 public:
 	// Constructor
@@ -47,17 +51,21 @@ public:
 	// Destroy this class instance
 	virtual void Destroy(void);
 
+
+	
+
 protected:
 	ImGuiPayload ig;
 
 	CMouseController* cMouseController;
 
+	CPlayer2D* cPlayer2D;
 	
-	CGUI_Scene2D* guiscene2d;
+	CGUI_Scene2D* hotbar;
 
 	CImageLoader* il;
 
-	
-	slot butnum[12];
+
+	slot butnum[9];
 
 };

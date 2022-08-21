@@ -86,6 +86,7 @@ CScene2D::~CScene2D(void)
 		cGameManager->Destroy();
 		cGameManager = NULL;
 	}
+
 }
 
 /**
@@ -108,15 +109,15 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_01.csv") == false)
+	if (cMap2D->LoadMap("Maps/50x50.csv") == false)
 	{
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Level_02.csv", 1) == false)
+	/*if (cMap2D->LoadMap("Maps/100x100.csv", 1) == false)
 	{
 		return false;
-	}
+	}*/
 	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 
@@ -186,6 +187,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cSoundController->SetMasterVolume(0.01f);
 
+
+
 	return true;
 }
 
@@ -194,7 +197,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
-	
 	cPlayer2D->Update(dElapsedTime);
 	
 	CShivs2D->Update(dElapsedTime);
@@ -252,6 +254,9 @@ bool CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bLevelCompleted = false;
 	}
+
+
+	
 }
 
 /**
@@ -305,3 +310,4 @@ void CScene2D::Render(void)
 void CScene2D::PostRender(void)
 {
 }
+

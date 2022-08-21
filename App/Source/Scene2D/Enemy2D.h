@@ -31,9 +31,16 @@ class CMap2D;
 
 #include "Shivs2D.h"
 
+// Include Shader Manager
+#include "RenderControl\ShaderManager.h"
+// Include Mesh Builder
+#include "Primitives/MeshBuilder.h"
+// Include Sprite Animations
 #include "Primitives/SpriteAnimation.h"
 
 #include "Camera.h"
+
+#include "Map2D.h"
 
 
 class CEnemy2D : public CEntity2D
@@ -59,24 +66,6 @@ public:
 
 	// PostRender
 	void PostRender(void);
-
-	// Set the indices of the enemy2D
-	void Setvec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
-
-	// Set the number of microsteps of the enemy2D
-	void Setvec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
-
-	// Set the UV coordinates of the enemy2D
-	void Setvec2UVCoordinates(const float fUVCoordinate_XAxis, const float fUVCoordinate_YAxis);
-
-	// Get the indices of the enemy2D
-	glm::vec2 Getvec2Index(void) const;
-
-	// Get the number of microsteps of the enemy2D
-	glm::vec2 Getvec2NumMicroSteps(void) const;
-
-	// Set the UV coordinates of the enemy2D
-	glm::vec2 Getvec2UVCoordinates(void) const;
 
 	// Set the handle to cPlayer to this class instance
 	void SetPlayer2D(CPlayer2D* cPlayer2D);
@@ -171,5 +160,6 @@ protected:
 	void UpdatePosition(void);
 
 	float speed_multiplier = 0.25f;
+	float atk;
 };
 

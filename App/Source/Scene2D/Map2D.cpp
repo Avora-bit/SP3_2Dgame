@@ -168,6 +168,21 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
 	}
 
+
+
+	//FOR INVENTORY TESTING PURPOSES - REAGAN
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
+		return false;
+	}
+	else
+	{
+		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+	}
+	//
+
 	// Initialise the variables for AStar
 	m_weight = 1;
 	m_startPos = glm::vec2(0, 0);
@@ -177,7 +192,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	m_nrOfDirections = 4;
 	m_directions = { { -1, 0 }, { 1, 0 }, { 0, 1 }, { 0, -1 },
 						{ -1, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 } };
-	//SetDiagonalMovement(true);
+	SetDiagonalMovement(true);
 
 	// Resize these 2 lists
 	m_cameFromList.resize(cSettings->NUM_TILES_YAXIS* cSettings->NUM_TILES_XAXIS);
@@ -575,7 +590,7 @@ std::vector<glm::vec2> CMap2D::BuildPath() const
 			if (abs(m_targetPos.y - m_startPos.y) + abs(m_targetPos.x - m_startPos.x) > 1)
 				path.clear();
 		}
-		else
+		else				//diagonal movement
 		{
 			if (abs(m_targetPos.y - m_startPos.y) + abs(m_targetPos.x - m_startPos.x) > 2)
 				path.clear();

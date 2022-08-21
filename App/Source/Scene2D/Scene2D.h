@@ -43,10 +43,13 @@
 #include "Player2D.h"
 #include "Shivs2D.h"
 #include "Enemy2D.h"
+#include "Octopus.h"
 #include "GUI_Scene2D.h"
 #include "Camera.h"
 
 #include "GameManager.h"
+
+#include "../GameStateManagement/InventoryState.h"
 
 // Add your include files here
 
@@ -70,6 +73,8 @@ public:
 
 	// PostRender
 	void PostRender(void);
+
+
 
 protected:
 	// The handler containing the instance of the 2D map
@@ -101,6 +106,10 @@ protected:
 	// Add your variables and methods here.
 
 	float m_fProgressBar;
+
+
+
+
 
 	// Constructor
 	CScene2D(void);

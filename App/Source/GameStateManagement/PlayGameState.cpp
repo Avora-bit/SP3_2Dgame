@@ -45,6 +45,10 @@ bool CPlayGameState::Init(void)
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
 
+	//cInventoryState = CInventoryState::GetInstance();
+	//cInventoryState->Init();
+	
+
 	// Initialise the cScene2D instance
 	cScene2D = CScene2D::GetInstance();
 	if (cScene2D->Init() == false)
@@ -85,7 +89,6 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
 	}
 	//set crafting screen
-
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_Q))
 	{
 		// Reset the CKeyboardController
@@ -98,12 +101,13 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	//set inventory screen
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_I))
 	{
-		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
-		// Load the menu state
 		cout << "Loading InventoryState" << endl;
 		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
+		//cInventoryState->saveItemsinside();
+
+
 	}
 
 
@@ -172,3 +176,5 @@ void CPlayGameState::Destroy(void)
 		cScene2D = NULL;
 	}
 }
+
+

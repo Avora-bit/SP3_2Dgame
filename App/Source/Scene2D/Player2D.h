@@ -6,7 +6,7 @@
  */
 #pragma once
 
- // Include Singleton template
+// Include Singleton template
 #include "DesignPatterns\SingletonTemplate.h"
 
 // Include GLEW
@@ -22,7 +22,6 @@
 
 // Include CEntity2D
 #include "Primitives/Entity2D.h"
-#include "Primitives/SpriteAnimation.h"
 
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
@@ -42,6 +41,8 @@ class Camera;
 
 #include "InventoryManager.h"
 #include "GameManager.h"
+
+#include "slot.h"
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
@@ -73,10 +74,6 @@ protected:
 		RIGHT = 1,
 		UP = 2,
 		DOWN = 3,
-		TOP_LEFT = 4,
-		BOTTOM_LEFT = 5,
-		TOP_RIGHT = 6,
-		BOTTOM_RIGHT = 7,
 		NUM_DIRECTIONS
 	};
 
@@ -105,14 +102,19 @@ protected:
 	Camera* camera;
 
 	DIRECTION direction;
-
-	//combat
 	DIRECTION attackDirection;
+
+	bool throwing = false;
 	double maxPForce = 10;
+	double minPForce = 2.f;
 	double ProjectileForce;
 
 	// vitals
-	float movementSpeed;
+	float health;
+	float stamina;
+	float hunger;
+
+	float movementSpeed; 
 
 	//render
 	float angle;
@@ -135,11 +137,21 @@ protected:
 
 	void UpdateHealthLives(void);
 
+	slot inventorySlots[9];
+	CImageLoader* il;
+
 public:
 	DIRECTION getAttackDirection();
 	double getProjectileForce();
 
 	void LoseHealth(float health);
 
+	void CPlayer2D::AddItem(int itemid);
+	slot CPlayer2D::getitem(int arr);
+	void CPlayer2D::setitem(int arr, int itemid);
+	int CPlayer2D::getitemval(int arr);
+
+	int CPlayer2D::getx();
+	int CPlayer2D::gety();
 };
 

@@ -8,6 +8,7 @@
 
 #include <iostream>
 using namespace std;
+#include <sstream>
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -86,10 +87,6 @@ bool CGUI_Scene2D::Init(void)
 
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
-	// Add a Tree as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Tree", "Image/Scene2D_TreeTile.tga", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
 	cPlayer2D = CPlayer2D::GetInstance();
 
 	// These variables are for IMGUI demo only
@@ -104,7 +101,7 @@ bool CGUI_Scene2D::Init(void)
 
 	for (int i = 0; i < 3; i++)
 	{
-		hbcells[i].setitemID(7);
+		hbcells[i].setitemID( cPlayer2D->getitemval(i));
 		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 	}
 
@@ -134,13 +131,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	// Display the FPS
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 	
-	// Render a progress bar
-	m_fProgressBar += 0.001f;
-	if (m_fProgressBar > 1.0f)
-		m_fProgressBar = 0.0f;
-	ImVec4 col = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
-	col = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-	/*
+	ImVec4 col = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+	
 	// Render the inventory items
 	//cInventoryItem = cInventoryManager->GetItem("Bouquet");
 	//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
@@ -166,49 +158,27 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//	cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
 	//ImGui::PopStyleColor();
 	//ImGui::End();
-	ImGui::End();
-	*/
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags objectivesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Objectives", NULL, objectivesWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f));
-	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.3f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Objectives:\n-Collect flower bouquets\n-Enter door\n-Give flower bouquets\nto Princess",
-		cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
-	ImGui::PopStyleColor();
-	ImGui::End();
 
-	// sword force
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags swordForceFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
+	//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+	//ImGuiWindowFlags objectivesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+	//	ImGuiWindowFlags_NoTitleBar |
+	//	ImGuiWindowFlags_NoMove |
+	//	ImGuiWindowFlags_NoResize |
+	//	ImGuiWindowFlags_NoCollapse |
+	//	ImGuiWindowFlags_NoScrollbar;
+	//ImGui::Begin("Objectives", NULL, objectivesWindowFlags);
+	//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f));
+	//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	//ImGui::SameLine();
+	//ImGui::SetWindowFontScale(1.3f * relativeScale_y);
+	//ImGui::TextColored(ImVec4(1, 1, 1, 1), "Objectives:\n-Collect flower bouquets\n-Enter door\n-Give flower bouquets\nto Princess",
+	//	cInventoryItem->GetCount(), cInventoryItem->GetMaxCount());
+	//ImGui::PopStyleColor();
+	//ImGui::End();
 
-	ImGui::Begin("Force", NULL, swordForceFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
-		100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
-	
 	/*
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! 
-// You can browse its code to learn more about Dear ImGui!).
+	// You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
 
@@ -249,123 +219,209 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 	*/
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Health", NULL, healthWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-		cSettings->iWindowHeight * 0.03f));
-	ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	cInventoryItem = cInventoryManager->GetItem("Health");
-	ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-		ImVec2(cInventoryItem->vec2Size.x* relativeScale_x,
-			cInventoryItem->vec2Size.y* relativeScale_y),
-		ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 0.6f));
-	ImGui::ProgressBar(cInventoryItem->GetCount() /
-		(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
-			relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
 
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
+	//health bar
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Health", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.03f));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+			ImVec2(cInventoryItem->vec2Size.x * relativeScale_x,
+				cInventoryItem->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 0.6f));
+		ImGui::ProgressBar(cInventoryItem->GetCount() /
+			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
 
-	ImGui::Begin("Stamina", NULL, staminaFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	cInventoryItem = cInventoryManager->GetItem("Stamina");
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
-	ImGui::ProgressBar(cInventoryItem->GetCount() /
-		(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
-			relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
+	//RENDER HUNGER BAR
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags hungerWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Hunger", NULL, hungerWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 100));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItem = cInventoryManager->GetItem("Hunger");
+		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+			ImVec2(cInventoryItem->vec2Size.x * relativeScale_x,
+				cInventoryItem->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 0.6f));
+		ImGui::ProgressBar(cInventoryItem->GetCount() /
+			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
 
+	//stamina
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+
+		ImGui::Begin("Stamina", NULL, staminaFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItem = cInventoryManager->GetItem("Stamina");
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+		ImGui::ProgressBar(cInventoryItem->GetCount() /
+			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
 
 
 	//RENDER HOTBAR
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-	ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
-	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-
-	char y[3];
-	for (int n = 0; n < 3; n++)
 	{
-		ImGui::PushID(n);
 
-		//don't break line if doesn't reach 3 cells
-		if ((n % 3) != 0)
-			ImGui::SameLine();
+		char y[3];
+		for (int i = 0; i < 3; i++) {
 
-		string x = to_string(n);
-		strcpy(y, x.c_str());
 
-		ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
+			ImGui::PushID(i);
 
-		cout << hbcells[2].getitemID() << endl;
-
-		if (hbcells[n].getitemID() != 0)
-		{
-			// Our buttons are both drag sources and drag targets here!
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-			{
-				// Set payload to carry the index of our item (could be anything)
-				//&n is to get the data directly from IMGUI
-				ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-				ImGui::Text("Check %s", y);
-				ImGui::EndDragDropSource();
+			//don't break line if doesn't reach 3 cells
+			if ((i % 3) != 0) {
+				ImGui::SameLine();
 			}
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			//get with the id
-			//when mouse is released
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+			
+			string x = to_string(i);
+			strcpy(y, x.c_str());
+
+			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
+
+			cout << hbcells[2].getitemID() << endl;
+
+			if (hbcells[i].getitemID() != 0)
 			{
-				IM_ASSERT(payload->DataSize == sizeof(int));
-				int payload_n = *(const int*)payload->Data;
-
-				//swap images and itemId inside
-				slot tmp = hbcells[n];
-				hbcells[n] = hbcells[payload_n];
-				hbcells[payload_n] = tmp;
-
-
-				cout << endl;
+				hbcells[i].setitemID(cPlayer2D->getitemval(i));
+				hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 			}
-			ImGui::EndDragDropTarget();
+
+			ImGui::PopID();
+
 		}
-		ImGui::PopID();
+			
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+
+		for (int n = 0; n < 3; n++)
+		{
+			ImGui::PushID(n);
+			//don't break line if doesn't reach 3 cells
+			if ((n % 3) != 0)
+				ImGui::SameLine();
+			string x = to_string(n);
+			strcpy(y, x.c_str());
+			ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
+			if (hbcells[n].getitemID() != 0)
+			{
+				// Our buttons are both drag sources and drag targets here!
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+				{
+					// Set payload to carry the index of our item (could be anything)
+					//&n is to get the data directly from IMGUI
+					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
+					ImGui::Text("Check %s", y);
+					ImGui::EndDragDropSource();
+				}
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+				//get with the id
+				//when mouse is released
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+				{
+					IM_ASSERT(payload->DataSize == sizeof(int));
+					int payload_n = *(const int*)payload->Data;
+
+					//swap images and itemId inside
+					slot tmp = hbcells[n];
+					hbcells[n] = hbcells[payload_n];
+					hbcells[payload_n] = tmp;
+					std::cout << endl;
+				}
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::PopID();
+		}
+		ImGui::PopStyleColor();
+		ImGui::End();
 	}
-	ImGui::PopStyleColor();
-	ImGui::End();
 
-	ImGui::PopStyleColor();
+	// projectile force
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags ProjectileForceFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+
+		ImGui::Begin("Force", NULL, ProjectileForceFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
+		ImGui::ProgressBar((float)(cPlayer2D->getProjectileForce() / 7 * 100) /
+			100, ImVec2(200.0f * relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
+
+	/*ImGui::PopStyleColor();
+	ImGui::End();*/
+
+	//ImGui::PopStyleColor();
 	ImGui::End();
 }
 

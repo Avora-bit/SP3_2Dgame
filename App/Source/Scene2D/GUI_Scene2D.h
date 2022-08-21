@@ -40,8 +40,6 @@
 #endif
 
 #include "GameControl/Settings.h"
-
-
 #include "../Scene2D/slot.h"
 
 #include "System\ImageLoader.h"

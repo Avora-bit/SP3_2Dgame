@@ -9,19 +9,12 @@
 #include <iostream>
 using namespace std;
 
-// Include Shader Manager
-#include "RenderControl\ShaderManager.h"
-// Include Mesh Builder
-#include "Primitives/MeshBuilder.h"
-
 // Include GLEW
 #include <GL/glew.h>
 
 // Include ImageLoader
 #include "System\ImageLoader.h"
 
-// Include the Map2D as we will use it to check the player's movements and actions
-#include "Map2D.h"
 // Include math.h
 #include <math.h>
 
@@ -102,8 +95,6 @@ bool CEnemy2D::Init(void)
 	vec2Index = glm::vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
-
-	
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -494,28 +485,6 @@ void CEnemy2D::PostRender(void)
 
 	// Disable blending
 	glDisable(GL_BLEND);
-}
-
-/**
-@brief Set the indices of the enemy2D
-@param iIndex_XAxis A const int variable which stores the index in the x-axis
-@param iIndex_YAxis A const int variable which stores the index in the y-axis
-*/
-void CEnemy2D::Setvec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
-{
-	this->vec2Index.x = iIndex_XAxis;
-	this->vec2Index.y = iIndex_YAxis;
-}
-
-/**
-@brief Set the number of microsteps of the enemy2D
-@param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
-@param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
-*/
-void CEnemy2D::Setvec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
-{
-	this->vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
-	this->vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
 }
 
 /**
