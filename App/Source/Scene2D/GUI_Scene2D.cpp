@@ -328,7 +328,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
 
-			cout << hbcells[2].getitemID() << endl;
+			//cout << hbcells[2].getitemID() << endl;
 
 			if (hbcells[i].getitemID() != 0)
 			{

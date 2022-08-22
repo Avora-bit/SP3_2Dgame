@@ -221,7 +221,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 					for (int i = 1; i < 10; i++)
 					{
 						gridrecipe.SetRecipeIndex(i, butnum[i - 1].getitemID());
-						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
+						//cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
 					}
 
 					//payload is what is selected to drag
@@ -239,7 +239,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 					}
 
-					cout << "Payload n " << payload_n << endl;
+					//cout << "Payload n " << payload_n << endl;
 
 					cout << endl;
 				}

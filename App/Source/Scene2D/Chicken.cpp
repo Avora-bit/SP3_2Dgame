@@ -56,7 +56,7 @@ bool Chicken::Init(void)
 	animatedSprites->AddAnimation("moveLeft", 4, 8);
 	animatedSprites->AddAnimation("sitLeft", 8, 12);
 	animatedSprites->AddAnimation("moveRight", 12, 16);
-	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	animatedSprites->PlayAnimation("moveLeft", -1, 0.3f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -84,6 +84,7 @@ void Chicken::Update(const double dElapsedTime)
 	{
 		case CEnemy2D::IDLE:
 		{
+			vec2Direction = glm::vec2(0, 0);
 			if (iFSMCounter > iMaxFSMCounter)
 			{
 				if (timer >= 2.5) // after 3s idle, go into patrol
@@ -93,7 +94,7 @@ void Chicken::Update(const double dElapsedTime)
 					iFSMCounter = 0;
 				}
 			}
-			if (health < 20)
+			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
@@ -109,7 +110,7 @@ void Chicken::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 				//cout << "Switching to Idle State" << endl;
 			}
-			if (health < 20)
+			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
@@ -126,9 +127,7 @@ void Chicken::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::RUN:
 		{
-			vec2Direction = vec2Index + cPlayer2D->vec2Index;
-			vec2Direction = -vec2Direction;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 40.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
 				{
@@ -138,28 +137,36 @@ void Chicken::Update(const double dElapsedTime)
 					break;
 				}
 			}
-			auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
-				cPlayer2D->vec2Index, heuristic::euclidean, 10);
+			
 
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 			{
-				if (bFirstPosition == true)
-				{
-					vec2Destination = coord;
+				vec2Direction = vec2Index - cPlayer2D->vec2Index;
+				vec2Direction = -vec2Direction;
 
-					vec2Direction = vec2Destination - vec2Index;
-					vec2Direction = -vec2Direction;
-					bFirstPosition = false;
-				}
-				else
+				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
+					cPlayer2D->vec2Index, heuristic::euclidean, 10);
+
+				bool bFirstPosition = true;
+				for (const auto& coord : path)
 				{
-					if ((coord - vec2Destination) == vec2Direction)
+					if (bFirstPosition == true)
 					{
 						vec2Destination = coord;
+
+						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = -vec2Direction;
+						bFirstPosition = false;
 					}
 					else
-						break;
+					{
+						if ((coord - vec2Destination) == vec2Direction)
+						{
+							vec2Destination = coord;
+						}
+						else
+							break;
+					}
 				}
 			}
 			UpdatePosition();
@@ -228,6 +235,7 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
+			randomDirection();
 		}
 
 		// Interact with the Player
@@ -256,8 +264,9 @@ void Chicken::UpdatePosition(void)
 		{
 			vec2Index.x = vec2OldIndex.x;
 			vec2NumMicroSteps.x = 0;
+			randomDirection();
 		}
-
+		/*animatedSprites->PlayAnimation("moveLeft", -1, 0.3f);*/
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
@@ -285,7 +294,9 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
+			randomDirection();
 		}
+		/*animatedSprites->PlayAnimation("moveRight", -1, 0.3f);*/
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
