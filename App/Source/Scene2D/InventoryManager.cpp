@@ -65,6 +65,16 @@ CInventoryItem* CInventoryManager::Add(	const std::string& _name,
 	return cNewItem;
 }
 
+void CInventoryManager::Add(CInventoryItem* item)
+{
+	if (Check(item->sName))
+	{
+		// Item name already exist here, unable to proceed
+		throw std::exception("Duplicate item name provided");
+	}
+	inventoryMap[item->sName] = item;
+}
+
 /**
 @brief Remove an item from this Inventory Manager
 */

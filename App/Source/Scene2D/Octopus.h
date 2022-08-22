@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy2D.h"
 
-class Octopus : protected CEnemy2D
+class Octopus : public CEnemy2D
 {
 public:
 	Octopus();
@@ -13,7 +13,6 @@ public:
 
 private:
 	bool stuck;
-	bool collided;
 	DIRECTION stuckDirection;
 	glm::vec2 stuckPosition;
 };

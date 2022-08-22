@@ -49,9 +49,9 @@ bool Octopus::Init(void)
 	}
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idle", 1, 1);
+	//animatedSprites->AddAnimation("idle", 1, 1);
 
-	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	//animatedSprites->PlayAnimation("idle", -1, 0.3f);
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -60,7 +60,6 @@ bool Octopus::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	timer = 0;
-	collided = false;
 	stuck = false;
 
 	return true;
@@ -87,7 +86,6 @@ void Octopus::Update(const double dElapsedTime)
 					timer = 0;
 					sCurrentFSM = CHASE;
 					iFSMCounter = 0;
-					cout << "chasing" << endl;
 				}
 			}
 			iFSMCounter++;
@@ -103,7 +101,6 @@ void Octopus::Update(const double dElapsedTime)
 					timer = 0;
 					sCurrentFSM = ATTACK;
 					iFSMCounter = 0;
-					cout << "atk" << endl;
 					break;
 				}
 			}
@@ -160,14 +157,13 @@ void Octopus::Update(const double dElapsedTime)
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 				timer = 0;
-				cout << "Idling" << endl;
 				break;
 			}
 			iFSMCounter++;
 			break;
 		}
 	}
-	animatedSprites->Update(dElapsedTime);
+	//animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
@@ -272,8 +268,6 @@ void Octopus::UpdatePosition(void)
 					vec2Direction = glm::vec2(-1, 0);
 			}
 		}
-		else
-			stuck = false;
 
 		// Interact with the Player
 		//InteractWithPlayer();
