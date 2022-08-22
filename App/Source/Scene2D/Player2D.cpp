@@ -235,6 +235,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//}
 
+	// Store the old position
+	vec2OldIndex = vec2Index;
+
 	// vitals
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
@@ -278,8 +281,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 
-	// Store the old position
-	vec2OldIndex = vec2Index;
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
