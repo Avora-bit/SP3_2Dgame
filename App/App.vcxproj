@@ -25,6 +25,7 @@
     <ClCompile Include="Source\Scene2D\BackgroundEntity.cpp" />
     <ClCompile Include="Source\Scene2D\Blade2D.cpp" />
     <ClCompile Include="Source\Scene2D\Camera.cpp" />
+    <ClCompile Include="Source\Scene2D\Chicken.cpp" />
     <ClCompile Include="Source\Scene2D\Enemy2D.cpp" />
     <ClCompile Include="Source\Scene2D\GameManager.cpp" />
     <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp" />
@@ -62,7 +63,9 @@
     <ClInclude Include="Source\Scene2D\BackgroundEntity.h" />
     <ClInclude Include="Source\Scene2D\Blade2D.h" />
     <ClInclude Include="Source\Scene2D\Camera.h" />
+    <ClInclude Include="Source\Scene2D\Chicken.h" />
     <ClInclude Include="Source\Scene2D\Enemy2D.h" />
+    <ClInclude Include="Source\Scene2D\GameManager.h" />
     <ClInclude Include="Source\Scene2D\GUI_Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Hilt2D.h" />
     <ClInclude Include="Source\Scene2D\InventoryItem.h" />

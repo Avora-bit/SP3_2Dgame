@@ -1,16 +1,16 @@
-#include "Octopus.h"
+#include "Chicken.h"
 
-Octopus::Octopus()
+Chicken::Chicken()
 {
 	health = 20;
-	atk = 10;
+	atk = 0;
 }
 
-Octopus::~Octopus()
+Chicken::~Chicken()
 {
 }
 
-bool Octopus::Init(void)
+bool Chicken::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -24,7 +24,7 @@ bool Octopus::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(301, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(302, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -35,23 +35,29 @@ bool Octopus::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
 
+
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
 	//CS: Create the Quad Mesh using the mesh builder
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/octopus.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/chicken.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load enemy tile texture" << std::endl;
+		std::cout << "Failed to load chicken tile texture" << std::endl;
 		return false;
 	}
 
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//animatedSprites->AddAnimation("idle", 1, 1);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	//animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	animatedSprites->AddAnimation("idle", 1, 4);
+	animatedSprites->AddAnimation("moveLeft", 4, 8);
+	animatedSprites->AddAnimation("sitLeft", 8, 12);
+	animatedSprites->AddAnimation("moveRight", 12, 16);
+	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -60,12 +66,11 @@ bool Octopus::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	timer = 0;
-	stuck = false;
 
 	return true;
 }
 
-void Octopus::Update(const double dElapsedTime)
+void Chicken::Update(const double dElapsedTime)
 {
 	timer += dElapsedTime;
 
@@ -81,25 +86,54 @@ void Octopus::Update(const double dElapsedTime)
 		{
 			if (iFSMCounter > iMaxFSMCounter)
 			{
-				if (timer >= 1) // after 3s idle, go into patrol
+				if (timer >= 2.5) // after 3s idle, go into patrol
 				{
 					timer = 0;
-					sCurrentFSM = CHASE;
+					sCurrentFSM = PATROL;
 					iFSMCounter = 0;
 				}
+			}
+			if (health < 20)
+			{
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
 			}
 			iFSMCounter++;
 			break;
 		}
-		case CEnemy2D::CHASE:
+		case CEnemy2D::PATROL:
 		{
-			
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
+			if (iFSMCounter > iMaxFSMCounter)
+			{
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				//cout << "Switching to Idle State" << endl;
+			}
+			if (health < 20)
+			{
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
+			}
+			else
+			{
+				// Patrol around
+				// Update the Enemy2D's position for patrol
+				randomDirection();
+				UpdatePosition();
+			}
+			iFSMCounter++;
+			break;
+		}
+		case CEnemy2D::RUN:
+		{
+			vec2Direction = vec2Index + cPlayer2D->vec2Index;
+			vec2Direction = -vec2Direction;
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 40.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
 				{
 					timer = 0;
-					sCurrentFSM = ATTACK;
+					sCurrentFSM = IDLE;
 					iFSMCounter = 0;
 					break;
 				}
@@ -114,8 +148,8 @@ void Octopus::Update(const double dElapsedTime)
 				{
 					vec2Destination = coord;
 
-					if (!stuck)
-						vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = -vec2Direction;
 					bFirstPosition = false;
 				}
 				else
@@ -128,48 +162,18 @@ void Octopus::Update(const double dElapsedTime)
 						break;
 				}
 			}
-			if (stuck)
-			{
-				if (CheckPosition(stuckDirection))
-					stuck = false;
-			}
 			UpdatePosition();
-			
-			if (!stuck)
-				vec2Direction = vec2Index - cPlayer2D->vec2Index;
-			iFSMCounter++;
-			break;
-		}
-		case CEnemy2D::ATTACK:
-		{
-			static float attackTimer = 0;
-			attackTimer += dElapsedTime;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
-			{
-				if (attackTimer >= 1)
-				{
-					cPlayer2D->LoseHealth(atk);
-					attackTimer = 0;
-				}
-			}
-			else
-			{
-				sCurrentFSM = IDLE;
-				iFSMCounter = 0;
-				timer = 0;
-				break;
-			}
 			iFSMCounter++;
 			break;
 		}
 	}
-	//animatedSprites->Update(dElapsedTime);
+	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
 
-void Octopus::UpdatePosition(void)
+void Chicken::UpdatePosition(void)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -195,28 +199,7 @@ void Octopus::UpdatePosition(void)
 		{
 			vec2Index.y = vec2OldIndex.y;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y < 0)
-			{
-				stuck = true;
-				stuckDirection = DOWN;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
+			randomDirection();
 		}
 
 		// Interact with the Player
@@ -245,28 +228,6 @@ void Octopus::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y > 0)
-			{
-				stuck = true;
-				stuckDirection = UP;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
 		}
 
 		// Interact with the Player
@@ -295,26 +256,6 @@ void Octopus::UpdatePosition(void)
 		{
 			vec2Index.x = vec2OldIndex.x;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x < 0)
-			{
-				stuck = true;
-				stuckDirection = LEFT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
-			}
 		}
 
 		// Interact with the Player
@@ -344,28 +285,49 @@ void Octopus::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x > 0)
-			{
-				stuck = true;
-				stuckDirection = RIGHT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
-			}
 		}
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
+}
+
+bool Chicken::randomDirection()
+{
+	int i = rand() % 4;
+	switch (i)
+	{
+		case 0:
+		{
+			if (CheckPosition(DOWN))
+			{
+				vec2Direction = glm::vec2(0, -1);
+				return true;
+			}
+		}
+		case 1:
+		{
+			if (CheckPosition(UP))
+			{
+				vec2Direction = glm::vec2(0, 1);
+				return true;
+			}
+		}
+		case 2:
+		{
+			if (CheckPosition(LEFT))
+			{
+				vec2Direction = glm::vec2(-1, 0);
+				return true;
+			}
+		}
+		case 3:
+		{
+			if (CheckPosition(RIGHT))
+			{
+				vec2Direction = glm::vec2(1, 0);
+				return true;
+			}
+		}
+	}
+	return false;
 }

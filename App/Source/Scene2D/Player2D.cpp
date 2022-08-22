@@ -234,7 +234,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
 
 	//}
-
 	// vitals
 	vec2OldIndex = vec2Index;
 
@@ -251,17 +250,21 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+
+	// Store the old position
+	vec2OldIndex = vec2Index;
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	{
+		if (vec2Index.x >= 0)
 		{
-			if (vec2Index.x >= 0)
+			vec2NumMicroSteps.x--; //speed_multiplier;
+			if (vec2NumMicroSteps.x < 0)
 			{
-				vec2NumMicroSteps.x--; //speed_multiplier;
-				if (vec2NumMicroSteps.x < 0)
-				{
-					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-					vec2Index.x--;
-				}
+				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+				vec2Index.x--;
 			}
+		}
 
 			if (!CheckPosition(LEFT))
 			{
@@ -771,6 +774,37 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
+
+	//spawn projectile logic
+	{
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		{
+			if (ProjectileForce < maxPForce)
+				ProjectileForce += (dElapsedTime * 5);
+			throwing = true;
+		}
+		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
+		{
+			//replace with mouse position
+			attackDirection = direction;
+			//min force
+			if (ProjectileForce > minPForce) {		//throw if force is high enough
+				//cSoundController->PlaySoundByID(10);		//replace with fire sound
+				//reduce arrow count
+				//reduce ammo count
+				cInventoryItem = cInventoryManager->GetItem("Shivs");
+				cInventoryItem->Remove(1);
+				//spawn projectile
+
+			}
+			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+		}
+		else {
+			//reset force
+			throwing = false;
+			ProjectileForce = 0;
+		}
+	}
 
 	InteractWithMap();
 

@@ -1,18 +1,17 @@
 #pragma once
 #include "Enemy2D.h"
+#include <stdlib.h>
 
-class Octopus : public CEnemy2D
+class Chicken:public CEnemy2D
 {
 public:
-	Octopus();
-	~Octopus();
 
+	Chicken();
+	~Chicken();
 	bool Init(void);
 	void Update(const double dElapsedTime);
 	void UpdatePosition(void);
-
+	bool randomDirection();
 private:
-	bool stuck;
-	DIRECTION stuckDirection;
-	glm::vec2 stuckPosition;
+
 };
