@@ -72,6 +72,23 @@ bool CPauseState::Init(void)
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
 
+
+
+
+	cScene2D = CScene2D::GetInstance();
+
+
+	/*slider.fileName = "Image\\GUI\\VolumeIncreaseButton.png";
+	slider.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);*/
+
+	cSoundController = CSoundController::GetInstance();
+
+
+	musicvol = cSoundController->returnmusicvol() * 100;
+	//soundvol = cScene2D->returnsoundvol() * 100;
+
+
+
 	return true;
 }
 
@@ -111,23 +128,39 @@ bool CPauseState::Update(const double dElapsedTime)
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
 
 		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)VolumeIncreaseButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
+		//if (ImGui::ImageButton((ImTextureID)VolumeIncreaseButtonData.textureID,
+		//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		//{
+		//	// Reset the CKeyboardController
+		//	CKeyboardController::GetInstance()->Reset();
 
-			CSoundController::GetInstance()->MasterVolumeIncrease();
-		}
-		// Add codes for Exit button here
-		if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
+		//	CSoundController::GetInstance()->MasterVolumeIncrease();
+		//}
+		//// Add codes for Exit button here
+		//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
+		//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		//{
+		//	// Reset the CKeyboardController
+		//	CKeyboardController::GetInstance()->Reset();
 
-			CSoundController::GetInstance()->MasterVolumeDecrease();
+		//	CSoundController::GetInstance()->MasterVolumeDecrease();
+		//}
+
+
+		if (ImGui::SliderFloat("Music", &musicvol, 0, 100))
+		{
+
+			cSoundController->setmusicvol(musicvol / 100);
+
 		}
+
+
+		/*if (ImGui::SliderFloat("Sound", &soundvol, 10, 100))
+		{
+
+			cSoundController->setsoundvol(soundvol / 100);
+
+		}*/
 	ImGui::End();
 	}
 

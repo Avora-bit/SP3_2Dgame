@@ -29,6 +29,10 @@
 
 #include "../Scene2D/slot.h"
 
+
+#include "../Scene2D/Player2D.h"
+#include "GameControl/Settings.h"
+
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
 #ifndef IMGUI_ACTIVE
@@ -60,8 +64,9 @@ protected:
 
 	CMouseController* cMouseController;
 
+	CPlayer2D* cPlayer2D;
 	
-
+	CSettings* cSettings;
 
 	CGUI_Scene2D* guiscene2d;
 
@@ -71,7 +76,7 @@ protected:
 
 	Recipe gridrecipe;
 
-	slot butnum[12];
+	slot butnum[18];
 
 	slot output;
 };

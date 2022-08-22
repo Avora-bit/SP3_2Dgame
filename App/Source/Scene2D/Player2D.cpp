@@ -570,15 +570,17 @@ void CPlayer2D::InteractWithMap(void)
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;
 	//FOR INVENTORY PURPOSES - REAGAN
+	case 2:
 	case 1:
 		for (int i = 0; i < 9; i++)
 		{
-			if (inventorySlots[i].getitemID() != 0)
+			if (inventorySlots[i].getitemID() == 0)
 			{
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
 				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-				AddItem(1);
+				break;
+
 			}
-			break;
 		}
 		break;
 	//

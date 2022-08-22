@@ -74,7 +74,12 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	float returnmusicvol();
+	float returnsoundvol();
 
+
+	void setsoundvol(float vol);
+	void setmusicvol(float vol);
 
 protected:
 	// The handler containing the instance of the 2D map
@@ -106,7 +111,10 @@ protected:
 	// Add your variables and methods here.
 
 	float m_fProgressBar;
+	ISound* musicsfx;
 
+	float soundVol;
+	float musicVol;
 
 
 

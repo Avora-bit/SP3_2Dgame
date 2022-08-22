@@ -77,66 +77,14 @@ public:
 	void SetListenerDirection(const float x, const float y, const float z);
 
 	
-
-
-
-	void setVolume(int soundID, ISound* sfx, float vol);
+	void setVolume_2(int soundID);
 	int return_currentMusic();
 
-	
+	void setsoundvol(float vol);
+	void setmusicvol(float vol);
+	float returnmusicvol();
 
 	
-	//if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT))
-	//{
-	//	ISound* jumpsnd =
-	//		cSoundController->PlaySoundByID(3);
-
-	//	if (jumpsnd != nullptr)
-	//	{
-	//		jumpSfx = jumpsnd;
-	//	}
-
-	//	if (jumpSfx != nullptr)
-	//	{
-	//		jumpSfx->setVolume(soundEffectsvol);
-	//	}
-	//	//*soundEffectsvol
-	//}
-
-
-	//ISound* snd = cSoundController->PlaySoundByID(5);
-	//if (snd != nullptr)
-	//{
-	//	bombSfx = snd;
-	//}
-	////TIMER FOR BOMB
-	//if (bomb_timer > 0)
-	//{
-	//	bomb_timer -= 1 * (float)dElapsedTime;
-	//	//as long as sound is still playing, deccrease it
-	//	//must reset volume
-
-	//	if (bombSfx != nullptr)
-	//	{
-	//		//bombSfx->setVolume(bombVol);
-	//		bombSfx->setVolume(bombVol * soundEffectsvol);
-	//		bombVol += (bomb_timer / 1000) /** dElapsedTime*/;
-	//		bombVol = max(0, bombVol * soundEffectsvol);
-	//	}
-	//}
-
-
-
-
-	/*ISound* musicsnd = cSoundController->PlaySoundByID(7);
-	if (musicsnd != nullptr)
-	{
-		musicSfx = musicsnd;
-	}
-	if (musicSfx != nullptr)
-	{
-		musicSfx->setVolume(musicvol);
-	}*/
 
 protected:
 	// Constructor
@@ -146,10 +94,19 @@ protected:
 	virtual ~CSoundController(void);
 
 
-	static int currentmusic;
+	ISound* musicsfx;
+
+	float soundVol;
+	float musicVol;
+
+
 
 	// Get an sound from this map
 	CSoundInfo* GetSound(const int ID);
+
+	ISound* GetSound_2(const int ID);
+
+
 	// Remove an sound from this map
 	bool RemoveSound(const int ID);
 	// Get the number of sounds in this map
@@ -159,8 +116,13 @@ protected:
 	ISoundEngine* cSoundEngine;
 
 	std::vector<int> musicPlaylist;
+	//std::vector<ISound> musicPlaylist;
+
 	// The map of all the entity created
 	std::map<int, CSoundInfo*> soundMap;
+
+	std::map<int, ISound*> soundMap_2;
+
 
 	double currentSongDuration;
 

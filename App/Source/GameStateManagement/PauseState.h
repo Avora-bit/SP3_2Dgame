@@ -12,6 +12,12 @@
 #include "Primitives/Mesh.h"
 #include "../Scene2D/BackgroundEntity.h"
 
+#include "../App/Source/Scene2D/Scene2D.h"
+
+
+#include "..\SoundController\SoundController.h"
+
+
 #include <string>
 
  // Include IMGUI
@@ -47,6 +53,12 @@ protected:
 		unsigned textureID;
 	};
 
+
+	float musicvol;
+	float soundvol;
+
+	CSoundController* cSoundController;
+	CScene2D* cScene2D;
 	ButtonData VolumeIncreaseButtonData;
 	ButtonData VolumeDecreaseButtonData;
 };

@@ -69,12 +69,16 @@ bool CCraftingState::Init(void)
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 
+	cPlayer2D = CPlayer2D::GetInstance();
+
 	cMouseController = CMouseController::GetInstance();
 	/*VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton2.png";
 	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
 
+
+	cSettings = CSettings::GetInstance();
 
 	guiscene2d = CGUI_Scene2D::GetInstance();
 
@@ -86,19 +90,10 @@ bool CCraftingState::Init(void)
 
 	gridrecipe.SetRecipeIndex(0, 0);
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 19; i++)
 	{
 		if (i < 9)
 		{
-			/*if (i % 2 == 0)
-			{
-				butnum[i].setitemID(1);
-			}
-			else
-			{
-				butnum[i].setitemID(2);
-			}*/
-
 			//set crafting system to 0
 			butnum[i].setitemID(0);
 			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
@@ -106,7 +101,9 @@ bool CCraftingState::Init(void)
 		else
 		{
 			//hotbar
-			butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
+			//butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
+			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
+
 		}
 
 		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
@@ -123,6 +120,10 @@ bool CCraftingState::Init(void)
  */
 bool CCraftingState::Update(const double dElapsedTime)
 {
+	// Calculate the relative scale to our default windows width
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -143,7 +144,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Crafting", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/3.0));				// Set the top-left of the window at (10,10)
+			(CSettings::GetInstance()->iWindowHeight/3.0) - 100));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -154,16 +155,13 @@ bool CCraftingState::Update(const double dElapsedTime)
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Crafting Menu");
 		
 		// by tohdj
-		char y[9];
-		for (int n = 0; n < 12; n++)
+		char y[19];
+		for (int n = 0; n < 19; n++)
 		{
 			ImGui::PushID(n);
-
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
-
-
 			string x = to_string(n);
 			//string x = to_string(butnum[n].itemID);
 
@@ -177,12 +175,33 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 			if (n >= 9)
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
-					-1, ImVec4(1, 1, 0, 1) );
 
-				/*ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
-					CSettings::GetInstance()->iWindowHeight / 2.0));*/
+			/*	ImGuiWindowFlags hotbar2WindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+					ImGuiWindowFlags_NoTitleBar |
+					ImGuiWindowFlags_NoMove |
+					ImGuiWindowFlags_NoResize |
+					ImGuiWindowFlags_NoCollapse |
+					ImGuiWindowFlags_NoScrollbar;
+				ImGui::Begin("Hotbar2", NULL, hotbar2WindowFlags);*/
+				//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f - 100 / 2, CSettings::GetInstance()->iWindowHeight / 3.0));
+				//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+				//if ((n % 3) != 0)
+				//	ImGui::SameLine();
 
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+					-1, ImVec4(1, 1, 0, 1));
+
+				//ImGui::End();
+
+			}
+			else if(n == 18)
+			{
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+					-1, ImVec4(1, 0, 0, 1));
+
+				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
+				butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+				//butnum[n]. = il->LoadTextureGetID(output.fileName.c_str(), false);
 			}
 			else
 			{
@@ -190,7 +209,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 			}
 
-			
 			if (butnum[n].getitemID() != 0)
 			{
 				// Our buttons are both drag sources and drag targets here!
@@ -217,29 +235,22 @@ bool CCraftingState::Update(const double dElapsedTime)
 					butnum[n] = butnum[payload_n];
 					butnum[payload_n] = tmp;
 
-					//set new values for each index
-					for (int i = 1; i < 10; i++)
-					{
-						gridrecipe.SetRecipeIndex(i, butnum[i - 1].getitemID());
-						cout << "Number " << i << " is " << gridrecipe.GetRecipeIndex(i) << endl;
-					}
-
 					//payload is what is selected to drag
 					// n is what it's being dragged to
 					
 					//set the hotbar to the item
-					if (n >= 9)
+					if (n >= 9 && n < 12)
 					{
 						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
 
 					}
-					else if (payload_n >= 9)
+					else if (payload_n >= 9 && payload_n < 12)
 					{
 						guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
 
 					}
 
-					cout << "Payload n " << payload_n << endl;
+					//cout << "Payload n " << payload_n << endl;
 
 					cout << endl;
 				}
