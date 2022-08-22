@@ -182,6 +182,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+	cInventoryManager->Add(sword);
+
+	sword->getAnimatedSprites()->PlayAnimation("slash", -1, 0.3f);
 	//std::cout << sword->
 
 	//cInventoryManager->Add(*sword);
@@ -806,7 +809,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	InteractWithMap();
 
+
+	// sword
+	if (cInventoryManager->Check("Sword"))
+	{
+		cInventoryManager->GetItem("Sword")->vec2Index = vec2Index;
+		std::cout << "bonk";
+
+		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
+		sword->getAnimatedSprites()->Update(dElapsedTime);
+	}
+
 	animatedSprites->Update(dElapsedTime);
+	
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
@@ -862,11 +877,51 @@ void CPlayer2D::Render(void)
 		glBindVertexArray(VAO);
 		quadMesh->Render();
 	*/
-
 	animatedSprites->Render();
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	/*
+	if (cInventoryManager->Check("Sword"))
+	{
+		glBindVertexArray(VAO);
+		// get matrix's uniform location and set matrix
+		unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
+		unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+		transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+
+		transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
+
+		transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x+1,
+			vec2UVCoordinate.y + camera->vec2Index.y,
+			0.0f));
+
+		transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
+
+
+		// Update the shaders with the latest transform
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
+
+		// bind textures on corresponding texture units
+		glActiveTexture(GL_TEXTURE0);
+		// Get the texture to be rendered
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/woodenSword.png", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load player tile texture" << std::endl;
+		}
+		glBindTexture(GL_TEXTURE_2D, iTextureID);
+
+		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
+		sword->getAnimatedSprites()->Render();
+
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}*/
 }
 
 /**

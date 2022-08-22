@@ -3,8 +3,10 @@ CBlade2D
  */
 #pragma once
 
+#include "Primitives/MeshBuilder.h"
 // Include AnimatedSprites
 #include "Primitives/SpriteAnimation.h"
+
 #include "InventoryItem.h"
 
 class CBlade2D : public CInventoryItem
@@ -28,6 +30,9 @@ public:
 	float getBaseRange();
 	float getBaseDef();
 
+	AILMENT getEffect();
+
+	CSpriteAnimation* getAnimatedSprites();
 protected:
 	float baseDamage;
 	float baseAtkSpd;

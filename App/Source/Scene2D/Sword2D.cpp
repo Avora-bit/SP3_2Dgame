@@ -44,6 +44,8 @@ CSword2D::CSword2D(CHilt2D* hilt, CBlade2D* blade)
 
 	this->hilt = hilt;
 	this->blade = blade;
+	guard = false;
+	sName = "Sword";
 }
 
 /**
@@ -129,7 +131,7 @@ bool CSword2D::Init(void)
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-
+	/*
 	// Load the player texture
 	// Load the ground texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Weapons/Shiv.png", true);
@@ -138,10 +140,11 @@ bool CSword2D::Init(void)
 		std::cout << "Failed to load Shiv tile texture" << std::endl;
 		return false;
 	}
+	
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("hold", 0, 0);
 	animatedSprites->AddAnimation("throw", 1, 1);
-
+	*/
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -399,6 +402,41 @@ bool CSword2D::replaceBlade(CBlade2D* blade)
 	this->blade->~CBlade2D();
 	this->blade = blade;
 	return true;
+}
+
+float CSword2D::getTotalDamage()
+{
+	return blade->getBaseDamage() + hilt->getSharp()*hilt->getBonusMultiplier()*5.0f;
+}
+
+float CSword2D::getTotalRavenous()
+{
+	return hilt->getRavenous() * hilt->getBonusMultiplier() * 0.05f;
+}
+
+float CSword2D::getTotalAtkSpeed()
+{
+	return blade->getBaseAtkSpd() + hilt->getLight()*hilt->getBonusMultiplier()*0.1f;
+}
+
+float CSword2D::getTotalRange()
+{
+	return blade->getBaseRange() + hilt->getWide()*hilt->getBonusMultiplier()*0.1f;
+}
+
+float CSword2D::getTotalDef()
+{
+	return blade->getBaseDef()+25.f*guard;
+}
+
+CBlade2D::AILMENT CSword2D::getEffect()
+{
+	return blade->getEffect();
+}
+
+CSpriteAnimation* CSword2D::getAnimatedSprites()
+{
+	return blade->getAnimatedSprites();
 }
 
 //

@@ -12,22 +12,47 @@ CHilt2D::~CHilt2D(void)
 {
 }
 
-float CHilt2D::getBonusMultipler()
+float CHilt2D::getBonusMultiplier()
 {
-    return 0.0f;
+    return bonusMultiplier;
 }
 
 unsigned short int CHilt2D::getLight()
 {
-    return 0;
+    return light;
 }
 
 unsigned short int CHilt2D::getRavenous()
 {
-    return 0;
+    return ravenous;
 }
 
 unsigned short int CHilt2D::getWide()
 {
-    return 0;
+    return wide;
+}
+
+unsigned short int CHilt2D::getSharp()
+{
+    return sharp;
+}
+
+void CHilt2D::addLight(int level)
+{
+    light += level;
+}
+
+void CHilt2D::addRavenous(int level)
+{
+    ravenous += level;
+}
+
+void CHilt2D::addWide(int level)
+{
+    wide += level;
+}
+
+void CHilt2D::addSharp(int level)
+{
+    sharp += level;
 }
