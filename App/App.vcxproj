@@ -42,8 +42,10 @@
     <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
     <ClCompile Include="Source\Scene2D\Shivs2D.cpp" />
     <ClCompile Include="Source\Scene2D\slot.cpp" />
+    <ClCompile Include="Source\Scene2D\Spider.cpp" />
     <ClCompile Include="Source\Scene2D\Sword2D.cpp" />
     <ClCompile Include="Source\Scene2D\RustyBlade2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Webshot.cpp" />
     <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
@@ -80,8 +82,10 @@
     <ClInclude Include="Source\Scene2D\Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Shivs2D.h" />
     <ClInclude Include="Source\Scene2D\slot.h" />
+    <ClInclude Include="Source\Scene2D\Spider.h" />
     <ClInclude Include="Source\Scene2D\Sword2D.h" />
     <ClInclude Include="Source\Scene2D\RustyBlade2D.h" />
+    <ClInclude Include="Source\Scene2D\Webshot.h" />
     <ClInclude Include="Source\Scene2D\WoodenHilt2D.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />

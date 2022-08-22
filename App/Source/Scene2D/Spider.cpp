@@ -1,16 +1,16 @@
-#include "Chicken.h"
+#include "Spider.h"
 
-Chicken::Chicken()
+Spider::Spider()
 {
-	health = 20;
-	atk = 0;
+	health = 30;
+	atk = 20;
 }
 
-Chicken::~Chicken()
+Spider::~Spider()
 {
 }
 
-bool Chicken::Init(void)
+bool Spider::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -24,7 +24,7 @@ bool Chicken::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(302, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(303, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -43,20 +43,14 @@ bool Chicken::Init(void)
 	//CS: Create the Quad Mesh using the mesh builder
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/chicken.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/spider.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load chicken tile texture" << std::endl;
+		std::cout << "Failed to load Spider tile texture" << std::endl;
 		return false;
 	}
 
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-
-	animatedSprites->AddAnimation("idle", 1, 4);
-	animatedSprites->AddAnimation("moveLeft", 4, 8);
-	animatedSprites->AddAnimation("sitLeft", 8, 12);
-	animatedSprites->AddAnimation("moveRight", 12, 16);
-	animatedSprites->PlayAnimation("moveLeft", -1, 0.3f);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -66,11 +60,11 @@ bool Chicken::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	timer = 0;
-
+	directionChosen = false;
 	return true;
 }
 
-void Chicken::Update(const double dElapsedTime)
+void Spider::Update(const double dElapsedTime)
 {
 	timer += dElapsedTime;
 
@@ -94,11 +88,16 @@ void Chicken::Update(const double dElapsedTime)
 					iFSMCounter = 0;
 				}
 			}
-			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.0f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
 			}
+			/*else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			{
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}*/
 			iFSMCounter++;
 			break;
 		}
@@ -106,15 +105,21 @@ void Chicken::Update(const double dElapsedTime)
 		{
 			if (iFSMCounter > iMaxFSMCounter)
 			{
+				timer = 0;
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 				//cout << "Switching to Idle State" << endl;
 			}
-			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
 			}
+			/*else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			{
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}*/
 			else
 			{
 				// Patrol around
@@ -127,7 +132,7 @@ void Chicken::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::RUN:
 		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
 				{
@@ -139,7 +144,7 @@ void Chicken::Update(const double dElapsedTime)
 			}
 			
 
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
 				vec2Direction = vec2Index - cPlayer2D->vec2Index;
 				vec2Direction = -vec2Direction;
@@ -173,14 +178,25 @@ void Chicken::Update(const double dElapsedTime)
 			iFSMCounter++;
 			break;
 		}
+		case CEnemy2D::ATTACK:
+		{
+			vec2Direction = glm::vec2(0, 0);
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			{
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
+				break;
+			}
+
+		}
 	}
-	animatedSprites->Update(dElapsedTime);
+	/*animatedSprites->Update(dElapsedTime);*/
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
 
-void Chicken::UpdatePosition(void)
+void Spider::UpdatePosition(void)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -206,11 +222,9 @@ void Chicken::UpdatePosition(void)
 		{
 			vec2Index.y = vec2OldIndex.y;
 			vec2NumMicroSteps.y = 0;
+			directionChosen = false;
 			randomDirection();
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.y > 0)
 	{
@@ -235,11 +249,9 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
+			directionChosen = false;
 			randomDirection();
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	if (vec2Direction.x < 0)
 	{
@@ -264,11 +276,9 @@ void Chicken::UpdatePosition(void)
 		{
 			vec2Index.x = vec2OldIndex.x;
 			vec2NumMicroSteps.x = 0;
+			directionChosen = false;
 			randomDirection();
 		}
-		/*animatedSprites->PlayAnimation("moveLeft", -1, 0.3f);*/
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.x > 0)
 	{
@@ -294,51 +304,83 @@ void Chicken::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
+			directionChosen = false;
 			randomDirection();
 		}
-		/*animatedSprites->PlayAnimation("moveRight", -1, 0.3f);*/
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 }
 
-bool Chicken::randomDirection()
+bool Spider::randomDirection()
 {
-	int i = rand() % 4;
-	switch (i)
+	if (!directionChosen)
 	{
+		int i = rand() % 4;
+		switch (i)
+		{
 		case 0:
 		{
-			if (CheckPosition(DOWN))
+			if (CheckPosition(DOWN) && checkDirection(DOWN))
 			{
 				vec2Direction = glm::vec2(0, -1);
+				directionChosen = true;
 				return true;
 			}
 		}
 		case 1:
 		{
-			if (CheckPosition(UP))
+			if (CheckPosition(UP) && checkDirection(UP))
 			{
 				vec2Direction = glm::vec2(0, 1);
+				directionChosen = true;
 				return true;
 			}
 		}
 		case 2:
 		{
-			if (CheckPosition(LEFT))
+			if (CheckPosition(LEFT) && checkDirection(LEFT))
 			{
 				vec2Direction = glm::vec2(-1, 0);
+				directionChosen = true;
 				return true;
 			}
 		}
 		case 3:
 		{
-			if (CheckPosition(RIGHT))
+			if (CheckPosition(RIGHT) && checkDirection(RIGHT))
 			{
 				vec2Direction = glm::vec2(1, 0);
+				directionChosen = true;
 				return true;
 			}
 		}
+		}
 	}
 	return false;
+}
+
+bool Spider::checkDirection(DIRECTION eDirection)
+{
+	if (sCurrentFSM == RUN)
+	{
+		switch (eDirection)
+		{
+		case DOWN:
+			if (vec2Index.y - cPlayer2D->vec2Index.y > 0)
+				return false;
+			break;
+		case UP:
+			if (vec2Index.y - cPlayer2D->vec2Index.y < 0)
+				return false;
+			break;
+		case LEFT:
+			if (vec2Index.x - cPlayer2D->vec2Index.x < 0)
+				return false;
+			break;
+		case RIGHT:
+			if (vec2Index.x - cPlayer2D->vec2Index.x > 0)
+				return false;
+			break;
+		}
+	}
+	return true;
 }

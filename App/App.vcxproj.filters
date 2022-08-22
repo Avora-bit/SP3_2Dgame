@@ -120,10 +120,19 @@
       <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Octopus.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Projectile2D.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Spider.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Chicken.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Webshot.cpp">
+      <Filter>Scene2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +236,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Projectile2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Chicken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\GameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Spider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Webshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -43,13 +43,27 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
+#include <iostream>
+using namespace std;
+
+// Include Shader Manager
+#include "RenderControl\ShaderManager.h"
+
+// Include ImageLoader
+#include "System\ImageLoader.h"
+
+// Include the Map2D as we will use it to check the player's movements and actions
+#include "Map2D.h"
+#include "Player2D.h"
+#include "Primitives/MeshBuilder.h"
+
 class CProjectile2D : public CSingletonTemplate<CProjectile2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CProjectile2D>;
 public:
 
 	// Init
-	bool Init(void);
+	virtual bool Init(void);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -81,9 +95,6 @@ protected:
 	//DIRECTION direction;
 	// Animated Sprite
 	CSpriteAnimation* animatedSprites;
-
-	// Keyboard Controller singleton instance
-	CKeyboardController* cKeyboardController;
 
 	CSoundController* cSoundController;
 

@@ -6,26 +6,11 @@
  */
 #include "Projectile2D.h"
 
-#include <iostream>
-using namespace std;
-
-// Include Shader Manager
-#include "RenderControl\ShaderManager.h"
-
-// Include ImageLoader
-#include "System\ImageLoader.h"
-
-// Include the Map2D as we will use it to check the player's movements and actions
-#include "Map2D.h"
-#include "Player2D.h"
-#include "Primitives/MeshBuilder.h"
-
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
 CProjectile2D::CProjectile2D(void)
 	: cMap2D(NULL)
-	, cKeyboardController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
@@ -48,9 +33,6 @@ CProjectile2D::CProjectile2D(void)
  */
 CProjectile2D::~CProjectile2D(void)
 {
-	// We won't delete this since it was created elsewhere
-	cKeyboardController = NULL;
-
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
@@ -76,11 +58,6 @@ CProjectile2D::~CProjectile2D(void)
   */
 bool CProjectile2D::Init(void)
 {
-	// Store the keyboard controller singleton instance here
-	cKeyboardController = CKeyboardController::GetInstance();
-	// Reset all keys since we are starting a new game
-	cKeyboardController->Reset();
-
 	// Get the handler to the CSettings instance
 
 	camera = Camera::GetInstance();
@@ -103,21 +80,7 @@ bool CProjectile2D::Init(void)
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
-	// Load the player texture 
-	/*
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2D_player.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_PlayerTile.tga" << endl;
-		return false;
-	}
-	*/
-	// Create the quad mesh for the player
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
-	// Load the player texture
 	// Load the ground texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Weapons/Shiv.png", true);
 	if (iTextureID == 0)

@@ -94,7 +94,7 @@ void Chicken::Update(const double dElapsedTime)
 					iFSMCounter = 0;
 				}
 			}
-			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.0f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
@@ -110,7 +110,7 @@ void Chicken::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 				//cout << "Switching to Idle State" << endl;
 			}
-			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (health < 20 && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.0f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
@@ -127,7 +127,7 @@ void Chicken::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::RUN:
 		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 3.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
 				{
@@ -139,7 +139,7 @@ void Chicken::Update(const double dElapsedTime)
 			}
 			
 
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.0f)
 			{
 				vec2Direction = vec2Index - cPlayer2D->vec2Index;
 				vec2Direction = -vec2Direction;

@@ -1,61 +1,61 @@
-﻿  Chicken.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(75,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(179,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+﻿  Spider.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(69,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(195,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(180,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(196,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(189,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(205,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(189,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(205,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(195,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(211,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(217,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(231,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(217,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(231,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(247,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(259,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(247,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(259,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(253,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(265,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(276,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(286,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Chicken.cpp(276,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(286,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
           with
           [
               T=float

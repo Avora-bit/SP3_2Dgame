@@ -172,6 +172,20 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			break;
 	}
 
+	while (true)
+	{
+		Spider* spider = new Spider();
+		spider->SetShader("Shader2D_Colour");
+
+		if (spider->Init())
+		{
+			spider->SetPlayer2D(cPlayer2D);
+			enemyVector.push_back(spider);
+		}
+		else
+			break;
+	}
+
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
