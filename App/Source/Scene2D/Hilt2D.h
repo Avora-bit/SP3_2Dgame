@@ -14,6 +14,16 @@ public:
 	// Destructor
 	virtual ~CHilt2D(void);
 
+	float getBonusMultipler();
+	unsigned short int getLight();
+	unsigned short int getRavenous();
+	unsigned short int getWide();
+	unsigned short int getSharp();
+
+	void addLight(int level);
+	void addRavenous(int level);
+	void addWide(int level);
+	void addSharp(int level);
 protected:
 	float bonusMultiplier;
 	unsigned short int light;

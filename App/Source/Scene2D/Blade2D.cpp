@@ -38,3 +38,23 @@ CBlade2D::~CBlade2D(void)
 		animatedSprites = NULL;
 	}
 }
+
+float CBlade2D::getBaseDamage()
+{
+	return 0.0f;
+}
+
+float CBlade2D::getBaseAtkSpd()
+{
+	return 0.0f;
+}
+
+float CBlade2D::getBaseRange()
+{
+	return 0.0f;
+}
+
+float CBlade2D::getBaseDef()
+{
+	return 0.0f;
+}

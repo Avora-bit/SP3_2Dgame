@@ -382,6 +382,25 @@ void CSword2D::InteractWithMap(void)
 		break;
 	}
 }
+
+bool CSword2D::replaceHilt(CHilt2D* hilt)
+{
+	if (this->hilt->sName == hilt->sName)
+		return false;
+	this->hilt->~CHilt2D();
+	this->hilt = hilt;
+	return true;
+}
+
+bool CSword2D::replaceBlade(CBlade2D* blade)
+{
+	if (this->blade->sName == blade->sName)
+		return false;
+	this->blade->~CBlade2D();
+	this->blade = blade;
+	return true;
+}
+
 //
 //bool CSword2D::CheckPosition(DIRECTION eDirection)
 //{

@@ -1,6 +1,6 @@
 ﻿  Settings.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(11,14): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12,15): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(11,14): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12,15): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
   imgui_impl_glfw.cpp
   imgui_impl_opengl3.cpp
   imgui.cpp
@@ -18,7 +18,7 @@ D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12
   Mesh.cpp
   MeshBuilder.cpp
   SpriteAnimation.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.cpp(75,62): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.cpp(75,62): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
   ShaderManager.cpp
   ImageLoader.cpp
   Generating Code...
@@ -27,4 +27,4 @@ D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\Primitives\SpriteAnimation.
   FPSCounter.cpp
   StopWatch.cpp
   Generating Code...
-  Library.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.lib
+  Library.vcxproj -> E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Debug\Library.lib
