@@ -261,8 +261,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
 
-	std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
+	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
+	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 
 	// Store the old position

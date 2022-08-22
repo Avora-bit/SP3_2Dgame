@@ -49,9 +49,9 @@ bool Octopus::Init(void)
 	}
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idle", 1, 1);
+	//animatedSprites->AddAnimation("idle", 1, 1);
 
-	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	//animatedSprites->PlayAnimation("idle", -1, 0.3f);
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -163,7 +163,7 @@ void Octopus::Update(const double dElapsedTime)
 			break;
 		}
 	}
-	animatedSprites->Update(dElapsedTime);
+	//animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
