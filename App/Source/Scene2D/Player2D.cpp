@@ -234,8 +234,36 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
 
 	//}
+
 	// vitals
-	vec2OldIndex = vec2Index;
+	static float hungerTimer = 0;
+	hungerTimer += dElapsedTime;
+
+	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
+	{
+		cInventoryManager->GetItem("Hunger")->Remove(5);
+		hungerTimer = 0;
+	}
+
+	static float starveTimer = 0;
+	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
+	{
+		starveTimer += dElapsedTime;
+		if (starveTimer >= 1)
+		{
+			starveTimer = 0;
+			cInventoryManager->GetItem("Health")->Remove(5);
+		}
+	}
+	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
+		starveTimer = 0;
+
+
+	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
+		CGameManager::GetInstance()->bPlayerLost = true;
+
+	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
+	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
@@ -249,7 +277,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				staminaTimer = 0;
 			}
 		}
-
 
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -744,36 +771,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				break;*/
 		}
 	}
-
-	// vitals
-	static float hungerTimer = 0;
-	hungerTimer += dElapsedTime;
-
-	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
-	{
-		cInventoryManager->GetItem("Hunger")->Remove(5);
-		hungerTimer = 0;
-	}
-
-	static float starveTimer = 0;
-	if (cInventoryManager->GetItem("Hunger")->GetCount() <= 0)
-	{
-		starveTimer += dElapsedTime;
-		if (starveTimer >= 1)
-		{
-			starveTimer = 0;
-			cInventoryManager->GetItem("Health")->Remove(5);
-		}
-	}
-	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
-		starveTimer = 0;
-
-
-	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
-		CGameManager::GetInstance()->bPlayerLost = true;
-
-	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	//spawn projectile logic
 	{
