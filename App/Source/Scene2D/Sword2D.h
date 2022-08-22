@@ -67,6 +67,9 @@ public:
 	// Destructor
 	virtual ~CSword2D(void);
 
+	bool replaceHilt(CHilt2D* hilt);
+	bool replaceBlade(CBlade2D* blade);
+
 protected:
 
 	glm::vec2 vec2OldIndex;		//coords
@@ -79,9 +82,6 @@ protected:
 
 	Camera* camera;
 
-	CHilt2D* hilt;
-	CBlade2D* blade;
-
 	//DIRECTION direction;
 	// Animated Sprite
 	CSpriteAnimation* animatedSprites;
@@ -93,10 +93,13 @@ protected:
 
 	CPhysics2D cPhysics2D;
 
+	CHilt2D* hilt;
+	CBlade2D* blade;
+	bool guard;
+
 	// Player's colour
 	glm::vec4 runtimeColour;
 
 	void InteractWithMap(void);
-
 };
 

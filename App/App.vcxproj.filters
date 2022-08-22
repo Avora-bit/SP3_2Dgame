@@ -116,8 +116,14 @@
     <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\SwordBlade2D.cpp">
+    <ClCompile Include="Source\Scene2D\RustyBlade2D.cpp">
       <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Octopus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Projectile2D.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,7 +220,13 @@
     <ClInclude Include="Source\Scene2D\WoodenHilt2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\SwordBlade2D.h">
+    <ClInclude Include="Source\Scene2D\RustyBlade2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Octopus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Projectile2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

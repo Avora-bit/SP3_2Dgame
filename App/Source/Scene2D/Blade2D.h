@@ -23,6 +23,11 @@ public:
 	// Destructor
 	virtual ~CBlade2D(void);
 
+	float getBaseDamage();
+	float getBaseAtkSpd();
+	float getBaseRange();
+	float getBaseDef();
+
 protected:
 	float baseDamage;
 	float baseAtkSpd;

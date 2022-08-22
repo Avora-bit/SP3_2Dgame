@@ -1,4 +1,6 @@
 ﻿  Settings.cpp
+E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(11,14): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+E:\personal\schoolwork\Y2S1\DM2292-SP3\NYP_Team5_SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12,15): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
   imgui_impl_glfw.cpp
   imgui_impl_opengl3.cpp
   imgui.cpp
