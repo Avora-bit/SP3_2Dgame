@@ -27,6 +27,7 @@ CScene2D::CScene2D(void)
 	, cGUI_Scene2D(NULL)
 	, camera(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
 {
@@ -149,6 +150,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	camera->Init();
 
 	enemyVector.clear();
+	/*
 	while (true)
 	{
 		Octopus* octo = new Octopus();
@@ -175,7 +177,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		else
 			break;
 	}
-
+	*/
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())

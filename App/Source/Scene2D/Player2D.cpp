@@ -189,9 +189,6 @@ bool CPlayer2D::Init(void)
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
 
-	//std::cout << sword->
-
-	//cInventoryManager->Add(*sword);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
@@ -868,9 +865,8 @@ void CPlayer2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
-	//angle = (atan2(-(cMouseController->GetMousePositionY() - cSettings->iWindowHeight / 2),
-	//	cMouseController->GetMousePositionX() - cSettings->iWindowWidth / 2) / 3.14159) * 180.0 + 90.f;
 
+	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 

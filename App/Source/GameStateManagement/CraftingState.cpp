@@ -358,6 +358,17 @@ void CCraftingState::Destroy(void)
 	delete il;
 	il = nullptr;
 
+
+	if (cPlayer2D)
+	{
+		cPlayer2D = nullptr;
+	}
+
+	if (guiscene2d)
+	{
+		guiscene2d = nullptr;
+	}
+
 	/*for (int i = 0; i < 12; i++)
 	{
 		delete butnum[i];
