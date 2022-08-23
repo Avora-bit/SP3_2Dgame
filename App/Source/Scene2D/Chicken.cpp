@@ -8,6 +8,20 @@ Chicken::Chicken()
 
 Chicken::~Chicken()
 {
+	// We won't delete this since it was created elsewhere
+	cPlayer2D = NULL;
+
+	CShivs2D = NULL;
+
+	// We won't delete this since it was created elsewhere
+	cMap2D = NULL;
+
+	camera = NULL;
+
+	// optional: de-allocate all resources once they've outlived their purpose:
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
 
 bool Chicken::Init(void)
@@ -65,6 +79,7 @@ bool Chicken::Init(void)
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
+	angle = 360;
 	timer = 0;
 
 	return true;

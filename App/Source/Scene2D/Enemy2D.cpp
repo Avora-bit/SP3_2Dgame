@@ -127,6 +127,8 @@ bool CEnemy2D::Init(void)
 
 	health = 40;
 
+	angle = 0;
+
 	return true;
 }
 
@@ -461,6 +463,9 @@ void CEnemy2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 		vec2UVCoordinate.y + camera->vec2Index.y,
 		0.0f));
+
+	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
+
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));

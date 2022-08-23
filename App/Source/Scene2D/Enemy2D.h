@@ -100,6 +100,8 @@ protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
+	float angle;
+
 	// The vec2 which stores the indices of the enemy2D in the Map2D
 	glm::vec2 vec2Index;
 

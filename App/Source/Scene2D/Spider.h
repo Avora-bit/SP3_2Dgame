@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy2D.h"
+#include "Webshot.h"
 #include <stdlib.h>
 
 class Spider:public CEnemy2D
@@ -15,4 +16,5 @@ public:
 	bool checkDirection(DIRECTION eDirection);
 private:
 	bool directionChosen;
+	float shotInterval;
 };

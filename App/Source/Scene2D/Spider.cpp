@@ -8,6 +8,20 @@ Spider::Spider()
 
 Spider::~Spider()
 {
+	// We won't delete this since it was created elsewhere
+	cPlayer2D = NULL;
+
+	CShivs2D = NULL;
+
+	// We won't delete this since it was created elsewhere
+	cMap2D = NULL;
+
+	camera = NULL;
+
+	// optional: de-allocate all resources once they've outlived their purpose:
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
 
 bool Spider::Init(void)
@@ -59,8 +73,10 @@ bool Spider::Init(void)
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
+	angle = 360;
 	timer = 0;
 	directionChosen = false;
+	shotInterval = 0;
 	return true;
 }
 
@@ -78,6 +94,7 @@ void Spider::Update(const double dElapsedTime)
 	{
 		case CEnemy2D::IDLE:
 		{
+			directionChosen = false;
 			vec2Direction = glm::vec2(0, 0);
 			if (iFSMCounter > iMaxFSMCounter)
 			{
@@ -88,16 +105,16 @@ void Spider::Update(const double dElapsedTime)
 					iFSMCounter = 0;
 				}
 			}
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
 			}
-			/*else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 			{
 				sCurrentFSM = ATTACK;
 				iFSMCounter = 0;
-			}*/
+			}
 			iFSMCounter++;
 			break;
 		}
@@ -115,11 +132,11 @@ void Spider::Update(const double dElapsedTime)
 				sCurrentFSM = RUN;
 				iFSMCounter = 0;
 			}
-			/*else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 			{
 				sCurrentFSM = ATTACK;
 				iFSMCounter = 0;
-			}*/
+			}
 			else
 			{
 				// Patrol around
@@ -142,7 +159,6 @@ void Spider::Update(const double dElapsedTime)
 					break;
 				}
 			}
-			
 
 			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
@@ -187,7 +203,30 @@ void Spider::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 				break;
 			}
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+			{
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				break;
+			}
+			
+			shotInterval -= dElapsedTime;
+			if (shotInterval <= 0)
+			{
+				cout << "attacking" << endl;
+				Webshot* web = new Webshot();
+				web->SetShader("Shader2D_Colour");
 
+				if (!web->Init())
+				{
+					cout << "Spider webs failed to init" << endl;
+				}
+				web->vec2Index = vec2Index;
+				web->PreRender();
+				web->Render();
+				web->PostRender();
+				shotInterval = 5;
+			}
 		}
 	}
 	/*animatedSprites->Update(dElapsedTime);*/

@@ -11,11 +11,14 @@ class Webshot : public CProjectile2D
 {
 
 public:
-
+	Webshot();
+	~Webshot();
 	// Init
 	bool Init(void);
 
 	// Update
 	void Update(const double dElapsedTime);
+
+	bool InteractWithPlayer();
 };
 

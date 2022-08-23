@@ -75,6 +75,13 @@ CScene2D::~CScene2D(void)
 	}
 	enemyVector.clear();
 
+	for (int i = 0; i < projectileVector.size(); i++)
+	{
+		delete projectileVector[i];
+		projectileVector[i] = NULL;
+	}
+	projectileVector.clear();
+
 	if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
