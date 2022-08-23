@@ -103,6 +103,8 @@ bool CPlayer2D::Init(void)
 
 	direction = RIGHT;
 
+
+
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
@@ -187,6 +189,7 @@ bool CPlayer2D::Init(void)
 	//cInventoryManager->Add(*sword);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
+
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -424,6 +427,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+
+
+			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;

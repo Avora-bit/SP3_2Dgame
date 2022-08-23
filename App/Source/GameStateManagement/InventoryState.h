@@ -66,6 +66,8 @@ protected:
 	CImageLoader* il;
 
 
+	int itemcounter;
+
 	slot butnum[9];
 
 };

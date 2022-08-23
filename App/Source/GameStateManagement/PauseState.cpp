@@ -85,7 +85,7 @@ bool CPauseState::Init(void)
 
 
 	musicvol = cSoundController->returnmusicvol() * 100;
-	//soundvol = cScene2D->returnsoundvol() * 100;
+	soundvol = cScene2D->returnsoundvol() * 100;
 
 
 
@@ -155,12 +155,12 @@ bool CPauseState::Update(const double dElapsedTime)
 		}
 
 
-		/*if (ImGui::SliderFloat("Sound", &soundvol, 10, 100))
+		if (ImGui::SliderFloat("Sound", &soundvol, 10, 100))
 		{
 
-			cSoundController->setsoundvol(soundvol / 100);
+			cScene2D->setsoundvol(soundvol / 100);
 
-		}*/
+		}
 	ImGui::End();
 	}
 

@@ -17,7 +17,7 @@ CSoundController::CSoundController(void)
 	, vec3dfListenerPos(vec3df(0, 0, 0))
 	, vec3dfListenerDir(vec3df(0, 0, 1))
 	,musicsfx(NULL)
-	,musicVol(0.1f)
+	, musicVol( 0.001f) 
 {
 }
 
@@ -66,7 +66,7 @@ bool CSoundController::Init(void)
 	return true;
 
 
-	musicVol = 0.1f;
+	musicVol = 0.001f;
 }
 
 /**
@@ -447,17 +447,10 @@ void CSoundController::Update(const double dElapsedTime)
 			//currentSong->setVolume(0.001f * musicVol);
 
 		}
-		/*if (currentSong->getVolume() < cSoundEngine->getSoundVolume())
-		{
-			currentSong->setVolume(currentSong->getVolume() + 0.001f);
-		}
-		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
-		{
-			currentSong->setVolume(currentSong->getVolume() - 0.001f);
-		}*/
 
 		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
 		{
+			StopPlayByID(musicPlaylist[currentlyPlaying]);
 			if (currentlyPlaying <= musicPlaylist.size() - 1)
 				currentlyPlaying++;
 			else
@@ -469,6 +462,7 @@ void CSoundController::Update(const double dElapsedTime)
 
 
 		//ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+
 		if (currentSong != nullptr)
 		{
 			musicsfx = currentSong;
@@ -481,7 +475,7 @@ void CSoundController::Update(const double dElapsedTime)
 
 	}
 
-	cout << musicVol << endl;
+	//cout << musicVol << endl;
 }
 //
 
@@ -562,13 +556,7 @@ CSoundInfo* CSoundController::GetSound(const int ID)
 	return nullptr;
 }
 
-ISound* CSoundController::GetSound_2(const int ID)
-{
-	if (soundMap_2.count(ID) != 0)
-		return soundMap_2[ID];
 
-	return nullptr;
-}
 
 /**
  @brief Remove an sound from this map

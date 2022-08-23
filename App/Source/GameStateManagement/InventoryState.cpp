@@ -151,6 +151,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
 			}
 			else
 			{
@@ -207,26 +208,23 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 					//cPlayer2D->setitem
 
-
 					//payload is what is selected to drag
 					// n is what it's being dragged to
 					cPlayer2D->setitem(n, butnum[n].getitemID());
 					cPlayer2D->setitem(payload_n, butnum[payload_n].getitemID());
 
-
 					//set the hotbar to the item
 					if (n < 3)
 					{
 						hotbar->set_hbcellid(n, butnum[n].getitemID());
-						//cPlayer2D->setitem(n, butnum[n].getitemID());
-
 					}
-					else if (payload_n < 3)
+					if (payload_n < 3)
 					{
 						hotbar->set_hbcellid(payload_n, butnum[payload_n].getitemID());
-						//cPlayer2D->setitem(payload_n, butnum[payload_n].getitemID());
-
 					}
+
+
+					//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
 
 					cout << endl;
 				}
