@@ -46,7 +46,6 @@
 #include "Octopus.h"
 #include "Chicken.h"
 #include "GUI_Scene2D.h"
-#include "Chicken.h"
 
 #include "MapGenerator.h"
 

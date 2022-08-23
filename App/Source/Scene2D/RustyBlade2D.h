@@ -14,4 +14,6 @@ public:
 
 	// Destructor
 	~CRustyBlade2D(void);
+
+	unsigned int LoadSprite();
 };

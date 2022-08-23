@@ -15,16 +15,6 @@ using namespace std;
 
 CBlade2D::CBlade2D(void)
 {
-	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-
-	// Initialise vecIndex
-	vec2Index = glm::i32vec2(0);
-
-	// Initialise vecNumMicroSteps
-	vec2NumMicroSteps = glm::i32vec2(0);
-
-	// Initialise vec2UVCoordinate
-	vec2UVCoordinate = glm::vec2(0.0f);
 }
 
 /**
@@ -32,7 +22,7 @@ CBlade2D::CBlade2D(void)
  */
 CBlade2D::~CBlade2D(void)
 {
-	if (animatedSprites)
+	if (animatedSprites != nullptr)
 	{
 		delete animatedSprites;
 		animatedSprites = NULL;
@@ -41,20 +31,30 @@ CBlade2D::~CBlade2D(void)
 
 float CBlade2D::getBaseDamage()
 {
-	return 0.0f;
+	return baseDamage;
 }
 
 float CBlade2D::getBaseAtkSpd()
 {
-	return 0.0f;
+	return baseAtkSpd;
 }
 
 float CBlade2D::getBaseRange()
 {
-	return 0.0f;
+	return baseRange;
 }
 
 float CBlade2D::getBaseDef()
 {
-	return 0.0f;
+	return baseDef;
+}
+
+CBlade2D::AILMENT CBlade2D::getEffect()
+{
+	return effect;
+}
+
+CSpriteAnimation* CBlade2D::getAnimatedSprites()
+{
+	return animatedSprites;
 }
