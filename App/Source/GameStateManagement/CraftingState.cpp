@@ -67,8 +67,6 @@ bool CCraftingState::Init(void)
 
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
-
-
 	cPlayer2D = CPlayer2D::GetInstance();
 
 	cMouseController = CMouseController::GetInstance();
@@ -98,7 +96,12 @@ bool CCraftingState::Init(void)
 			butnum[i].setitemID(0);
 			gridrecipe.SetRecipeIndex(i + 1, butnum[i].getitemID());
 		}
-		else
+		else if (i == 18)
+		{
+			butnum[i].setitemID(0);
+
+		}
+		else if(i != 18 && i >=9)
 		{
 			//hotbar
 			//butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
@@ -109,8 +112,7 @@ bool CCraftingState::Init(void)
 		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 	}
 
-	output.setitemID(0);
-	output.loadimagebasedID(output.getitemID(), il);
+	
 
 	return true;
 }
@@ -169,30 +171,13 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 			//ImGui::Button(y, ImVec2(50, 50));
 			//construct 9 buttons
-
 			/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
 				int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
 
-			if (n >= 9)
+			if (n >= 9 && n < 18)
 			{
-
-			/*	ImGuiWindowFlags hotbar2WindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-					ImGuiWindowFlags_NoTitleBar |
-					ImGuiWindowFlags_NoMove |
-					ImGuiWindowFlags_NoResize |
-					ImGuiWindowFlags_NoCollapse |
-					ImGuiWindowFlags_NoScrollbar;
-				ImGui::Begin("Hotbar2", NULL, hotbar2WindowFlags);*/
-				//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f - 100 / 2, CSettings::GetInstance()->iWindowHeight / 3.0));
-				//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-				//if ((n % 3) != 0)
-				//	ImGui::SameLine();
-
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
 					-1, ImVec4(1, 1, 0, 1));
-
-				//ImGui::End();
-
 			}
 			else if(n == 18)
 			{
@@ -200,12 +185,47 @@ bool CCraftingState::Update(const double dElapsedTime)
 					-1, ImVec4(1, 0, 0, 1));
 
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
+
+				//print item to inventory
+				if (ImGui::IsItemHovered())
+				{
+					//ImGui::Text("Check %s", butnum[n].getitemID());
+					if (cMouseController->IsButtonDown(0))
+					{
+						for (int x = 9; x < 18; x++)
+						{
+							if (butnum[x].getitemID() == 0)
+							{
+								//remove all 
+								butnum[x].setitemID(butnum[n].getitemID());
+								butnum[x].loadimagebasedID(butnum[x].getitemID(), il);
+
+								//set the inventory to the item
+								cPlayer2D->setitem(x - 9, butnum[x].getitemID());
+								break;
+							}
+						}
+
+						butnum[n].setitemID(0);
+						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+
+
+						for (int i = 0; i < 9; i++)
+						{
+							butnum[i].setitemID(0);
+							butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+
+						}
+
+					}
+				}
+
 				butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
-				//butnum[n]. = il->LoadTextureGetID(output.fileName.c_str(), false);
 			}
 			else
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
+				gridrecipe.SetRecipeIndex(n + 1, butnum[n].getitemID());
 
 			}
 
@@ -244,37 +264,33 @@ bool CCraftingState::Update(const double dElapsedTime)
 						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
 
 					}
-					else if (payload_n >= 9 && payload_n < 12)
+					if (payload_n >= 9 && payload_n < 12)
 					{
 						guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
 
 					}
+					//if the slot is inventory
+					if (n >= 9 && n < 19)
+					{
+						cPlayer2D->setitem(n - 9, butnum[n].getitemID());
+					}
+					if (payload_n >= 9 && payload_n < 19)
+					{
+						cPlayer2D->setitem(payload_n - 9, butnum[payload_n].getitemID());
+					}
 
-					//cout << "Payload n " << payload_n << endl;
 
-					cout << endl;
+
 				}
+
+				//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
+
+
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
 
 		}
-		
-
-		//print out the value of recipebook index 0
-		//cout << recipebook->CheckRecipe(gridrecipe) << endl;
-
-		//render the output button
-		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
-		output.itemID = recipebook->CheckRecipe(gridrecipe);
-		output.loadimagebasedID(output.itemID);
-		output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);*/
-		
-		/*float currentvol = 0;
-		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))
-		{
-
-		}*/
 
 		ImGui::End();
 	}

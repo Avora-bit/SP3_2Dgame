@@ -46,6 +46,8 @@
 #include "Octopus.h"
 #include "Chicken.h"
 #include "GUI_Scene2D.h"
+#include "Chicken.h"
+
 #include "Camera.h"
 
 #include "GameManager.h"
@@ -113,6 +115,7 @@ protected:
 
 	float m_fProgressBar;
 	ISound* musicsfx;
+	ISound* soundsfx;
 
 	float soundVol;
 	float musicVol;

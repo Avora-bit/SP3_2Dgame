@@ -13,6 +13,9 @@ using namespace std;
 
 #include "System\filesystem.h"
 
+
+
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -192,13 +195,14 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Romance in the Air.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);
 	cSoundController->AddToPlaylist(1);
 
-	//musicVol = 1.f;
+	soundVol = 1.f;
 
 	/*for (int i = 1; i < 5; i++)
 	{*/
@@ -227,7 +231,19 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cSoundController->Update(dElapsedTime);
 
-	//cSoundController->setVolume_2(cSoundController->return_currentMusic(), musicsfx, musicVol);
+
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_SPACE))
+	{
+		ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+		if (dodgeSound != nullptr)
+		{
+			soundsfx = dodgeSound;
+		}
+		if (musicsfx != nullptr)
+		{
+			soundsfx->setVolume(soundVol);
+		}
+	}
 
 
 
@@ -347,7 +363,10 @@ void CScene2D::setmusicvol(float vol)
 	musicVol = vol;
 }
 
-
+float CScene2D::returnsoundvol()
+{
+	return soundVol;
+}
 
 void CScene2D::setsoundvol(float vol)
 {
