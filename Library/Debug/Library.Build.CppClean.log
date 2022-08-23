@@ -1,32 +1,32 @@
-d:\documents\nyp stuff\sp3\sp3_2dgame\debug\library.pdb
-d:\documents\nyp stuff\sp3\sp3_2dgame\debug\library.idb
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imageloader.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\shadermanager.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\spriteanimation.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\meshbuilder.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\mesh.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\levelofdetails.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\entity3d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\entity2d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\collisionmanager.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\collider.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\mousecontroller.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\keyboardcontroller.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_widgets.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_tables.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_draw.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_demo.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_impl_opengl3.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\imgui_impl_glfw.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\settings.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\stopwatch.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\fpscounter.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\loadobj.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\debug\library.lib
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\cl.command.1.tlog
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\cl.read.1.tlog
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\cl.write.1.tlog
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\lib-link.read.1.tlog
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\lib-link.write.1.tlog
-d:\documents\nyp stuff\sp3\sp3_2dgame\library\debug\library.tlog\lib.command.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\debug\library.pdb
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\debug\library.idb
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imageloader.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\shadermanager.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\spriteanimation.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\meshbuilder.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\mesh.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\levelofdetails.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\entity3d.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\entity2d.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\collisionmanager.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\collider.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\mousecontroller.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\keyboardcontroller.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_widgets.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_tables.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_draw.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_demo.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_impl_opengl3.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\imgui_impl_glfw.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\settings.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\stopwatch.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\fpscounter.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\loadobj.obj
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\debug\library.lib
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\cl.command.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\cl.read.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\cl.write.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\lib-link.read.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\lib-link.write.1.tlog
+c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\library\debug\library.tlog\lib.command.1.tlog

@@ -44,6 +44,7 @@
 #include "Shivs2D.h"
 #include "Enemy2D.h"
 #include "Octopus.h"
+#include "Chicken.h"
 #include "GUI_Scene2D.h"
 #include "Camera.h"
 
