@@ -15,6 +15,7 @@
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
 
+
 #include <iostream>
 using namespace std;
 
@@ -47,7 +48,9 @@ bool CPlayGameState::Init(void)
 
 	//cInventoryState = CInventoryState::GetInstance();
 	//cInventoryState->Init();
+
 	
+
 
 	// Initialise the cScene2D instance
 	cScene2D = CScene2D::GetInstance();
@@ -94,14 +97,22 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
-		// Load the menu state
-		cout << "Loading CraftingState" << endl;
 		CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
+
+		
+		// Load the crafting state
+		cout << "Loading CraftingState" << endl;
+		CGameStateManager::GetInstance()->OffInventoryGameState();
+
+		
+
 	}
 	//set inventory screen
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_I))
 	{
 		CKeyboardController::GetInstance()->Reset();
+		CGameStateManager::GetInstance()->OffCraftingGameState();
+
 
 		cout << "Loading InventoryState" << endl;
 		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");

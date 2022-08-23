@@ -231,19 +231,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cSoundController->Update(dElapsedTime);
 
-
-	if (cKeyboardController->IsKeyReleased(GLFW_KEY_SPACE))
-	{
-		ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
-		if (dodgeSound != nullptr)
-		{
-			soundsfx = dodgeSound;
-		}
-		if (musicsfx != nullptr)
-		{
-			soundsfx->setVolume(soundVol);
-		}
-	}
+	
 
 
 

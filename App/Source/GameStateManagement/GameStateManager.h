@@ -6,6 +6,9 @@
 
 #include "GameStateBase.h"
 
+#include "CraftingState.h"
+#include "../Scene2D/Player2D.h"
+
 //class CGameState;
 
 class CGameStateManager : public CSingletonTemplate<CGameStateManager>
@@ -41,6 +44,11 @@ protected:
 	CGameStateManager();
 	// Destructor
 	~CGameStateManager();
+
+	CCraftingState* cCraftingState;
+	CPlayer2D* cPlayer2D;
+
+
 
 	// The map of CGameStates
 	std::map<std::string, CGameStateBase*> GameStateMap;

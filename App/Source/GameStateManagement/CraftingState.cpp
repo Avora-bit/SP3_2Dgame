@@ -43,7 +43,12 @@ using namespace std;
  @brief Constructor
  */
 CCraftingState::CCraftingState(void)
-	//: background(NULL)
+	: cPlayer2D(NULL)
+	, cMouseController(NULL)
+	, cSettings(NULL)
+	, guiscene2d(NULL)
+	, il(NULL)
+	, recipebook(NULL)
 {
 
 }
@@ -55,7 +60,7 @@ CCraftingState::CCraftingState(void)
  */
 CCraftingState::~CCraftingState(void)
 {
-
+	
 }
 
 /**
@@ -285,7 +290,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 				//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
 
-
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
@@ -295,22 +299,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 
-
-
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_Q))
-	{
-		for (int i = 0; i < 9; i++)
-		{
-			if (butnum[i].getitemID() != 0)
-			{
-				//cPlayer2D->setitem(n - 9, butnum[n].getitemID());
-				for (int n = 0; n < 9; n++)
-				{
-
-				}
-			}
-		}
-	}
+		
 
 	//For keyboard controls
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
@@ -345,24 +334,67 @@ void CCraftingState::Render(void)
  */
 void CCraftingState::Destroy(void)
 {
-	// cout << "CCraftingState::Destroy()\n" << endl;
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	if (returnbutnumval(i) != 0)
+	//	{
+	//		cout << "INDEX " << i << " is " << returnbutnumval(i) << endl;
+
+	//		//for (int n = 0; n < 9; n++)
+	//		//{
+	//		//	if (cPlayer2D->getitemval(n) == 0)
+	//		//	{
+	//		//		cPlayer2D->setitem(n, cCraftingState->returnbutnumval(i));
+	//		//	}
+	//		//}
+	//		//for (int x = 9; x < 18; x++)
+	//		//{
+	//		//	if (cCraftingState->returnbutnumval(x) == 0)
+	//		//	{
+	//		//		cCraftingState->setbutnumvalto(x, cCraftingState->returnbutnumval(i));
+	//		//		//cCraftingState->setbutnumvalto0(i);
+	//		//	}
+	//		//}
+	//	}
+	//	else
+	//	{
+	//		cout << "HAS NOTHING" << endl;
+	//	}
+	//}
+
+	if (cMouseController)
+	{
+		// We won't delete this since it was created elsewhere
+		cMouseController = NULL;
+	}
+
+	if (cSettings)
+	{
+		// We won't delete this since it was created elsewhere
+		cSettings = NULL;
+	}
+	
+	
+
 	delete recipebook;
 	recipebook = nullptr;
 
 
-	/*delete guiscene2d;
-	guiscene2d = nullptr;*/
 
 
 
 	delete il;
 	il = nullptr;
 
-	/*for (int i = 0; i < 12; i++)
-	{
-		delete butnum[i];
-	}*/
+	
+}
 
-	/*delete il;
-	il = nullptr;*/
+int CCraftingState::returnbutnumval(int arr)
+{
+	return butnum[arr].getitemID();
+}
+
+void CCraftingState::setbutnumvalto(int arr, int val)
+{
+	butnum[arr].setitemID(val);
 }

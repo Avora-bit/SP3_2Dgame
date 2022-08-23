@@ -103,7 +103,7 @@ bool CPlayer2D::Init(void)
 
 	direction = RIGHT;
 
-
+	soundVol = 1.f;
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
@@ -176,7 +176,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Stamina", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Hunger", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	//debug shivs
@@ -429,6 +429,16 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
 
 
+			//Sound to make dodge
+			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+			if (dodgeSound != nullptr)
+			{
+				soundsfx = dodgeSound;
+			}
+			if (soundsfx != nullptr)
+			{
+				soundsfx->setVolume(soundVol);
+			}
 			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
@@ -1099,6 +1109,16 @@ void CPlayer2D::setitem(int arr, int itemid)
 int CPlayer2D::getitemval(int arr)
 {
 	return inventorySlots[arr].getitemID();
+}
+
+void CPlayer2D::setsound(float vol)
+{
+	soundVol = vol;
+}
+
+float CPlayer2D::returnsound()
+{
+	return soundVol;
 }
 
 
