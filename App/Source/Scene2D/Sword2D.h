@@ -70,6 +70,14 @@ public:
 	bool replaceHilt(CHilt2D* hilt);
 	bool replaceBlade(CBlade2D* blade);
 
+	float getTotalDamage();
+	float getTotalRavenous();
+	float getTotalAtkSpeed();
+	float getTotalRange();
+	float getTotalDef();
+	CBlade2D::AILMENT getEffect();
+
+	CSpriteAnimation* getAnimatedSprites();
 protected:
 
 	glm::vec2 vec2OldIndex;		//coords
