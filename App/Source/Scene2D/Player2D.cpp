@@ -108,6 +108,8 @@ bool CPlayer2D::Init(void)
 
 	direction = RIGHT;
 
+
+
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
@@ -192,6 +194,7 @@ bool CPlayer2D::Init(void)
 	//cInventoryManager->Add(*sword);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
+
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -429,6 +432,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+
+
+			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
@@ -956,15 +962,17 @@ void CPlayer2D::InteractWithMap(void)
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;
 	//FOR INVENTORY PURPOSES - REAGAN
+	case 2:
 	case 1:
 		for (int i = 0; i < 9; i++)
 		{
-			if (inventorySlots[i].getitemID() != 0)
+			if (inventorySlots[i].getitemID() == 0)
 			{
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
 				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-				AddItem(1);
+				break;
+
 			}
-			break;
 		}
 		break;
 	//

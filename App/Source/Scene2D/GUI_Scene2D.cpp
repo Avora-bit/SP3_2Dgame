@@ -99,11 +99,11 @@ bool CGUI_Scene2D::Init(void)
 
 	il = CImageLoader::GetInstance();
 
-	for (int i = 0; i < 3; i++)
+	/*for (int i = 0; i < 3; i++)
 	{
 		hbcells[i].setitemID( cPlayer2D->getitemval(i));
 		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
-	}
+	}*/
 
 	return true;
 }
@@ -113,6 +113,13 @@ bool CGUI_Scene2D::Init(void)
  */
 void CGUI_Scene2D::Update(const double dElapsedTime)
 {
+	for (int i = 0; i < 3; i++)
+	{
+		hbcells[i].setitemID(cPlayer2D->getitemval(i));
+		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+	}
+
+
 	// Calculate the relative scale to our default windows width
 	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
 	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
@@ -263,7 +270,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("Hunger", NULL, hungerWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 100));
+		/*ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.03f));*/
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.03f + 100));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Hunger");
@@ -272,8 +281,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				cInventoryItem->vec2Size.y * relativeScale_y),
 			ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 0.0f, 0.6f));
 		ImGui::ProgressBar(cInventoryItem->GetCount() /
 			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *
 				relativeScale_x, 20.0f * relativeScale_y));
@@ -312,23 +321,26 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	//RENDER HOTBAR
 	{
 
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
+		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.69f)/2, cSettings->iWindowHeight * 0.01f + 500));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+
 		char y[3];
 		for (int i = 0; i < 3; i++) {
-
-
 			ImGui::PushID(i);
-
-			//don't break line if doesn't reach 3 cells
-			if ((i % 3) != 0) {
-				ImGui::SameLine();
-			}
+			ImGui::SameLine();
 			
 			string x = to_string(i);
 			strcpy(y, x.c_str());
 
 			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
-
-			//cout << hbcells[2].getitemID() << endl;
 
 			if (hbcells[i].getitemID() != 0)
 			{
@@ -340,16 +352,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 		}
 			
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
-		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoScrollbar;
-		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.01f + 300));
-		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	
 
 		for (int n = 0; n < 3; n++)
 		{
@@ -359,7 +362,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::SameLine();
 			string x = to_string(n);
 			strcpy(y, x.c_str());
-			ImGui::ImageButton((ImTextureID)hbcells[n].gettextureID(), ImVec2(50, 50));
 			if (hbcells[n].getitemID() != 0)
 			{
 				// Our buttons are both drag sources and drag targets here!

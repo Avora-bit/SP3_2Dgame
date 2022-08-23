@@ -181,6 +181,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
 	}
+
+
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Sp3Images/Base/wood.tga" << endl;
+		return false;
+	}
+	else
+	{
+		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+	}
 	//
 
 	// Initialise the variables for AStar
