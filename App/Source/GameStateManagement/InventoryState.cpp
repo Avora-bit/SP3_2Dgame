@@ -193,7 +193,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			}
 			if (ImGui::BeginDragDropTarget())
 			{
-
 				//get with the id
 				//when mouse is released
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
@@ -224,7 +223,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 					}
 
 
-					//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
 
 					cout << endl;
 				}

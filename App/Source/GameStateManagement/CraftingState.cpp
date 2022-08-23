@@ -282,28 +282,15 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 
 				}
+
+				//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
+
+
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
 
 		}
-		
-		cout << recipebook->CheckRecipe(gridrecipe) << endl;
-
-		//print out the value of recipebook index 0
-		//cout << recipebook->CheckRecipe(gridrecipe) << endl;
-
-		//render the output button
-		/*ImGui::ImageButton((ImTextureID)output.textureID, ImVec2(50, 50));
-		output.itemID = recipebook->CheckRecipe(gridrecipe);
-		output.loadimagebasedID(output.itemID);
-		output.textureID = il->LoadTextureGetID(output.fileName.c_str(), false);*/
-		
-		/*float currentvol = 0;
-		if (ImGui::SliderFloat("Music", &currentvol, 0, 100))
-		{
-
-		}*/
 
 		ImGui::End();
 	}
