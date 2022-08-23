@@ -295,6 +295,23 @@ bool CCraftingState::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 
+
+
+	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_Q))
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			if (butnum[i].getitemID() != 0)
+			{
+				//cPlayer2D->setitem(n - 9, butnum[n].getitemID());
+				for (int n = 0; n < 9; n++)
+				{
+
+				}
+			}
+		}
+	}
+
 	//For keyboard controls
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{
