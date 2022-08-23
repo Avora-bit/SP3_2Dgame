@@ -105,15 +105,37 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cMap2D->SetShader("Shader2D");
 
-	if (cMap2D->Init(4, CSettings::GetInstance()->NUM_TILES_YAXIS,
+	//generate map
+	{
+		MapGen* Dmap = new MapGen;
+		Dmap->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS, 
+						CSettings::GetInstance()->NUM_TILES_YAXIS);
+		Dmap->randomfill();
+		for (int i = 0; i < 20; i++) {				//rounding out edges
+			Dmap->updateMap();
+		}
+		Dmap->growsand();		//sand radius of 1
+		//replace proper keys
+		Dmap->convertKeys();
+		Dmap->randreplace(200, 98);			//replace sand with player
+
+		string filename = "Maps/Map.csv";
+		Dmap->exportmap(filename);
+		//clean
+		delete Dmap;
+		Dmap = nullptr;
+	}
+
+	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/50x50.csv") == false)
+	if (cMap2D->LoadMap("Maps/Map.csv", 0) == false)
 	{
+		cout << "Failed to load Map.csv" << endl;
 		return false;
 	}
 

@@ -103,10 +103,8 @@ bool CPlayer2D::Init(void)
 
 	direction = RIGHT;
 
-
-
 	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	cMap2D->SetMapInfo(uiRow, uiCol, 98);		//dont set to 0, set to sand, 98
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);

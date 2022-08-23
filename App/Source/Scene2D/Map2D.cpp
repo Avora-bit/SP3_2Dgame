@@ -109,67 +109,93 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load and create textures
-	// Load the ground texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/brick.tga", true);
-	if (iTextureID == 0)
+	//non-solid tiles
 	{
-		cout << "Unable to load Image/brick.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/grass.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/grass.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/sand.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/sand.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(98, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/water.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/water.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(97, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/cross.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/cross.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(96, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/treasure.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/treasure.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(95, iTextureID));
+		}
 	}
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/foliage.tga", true);
-	if (iTextureID == 0)
+	//solid tiles
 	{
-		cout << "Unable to load Image/foliage.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
-	}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/wall.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/wall.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
+		}
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/grass.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/grass.tga" << endl;
-		return false;
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/tree.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/tree.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
+		}
 	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(102, iTextureID));
-	}
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/door.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/door.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(98, iTextureID));
-	}
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/princessSprite.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/princessSprite.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
-	}
-
-
-
+	
 	//FOR INVENTORY TESTING PURPOSES - REAGAN
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
 	if (iTextureID == 0)
@@ -193,7 +219,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
 	}
-	//
 
 	// Initialise the variables for AStar
 	m_weight = 1;
@@ -380,7 +405,16 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
 	if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
 		(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
 	{
-		cout << "Sizes of CSV map does not match declared arrMapInfo sizes." << endl;
+		if (cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) {
+			cout << (unsigned int)doc.GetColumnCount() << " != " << cSettings->NUM_TILES_XAXIS << endl;
+			cout << "Column of CSV map does not match declared arrMapInfo column size." << endl;
+		}
+		if (cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()) {
+			cout << (unsigned int)doc.GetRowCount() << " != " << cSettings->NUM_TILES_YAXIS << endl;
+			cout << "Row of CSV map does not match declared arrMapInfo row size." << endl;
+		}
+
+		
 		return false;
 	}
 

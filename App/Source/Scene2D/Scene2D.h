@@ -48,6 +48,8 @@
 #include "GUI_Scene2D.h"
 #include "Chicken.h"
 
+#include "MapGenerator.h"
+
 #include "Camera.h"
 
 #include "GameManager.h"
@@ -119,9 +121,6 @@ protected:
 
 	float soundVol;
 	float musicVol;
-
-
-
 
 	// Constructor
 	CScene2D(void);
