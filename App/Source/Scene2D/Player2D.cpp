@@ -29,6 +29,7 @@ using namespace std;
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
@@ -53,6 +54,8 @@ CPlayer2D::~CPlayer2D(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
+
+	cMouseController = NULL;
 
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
@@ -83,6 +86,8 @@ bool CPlayer2D::Init(void)
 	cKeyboardController = CKeyboardController::GetInstance();
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
+
+	cMouseController = CMouseController::GetInstance();
 
 	camera = Camera::GetInstance();
 
@@ -124,8 +129,6 @@ bool CPlayer2D::Init(void)
 	}
 	*/
 	// Create the quad mesh for the player
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
 	// Load the player texture
 	// Load the ground texture
@@ -184,7 +187,6 @@ bool CPlayer2D::Init(void)
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
 
-	sword->getAnimatedSprites()->PlayAnimation("slash", -1, 0.3f);
 	//std::cout << sword->
 
 	//cInventoryManager->Add(*sword);
@@ -813,11 +815,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// sword
 	if (cInventoryManager->Check("Sword"))
 	{
+		/*
 		cInventoryManager->GetItem("Sword")->vec2Index = vec2Index;
 		std::cout << "bonk";
 
 		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
-		sword->getAnimatedSprites()->Update(dElapsedTime);
+		*/
 	}
 
 	animatedSprites->Update(dElapsedTime);
@@ -859,6 +862,8 @@ void CPlayer2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
+	//angle = (atan2(-(cMouseController->GetMousePositionY() - cSettings->iWindowHeight / 2),
+	//	cMouseController->GetMousePositionX() - cSettings->iWindowWidth / 2) / 3.14159) * 180.0 + 90.f;
 
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
@@ -881,47 +886,6 @@ void CPlayer2D::Render(void)
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	/*
-	if (cInventoryManager->Check("Sword"))
-	{
-		glBindVertexArray(VAO);
-		// get matrix's uniform location and set matrix
-		unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
-		unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-		transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-
-		transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-
-		transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x+1,
-			vec2UVCoordinate.y + camera->vec2Index.y,
-			0.0f));
-
-		transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
-
-
-		// Update the shaders with the latest transform
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-		glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
-
-		// bind textures on corresponding texture units
-		glActiveTexture(GL_TEXTURE0);
-		// Get the texture to be rendered
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/woodenSword.png", true);
-		if (iTextureID == 0)
-		{
-			std::cout << "Failed to load player tile texture" << std::endl;
-		}
-		glBindTexture(GL_TEXTURE_2D, iTextureID);
-
-		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
-		sword->getAnimatedSprites()->Render();
-
-		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}*/
 }
 
 /**

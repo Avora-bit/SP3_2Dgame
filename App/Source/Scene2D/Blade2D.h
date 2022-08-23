@@ -33,6 +33,7 @@ public:
 	AILMENT getEffect();
 
 	CSpriteAnimation* getAnimatedSprites();
+	virtual unsigned int LoadSprite() = 0;
 protected:
 	float baseDamage;
 	float baseAtkSpd;

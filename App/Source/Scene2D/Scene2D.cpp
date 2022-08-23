@@ -10,6 +10,7 @@ using namespace std;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
+#include "Sword2D.h"
 
 #include "System\filesystem.h"
 
@@ -211,6 +212,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 bool CScene2D::Update(const double dElapsedTime)
 {
 	cPlayer2D->Update(dElapsedTime);
+
+	if (CInventoryManager::GetInstance()->Check("Sword"))
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->Update(dElapsedTime);
+	}
 	
 	CShivs2D->Update(dElapsedTime);
 
@@ -300,6 +307,14 @@ void CScene2D::Render(void)
 	cPlayer2D->PreRender();
 	cPlayer2D->Render();
 	cPlayer2D->PostRender();
+
+	if (CInventoryManager::GetInstance()->Check("Sword"))
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->PreRender();
+		sword->Render();
+		sword->PostRender();
+	}
 
 	CShivs2D->PreRender();
 	CShivs2D->Render();

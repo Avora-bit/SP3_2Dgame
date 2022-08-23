@@ -42,10 +42,24 @@ CSword2D::CSword2D(CHilt2D* hilt, CBlade2D* blade)
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	// Load the ground texture
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
 	this->hilt = hilt;
 	this->blade = blade;
 	guard = false;
 	sName = "Sword";
+
+	cPlayer2D = CPlayer2D::GetInstance();
+	camera = Camera::GetInstance();
+	cSettings = CSettings::GetInstance();
+
+	SetShader("Shader2D_Colour");
+	iTextureID = blade->LoadSprite();
 }
 
 /**
@@ -120,31 +134,14 @@ bool CSword2D::Init(void)
 	glBindVertexArray(VAO);
 	
 	// Load the player texture 
-	/*
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2D_player.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_PlayerTile.tga" << endl;
-		return false;
-	}
-	*/
+	
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	/*
+	
 	// Load the player texture
 	// Load the ground texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Weapons/Shiv.png", true);
-	if (iTextureID == 0)
-	{
-		std::cout << "Failed to load Shiv tile texture" << std::endl;
-		return false;
-	}
 	
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("hold", 0, 0);
-	animatedSprites->AddAnimation("throw", 1, 1);
-	*/
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -160,6 +157,7 @@ bool CSword2D::Init(void)
  */
 void CSword2D::Update(const double dElapsedTime)
 {
+	/*
 	vec2OldIndex = vec2Index;
 	if (!cPlayer2D->getProjectileForce())
 	{
@@ -217,7 +215,7 @@ void CSword2D::Update(const double dElapsedTime)
 					thrown = true;
 					distanceTravelled = 0;
 				}
-				break;*/
+				break;
 			}
 		}
 		else
@@ -248,21 +246,22 @@ void CSword2D::Update(const double dElapsedTime)
 					cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
 					vec2NumMicroSteps.y = 0;
 					break;
-				}*/
+				}
 			}
 		}
 	}
-	else
+	
+	else*/
 	{
 		vec2Index = cPlayer2D->vec2Index;
 	}
 
-	InteractWithMap();
-	animatedSprites->Update(dElapsedTime);
+	//InteractWithMap();
+	blade->getAnimatedSprites()->Update(dElapsedTime);
 
 	// Update the UV Coordinates
-	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
-	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
+	vec2UVCoordinate.x = CSettings::GetInstance()->ConvertIndexToUVSpace(CSettings::GetInstance()->x, vec2Index.x, false, vec2NumMicroSteps.x * CSettings::GetInstance()->MICRO_STEP_XAXIS);
+	vec2UVCoordinate.y = CSettings::GetInstance()->ConvertIndexToUVSpace(CSettings::GetInstance()->y, vec2Index.y, false, vec2NumMicroSteps.y * CSettings::GetInstance()->MICRO_STEP_YAXIS);
 }
 
 /**
@@ -273,6 +272,9 @@ void CSword2D::PreRender(void)
 	// Activate blending mode
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// bind textures on corresponding texture units
+	glActiveTexture(GL_TEXTURE0);
 
 	// Activate the shader
 	CShaderManager::GetInstance()->Use(sShaderName);
@@ -293,7 +295,8 @@ void CSword2D::Render(void)
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
 
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
+	transform = glm::translate(transform, 
+		glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
 				vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
 				0.0f));
 
@@ -306,7 +309,7 @@ void CSword2D::Render(void)
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
-	animatedSprites->Render();
+	blade->getAnimatedSprites()->Render();
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
