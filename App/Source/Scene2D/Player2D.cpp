@@ -430,9 +430,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
-
-
-			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
@@ -805,7 +802,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			}
 			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+
+
+			throwing = false;
+			ProjectileForce = 0;
 		}
+		//second step reset
 		else {
 			//reset force
 			throwing = false;

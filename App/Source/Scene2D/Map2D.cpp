@@ -111,7 +111,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Load and create textures
 	//non-solid tiles
 	{
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/grass.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/grass.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/grass.tga" << endl;
@@ -123,7 +123,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
 		}
 
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/sand.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/sand.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/sand.tga" << endl;
@@ -134,7 +134,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(98, iTextureID));
 		}
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/water.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/water.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/water.tga" << endl;
@@ -145,7 +145,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(97, iTextureID));
 		}
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/cross.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/cross.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/cross.tga" << endl;
@@ -156,7 +156,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(96, iTextureID));
 		}
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/treasure.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/treasure.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/treasure.tga" << endl;
@@ -171,7 +171,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	//solid tiles
 	{
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/wall.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/wall.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/wall.tga" << endl;
@@ -183,7 +183,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
 		}
 
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/tree.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/tree.png", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/tree.tga" << endl;
