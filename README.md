@@ -44,6 +44,11 @@ non-solid tiles
 solid tiles
 100 wall/
 101 tree/
+1 stick
+2 wood
+0 blank
+6 sword
+7 bow
 
 animations
 

@@ -268,6 +268,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 					{
 						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
 
+						/*hbcells[i].setitemID(cPlayer2D->getitemval(i));
+						hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);*/
+
 					}
 					if (payload_n >= 9 && payload_n < 12)
 					{
