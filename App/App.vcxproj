@@ -49,6 +49,7 @@
     <ClCompile Include="Source\Scene2D\Hilt2D.cpp" />
     <ClCompile Include="Source\Scene2D\InventoryItem.cpp" />
     <ClCompile Include="Source\Scene2D\InventoryManager.cpp" />
+    <ClCompile Include="Source\Scene2D\Items.cpp" />
     <ClCompile Include="Source\Scene2D\Map2D.cpp" />
     <ClCompile Include="Source\Scene2D\Octopus.cpp" />
     <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="Source\Scene2D\Hilt2D.h" />
     <ClInclude Include="Source\Scene2D\InventoryItem.h" />
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
+    <ClInclude Include="Source\Scene2D\Items.h" />
     <ClInclude Include="Source\Scene2D\Map2D.h" />
     <ClInclude Include="Source\Scene2D\MapGenerator.h" />
     <ClInclude Include="Source\Scene2D\Octopus.h" />

@@ -80,6 +80,14 @@ CScene2D::~CScene2D(void)
 	}
 	enemyVector.clear();
 
+
+	for (int i = 0; i < itemVector.size(); i++)
+	{
+		delete itemVector[i];
+		itemVector[i] = NULL;
+	}
+	itemVector.clear();
+
 	if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
@@ -221,11 +229,15 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 6, true);
+
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);
 	cSoundController->AddToPlaylist(1);
+
+	cPhysics2D.Init();
 
 	soundVol = 1.f;
 
@@ -262,7 +274,16 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cSoundController->Update(dElapsedTime);
 
-	
+	//vec2Destination = cPlayer2D->vec2Index;
+	//(enemy, player)
+	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
+
+	if (cPlayer2D->getx())
+	{
+
+	}
+
+
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);

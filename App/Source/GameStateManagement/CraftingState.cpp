@@ -113,7 +113,6 @@ bool CCraftingState::Init(void)
 			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
 
 		}
-
 		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 	}
 
@@ -207,21 +206,21 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 								//set the inventory to the item
 								cPlayer2D->setitem(x - 9, butnum[x].getitemID());
+
+								//empty everything in the crafting slot
+								for (int i = 0; i < 9; i++)
+								{
+									butnum[i].setitemID(0);
+									butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+
+								}
+
+								//empty the output slot
+								butnum[n].setitemID(0);
+								butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 								break;
 							}
 						}
-
-						butnum[n].setitemID(0);
-						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
-
-
-						for (int i = 0; i < 9; i++)
-						{
-							butnum[i].setitemID(0);
-							butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
-
-						}
-
 					}
 				}
 

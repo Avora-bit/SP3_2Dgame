@@ -43,9 +43,14 @@
 #include "Player2D.h"
 #include "Shivs2D.h"
 #include "Enemy2D.h"
+#include "Items.h"
+
 #include "Octopus.h"
 #include "Chicken.h"
 #include "GUI_Scene2D.h"
+
+#include "Physics2D.h"
+
 
 #include "MapGenerator.h"
 
@@ -94,6 +99,12 @@ protected:
 	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
+
+	//set items
+	vector<CItems2D*> itemVector;
+
+
+	CPhysics2D cPhysics2D;
 
 	Camera* camera;
 
