@@ -866,7 +866,7 @@ void CPlayer2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 
-	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159) * 180.0;
+	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 

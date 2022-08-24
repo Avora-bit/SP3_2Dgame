@@ -62,6 +62,6 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 
 	//std::cout << vec2Index.x - pureVec2Index.x << " & " << vec2Index.y - pureVec2Index.y << std::endl;
 	
-	playerOffset = glm::vec2(cMouseController->GetMousePositionX()- (CSettings::GetInstance()->iWindowWidth/2) * (1 + ((vec2Index.x - pureVec2Index.x) *zoom)),
-		cMouseController->GetMousePositionY() - (CSettings::GetInstance()->iWindowHeight/2)*(1- ((vec2Index.y - pureVec2Index.y)*zoom)));
+	playerOffset = glm::vec2(cMouseController->GetMousePositionX()- CSettings::GetInstance()->iWindowWidth/2 * (1 + (vec2Index.x - pureVec2Index.x) *zoom),
+		cMouseController->GetMousePositionY() - CSettings::GetInstance()->iWindowHeight/2*(1- (vec2Index.y - pureVec2Index.y)*zoom));
 }
