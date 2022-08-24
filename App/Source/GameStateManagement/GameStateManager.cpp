@@ -15,6 +15,9 @@ CGameStateManager::CGameStateManager(void)
 	, craftingGameState(nullptr)
 	, inventoryGameState(nullptr)
 {
+
+	cCraftingState = CCraftingState::GetInstance();
+	cPlayer2D = CPlayer2D::GetInstance();
 }
 
 /**
@@ -37,7 +40,6 @@ void CGameStateManager::Destroy(void)
 	craftingGameState = nullptr;
 	inventoryGameState = nullptr;
 
-
 	// Delete all scenes stored and empty the entire map
 	std::map<std::string, CGameStateBase*>::iterator it, end;
 	end = GameStateMap.end();
@@ -52,17 +54,32 @@ void CGameStateManager::Destroy(void)
 /**
  @brief Update this class instance
  */
+
+//TRY HERE
 bool CGameStateManager::Update(const double dElapsedTime)
 {
 	// Check for change of scene
+
+	//if (craftingGameState != nullptr)
+	//{
+	//	for (int i = 0; i < 9; i++)
+	//	{
+	//		if (cCraftingState->returnbutnumval(i) != 0)
+	//		{
+	//			cout << "INDEX " << i << " is " << craftingGameState->returnbutnumval(i) << endl;
+	//			//cout << "CURRENT GAME STATE " << craftingGameState->returnbutnumval << endl;
+	//		}
+	//	}
+	//}
+
 	if (nextGameState != activeGameState)
 	{
 		if (activeGameState)
 		{
-			// Scene is valid, need to call appropriate function to exit
+
 			activeGameState->Destroy();
 		}
-		//
+		
 		// Set the previous CGameState
 		prevGameState = activeGameState;
 		// Set the new active CGameState
@@ -225,9 +242,27 @@ bool CGameStateManager::SetPauseGameState(const std::string& _name)
 
 bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 {
-	// Toggle to nullptr if pauseGameState already is in use
+	// Toggle to nullptr if crafting state already is in use
 	if (craftingGameState != nullptr)
 	{
+		for (int i = 0; i < 9; i++)
+		{
+			if (craftingGameState->returnbutnumval(i) != 0)
+			{
+				for (int n = 0; n < 9; n++)
+				{
+					if (cPlayer2D->getitemval(n) == 0)
+					{
+						cPlayer2D->setitem(n, craftingGameState->returnbutnumval(i));
+						break;
+					}
+				}
+				
+			}
+			
+		}
+
+
 		craftingGameState = nullptr;
 		return true;
 	}

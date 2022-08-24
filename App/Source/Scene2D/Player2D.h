@@ -104,6 +104,9 @@ protected:
 
 	CSoundController* cSoundController;
 
+	ISound* soundsfx;
+	float soundVol;
+
 	Camera* camera;
 
 	
@@ -158,6 +161,10 @@ public:
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
 	int CPlayer2D::getitemval(int arr);
+
+
+	void setsound(float vol);
+	float returnsound();
 
 	int CPlayer2D::getx();
 	int CPlayer2D::gety();

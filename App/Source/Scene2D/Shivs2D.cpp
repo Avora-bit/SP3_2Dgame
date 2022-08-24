@@ -276,8 +276,8 @@ void CShivs2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-													vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x/* + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS*/,
+													vec2UVCoordinate.y + camera->vec2Index.y/* + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS*/,
 													0.0f));
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 	// Update the shaders with the latest transform

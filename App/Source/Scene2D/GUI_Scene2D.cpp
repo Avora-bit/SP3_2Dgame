@@ -272,7 +272,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::Begin("Hunger", NULL, hungerWindowFlags);
 		/*ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.03f));*/
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.69f, cSettings->iWindowHeight * 0.03f + 100));
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 100));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Hunger");
@@ -303,7 +303,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoScrollbar;
 
 		ImGui::Begin("Stamina", NULL, staminaFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.035f, cSettings->iWindowHeight * 0.09f));
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.09f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SameLine();
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -341,10 +341,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			strcpy(y, x.c_str());
 
 			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
-
-
-			//cout << hbcells[2].getitemID() << endl;
-
 
 			if (hbcells[i].getitemID() != 0)
 			{

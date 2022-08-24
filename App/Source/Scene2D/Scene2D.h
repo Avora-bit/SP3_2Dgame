@@ -45,8 +45,9 @@
 #include "Enemy2D.h"
 #include "Octopus.h"
 #include "Chicken.h"
-#include "Spider.h"
 #include "GUI_Scene2D.h"
+
+#include "MapGenerator.h"
 
 #include "Camera.h"
 
@@ -119,9 +120,6 @@ protected:
 
 	float soundVol;
 	float musicVol;
-
-
-
 
 	// Constructor
 	CScene2D(void);

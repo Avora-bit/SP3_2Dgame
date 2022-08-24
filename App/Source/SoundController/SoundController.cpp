@@ -139,12 +139,12 @@ void CSoundController::PlaySoundByID(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		/*cout << "Sound #" << ID << " is not playable." << endl;*/
+		cout << "Sound #" << ID << " is not playable." << endl;
 		return;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
 	{
-		/*cout << "Sound #" << ID << " is currently being played." << endl;*/
+		cout << "Sound #" << ID << " is currently being played." << endl;
 		return;
 	}
 
@@ -169,12 +169,12 @@ ISound* CSoundController::PlaySoundByID_2(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		/*cout << "Sound #" << ID << " is not playable." << endl;*/
+		//cout << "Sound #" << ID << " is not playable." << endl;
 		return pSound;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
 	{
-		/*cout << "Sound #" << ID << " is currently being played." << endl;*/
+		//cout << "Sound #" << ID << " is currently being played." << endl;
 		return pSound;
 	}
 
@@ -204,7 +204,7 @@ void CSoundController::StopPlayByID(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		/*cout << "Sound #" << ID << " is not playable." << endl;*/
+		//cout << "Sound #" << ID << " is not playable." << endl;
 		return;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
@@ -458,7 +458,7 @@ void CSoundController::Update(const double dElapsedTime)
 
 			currentSongDuration = 0;
 		}
-		/*cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;*/
+		//cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;
 
 
 		//ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
