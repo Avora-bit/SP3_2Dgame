@@ -55,6 +55,8 @@
 
 #include "../GameStateManagement/InventoryState.h"
 
+#include "EventController.h"
+
 // Add your include files here
 
 class CScene2D : public CSingletonTemplate<CScene2D>
@@ -80,8 +82,6 @@ public:
 
 	float returnmusicvol();
 	float returnsoundvol();
-
-
 	void setsoundvol(float vol);
 	void setmusicvol(float vol);
 
@@ -109,17 +109,15 @@ protected:
 
 	CSoundController* cSoundController;
 
+	EventController* eventcontroller;
+
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
 	// Add your variables and methods here.
 
-	float m_fProgressBar;
-	ISound* musicsfx;
-	ISound* soundsfx;
-
-	float soundVol;
-	float musicVol;
+	ISound* musicsfx; ISound* soundsfx;
+	float musicVol; float soundVol;
 
 	// Constructor
 	CScene2D(void);
