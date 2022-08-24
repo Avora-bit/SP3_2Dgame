@@ -7,7 +7,7 @@ Camera::Camera(void)
 {
 	vec2Index = glm::vec2(0.0f, 0.0f);
 	zoom = 3.f;
-	mouseWeight = 0.05;
+	mouseWeight = 0.1f;
 }
 
 Camera::~Camera(void)
