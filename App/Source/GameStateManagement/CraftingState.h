@@ -8,6 +8,8 @@
  */
 
 
+
+
  // Include ImageLoader
 #include "System\ImageLoader.h"
 
@@ -42,8 +44,16 @@
 #define IMGUI_ACTIVE
 #endif
 
-class CCraftingState : public CGameStateBase
+
+
+#include "DesignPatterns\SingletonTemplate.h"
+
+
+
+class CCraftingState : public CGameStateBase, public CSingletonTemplate<CCraftingState>
 {
+	friend CSingletonTemplate<CCraftingState>;
+
 public:
 	// Constructor
 	CCraftingState(void);
@@ -58,6 +68,14 @@ public:
 	virtual void Render(void);
 	// Destroy this class instance
 	virtual void Destroy(void);
+
+
+	int returnbutnumval(int arr);
+
+	void setbutnumvalto(int arr, int val);
+
+	//butnum[i].setitemID(0);
+
 
 protected:
 	ImGuiPayload ig;

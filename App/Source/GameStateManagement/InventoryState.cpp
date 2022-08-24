@@ -151,7 +151,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
 			}
 			else
 			{

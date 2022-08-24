@@ -344,6 +344,11 @@ void Application::Destroy(void)
 		cFPSCounter->Destroy();
 		cFPSCounter = NULL;
 	}
+
+
+
+
+
 	/*
 	if (cScene2D)
 	{

@@ -260,19 +260,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cSoundController->Update(dElapsedTime);
 
-
-	if (cKeyboardController->IsKeyReleased(GLFW_KEY_SPACE))
-	{
-		ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
-		if (dodgeSound != nullptr)
-		{
-			soundsfx = dodgeSound;
-		}
-		if (musicsfx != nullptr)
-		{
-			soundsfx->setVolume(soundVol);
-		}
-	}
+	
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
