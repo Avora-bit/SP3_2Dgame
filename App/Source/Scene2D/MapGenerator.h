@@ -11,22 +11,27 @@ private:
 	int seed;
 	int width = 100;
 	int height = 100;
-	vector<int>dungeonmap;		//empty map
+	vector<int>coremap;		//empty map
 	vector<int>tempmap;			//temporary map for new generation
+
+	//island cellular automata
 	int birthlimit = 3;			//how many needed to create new cell
 	int poplimit = 8;			//how many to die from over population
 	int sociallimit = 4;		//how many to die from under population
 
-	int Key_Convert[7][2] = {
+	int Key_Convert[10][2] = {
 		//background tiles
-		{0, 97},			//water
+		{0, 97},			//water		//cannot dash, slows movement speed
 		{1, 99},			//grass		//spawn tree
 		{2, 98},			//sand		//spawn cross
-		{4, 96},			//cross		//spawn treasure
-		{5, 95},			//treasure
+		{3, 96},			//cross		//spawn treasure
+		{4, 95},			//dungeondoor		//go to dungeon map
+		{5, 94},			//brick floor		//no behavior
+		{6, 93},			//trap				//deals small amount of damage to the player, 5 hp
 		//solid tiles
-		{6, 100},			//wall
-		{7, 101},			//tree
+		{7, 100},			//tree
+		{8, 101},			//brick wall
+		{9, 102},			//dispenser
 	};
 
 public:
@@ -36,19 +41,19 @@ public:
 		srand(seed);
 	}
 	~MapGen() {
-		dungeonmap.clear();
+		coremap.clear();
 		tempmap.clear();
 	}
 
 	void createMap(int x, int y) {
 		//erase
-		dungeonmap.clear();
+		coremap.clear();
 		//resize
 		width = x; height = y;
 		//generate
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				dungeonmap.push_back(0);
+				coremap.push_back(0);
 			}
 		}
 	}
@@ -56,7 +61,7 @@ public:
 	void randomfill(void) {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				dungeonmap.at(i * width + j) = rand() % 2;
+				coremap.at(i * width + j) = rand() % 2;
 			}
 		}
 	}
@@ -66,7 +71,7 @@ public:
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				int type = 0; int neighbour = 0;
-				switch (dungeonmap.at(i * width + j))	//value of index
+				switch (coremap.at(i * width + j))	//value of index
 				{
 				case 0:
 					neighbour = countN((i * width + j), 1);
@@ -87,24 +92,24 @@ public:
 					}
 					break;
 				default:
-					//dungeonmap.push_back(0);
+					//coremap.push_back(0);
 					break;
 				}
 				//temp storage assigned to new generation
 				tempmap.push_back(type);
 			}
 		}
-		dungeonmap = tempmap;
+		coremap = tempmap;
 		tempmap.clear();
 	}
 
 	void growsand() {
 		//update
-		tempmap = dungeonmap;
+		tempmap = coremap;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				int type = 2;
-				if (dungeonmap.at(i * width + j) == 0 &&			//if water
+				if (coremap.at(i * width + j) == 0 &&			//if water
 					(countN(i * width + j, 1) > 0 ||
 						countN(i * width + j, 2) > 0)) {			//at least surrounded by land or sand
 					//grow sand
@@ -112,14 +117,14 @@ public:
 				}
 			}
 		}
-		dungeonmap = tempmap;
+		coremap = tempmap;
 		tempmap.clear();
 	}
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(int replaced, int type) {
 		//gather all index with the same type
-		for (int i = 0; i < dungeonmap.size(); i++) {
-			if (dungeonmap.at(i) == type) {
+		for (int i = 0; i < coremap.size(); i++) {
+			if (coremap.at(i) == type) {
 				tempmap.push_back(i);
 			}
 		}
@@ -127,7 +132,7 @@ public:
 			//choose random index
 			int randpos = rand() % tempmap.size();
 			//replace with key
-			dungeonmap.at(tempmap.at(randpos)) = replaced;
+			coremap.at(tempmap.at(randpos)) = replaced;
 		}
 
 		//clean up
@@ -140,7 +145,7 @@ public:
 		std::cout << seed << std::endl;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				std::cout << dungeonmap.at(i * width + j);
+				std::cout << coremap.at(i * width + j);
 			}
 			std::cout << std::endl;
 		}
@@ -160,7 +165,7 @@ public:
 		//actual map
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				map << dungeonmap.at(i * width + j);
+				map << coremap.at(i * width + j);
 				if (j < width - 1) {
 					map << ",";
 				}
@@ -195,7 +200,7 @@ public:
 				}
 				else {
 					//do stuff
-					if (dungeonmap.at(Coord2Index(X + i, Y + j)) == type) {
+					if (coremap.at(Coord2Index(X + i, Y + j)) == type) {
 						Neighbour++;
 					}
 				}
@@ -205,14 +210,14 @@ public:
 	}
 
 	void convertKeys() {
-		for (int i = 0; i < dungeonmap.size(); i++) {
+		for (int i = 0; i < coremap.size(); i++) {
 			for (int j = 0; j < size(Key_Convert); j++) {
-				if (dungeonmap.at(i) == Key_Convert[j][0]) {
+				if (coremap.at(i) == Key_Convert[j][0]) {
 					tempmap.push_back(Key_Convert[j][1]);
 				}
 			}
 		}
-		dungeonmap = tempmap;
+		coremap = tempmap;
 		tempmap.clear();
 	}
 };

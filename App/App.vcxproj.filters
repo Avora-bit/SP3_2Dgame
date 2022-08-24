@@ -18,6 +18,15 @@
     <Filter Include="GameStateManagement">
       <UniqueIdentifier>{cc75bd91-c787-44a6-9f4c-97594b46dcc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemies">
+      <UniqueIdentifier>{35d1c764-5269-4d86-ba21-4fce45bfce1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat">
+      <UniqueIdentifier>{96d0d8e0-3836-4c12-b4a7-193b63fb05c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inventory">
+      <UniqueIdentifier>{9676388f-dd49-4739-ab4a-0b032823ed4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -38,12 +47,6 @@
     <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryItem.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryManager.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene2D\Physics2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
@@ -52,9 +55,6 @@
     </ClCompile>
     <ClCompile Include="Source\SoundController\SoundInfo.cpp">
       <Filter>SoundController</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Enemy2D.cpp">
-      <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Camera.cpp">
       <Filter>Scene2D</Filter>
@@ -86,53 +86,59 @@
     <ClCompile Include="Source\GameStateManagement\VictoryState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Shivs2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\CraftingState.cpp">
       <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Recipe.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\RecipeBook.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\slot.cpp">
-      <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Sword2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Blade2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Hilt2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\RustyBlade2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Octopus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Projectile2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Chicken.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\GameStateBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Items.cpp">
-      <Filter>Scene2D</Filter>
+    <ClCompile Include="Source\Scene2D\Chicken.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Enemy2D.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Octopus.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Blade2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Hilt2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\RustyBlade2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Shivs2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Sword2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryItem.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryManager.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Projectile2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Recipe.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\RecipeBook.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\slot.cpp">
+      <Filter>Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,12 +146,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Map2D.h">
@@ -165,9 +165,6 @@
     </ClInclude>
     <ClInclude Include="Source\SoundController\SoundInfo.h">
       <Filter>SoundController</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Enemy2D.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Camera.h">
       <Filter>Header Files</Filter>
@@ -199,55 +196,64 @@
     <ClInclude Include="Source\GameStateManagement\VictoryState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Shivs2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\CraftingState.h">
       <Filter>GameStateManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Recipe.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\RecipeBook.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\slot.h">
-      <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\InventoryState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Sword2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Blade2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Hilt2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\WoodenHilt2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\RustyBlade2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Octopus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Projectile2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\GameManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Chicken.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\MapGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Items.h">
+    <ClInclude Include="Source\Scene2D\Chicken.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Octopus.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Enemy2D.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Sword2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\WoodenHilt2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Shivs2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\RustyBlade2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Projectile2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Hilt2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Blade2D.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\InventoryManager.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\InventoryItem.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Recipe.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\RecipeBook.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\slot.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\EventController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

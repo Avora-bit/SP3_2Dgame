@@ -12,7 +12,7 @@ public:
 	void UpdatePosition(void);
 
 private:
-	bool stuck;
+	bool stuck = false;
 	DIRECTION stuckDirection;
 	glm::vec2 stuckPosition;
 };
