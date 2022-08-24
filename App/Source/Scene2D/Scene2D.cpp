@@ -122,7 +122,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
 		island->randomfill();
 		for (int i = 0; i < 20; i++) {				//rounding out edges
-			island->updateMap();
+			island->updateIsland();
 		}
 		island->growsand();		//sand radius of 1
 		//replace proper keys
@@ -322,12 +322,12 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
+	/*float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
 
 	if (cPlayer2D->getx())
 	{
 
-	}
+	}*/
 
 
 

@@ -40,13 +40,13 @@ non-solid tiles
 98 sand/
 97 water/
 96 cross/
-95 dungeondoor
-94 brickfloor
-93 trap
+95 ladderdown-
+94 ladderup-
+93 brickfloor-
+92 trap-
 solid tiles
 100 tree/
 101 wall/
-102 dispenser
 items
 1 stick
 2 wood

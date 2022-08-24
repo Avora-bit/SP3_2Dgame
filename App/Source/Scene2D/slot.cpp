@@ -1,14 +1,9 @@
 #include "slot.h"
 
 
-
-
 slot::slot()
 {
-
 }
-
-
 
 void slot::loadimagebasedID(int itemid, CImageLoader* il)
 {

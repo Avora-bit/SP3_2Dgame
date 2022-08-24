@@ -99,6 +99,7 @@ protected:
 	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
+	vector<CProjectile2D*> projectileVector;
 
 	//set items
 	vector<CItems2D*> itemVector;

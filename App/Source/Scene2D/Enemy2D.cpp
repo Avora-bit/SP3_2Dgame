@@ -832,6 +832,10 @@ void CEnemy2D::UpdatePosition(void)
 	}
 }
 
-int CEnemy2D::getx()
-{
-}
+//int CEnemy2D::getx()
+//{
+//}
+//
+//int CEnemy2D::gety()
+//{
+//}
