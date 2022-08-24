@@ -284,7 +284,7 @@ void Application::Run(void)
 
 	// Render loop
 	while (!glfwWindowShouldClose(cSettings->pWindow)
-		/*&& (!CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))*/)
+		/* && (!CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))*/)
 	{
 		// This is to prevent the program from crashing due to long dElapsedTime
 		// Causing Physics to calculate a large jump/fall for the player

@@ -54,6 +54,8 @@ CPlayer2D::~CPlayer2D(void)
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
 
+	cMouseController = NULL;
+
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
@@ -68,6 +70,12 @@ CPlayer2D::~CPlayer2D(void)
 	{
 		delete animatedSprites;
 		animatedSprites = NULL;
+	}
+
+	if (soundsfx)
+	{
+		delete soundsfx;
+		soundsfx = NULL;
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -280,6 +288,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
+	static float dashTimer = 0;
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -318,7 +327,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			else
 				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
-			angle = 270;
+			//angle = 270;
 			direction = LEFT;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
@@ -346,7 +355,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			else
 				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
 
-			angle = 0;
+			//angle = 0;
 			direction = DOWN;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -374,7 +383,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			else
 				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
 
-			angle = 180;
+			//angle = 180;
 			direction = UP;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
@@ -401,29 +410,29 @@ void CPlayer2D::Update(const double dElapsedTime)
 				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
 			else
 				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-			angle = 90;
+			//angle = 90;
 			direction = RIGHT;
 		}
 
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
 		{
 			direction = TOP_RIGHT;
-			angle = 135;
+			//angle = 135;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
 		{
 			direction = BOTTOM_RIGHT;
-			angle = 45;
+			//angle = 45;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
 		{
 			direction = BOTTOM_LEFT;
-			angle = 315;
+			//angle = 315;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
 		{
 			direction = TOP_LEFT;
-			angle = 225;
+			//angle = 225;
 		}
 
 		static bool dodgeKeyDown = false;
@@ -433,7 +442,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
-			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(1.5f, 0.0f));
 
 			//Sound to make dodge
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
@@ -452,8 +461,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetCount() << std::endl;
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
+	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
+		dashTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
@@ -767,31 +777,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if (cPhysics2D.GetInitialVelocity().x >= -0.2 && cPhysics2D.GetInitialVelocity().x <= 0.2)
+		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dashTimer >= 0.3f)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-		}
-	}
-
-	{
-		switch (direction)			//hold weapon
-		{
-			/*case UP:
-				if (hasSword || chargeSword)
-					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-				break;
-			case DOWN:
-				if (hasSword || chargeSword)
-					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-				break;
-			case LEFT:
-				if (hasSword || chargeSword)
-					animatedSprites->PlayAnimation("idleLeftSW", -1, -1.0f);
-				break;
-			case RIGHT:
-				if (hasSword || chargeSword)
-					animatedSprites->PlayAnimation("idleRightSW", -1, -1.0f);
-				break;*/
+			dashTimer = 0;
 		}
 	}
 
