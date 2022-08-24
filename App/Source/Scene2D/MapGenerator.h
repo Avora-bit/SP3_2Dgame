@@ -106,7 +106,7 @@ public:
 				int type = 2;
 				if (dungeonmap.at(i * width + j) == 0 &&			//if water
 					(countN(i * width + j, 1) > 0 ||
-						countN(i * width + j, 2) > 0)) {					//at least surrounded by land or sand
+						countN(i * width + j, 2) > 0)) {			//at least surrounded by land or sand
 					//grow sand
 					tempmap.at(i * width + j) = type;
 				}
@@ -123,11 +123,11 @@ public:
 				tempmap.push_back(i);
 			}
 		}
-		if (tempmap.size() > 0) {
+		if (tempmap.size() > 0) {			//if the type is available
 			//choose random index
 			int randpos = rand() % tempmap.size();
 			//replace with key
-			dungeonmap.at(randpos) = replaced;
+			dungeonmap.at(tempmap.at(randpos)) = replaced;
 		}
 
 		//clean up
