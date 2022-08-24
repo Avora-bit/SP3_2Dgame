@@ -84,6 +84,7 @@ bool CPlayer2D::Init(void)
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
 
+
 	camera = Camera::GetInstance();
 
 	// Get the handler to the CSettings instance
@@ -1080,7 +1081,7 @@ void CPlayer2D::LoseHealth(float health)
 	cInventoryItem->Remove(health);
 }
 
-void CPlayer2D::AddItem(int itemid)
+bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
 	{
@@ -1089,9 +1090,18 @@ void CPlayer2D::AddItem(int itemid)
 			inventorySlots[i].setitemID(itemid);
 			inventorySlots[i].loadimagebasedID(itemid, il);
 
+
+			if (i < 3)
+			{
+				return false;
+			}
+
+
 			break;
 		}
 	}
+
+	return true;
 }
 
 slot CPlayer2D::getitem(int arr)
