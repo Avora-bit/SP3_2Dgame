@@ -836,3 +836,7 @@ void CEnemy2D::UpdatePosition(void)
 		//InteractWithPlayer();
 	}
 }
+
+int CEnemy2D::getx()
+{
+}

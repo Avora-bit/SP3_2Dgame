@@ -40,10 +40,19 @@ non-solid tiles
 98 sand/
 97 water/
 96 cross/
-95 treasure/
+95 dungeondoor
+94 brickfloor
+93 trap
 solid tiles
-100 wall/
-101 tree/
+100 tree/
+101 wall/
+102 dispenser
+items
+1 stick
+2 wood
+0 blank
+6 sword
+7 bow
 
 animations
 

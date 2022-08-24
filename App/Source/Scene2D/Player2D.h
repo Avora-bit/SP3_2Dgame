@@ -105,30 +105,28 @@ protected:
 
 	CSoundController* cSoundController;
 
-
-
 	ISound* soundsfx;
 	float soundVol;
 
 	Camera* camera;
 
-	
-
-
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
 	bool throwing = false;
-	double maxPForce = 10;
-	double minPForce = 2.f;
-	double ProjectileForce;
+	double maxPForce = 15;
+	double minPForce = 5;
+	double ProjectileForce = 0;
 
 	// vitals
 	float health;
 	float stamina;
 	float hunger;
+	double invincibility = 0; 
 
-	float movementSpeed; 
+	bool dashTrue;
+
+	float movementSpeed = 1.f; 
 
 	//render
 	float angle;
@@ -172,4 +170,3 @@ public:
 	int CPlayer2D::getx();
 	int CPlayer2D::gety();
 };
-

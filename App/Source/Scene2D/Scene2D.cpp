@@ -80,6 +80,14 @@ CScene2D::~CScene2D(void)
 	}
 	enemyVector.clear();
 
+
+	for (int i = 0; i < itemVector.size(); i++)
+	{
+		delete itemVector[i];
+		itemVector[i] = NULL;
+	}
+	itemVector.clear();
+
 	if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
@@ -107,26 +115,67 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	cMap2D->SetShader("Shader2D");
 
-	//generate map
+	//generate island
 	{
-		MapGen* Dmap = new MapGen;
-		Dmap->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS, 
+		MapGen* island = new MapGen;
+		island->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
-		Dmap->randomfill();
+		island->randomfill();
 		for (int i = 0; i < 20; i++) {				//rounding out edges
-			Dmap->updateMap();
+			island->updateMap();
 		}
-		Dmap->growsand();		//sand radius of 1
+		island->growsand();		//sand radius of 1
 		//replace proper keys
-		Dmap->convertKeys();
-		Dmap->randreplace(200, 98);			//replace sand with player
+		island->convertKeys();
+		island->randreplace(200, 98);			//replace sand with player
 
-		string filename = "Maps/Map.csv";
-		Dmap->exportmap(filename);
+		int randspawn = rand() % 5 + 5;		//random number of cross, 5-10 cross
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(96, 98);			//replace sand with cross
+		}
+
+		randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(96, 98);			//replace grass with tree
+		}
+
+		string filename = "Maps/Island.csv";
+		island->exportmap(filename);
 		//clean
-		delete Dmap;
-		Dmap = nullptr;
+		delete island;
+		island = nullptr;
 	}
+	//generate dungeon
+	{
+		MapGen* dungeon = new MapGen;
+		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+			CSettings::GetInstance()->NUM_TILES_YAXIS);
+		dungeon->randomfill();
+		for (int i = 0; i < 20; i++) {				//rounding out edges
+			dungeon->updateMap();
+		}
+		dungeon->growsand();		//sand radius of 1
+		//replace proper keys
+		dungeon->convertKeys();
+		dungeon->randreplace(200, 98);			//replace sand with player
+
+		int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
+		for (int i = 0; i < randspawn; i++) {
+			dungeon->randreplace(96, 98);			//replace sand with cross
+		}
+
+		randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
+		for (int i = 0; i < randspawn; i++) {
+			dungeon->randreplace(96, 98);			//replace grass with tree
+		}
+
+		string filename = "Maps/Dungeon.csv";
+		dungeon->exportmap(filename);
+		//clean
+		delete dungeon;
+		dungeon = nullptr;
+	}
+
 
 	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
@@ -135,9 +184,14 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/Map.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/Island.csv", 0) == false)
 	{
-		cout << "Failed to load Map.csv" << endl;
+		cout << "Failed to load Island.csv" << endl;
+		return false;
+	}
+	if (cMap2D->LoadMap("Maps/Dungeon.csv", 1) == false)
+	{
+		cout << "Failed to load Dungeon.csv" << endl;
 		return false;
 	}
 
@@ -221,11 +275,15 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 6, true);
+
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);
 	cSoundController->AddToPlaylist(1);
+
+	cPhysics2D.Init();
 
 	soundVol = 1.f;
 
@@ -262,7 +320,16 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cSoundController->Update(dElapsedTime);
 
-	
+	//vec2Destination = cPlayer2D->vec2Index;
+	//(enemy, player)
+	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
+
+	if (cPlayer2D->getx())
+	{
+
+	}
+
+
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
@@ -318,9 +385,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bLevelCompleted = false;
 	}
-
-
-	
 }
 
 /**

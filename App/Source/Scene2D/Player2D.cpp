@@ -229,14 +229,24 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-
 	//for (int i = 0; i < 9; i++)
 	//{
 	//	cout << "PA" << i << " is " << getitemval(i) << endl;
 	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
 
 	//}
-
+	//invincibility timer
+	{
+		if (invincibility > 0) {
+			invincibility -= dElapsedTime;
+		}
+		else if (invincibility < 0) {
+			invincibility = 0;
+		}
+		else {
+			//null
+		}
+	}
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
@@ -282,13 +292,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 				staminaTimer = 0;
 			}
 		}
-
-
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--; //speed_multiplier;
+			vec2NumMicroSteps.x -= movementSpeed;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -316,7 +324,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 			if (vec2Index.y >= 0)
 			{
-				vec2NumMicroSteps.y--; //speed_multiplier;
+				vec2NumMicroSteps.y -= movementSpeed;
 				if (vec2NumMicroSteps.y < 0)
 				{
 					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -345,7 +353,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 			{
-				vec2NumMicroSteps.y++;// speed_multiplier;
+				vec2NumMicroSteps.y += movementSpeed;
 				if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 				{
 					vec2NumMicroSteps.y = 0;
@@ -373,7 +381,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
-				vec2NumMicroSteps.x++;// speed_multiplier;
+				vec2NumMicroSteps.x += movementSpeed;
 				if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 				{
 					vec2NumMicroSteps.x = 0;
@@ -420,13 +428,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		static bool dodgeKeyDown = false;
 		if ((cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) || cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT)) && !dodgeKeyDown &&
-			cInventoryManager->GetItem("Stamina")->GetCount() >= 30.f)
+			cInventoryManager->GetItem("Stamina")->GetCount() >= 30.f && dashTrue)
 		{
-			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			dodgeKeyDown = true;
+			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
-
 
 			//Sound to make dodge
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
@@ -808,7 +815,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-
+				//add to projectile list
 			}
 			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
 		}
@@ -946,6 +953,23 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
+	case 97:		//water
+		//disable dash
+		dashTrue = false;
+		//slow speed
+		movementSpeed = 0.5f;
+		break;
+
+	case 93:		//spikes
+		//deals damage
+		LoseHealth(5);
+		//slows by abit
+		movementSpeed = 0.9f;
+		break;
+
+
+
+
 	//FOR INVENTORY PURPOSES - REAGAN
 	case 2:
 	case 1:
@@ -962,6 +986,8 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	//
 	default:
+		movementSpeed = 1.f;
+		dashTrue = true;
 		break;
 	}
 }
@@ -1070,8 +1096,11 @@ double CPlayer2D::getProjectileForce()
 
 void CPlayer2D::LoseHealth(float health)
 {
-	cInventoryItem = cInventoryManager->GetItem("Health");
-	cInventoryItem->Remove(health);
+	if (invincibility == 0) {
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		cInventoryItem->Remove(health);
+		invincibility = 0.5f;
+	}
 }
 
 bool CPlayer2D::AddItem(int itemid)
@@ -1083,12 +1112,7 @@ bool CPlayer2D::AddItem(int itemid)
 			inventorySlots[i].setitemID(itemid);
 			inventorySlots[i].loadimagebasedID(itemid, il);
 
-
-			if (i < 3)
-			{
-				return false;
-			}
-
+			if (i < 3) return false;
 
 			break;
 		}
