@@ -274,6 +274,11 @@ bool CScene2D::Update(const double dElapsedTime)
 		enemyVector[i]->Update(dElapsedTime);
 	}
 
+	for (int i = 0; i < projectileVector.size(); i++)
+	{
+		projectileVector[i]->Update(dElapsedTime);
+	}
+
 	cGUI_Scene2D->Update(dElapsedTime);
 
 	static bool buttonPress = false;
@@ -364,6 +369,13 @@ void CScene2D::Render(void)
 		enemyVector[i]->PreRender();
 		enemyVector[i]->Render();
 		enemyVector[i]->PostRender();
+	}
+
+	for (int i = 0; i < projectileVector.size(); i++)
+	{
+		projectileVector[i]->PreRender();
+		projectileVector[i]->Render();
+		projectileVector[i]->PostRender();
 	}
 
 	cGUI_Scene2D->PreRender();

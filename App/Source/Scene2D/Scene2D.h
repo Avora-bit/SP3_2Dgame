@@ -94,6 +94,7 @@ protected:
 	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
+	vector<CEntity2D*> projectileVector;
 
 	Camera* camera;
 
