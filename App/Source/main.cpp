@@ -5,7 +5,9 @@
  Date: Mar 2020
  */
 #include "Application.h"
-
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 /**
  @brief This function is the main function which is called by the operating system when you run the executables
  @return This function returns the error codes
@@ -25,10 +27,10 @@ int main(void)
 		// Set the Application handler to NULL
 		pApp = NULL;
 
+		//_CrtDumpMemoryLeaks();
 		// Return 0 since the application successfully ran
 		return 0;
 	}
-
 	// Return 1 if the application failed to run
 	return 1;
 }

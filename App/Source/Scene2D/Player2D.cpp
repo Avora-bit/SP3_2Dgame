@@ -106,8 +106,7 @@ bool CPlayer2D::Init(void)
 
 	soundVol = 1.f;
 
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	cMap2D->SetMapInfo(uiRow, uiCol, 98);			//replace player with sand cause they spawn on sand
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -185,9 +184,8 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
-	//std::cout << sword->
+	cInventoryManager->Add(sword);
 
-	//cInventoryManager->Add(*sword);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
@@ -862,6 +860,7 @@ void CPlayer2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 
+	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 
@@ -947,12 +946,6 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 98:
-		CGameManager::GetInstance()->bLevelCompleted = true;
-		break;
-	case 99:
-		CGameManager::GetInstance()->bPlayerWon = true;
-		break;
 	//FOR INVENTORY PURPOSES - REAGAN
 	case 2:
 	case 1:

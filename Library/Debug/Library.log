@@ -1,13 +1,1 @@
-﻿  Settings.cpp
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(11,14): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12,15): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-  KeyboardController.cpp
-  MouseController.cpp
-  Collider.cpp
-  Entity2D.cpp
-  Entity3D.cpp
-  ShaderManager.cpp
-  ImageLoader.cpp
-  FPSCounter.cpp
-  Generating Code...
-  Library.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.lib
+﻿  Library.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\Debug\Library.lib
