@@ -104,6 +104,8 @@ protected:
 
 	CImageLoader* il;
 
+	
+
 
 	CPlayer2D* cPlayer2D;
 

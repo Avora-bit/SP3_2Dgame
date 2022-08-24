@@ -45,6 +45,7 @@ class Camera;
 #include "slot.h"
 
 
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -109,23 +110,23 @@ protected:
 
 	Camera* camera;
 
-	
-
-
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
 	bool throwing = false;
-	double maxPForce = 10;
-	double minPForce = 2.f;
-	double ProjectileForce;
+	double maxPForce = 15;
+	double minPForce = 5;
+	double ProjectileForce = 0;
 
 	// vitals
 	float health;
 	float stamina;
 	float hunger;
+	double invincibility = 0; 
 
-	float movementSpeed; 
+	bool dashTrue;
+
+	float movementSpeed = 1.f; 
 
 	//render
 	float angle;
@@ -157,7 +158,7 @@ public:
 
 	void LoseHealth(float health);
 
-	void CPlayer2D::AddItem(int itemid);
+	bool CPlayer2D::AddItem(int itemid);
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
 	int CPlayer2D::getitemval(int arr);
@@ -169,4 +170,3 @@ public:
 	int CPlayer2D::getx();
 	int CPlayer2D::gety();
 };
-

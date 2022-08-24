@@ -43,9 +43,14 @@
 #include "Player2D.h"
 #include "Shivs2D.h"
 #include "Enemy2D.h"
+#include "Items.h"
+
 #include "Octopus.h"
 #include "Chicken.h"
 #include "GUI_Scene2D.h"
+
+#include "Physics2D.h"
+
 
 #include "MapGenerator.h"
 
@@ -54,6 +59,8 @@
 #include "GameManager.h"
 
 #include "../GameStateManagement/InventoryState.h"
+
+#include "EventController.h"
 
 // Add your include files here
 
@@ -80,8 +87,6 @@ public:
 
 	float returnmusicvol();
 	float returnsoundvol();
-
-
 	void setsoundvol(float vol);
 	void setmusicvol(float vol);
 
@@ -94,6 +99,12 @@ protected:
 	CShivs2D* CShivs2D;
 
 	vector<CEntity2D*> enemyVector;
+
+	//set items
+	vector<CItems2D*> itemVector;
+
+
+	CPhysics2D cPhysics2D;
 
 	Camera* camera;
 
@@ -109,17 +120,15 @@ protected:
 
 	CSoundController* cSoundController;
 
+	EventController* eventcontroller;
+
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
 	// Add your variables and methods here.
 
-	float m_fProgressBar;
-	ISound* musicsfx;
-	ISound* soundsfx;
-
-	float soundVol;
-	float musicVol;
+	ISound* musicsfx; ISound* soundsfx;
+	float musicVol; float soundVol;
 
 	// Constructor
 	CScene2D(void);

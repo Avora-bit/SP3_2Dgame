@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -5,7 +6,7 @@
 
 using namespace std;
 
-class map {
+class MapGen {
 private:
 	int seed;
 	int width = 100;
@@ -16,14 +17,27 @@ private:
 	int poplimit = 8;			//how many to die from over population
 	int sociallimit = 4;		//how many to die from under population
 
+	int Key_Convert[7][2] = {
+		//background tiles
+		{0, 97},			//water
+		{1, 99},			//grass		//spawn tree
+		{2, 98},			//sand		//spawn cross
+		{4, 96},			//cross		//spawn treasure
+		{5, 95},			//treasure
+		//solid tiles
+		{6, 100},			//wall
+		{7, 101},			//tree
+	};
+
 public:
-	map() {
+	MapGen() {
 		//seeding
 		seed = time(NULL);
 		srand(seed);
 	}
-	~map() {
+	~MapGen() {
 		dungeonmap.clear();
+		tempmap.clear();
 	}
 
 	void createMap(int x, int y) {
@@ -92,13 +106,31 @@ public:
 				int type = 2;
 				if (dungeonmap.at(i * width + j) == 0 &&			//if water
 					(countN(i * width + j, 1) > 0 ||
-					countN(i * width + j, 2) > 0)) {					//at least surrounded by land or sand
+						countN(i * width + j, 2) > 0)) {			//at least surrounded by land or sand
 					//grow sand
 					tempmap.at(i * width + j) = type;
 				}
 			}
 		}
 		dungeonmap = tempmap;
+		tempmap.clear();
+	}
+	//randomly chooses a tile of typeX, to be replaced with
+	void randreplace(int replaced, int type) {
+		//gather all index with the same type
+		for (int i = 0; i < dungeonmap.size(); i++) {
+			if (dungeonmap.at(i) == type) {
+				tempmap.push_back(i);
+			}
+		}
+		if (tempmap.size() > 0) {			//if the type is available
+			//choose random index
+			int randpos = rand() % tempmap.size();
+			//replace with key
+			dungeonmap.at(tempmap.at(randpos)) = replaced;
+		}
+
+		//clean up
 		tempmap.clear();
 	}
 
@@ -119,13 +151,19 @@ public:
 		//first row
 		map << "//";
 		for (int i = 1; i <= width; i++) {
-			map << i << ",";
+			map << i;
+			if (i < width) {
+				map << ",";
+			}
 		}
 		map << std::endl;
 		//actual map
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				map << dungeonmap.at(i * width + j) << ",";
+				map << dungeonmap.at(i * width + j);
+				if (j < width - 1) {
+					map << ",";
+				}
 			}
 			map << std::endl;
 		}
@@ -138,13 +176,13 @@ public:
 	int getY(int index) { return (index - (index % width)) / width; }
 	//convert coord to index
 	int Coord2Index(int x, int y) { return x + (y * width); }
-	
+
 	int countN(int index, int type) {		//counts the type of cells around itself
 		int X = getX(index); int Y = getY(index);
 		int Neighbour = 0;
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (((X + i) < 0) || ((X + i) > (width - 1)) || 
+				if (((X + i) < 0) || ((X + i) > (width - 1)) ||
 					((Y + j) < 0) || ((Y + j) > (height - 1))) {
 					//check map boundary
 					if (type == 0) {		//edge counts as 0
@@ -166,52 +204,45 @@ public:
 		return Neighbour;
 	}
 
-	void convertKey(int index, int state, int key) {
-		if (dungeonmap.at(index) == state) {
-			dungeonmap.at(index) = key;
+	void convertKeys() {
+		for (int i = 0; i < dungeonmap.size(); i++) {
+			for (int j = 0; j < size(Key_Convert); j++) {
+				if (dungeonmap.at(i) == Key_Convert[j][0]) {
+					tempmap.push_back(Key_Convert[j][1]);
+				}
+			}
 		}
+		dungeonmap = tempmap;
+		tempmap.clear();
 	}
 };
 
-int main(void) {
-
-	//convert all instances into map values
-	//index 0 = original tile
-	//index 1 = replaced tile
-	int Key_Convert[6][2] = { 
-		//background tiles
-		{0, 0},						//void
-		{1, 1},						//water		//swim
-		{2, 2},						//sand		//spawn treasure cross
-		{3, 3},						//grass		//trees
-		//solid tiles
-		{4, 100},					//wall
-	};
-
-
-	//place player
-	//choose random open spot, replace tile with player
-
-
-	map* Dmap = new map;
-	Dmap->createMap(50, 50);
-	Dmap->randomfill();
-	Dmap->printmap();
-	for (int i = 0; i < 30; i++) {
-		Dmap->updateMap();
-		Dmap->printmap();
-	}
-	for (int i = 0; i < 1; i++) {	//loop for size of sand
-		Dmap->growsand();
-		Dmap->printmap();
-	}
-
-	string filename = "Maps/Map.csv";
-	Dmap->exportmap(filename);
-
-	delete Dmap;
-	Dmap = nullptr;
-	
-	return 0;
-}
-
+//int main(void) {
+//	MapGen* Dmap = new MapGen;
+//	Dmap->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+//		CSettings::GetInstance()->NUM_TILES_YAXIS);
+//	Dmap->randomfill();
+//	for (int i = 0; i < 20; i++) {				//rounding out edges
+//		Dmap->updateMap();
+//	}
+//	Dmap->growsand();		//sand radius of 1
+//	//replace proper keys
+//	Dmap->convertKeys();
+//	Dmap->randreplace(200, 98);			//replace sand with player
+//
+//	int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
+//	for (int i = 0; i < randspawn; i++) {
+//		Dmap->randreplace(96, 98);			//replace sand with cross
+//	}
+//
+//	randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
+//	for (int i = 0; i < randspawn; i++) {
+//		Dmap->randreplace(96, 98);			//replace grass with tree
+//	}
+//
+//	string filename = "Maps/Map.csv";
+//	Dmap->exportmap(filename);
+//	//clean
+//	delete Dmap;
+//	Dmap = nullptr;
+//}
