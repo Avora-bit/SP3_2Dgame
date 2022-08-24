@@ -29,6 +29,7 @@ using namespace std;
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
@@ -53,6 +54,8 @@ CPlayer2D::~CPlayer2D(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
+
+	cMouseController = NULL;
 
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
@@ -84,6 +87,8 @@ bool CPlayer2D::Init(void)
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
 
+	cMouseController = CMouseController::GetInstance();
+
 	camera = Camera::GetInstance();
 
 	// Get the handler to the CSettings instance
@@ -102,6 +107,8 @@ bool CPlayer2D::Init(void)
 	angle = 0;
 
 	direction = RIGHT;
+
+
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
@@ -124,8 +131,6 @@ bool CPlayer2D::Init(void)
 	}
 	*/
 	// Create the quad mesh for the player
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
 	// Load the player texture
 	// Load the ground texture
@@ -182,11 +187,14 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+	cInventoryManager->Add(sword);
+
 	//std::cout << sword->
 
 	//cInventoryManager->Add(*sword);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
+
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -424,6 +432,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.0f, 0.0f));
+
+
+			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
@@ -806,7 +817,20 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	InteractWithMap();
 
+
+	// sword
+	if (cInventoryManager->Check("Sword"))
+	{
+		/*
+		cInventoryManager->GetItem("Sword")->vec2Index = vec2Index;
+		std::cout << "bonk";
+
+		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
+		*/
+	}
+
 	animatedSprites->Update(dElapsedTime);
+	
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
@@ -844,6 +868,8 @@ void CPlayer2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
+	//angle = (atan2(-(cMouseController->GetMousePositionY() - cSettings->iWindowHeight / 2),
+	//	cMouseController->GetMousePositionX() - cSettings->iWindowWidth / 2) / 3.14159) * 180.0 + 90.f;
 
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
@@ -862,7 +888,6 @@ void CPlayer2D::Render(void)
 		glBindVertexArray(VAO);
 		quadMesh->Render();
 	*/
-
 	animatedSprites->Render();
 
 	glBindVertexArray(0);
@@ -937,15 +962,17 @@ void CPlayer2D::InteractWithMap(void)
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;
 	//FOR INVENTORY PURPOSES - REAGAN
+	case 2:
 	case 1:
 		for (int i = 0; i < 9; i++)
 		{
-			if (inventorySlots[i].getitemID() != 0)
+			if (inventorySlots[i].getitemID() == 0)
 			{
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
 				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-				AddItem(1);
+				break;
+
 			}
-			break;
 		}
 		break;
 	//

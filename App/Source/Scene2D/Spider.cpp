@@ -213,7 +213,7 @@ void Spider::Update(const double dElapsedTime)
 			shotInterval -= dElapsedTime;
 			if (shotInterval <= 0)
 			{
-				cout << "attacking" << endl;
+				/*cout << "attacking" << endl;*/
 				Webshot* web = new Webshot();
 				web->SetShader("Shader2D_Colour");
 

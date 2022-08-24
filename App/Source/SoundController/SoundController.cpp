@@ -16,6 +16,8 @@ CSoundController::CSoundController(void)
 	: cSoundEngine(NULL)
 	, vec3dfListenerPos(vec3df(0, 0, 0))
 	, vec3dfListenerDir(vec3df(0, 0, 1))
+	,musicsfx(NULL)
+	, musicVol( 0.001f) 
 {
 }
 
@@ -64,8 +66,7 @@ bool CSoundController::Init(void)
 	return true;
 
 
-
-	//currentmusic = 0;
+	musicVol = 0.001f;
 }
 
 /**
@@ -114,6 +115,18 @@ bool CSoundController::LoadSound(	string filename,
 	// Set to soundMap
 	soundMap[ID] = cSoundInfo;
 
+
+
+	//ISound* SoundInfo = new ISound();
+	///*if (eSoundType == ISound::type)
+	//	cSoundInfo->Init(ID, pSoundSource, bIsLooped);
+	//else
+	//	cSoundInfo->Init(ID, pSoundSource, bIsLooped, eSoundType, vec3dfSoundPos);*/
+	//soundMap_2[ID] = cSoundInfo;
+
+
+	
+
 	return true;
 }
 
@@ -126,12 +139,12 @@ void CSoundController::PlaySoundByID(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		cout << "Sound #" << ID << " is not playable." << endl;
+		/*cout << "Sound #" << ID << " is not playable." << endl;*/
 		return;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
 	{
-		cout << "Sound #" << ID << " is currently being played." << endl;
+		/*cout << "Sound #" << ID << " is currently being played." << endl;*/
 		return;
 	}
 
@@ -156,12 +169,12 @@ ISound* CSoundController::PlaySoundByID_2(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		cout << "Sound #" << ID << " is not playable." << endl;
+		/*cout << "Sound #" << ID << " is not playable." << endl;*/
 		return pSound;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
 	{
-		cout << "Sound #" << ID << " is currently being played." << endl;
+		/*cout << "Sound #" << ID << " is currently being played." << endl;*/
 		return pSound;
 	}
 
@@ -191,7 +204,7 @@ void CSoundController::StopPlayByID(const int ID)
 	CSoundInfo* pSoundInfo = GetSound(ID);
 	if (!pSoundInfo)
 	{
-		cout << "Sound #" << ID << " is not playable." << endl;
+		/*cout << "Sound #" << ID << " is not playable." << endl;*/
 		return;
 	}
 	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
@@ -355,46 +368,89 @@ bool CSoundController::SetVolume(const int ID, float volume)
 
 bool CSoundController::AddToPlaylist(const int ID)
 {
-	if (soundMap[ID]!=nullptr)
-	{
+	/*if (soundMap[ID]!=nullptr)
+	{*/
 		musicPlaylist.push_back(ID);
 		return true;
-	}
+	/*}
 	else
 	{
 		cout << "Track not in soundMap" << endl;
 		return false;
-	}
+	}*/
 }
 
+//TSE TING'S UPDATE
+//void CSoundController::Update(const double dElapsedTime)
+//{
+//	if (musicPlaylist.size() > 0)
+//	{
+//		static int currentlyPlaying = 0;
+//		ISoundSource* currentSong = GetSound(musicPlaylist[currentlyPlaying])->GetSound();
+//		currentSongDuration += (dElapsedTime * 1000);
+//		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
+//		{
+//			PlaySoundByID(musicPlaylist[currentlyPlaying]);
+//			currentSong->setDefaultVolume(0.001f);
+//		}
+//
+//		if (currentSong->getDefaultVolume() < cSoundEngine->getSoundVolume())
+//		{
+//			currentSong->setDefaultVolume(currentSong->getDefaultVolume()+0.001f);
+//		}
+//		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
+//		{
+//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() - 0.001f);
+//		}
+//
+//		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
+//		{
+//			if (currentlyPlaying <= musicPlaylist.size() - 1)
+//				currentlyPlaying++;
+//			else
+//				currentlyPlaying = 0;
+//
+//			currentSongDuration = 0;
+//		}
+//		cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;
+//
+//
+//		/*ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+//		if (snd != nullptr)
+//		{
+//			musicsfx = snd;
+//		}
+//		if (musicsfx != nullptr)
+//		{
+//			musicsfx->setVolume(musicVol);
+//		}*/
+//
+//		cout << musicVol << endl;
+//	}
+//
+//	
+//}
+//
 
 
-
-//TZE TING'S UPDATE
+//REAGAN'S UPDATE
 void CSoundController::Update(const double dElapsedTime)
 {
 	if (musicPlaylist.size() > 0)
 	{
 		static int currentlyPlaying = 0;
-		ISoundSource* currentSong = GetSound(musicPlaylist[currentlyPlaying])->GetSound();
+		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 		currentSongDuration += (dElapsedTime * 1000);
 		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
 		{
 			PlaySoundByID(musicPlaylist[currentlyPlaying]);
-			currentSong->setDefaultVolume(0.001f);
-		}
+			//currentSong->setVolume(0.001f * musicVol);
 
-		if (currentSong->getDefaultVolume() < cSoundEngine->getSoundVolume())
-		{
-			currentSong->setDefaultVolume(currentSong->getDefaultVolume()+0.001f);
-		}
-		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
-		{
-			currentSong->setDefaultVolume(currentSong->getDefaultVolume() - 0.001f);
 		}
 
 		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
 		{
+			StopPlayByID(musicPlaylist[currentlyPlaying]);
 			if (currentlyPlaying <= musicPlaylist.size() - 1)
 				currentlyPlaying++;
 			else
@@ -402,53 +458,48 @@ void CSoundController::Update(const double dElapsedTime)
 
 			currentSongDuration = 0;
 		}
+		/*cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;*/
+
+
+		//ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+
+		if (currentSong != nullptr)
+		{
+			musicsfx = currentSong;
+		}
+		if (musicsfx != nullptr)
+		{
+			musicsfx->setVolume(musicVol);
+		}
+
 
 	}
+
+	//cout << musicVol << endl;
 }
-//
-
-
-//REAGAN'S UPDATE
-//void CSoundController::Update(const double dElapsedTime)
-//{
-//	if (musicPlaylist.size() > 0)
-//	{
-//		ISoundSource* currentSong = GetSound(musicPlaylist[currentmusic])->GetSound();
-//		currentSongDuration += (dElapsedTime * 1000);
-//		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentmusic])->GetSound()))
-//		{
-//			PlaySoundByID(musicPlaylist[currentmusic]);
-//			currentSong->setDefaultVolume(0.001f);
-//		}
-//
-//		if (currentSong->getDefaultVolume() < cSoundEngine->getSoundVolume())
-//		{
-//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() + 0.001f);
-//		}
-//		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
-//		{
-//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() - 0.001f);
-//		}
-//
-//		if (currentSongDuration >= GetSound(musicPlaylist[currentmusic])->GetSound()->getPlayLength())
-//		{
-//			if (currentmusic <= musicPlaylist.size() - 1)
-//				currentmusic++;
-//			else
-//				currentmusic = 0;
-//
-//			currentSongDuration = 0;
-//		}
-//
-//	}
-//}
 //
 
 
 //int CSoundController::return_currentMusic()
 //{
-//	return currentmusic;
+//	return musicPlaylist[currentmusic];
 //}
+
+void CSoundController::setsoundvol(float vol)
+{
+}
+
+void CSoundController::setmusicvol(float vol)
+{
+	musicVol = vol;
+}
+
+float CSoundController::returnmusicvol()
+{
+	return musicVol;
+}
+
+
 // For 3D sounds only
 /**
  @brief Set Listener position
@@ -474,40 +525,23 @@ void CSoundController::SetListenerDirection(const float x, const float y, const 
 
 
 //MY OWN VERSION OF SETVOLUME - REAGAN
-void CSoundController::setVolume(int soundID, ISound* sfx, float vol)
+void CSoundController::setVolume_2(int soundID)
 {
 	ISound* snd = PlaySoundByID_2(soundID);
 	if (snd != nullptr)
 	{
-		sfx = snd;
+		musicsfx = snd;
 	}
 		
-	if (sfx != nullptr)
+	if (musicsfx != nullptr)
 	{
-		sfx->setVolume(vol);
+		musicsfx->setVolume(musicVol);
 		//vol = max(0, vol);
 	}
 }
 //
 
-//void CSoundController::decreasevolume(ISound* snd, int soundID, ISound* sfx, float vol)
-//{
-//	snd = PlaySoundByID(soundID);
-//	if (snd != nullptr)
-//	{
-//		sfx = snd;
-//	}
-//	
-//
-//	if (sfx != nullptr)
-//	{
-//		//bombSfx->setVolume(bombVol);
-//		sfx->setVolume(vol * soundEffectsvol);
-//		 //vol+= (bomb_timer / 1000) /** dElapsedTime*/;
-//		vol = max(0, vol * soundEffectsvol);
-//	}
-//	
-//}
+
 
 /**
  @brief Get an sound from this map
@@ -521,6 +555,8 @@ CSoundInfo* CSoundController::GetSound(const int ID)
 
 	return nullptr;
 }
+
+
 
 /**
  @brief Remove an sound from this map

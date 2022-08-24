@@ -10,8 +10,12 @@ using namespace std;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
+#include "Sword2D.h"
 
 #include "System\filesystem.h"
+
+
+
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -74,13 +78,6 @@ CScene2D::~CScene2D(void)
 		enemyVector[i] = NULL;
 	}
 	enemyVector.clear();
-
-	for (int i = 0; i < projectileVector.size(); i++)
-	{
-		delete projectileVector[i];
-		projectileVector[i] = NULL;
-	}
-	projectileVector.clear();
 
 	if (cGUI_Scene2D)
 	{
@@ -213,13 +210,20 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Romance in the Air.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);
 	cSoundController->AddToPlaylist(1);
 
-	cSoundController->SetMasterVolume(0.01f);
+	soundVol = 1.f;
+
+	/*for (int i = 1; i < 5; i++)
+	{*/
+		//cSoundController->setVolume(cSoundController->return_currentMusic(), musicsfx, musicVol);
+	/*}*/
+	//cSoundController->SetMasterVolume(0.01f);
 
 
 
@@ -231,13 +235,38 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
+	//setvo
+
+
 	cPlayer2D->Update(dElapsedTime);
+
+	if (CInventoryManager::GetInstance()->Check("Sword"))
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->Update(dElapsedTime);
+	}
 	
 	CShivs2D->Update(dElapsedTime);
 
 	cMap2D->Update(dElapsedTime);
 
 	cSoundController->Update(dElapsedTime);
+
+
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_SPACE))
+	{
+		ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+		if (dodgeSound != nullptr)
+		{
+			soundsfx = dodgeSound;
+		}
+		if (musicsfx != nullptr)
+		{
+			soundsfx->setVolume(soundVol);
+		}
+	}
+
+
 
 	float trackingPosX = cPlayer2D->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS;
 	float trackingPosY = cPlayer2D->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
@@ -322,6 +351,14 @@ void CScene2D::Render(void)
 	cPlayer2D->Render();
 	cPlayer2D->PostRender();
 
+	if (CInventoryManager::GetInstance()->Check("Sword"))
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->PreRender();
+		sword->Render();
+		sword->PostRender();
+	}
+
 	CShivs2D->PreRender();
 	CShivs2D->Render();
 	CShivs2D->PostRender();
@@ -343,5 +380,25 @@ void CScene2D::Render(void)
  */
 void CScene2D::PostRender(void)
 {
+}
+
+float CScene2D::returnmusicvol()
+{
+	return musicVol;
+}
+
+void CScene2D::setmusicvol(float vol)
+{
+	musicVol = vol;
+}
+
+float CScene2D::returnsoundvol()
+{
+	return soundVol;
+}
+
+void CScene2D::setsoundvol(float vol)
+{
+	soundVol = vol;
 }
 
