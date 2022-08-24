@@ -19,4 +19,12 @@ public:
 	virtual bool Update(const double dElapsedTime) = 0;
 	virtual void Render() = 0;
 	virtual void Destroy() = 0;
+
+
+	virtual int returnbutnumval(int arr) {
+		return arr;
+
+	};
+
+	virtual void setbutnumvalto(int arr, int val) {};
 };

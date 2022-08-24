@@ -10,8 +10,9 @@
 #include "GameStateBase.h"
 
 
-
 #include "..\Scene2D\Scene2D.h"
+
+
 
 class CPlayGameState : public CGameStateBase
 {
@@ -38,6 +39,6 @@ protected:
 	CScene2D* cScene2D;
 
 
-
 	CGameManager* cGameManager;
+
 };

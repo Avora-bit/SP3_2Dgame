@@ -297,13 +297,6 @@ void Application::Run(void)
 		}
 
 		CGameStateManager::GetInstance()->Render();
-		// Call cScene2D's methods
-		/*
-		cScene2D->Update(dElapsedTime);
-		cScene2D->PreRender();
-		cScene2D->Render();
-		cScene2D->PostRender();
-		*/
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -351,6 +344,11 @@ void Application::Destroy(void)
 		cFPSCounter->Destroy();
 		cFPSCounter = NULL;
 	}
+
+
+
+
+
 	/*
 	if (cScene2D)
 	{

@@ -13,9 +13,12 @@
 #include "../Scene2D/BackgroundEntity.h"
 
 #include "../App/Source/Scene2D/Scene2D.h"
+#include "../App/Source/Scene2D/Player2D.h"
 
 
 #include "..\SoundController\SoundController.h"
+
+
 
 
 #include <string>
@@ -59,6 +62,9 @@ protected:
 
 	CSoundController* cSoundController;
 	CScene2D* cScene2D;
+
+	CPlayer2D* cPlayer2D;
+
 	ButtonData VolumeIncreaseButtonData;
 	ButtonData VolumeDecreaseButtonData;
 };
