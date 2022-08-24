@@ -36,6 +36,7 @@ public:
 	glm::vec2 vec2Index;
 	float zoom;
 
+	glm::vec2 playerOffset;
 protected:
 	// Constructor
 	Camera(void);

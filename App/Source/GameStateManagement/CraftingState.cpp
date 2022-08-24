@@ -268,6 +268,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 					{
 						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
 
+						/*hbcells[i].setitemID(cPlayer2D->getitemval(i));
+						hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);*/
+
 					}
 					if (payload_n >= 9 && payload_n < 12)
 					{
@@ -362,6 +365,7 @@ void CCraftingState::Destroy(void)
 	//	}
 	//}
 
+
 	if (cMouseController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -373,25 +377,17 @@ void CCraftingState::Destroy(void)
 		// We won't delete this since it was created elsewhere
 		cSettings = NULL;
 	}
-	
-	
 
 	delete recipebook;
 	recipebook = nullptr;
 
-
-
-
-
 	delete il;
 	il = nullptr;
 
-	
-}
-
-int CCraftingState::returnbutnumval(int arr)
-{
-	return butnum[arr].getitemID();
+	/*for (int i = 0; i < 12; i++)
+	{
+		delete butnum[i];
+	}*/
 }
 
 void CCraftingState::setbutnumvalto(int arr, int val)

@@ -27,6 +27,7 @@ CScene2D::CScene2D(void)
 	, cGUI_Scene2D(NULL)
 	, camera(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
 {
@@ -171,6 +172,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	camera->Init();
 
 	enemyVector.clear();
+	/*
 	while (true)
 	{
 		Octopus* octo = new Octopus();
@@ -197,7 +199,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		else
 			break;
 	}
-
+	*/
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -262,10 +264,8 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	
 
-
-
-	float trackingPosX = cPlayer2D->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS;
-	float trackingPosY = cPlayer2D->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
+	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
+	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
 
 	camera->Update(dElapsedTime, glm::vec2(trackingPosX, trackingPosY));
 

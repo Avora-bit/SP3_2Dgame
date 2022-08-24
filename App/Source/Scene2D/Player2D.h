@@ -45,6 +45,7 @@ class Camera;
 #include "slot.h"
 
 
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -104,6 +105,8 @@ protected:
 
 	CSoundController* cSoundController;
 
+
+
 	ISound* soundsfx;
 	float soundVol;
 
@@ -157,7 +160,7 @@ public:
 
 	void LoseHealth(float health);
 
-	void CPlayer2D::AddItem(int itemid);
+	bool CPlayer2D::AddItem(int itemid);
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
 	int CPlayer2D::getitemval(int arr);

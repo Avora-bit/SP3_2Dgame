@@ -7,9 +7,6 @@
  Date: July 2021
  */
 
-
-
-
  // Include ImageLoader
 #include "System\ImageLoader.h"
 
@@ -44,11 +41,7 @@
 #define IMGUI_ACTIVE
 #endif
 
-
-
 #include "DesignPatterns\SingletonTemplate.h"
-
-
 
 class CCraftingState : public CGameStateBase, public CSingletonTemplate<CCraftingState>
 {
@@ -70,7 +63,7 @@ public:
 	virtual void Destroy(void);
 
 
-	int returnbutnumval(int arr);
+	//int returnbutnumval(int arr);
 
 	void setbutnumvalto(int arr, int val);
 
