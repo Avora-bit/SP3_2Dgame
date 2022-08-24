@@ -322,7 +322,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
+	//float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
 
 	if (cPlayer2D->getx())
 	{
