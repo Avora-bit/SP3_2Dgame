@@ -121,6 +121,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		Dmap->convertKeys();
 		Dmap->randreplace(200, 98);			//replace sand with player
 
+		int randcross = rand() % 5 + 5;		//random number of chests, 5-10 chests
+		for (int i = 0; i < randcross; i++) {
+			Dmap->randreplace(96, 98);			//replace sand with player
+		}
+
 		string filename = "Maps/Map.csv";
 		Dmap->exportmap(filename);
 		//clean
