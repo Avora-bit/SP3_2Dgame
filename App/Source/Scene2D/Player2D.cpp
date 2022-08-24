@@ -105,8 +105,7 @@ bool CPlayer2D::Init(void)
 
 	soundVol = 1.f;
 
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+	cMap2D->SetMapInfo(uiRow, uiCol, 98);			//replace player with sand cause they spawn on sand
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -946,12 +945,6 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 98:
-		CGameManager::GetInstance()->bLevelCompleted = true;
-		break;
-	case 99:
-		CGameManager::GetInstance()->bPlayerWon = true;
-		break;
 	//FOR INVENTORY PURPOSES - REAGAN
 	case 2:
 	case 1:

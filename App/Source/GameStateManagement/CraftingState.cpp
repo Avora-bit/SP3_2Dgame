@@ -362,6 +362,7 @@ void CCraftingState::Destroy(void)
 	//	}
 	//}
 
+
 	if (cMouseController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -373,15 +374,9 @@ void CCraftingState::Destroy(void)
 		// We won't delete this since it was created elsewhere
 		cSettings = NULL;
 	}
-	
-	
 
 	delete recipebook;
 	recipebook = nullptr;
-
-
-
-
 
 	delete il;
 	il = nullptr;
@@ -390,6 +385,7 @@ void CCraftingState::Destroy(void)
 	{
 		delete butnum[i];
 	}*/
+}
 
 void CCraftingState::setbutnumvalto(int arr, int val)
 {
