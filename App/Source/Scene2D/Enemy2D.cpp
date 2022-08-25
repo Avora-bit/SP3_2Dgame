@@ -832,6 +832,9 @@ void CEnemy2D::UpdatePosition(void)
 	}
 }
 
-int CEnemy2D::getx()
+
+
+glm::vec2 CEnemy2D::getvec()
 {
+	return vec2Index;
 }

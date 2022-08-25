@@ -111,9 +111,19 @@ bool CCraftingState::Init(void)
 			//hotbar
 			//butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
 			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
+			butnum[i].settextureID(butnum[i].getitemID());
+
+			cout << "ID IS " << butnum[i].gettextureID() << endl;
+
 
 		}
-		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+
+		butnum[i].settextureID(butnum[i].getitemID());
+
+		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+		//butnum[i].Init(il);
+
+		//MapOfTextureIDs.at(butnum[i].getitemID())
 	}
 
 	
@@ -162,7 +172,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		
 		// by tohdj
 		char y[19];
-		for (int n = 0; n < 19; n++)
+		for (int n = 0; n < 18; n++)
 		{
 			ImGui::PushID(n);
 			//don't break line if doesn't reach 3 cells
@@ -183,48 +193,50 @@ bool CCraftingState::Update(const double dElapsedTime)
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
 					-1, ImVec4(1, 1, 0, 1));
 			}
+			//IF ITEM IS OUTPUT SLOT
 			else if(n == 18)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
 					-1, ImVec4(1, 0, 0, 1));
-
+				//OUTPUT INVENTORY
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
+				butnum[n].settextureID(butnum[n].getitemID());
 
-				//print item to inventory
+			
+				//BRING ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
-					//ImGui::Text("Check %s", butnum[n].getitemID());
 					if (cMouseController->IsButtonDown(0))
 					{
 						for (int x = 9; x < 18; x++)
 						{
 							if (butnum[x].getitemID() == 0)
 							{
-								//remove all 
+								//set in inventiory slot 
 								butnum[x].setitemID(butnum[n].getitemID());
-								butnum[x].loadimagebasedID(butnum[x].getitemID(), il);
+								butnum[x].settextureID(butnum[x].getitemID());
+
+								//butnum[x].loadimagebasedID(butnum[x].getitemID(), il);
 
 								//set the inventory to the item
 								cPlayer2D->setitem(x - 9, butnum[x].getitemID());
-
 								//empty everything in the crafting slot
 								for (int i = 0; i < 9; i++)
 								{
 									butnum[i].setitemID(0);
-									butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
-
+									butnum[i].settextureID(butnum[i].getitemID());
 								}
-
 								//empty the output slot
 								butnum[n].setitemID(0);
-								butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+								butnum[n].settextureID(butnum[n].getitemID());
+
 								break;
 							}
 						}
 					}
 				}
 
-				butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+				//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 			}
 			else
 			{
@@ -261,42 +273,52 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 					//payload is what is selected to drag
 					// n is what it's being dragged to
-					
-					//set the hotbar to the item
-					if (n >= 9 && n < 12)
+				
+					//if the slot is in the inventory slot
+					if (n >= 9 && n < 18)
 					{
-						guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
+						//HOTBAR
+						if (n < 12)
+						{
+							guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
 
-						/*hbcells[i].setitemID(cPlayer2D->getitemval(i));
-						hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);*/
-
-					}
-					if (payload_n >= 9 && payload_n < 12)
-					{
-						guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
-
-					}
-					//if the slot is inventory
-					if (n >= 9 && n < 19)
-					{
+						}
 						cPlayer2D->setitem(n - 9, butnum[n].getitemID());
 					}
-					if (payload_n >= 9 && payload_n < 19)
+					if (payload_n >= 9 && payload_n < 18)
 					{
+						//HOTBAR
+						if (payload_n < 12)
+						{
+							guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
+
+						}
 						cPlayer2D->setitem(payload_n - 9, butnum[payload_n].getitemID());
 					}
 
+					//void CPlayer2D::setitem(int arr, int itemid)
+					//{
+					//	inventorySlots[arr].setitemID(itemid);
+					//	inventorySlots[arr].settextureID(inventorySlots[arr].getitemID());
+					//	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
-
+					//}
 				}
 
-				//FIX THE GLITCH WHERE UNUSED MATERIALS WILL DISAPPEAR IN CRAFTING SLOT WHEN CRAFTING MENU IS CLOSED
 
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
 
 		}
+
+		/*for (int i = 0; i < 19; i++)
+		{
+			cout << "OUTPUT " << i << " IS " << butnum[i].returnstring() << endl;
+		}*/
+
+		//cout << "OUTPUT " << butnum[18].getitemID() << endl;
+
 
 		ImGui::End();
 	}
@@ -387,6 +409,11 @@ void CCraftingState::Destroy(void)
 	{
 		delete butnum[i];
 	}*/
+}
+
+int CCraftingState::returnbutnumval(int arr)
+{
+	return butnum[arr].getitemID();
 }
 
 void CCraftingState::setbutnumvalto(int arr, int val)

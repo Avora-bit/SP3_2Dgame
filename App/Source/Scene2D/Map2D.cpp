@@ -261,6 +261,30 @@ void CMap2D::PreRender(void)
 	CShaderManager::GetInstance()->Use(sShaderName);
 }
 
+
+
+
+/**
+ @brief Render a tile at a position based on its tile index
+ @param iRow A const int variable containing the row index of the tile
+ @param iCol A const int variable containing the column index of the tile
+ */
+void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
+{
+	if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value > 0) &&
+		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+	{
+		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
+		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
+
+		glBindVertexArray(VAO);
+		//CS: Render the tile
+		quadMesh->Render();
+		glBindVertexArray(0);
+	}
+}
+
+
 /**
  @brief Render Render this instance
  */
@@ -501,25 +525,7 @@ unsigned int CMap2D::GetCurrentLevel(void) const
 	return uiCurLevel;
 }
 
-/**
- @brief Render a tile at a position based on its tile index
- @param iRow A const int variable containing the row index of the tile
- @param iCol A const int variable containing the column index of the tile
- */
-void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
-{
-	if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value > 0) &&
-		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
-	{
-		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
- 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
 
-		glBindVertexArray(VAO);
-		//CS: Render the tile
-		quadMesh->Render();
-		glBindVertexArray(0);
-	}
-}
 
 std::vector<glm::vec2> CMap2D::PathFind(const glm::vec2& startPos, const glm::vec2& targetPos, HeuristicFunction heuristicFunc, int weight)
 {

@@ -275,7 +275,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Monster.ogg"), 6, true);
 
 
 	cSoundController->AddToPlaylist(3);
@@ -322,12 +322,29 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
-
-	if (cPlayer2D->getx())
+	float fDistance;
+	for (int i = 0; i < enemyVector.size(); i++)
 	{
+		fDistance = cPhysics2D.CalculateDistance(enemyVector[9]->getvec(), cPlayer2D->getvec());
+		if (fDistance < 1.0f)
+		{
+			//cSoundController->PlaySoundByID_2(6);
 
+			ISound* soundSFX = nullptr;
+			ISound* squidSound = cSoundController->PlaySoundByID_2(6);
+			if (squidSound != nullptr)
+			{
+				soundSFX = squidSound;
+			}
+			if (soundSFX != nullptr)
+			{
+				soundSFX->setVolume(cPlayer2D->returnsound()/fDistance);
+			}
+		}
 	}
+
+
+	
 
 
 
