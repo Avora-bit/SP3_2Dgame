@@ -80,7 +80,7 @@ CPlayer2D::~CPlayer2D(void)
 
 	if (soundsfx)
 	{
-		delete soundsfx;
+		/*delete soundsfx;*/
 		soundsfx = NULL;
 	}
 
@@ -881,9 +881,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
 		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
 		{
-			
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-			cout << vec2NumMicroSteps.x << endl;
 		}
 	}
 
@@ -1033,7 +1031,6 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.y = 0;
 			vec2NumMicroSteps.y = 0;
-
 		}
 	}
 	else

@@ -162,13 +162,6 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	//int getx();
-	//int gety();
-
-	glm::vec2 getvec();
-
-
-
 	float speed_multiplier = 0.25f;
 	float atk;
 };
