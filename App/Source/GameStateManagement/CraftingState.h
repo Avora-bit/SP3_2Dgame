@@ -63,7 +63,7 @@ public:
 	virtual void Destroy(void);
 
 
-	//int returnbutnumval(int arr);
+	int returnbutnumval(int arr);
 
 	void setbutnumvalto(int arr, int val);
 

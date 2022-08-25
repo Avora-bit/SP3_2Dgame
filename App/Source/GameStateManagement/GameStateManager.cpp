@@ -16,7 +16,7 @@ CGameStateManager::CGameStateManager(void)
 	, inventoryGameState(nullptr)
 {
 
-	cCraftingState = CCraftingState::GetInstance();
+	
 	cPlayer2D = CPlayer2D::GetInstance();
 }
 
@@ -249,17 +249,21 @@ bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 		{
 			if (craftingGameState->returnbutnumval(i) != 0)
 			{
+				//cout << "VALUE IS " << craftingGameState->returnbutnumval(i) << endl;
 				for (int n = 0; n < 9; n++)
 				{
 					if (cPlayer2D->getitemval(n) == 0)
 					{
 						cPlayer2D->setitem(n, craftingGameState->returnbutnumval(i));
+
 						break;
 					}
 				}
-				
 			}
-			
+
+
+			cout << "CPLAYER TEXTURE IS " << cPlayer2D->gettextureid(i) << endl;
+
 		}
 
 
