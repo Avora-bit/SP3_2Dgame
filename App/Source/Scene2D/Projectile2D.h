@@ -43,13 +43,25 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
-class CProjectile2D : public CSingletonTemplate<CProjectile2D>, public CEntity2D
-{
-	friend CSingletonTemplate<CProjectile2D>;
-public:
+#include <iostream>
+using namespace std;
 
+// Include Shader Manager
+#include "RenderControl\ShaderManager.h"
+
+// Include ImageLoader
+#include "System\ImageLoader.h"
+
+// Include the Map2D as we will use it to check the player's movements and actions
+#include "Map2D.h"
+#include "Player2D.h"
+#include "Primitives/MeshBuilder.h"
+
+class CProjectile2D : public CEntity2D
+{
+public:
 	// Init
-	bool Init(void);
+	virtual bool Init(void);
 
 	// Update
 	void Update(const double dElapsedTime);
@@ -63,7 +75,20 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool bIsActive;
+
 protected:
+	enum DIRECTION
+	{
+		LEFT = 0,
+		RIGHT = 1,
+		UP = 2,
+		DOWN = 3,
+		NUM_DIRECTIONS
+	};
+
+	int atk;
+	float mspeed;
 
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 direction;		//direction of movement
@@ -82,13 +107,11 @@ protected:
 	// Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
-	// Keyboard Controller singleton instance
-	CKeyboardController* cKeyboardController;
-
 	CSoundController* cSoundController;
 
 	CPhysics2D cPhysics2D;
 
+	glm::vec2 vec2Direction;
 	// Player's colour
 	glm::vec4 runtimeColour;
 
@@ -98,6 +121,14 @@ protected:
 	// Destructor
 	virtual ~CProjectile2D(void);
 
+	// Constraint the player's position within a boundary
+	void Constraint(DIRECTION eDirection = LEFT);
+
 	void InteractWithMap(void);
+	virtual bool InteractWithPlayer();
+
+	bool CheckPosition(DIRECTION eDirection);
+
+	void trajectory();
 };
 

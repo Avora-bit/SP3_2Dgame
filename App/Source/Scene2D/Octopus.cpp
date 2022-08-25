@@ -8,6 +8,20 @@ Octopus::Octopus()
 
 Octopus::~Octopus()
 {
+	// We won't delete this since it was created elsewhere
+	cPlayer2D = NULL;
+
+	CShivs2D = NULL;
+
+	// We won't delete this since it was created elsewhere
+	cMap2D = NULL;
+
+	camera = NULL;
+
+	// optional: de-allocate all resources once they've outlived their purpose:
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
 
 bool Octopus::Init(void)
@@ -59,6 +73,7 @@ bool Octopus::Init(void)
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
+	angle = 360;
 	timer = 0;
 	stuck = false;
 
@@ -93,7 +108,6 @@ void Octopus::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::CHASE:
 		{
-			
 			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)

@@ -334,7 +334,7 @@ bool CPlayer2D::Reset()
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
+	
 	return true;
 }
 
@@ -347,7 +347,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//{
 	//	cout << "PA" << i << " is " << getitemval(i) << endl;
 	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
-
 	//}
 	//invincibility timer
 	{
@@ -394,7 +393,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
-	static float dashTimer = 0;
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -548,7 +546,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
-			cPhysics2D.SetInitialVelocity(glm::vec2(1.5f, 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
@@ -569,15 +567,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
-		dashTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
+		
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
 		cPhysics2D.SetTime(float(dElapsedTime));
 		cPhysics2D.Update();
 		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 		glm::vec2 iIndex_OLD = vec2Index;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+		int iDisplacement_MicroSteps = (int)(v2Displacement.x / 0.015625f);
 		switch (direction)
 		{
 		case UP:
@@ -595,12 +593,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			Constraint(UP);
 			int iIndex_YAxis_Proposed = vec2Index.y;
-			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			for (int i = iIndex_OLD.y; i <= iIndex_YAxis_Proposed; i++)
 			{
 				vec2Index.y = i;
 				if (CheckPosition(UP) == false)
 				{
-					vec2Index.y = vec2OldIndex.y;
 					vec2NumMicroSteps.y = 0;
 					break;
 				}
@@ -661,8 +658,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
-				vec2NumMicroSteps.x += fabs(iDisplacement_MicroSteps);
-				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				vec2NumMicroSteps.x += iDisplacement_MicroSteps;
+				if (vec2NumMicroSteps.x > cSettings->NUM_STEPS_PER_TILE_XAXIS)
 				{
 					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
 					if (vec2NumMicroSteps.x < 0)
@@ -672,12 +669,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			Constraint(RIGHT);
 			int iIndex_XAxis_Proposed = vec2Index.x;
-			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			for (int i = iIndex_OLD.x; i <= iIndex_XAxis_Proposed; i++)
 			{
 				vec2Index.x = i;
 				if (CheckPosition(RIGHT) == false)
 				{
-					vec2Index.x = vec2OldIndex.x;
 					vec2NumMicroSteps.x = 0;
 					break;
 				}
@@ -881,12 +877,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 			break;
 		}
 		}
-
+		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dashTimer >= 0.3f)
+		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
 		{
+			
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-			dashTimer = 0;
+			cout << vec2NumMicroSteps.x << endl;
 		}
 	}
 
