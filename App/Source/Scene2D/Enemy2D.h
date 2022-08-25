@@ -160,8 +160,8 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	int getx();
-	int gety();
+	//int getx();
+	//int gety();
 
 	glm::vec2 getvec();
 

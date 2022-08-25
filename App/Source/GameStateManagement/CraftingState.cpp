@@ -385,7 +385,10 @@ void CCraftingState::Destroy(void)
 	//		cout << "HAS NOTHING" << endl;
 	//	}
 	//}
-
+	if (guiscene2d)
+	{
+		guiscene2d = NULL;
+	}
 
 	if (cMouseController)
 	{
@@ -397,6 +400,11 @@ void CCraftingState::Destroy(void)
 	{
 		// We won't delete this since it was created elsewhere
 		cSettings = NULL;
+	}
+
+	if (cPlayer2D)
+	{
+		cPlayer2D = NULL;
 	}
 
 	delete recipebook;

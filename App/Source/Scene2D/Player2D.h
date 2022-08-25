@@ -105,6 +105,8 @@ protected:
 
 	CSoundController* cSoundController;
 
+	CGameManager* cGameManager;
+
 	ISound* soundsfx;
 	float soundVol;
 

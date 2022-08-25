@@ -11,6 +11,7 @@ private:
 	int seed;
 	int width = 100;
 	int height = 100;
+
 	vector<int>coremap;		//empty map
 	vector<int>tempmap;			//temporary map for new generation
 
@@ -19,19 +20,29 @@ private:
 	int poplimit = 8;			//how many to die from over population
 	int sociallimit = 4;		//how many to die from under population
 
+	//dungeon 
+	int roomChance = 60;
+	int corridorChance = 100 - roomChance;
+
+	int minRoomSize = 5;
+	int maxRoomSize = 20;
+
+	int minCorridorLength = 5;
+	int maxCorridorLength = 10;
+
 	int Key_Convert[10][2] = {
 		//background tiles
 		{0, 97},			//water		//cannot dash, slows movement speed
 		{1, 99},			//grass		//spawn tree
 		{2, 98},			//sand		//spawn cross
 		{3, 96},			//cross		//spawn treasure
-		{4, 95},			//dungeondoor		//go to dungeon map
-		{5, 94},			//brick floor		//no behavior
-		{6, 93},			//trap				//deals small amount of damage to the player, 5 hp
+		{4, 95},			//ladderdown
+		{5, 94},			//ladderup
+		{6, 93},			//brick floor		//no behavior
+		{7, 92},			//trap				//deals small amount of damage to the player, 5 hp
 		//solid tiles
-		{7, 100},			//tree
-		{8, 101},			//brick wall
-		{9, 102},			//dispenser
+		{8, 100},			//tree
+		{9, 101},			//brick wall
 	};
 
 public:
@@ -66,8 +77,7 @@ public:
 		}
 	}
 
-	void updateMap() {
-		//update
+	void updateIsland() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				int type = 0; int neighbour = 0;
@@ -99,12 +109,13 @@ public:
 				tempmap.push_back(type);
 			}
 		}
+
 		coremap = tempmap;
 		tempmap.clear();
+
 	}
 
 	void growsand() {
-		//update
 		tempmap = coremap;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -120,6 +131,21 @@ public:
 		coremap = tempmap;
 		tempmap.clear();
 	}
+	
+
+	void populateIsland() {
+		//reads from input, then populate forground and export
+		//populate foreground
+	}
+
+	void updateDungeon() {
+		//rectangular features
+	}
+
+	void PopulateDungeon(string filename) {
+		//rectangular features
+	}
+
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(int replaced, int type) {
 		//gather all index with the same type
@@ -139,16 +165,51 @@ public:
 		tempmap.clear();
 	}
 
-	//debug only
-	void printmap() {
-		system("CLS");
-		std::cout << seed << std::endl;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				std::cout << coremap.at(i * width + j);
-			}
-			std::cout << std::endl;
-		}
+	void importmap(int x, int y, string filename) {
+		width = x; height = y;
+		coremap.clear();
+		ifstream map(filename);
+		////first row
+		//map << "//";
+		//for (int i = 1; i <= width; i++) {
+		//	map << i;
+		//	if (i < width) {
+		//		map << ",";
+		//	}
+		//}
+		//map << std::endl;
+		////actual map
+		//for (int i = 0; i < height; i++) {
+		//	for (int j = 0; j < width; j++) {
+		//		map << coremap.at(i * width + j);
+		//		if (j < width - 1) {
+		//			map << ",";
+		//		}
+		//	}
+		//	map << std::endl;
+		//}
+		////close file
+		//map.close();
+
+
+		//ifstream book(filename);		//input only
+		////create array
+		//string linetext;	Recipe tempRecipe;			//create new recipe
+		//while (getline(book, linetext, ' ')) {		//space for carriage return, hardcoded ',' for delimiter
+		//	// Output the text from the file
+		//	int value, count = 0;	string token;  size_t pos;
+		//	while ((pos = linetext.find(',')) != std::string::npos) {
+		//		token = linetext.substr(0, pos);
+		//		value = stoi(token);
+		//		tempRecipe.SetRecipeIndex(count, value);
+		//		count++;
+		//		linetext.erase(0, pos + 1);		//delete index
+		//	}
+		//	count = 0;
+		//	//push recipe
+		//	recipeList.push_back(tempRecipe);
+		//}
+		//book.close();
 	}
 
 	void exportmap(string filename) {
@@ -181,7 +242,7 @@ public:
 	int getY(int index) { return (index - (index % width)) / width; }
 	//convert coord to index
 	int Coord2Index(int x, int y) { return x + (y * width); }
-
+	
 	int countN(int index, int type) {		//counts the type of cells around itself
 		int X = getX(index); int Y = getY(index);
 		int Neighbour = 0;
@@ -219,5 +280,17 @@ public:
 		}
 		coremap = tempmap;
 		tempmap.clear();
+	}
+
+	//debug only
+	void printmap() {
+		system("CLS");
+		std::cout << seed << std::endl;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				std::cout << coremap.at(i * width + j);
+			}
+			std::cout << std::endl;
+		}
 	}
 };

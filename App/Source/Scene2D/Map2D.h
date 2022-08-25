@@ -37,31 +37,9 @@
 
 #include "Camera.h"
 
+#include "MapStruct.h"
+
 // A structure storing information about Map Sizes
-struct MapSize {
-	unsigned int uiRowSize;
-	unsigned int uiColSize;
-};
-
-// A structure storing information about a map grid
-// It includes data to be used for A* Path Finding
-struct Grid {
-	unsigned int value;
-
-	Grid() 
-		: value(0), pos(0, 0), parent(-1, -1), f(0), g(0), h(0) {}
-	Grid(	const glm::vec2& pos, unsigned int f) 
-		: value(0), pos(pos), parent(-1, 1), f(f), g(0), h(0) {}
-	Grid(	const glm::vec2& pos, const glm::vec2& parent, 
-			unsigned int f, unsigned int g, unsigned int h) 
-		: value(0), pos(pos), parent(parent), f(f), g(g), h(h) {}
-
-	glm::vec2 pos;
-	glm::vec2 parent;
-	unsigned int f;
-	unsigned int g;
-	unsigned int h;
-};
 
 using HeuristicFunction = std::function<unsigned int(const glm::vec2&, const glm::vec2&, int)>;
 // Reverse std::priority_queue to get the smallest element on top
@@ -102,14 +80,11 @@ public:
 	void SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert = true);
 
 	// Get the value at certain indices in the arrMapInfo
-	int GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert = true) const;
+	int GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert = true, const int uilayer = 1);		//0 is background, 1 if foreground
 
 	// Load a map
-	bool LoadMap(string filename, const unsigned int uiLevel = 0);
-
-	// Save a tilemap
-	bool SaveMap(string filename, const unsigned int uiLevel = 0);
-
+	bool LoadMap(string BGfilename, string FGfilename, const unsigned int uiLevel = 0);
+	
 	// Find the indices of a certain value in arrMapInfo
 	bool FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert = true);
 
@@ -131,7 +106,7 @@ protected:
 	rapidcsv::Document doc;
 
 	// A 3-D array which stores the values of the tile map
-	Grid*** arrMapInfo;
+	Grid**** arrMapInfo;
 
 	// The current level
 	unsigned int uiCurLevel;
@@ -158,7 +133,7 @@ protected:
 	virtual ~CMap2D(void);
 
 	// Render a tile
-	void RenderTile(const unsigned int uiRow, const unsigned int uiCol);
+	void RenderTile(const unsigned int uiRow, const unsigned int uiCol, int layer);
 
 	// For A-Star PathFinding
 	// Build a path from m_cameFromList after calling PathFind()
@@ -166,9 +141,10 @@ protected:
 	// Check if a grid is valid
 	bool isValid(const glm::vec2& pos) const;
 	// Check if a grid is blocked
-	bool isBlocked(const unsigned int uiRow,
-		const unsigned int uiCol,
-		const bool bInvert = true) const;
+	bool isBlocked( const unsigned int uiRow,
+					const unsigned int uiCol,
+					const bool bInvert = true, 
+					const int uilayer = 1);			//default layer is 1 cause foreground
 	// Convert a position to a 1D position in the array
 	int ConvertTo1D(const glm::vec2& pos) const;
 

@@ -24,8 +24,9 @@ public:
 	bool bPlayerWon;
 	// Boolean flag to indicate if the player lost the game
 	bool bPlayerLost;
-	// Boolean flag to indicate if the level is completed
-	bool bLevelCompleted;
+	// Boolean flag to change state of level
+	bool bLevelIncrease;
+	bool bLevelDecrease;
 
 	// Boolean flag to indicate if the level is be replayed
 	bool bLevelToReplay;

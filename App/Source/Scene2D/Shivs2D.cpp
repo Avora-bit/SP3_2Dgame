@@ -125,9 +125,9 @@ bool CShivs2D::Init(void)
 		std::cout << "Failed to load Shiv tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("hold", 0, 0);
-	animatedSprites->AddAnimation("throw", 1, 1);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("throw", 0, 0);
+	animatedSprites->PlayAnimation("throw", -1, 1.f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);

@@ -22,7 +22,11 @@ enter/right click for ranged
 space/Lshift to dash
 
 How to play
-
+gather resources to craft a sword
+gather food to stave off hunger
+survive in constant combat
+unlock new sword upgrades
+defeat the boss
 
 
 
@@ -35,22 +39,29 @@ debug
 asset list
 
 map tiles
-non-solid tiles
+
+background
 99 grass/
 98 sand/
 97 water/
 96 cross/
-95 dungeondoor
-94 brickfloor
-93 trap
-solid tiles
+95 ladderdown/
+94 ladderup/
+93 brickfloor/
+92 trap/
+
+foreground
 100 tree/
 101 wall/
-102 dispenser
+
+map entities-foreground
+80 treasure/
+79 web/
+
 items
+0 blank
 1 stick
 2 wood
-0 blank
 6 sword
 7 bow
 
