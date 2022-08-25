@@ -51,6 +51,8 @@
     <ClCompile Include="Source\Scene2D\InventoryManager.cpp" />
     <ClCompile Include="Source\Scene2D\Items.cpp" />
     <ClCompile Include="Source\Scene2D\Map2D.cpp" />
+    <ClCompile Include="Source\Scene2D\MapBackground.cpp" />
+    <ClCompile Include="Source\Scene2D\MapForeground.cpp" />
     <ClCompile Include="Source\Scene2D\Octopus.cpp" />
     <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
     <ClCompile Include="Source\Scene2D\Player2D.cpp" />
@@ -80,6 +82,7 @@
     <ClInclude Include="Source\GameStateManagement\VictoryState.h" />
     <ClInclude Include="Source\Scene2D\BackgroundEntity.h" />
     <ClInclude Include="Source\Scene2D\Blade2D.h" />
+    <ClInclude Include="Source\Scene2D\BresenhamLERP.h" />
     <ClInclude Include="Source\Scene2D\Camera.h" />
     <ClInclude Include="Source\Scene2D\Chicken.h" />
     <ClInclude Include="Source\Scene2D\Enemy2D.h" />
@@ -91,7 +94,10 @@
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
     <ClInclude Include="Source\Scene2D\Items.h" />
     <ClInclude Include="Source\Scene2D\Map2D.h" />
+    <ClInclude Include="Source\Scene2D\MapBackground.h" />
+    <ClInclude Include="Source\Scene2D\MapForeground.h" />
     <ClInclude Include="Source\Scene2D\MapGenerator.h" />
+    <ClInclude Include="Source\Scene2D\MapStruct.h" />
     <ClInclude Include="Source\Scene2D\Octopus.h" />
     <ClInclude Include="Source\Scene2D\Physics2D.h" />
     <ClInclude Include="Source\Scene2D\Player2D.h" />

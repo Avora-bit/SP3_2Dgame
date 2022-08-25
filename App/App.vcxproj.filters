@@ -27,6 +27,9 @@
     <Filter Include="Inventory">
       <UniqueIdentifier>{9676388f-dd49-4739-ab4a-0b032823ed4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{6d3e3487-4d81-4d08-ae01-e3e6b8caf97f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -36,9 +39,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Scene2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Map2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Player2D.cpp">
@@ -143,15 +143,21 @@
     <ClCompile Include="Source\Scene2D\Items.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\MapBackground.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\MapForeground.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Map2D.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Map2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Physics2D.h">
@@ -208,9 +214,6 @@
     <ClInclude Include="Source\Scene2D\GameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\MapGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\Chicken.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -261,6 +264,24 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Items.h">
       <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\MapGenerator.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\MapBackground.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\MapForeground.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Map2D.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\BresenhamLERP.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\MapStruct.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

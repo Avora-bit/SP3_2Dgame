@@ -29,6 +29,7 @@ using namespace std;
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
+	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
@@ -60,6 +61,11 @@ CPlayer2D::~CPlayer2D(void)
 	cMap2D = NULL;
 
 	camera = NULL;
+
+	if (cGameManager)
+	{
+		cGameManager = NULL;
+	}
 
 	if (cSoundController)
 	{
@@ -100,6 +106,8 @@ bool CPlayer2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
+
+	cGameManager = CGameManager::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
@@ -955,8 +963,16 @@ void CPlayer2D::InteractWithMap(void)
 		//slows by abit
 		movementSpeed = 0.9f;
 		break;
+	
+	case 95:		//dungeon ladderdown
+		//add level
+		cGameManager->bLevelIncrease = true;
+		break;
 
-
+	case 94:		//dungeon ladderup
+		//remove level
+		cGameManager->bLevelDecrease = true;
+		break;
 
 
 	//FOR INVENTORY PURPOSES - REAGAN

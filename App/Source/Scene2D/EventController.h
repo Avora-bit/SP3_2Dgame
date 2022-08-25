@@ -7,14 +7,17 @@
 #include "DesignPatterns\SingletonTemplate.h"
 
 //include entities
+
 #include "Map2D.h"
+//foreground and background
+//player instance
 #include "Player2D.h"
-#include "Enemy2D.h"
 //enemy types
-#include "Items.h"
+#include "Enemy2D.h"
 //item types
-#include "Projectile2D.h"
+#include "Items.h"
 //projectile types
+#include "Projectile2D.h"
 
 using namespace std;
 
@@ -64,5 +67,7 @@ public:
 
 	void update() {			//runs every frame
 		cout << "eventupdate" << endl;
+
+		//updates all entities here
 	}
 };
