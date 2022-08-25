@@ -113,12 +113,17 @@ bool CCraftingState::Init(void)
 			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
 			butnum[i].settextureID(butnum[i].getitemID());
 
+
+			butnum[i].AddQuantity(cPlayer2D->getitem(i - 9).getquantity());
+
 			cout << "ID IS " << butnum[i].gettextureID() << endl;
 
 
 		}
 
 		butnum[i].settextureID(butnum[i].getitemID());
+
+
 
 		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
 		//butnum[i].Init(il);
@@ -156,6 +161,46 @@ bool CCraftingState::Update(const double dElapsedTime)
 	{
 		static float f = 0.0f;
 		static int counter = 0;
+
+
+		//DISPLAY WORDS
+		// Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("QuantityText", NULL, window_flags);
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 10.0,
+			CSettings::GetInstance()->iWindowHeight / 3.0));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
+		//Added rounding for nicer effect
+		ImGuiStyle& style2 = ImGui::GetStyle();
+		style2.FrameRounding = 200.0f;
+
+		// by tohdj
+		for (int n = 9; n < 18; n++)
+		{
+			ImGui::PushID(n);
+
+			//don't break line if doesn't reach 3 cells
+			if ((n % 3) != 0)
+				ImGui::SameLine();
+
+			//string x = to_string(n);
+			//strcpy(y, x.c_str());
+
+			//render the bar yellow if it's hotbar
+
+			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
+			/*ImGui::CalcTextSize("H", NULL, false, 10);*/
+			ImGui::SetWindowFontScale(4.f);
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
+			/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
+
+			ImGui::PopID();
+		}
+		ImGui::End();
+
+
+
+
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Crafting", NULL, window_flags);
@@ -203,6 +248,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].settextureID(butnum[n].getitemID());
 
 			
+
 				//BRING ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
@@ -284,6 +330,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 						}
 						cPlayer2D->setitem(n - 9, butnum[n].getitemID());
+						//cPlayer2D->getitem(payload_n).SubtractQuantity(1);
+
+
 					}
 					if (payload_n >= 9 && payload_n < 18)
 					{
@@ -294,7 +343,11 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 						}
 						cPlayer2D->setitem(payload_n - 9, butnum[payload_n].getitemID());
+						//cPlayer2D->getitem(payload_n - 9).SubtractQuantity(1);
+
 					}
+
+
 
 					//void CPlayer2D::setitem(int arr, int itemid)
 					//{

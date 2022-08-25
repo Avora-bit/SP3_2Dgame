@@ -239,8 +239,17 @@ bool CPlayer2D::Init(void)
 		}
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
-		
-		cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
+
+		for (int n = 0; n < 5; n++)
+		{
+			//inventorySlots[i].AddQuantity(1);
+
+			inventorySlots[i].AddQuantity(1);
+
+		}
+
+
+		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
 
 		
