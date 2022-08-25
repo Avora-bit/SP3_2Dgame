@@ -158,21 +158,17 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		dungeon->convertKeys();
 		dungeon->randreplace(200, 98);			//replace sand with player
 
-		//int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
-		//for (int i = 0; i < randspawn; i++) {
-		//	dungeon->randreplace(96, 98);			//replace sand with cross
-		//}
+		string BGfilename = "Maps/DungeonBG.csv";
+		dungeon->exportmap(BGfilename);
 
-		//randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
-		//for (int i = 0; i < randspawn; i++) {
-		//	dungeon->randreplace(96, 98);			//replace grass with tree
-		//}
+		//foreground
+		string FGfilename = "Maps/DungeonFG.csv";
+		dungeon->PopulateDungeon();
 
-		//string filename = "Maps/Dungeon.csv";
-		//dungeon->exportmap(filename);
-		////clean
-		//delete dungeon;
-		//dungeon = nullptr;
+		dungeon->exportmap(FGfilename);
+		//clean
+		delete dungeon;
+		dungeon = nullptr;
 	}
 
 

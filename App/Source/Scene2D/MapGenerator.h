@@ -132,7 +132,6 @@ public:
 		tempmap.clear();
 	}
 	
-
 	void populateIsland() {
 		//reads from input, then populate forground and export
 		//populate foreground
