@@ -114,7 +114,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
 		island->randomfill();
 		for (int i = 0; i < 20; i++) {				//rounding out edges
-			island->updateMap();
+			island->updateIsland();
 		}
 		island->growsand();		//sand radius of 1
 		//replace proper keys

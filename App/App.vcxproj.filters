@@ -114,6 +114,9 @@
     <ClCompile Include="Source\Scene2D\Items.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Items.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Items.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Items.h">
+      <Filter>Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

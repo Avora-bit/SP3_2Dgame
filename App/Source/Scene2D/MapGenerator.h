@@ -25,13 +25,13 @@ private:
 		{1, 99},			//grass		//spawn tree
 		{2, 98},			//sand		//spawn cross
 		{3, 96},			//cross		//spawn treasure
-		{4, 95},			//dungeondoor		//go to dungeon map
-		{5, 94},			//brick floor		//no behavior
-		{6, 93},			//trap				//deals small amount of damage to the player, 5 hp
+		{4, 95},			//ladderdown
+		{5, 94},			//ladderup
+		{6, 93},			//brick floor		//no behavior
+		{7, 92},			//trap				//deals small amount of damage to the player, 5 hp
 		//solid tiles
-		{7, 100},			//tree
-		{8, 101},			//brick wall
-		{9, 102},			//dispenser
+		{8, 100},			//tree
+		{9, 101},			//brick wall
 	};
 
 public:
@@ -66,7 +66,7 @@ public:
 		}
 	}
 
-	void updateMap() {
+	void updateIsland() {
 		//update
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -120,6 +120,11 @@ public:
 		coremap = tempmap;
 		tempmap.clear();
 	}
+
+	void updateDungeon() {
+		//rectangular features
+	}
+
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(int replaced, int type) {
 		//gather all index with the same type

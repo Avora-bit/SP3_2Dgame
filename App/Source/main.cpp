@@ -27,7 +27,7 @@ int main(void)
 		// Set the Application handler to NULL
 		pApp = NULL;
 
-		//_CrtDumpMemoryLeaks();
+		_CrtDumpMemoryLeaks();
 		// Return 0 since the application successfully ran
 		return 0;
 	}
