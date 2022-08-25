@@ -143,9 +143,9 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 			CSettings::GetInstance()->NUM_TILES_YAXIS);
 		dungeon->randomfill();
-		for (int i = 0; i < 20; i++) {				//rounding out edges
-			dungeon->updateMap();
-		}
+		//for (int i = 0; i < 20; i++) {				//rounding out edges
+		//	dungeon->updateMap();
+		//}
 		dungeon->growsand();		//sand radius of 1
 		//replace proper keys
 		dungeon->convertKeys();
@@ -216,16 +216,18 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	camera = Camera::GetInstance();
 	camera->Init();
-	/*
+
+	eventcontroller = EventController::GetInstance();
+	eventcontroller->Init();
 	while (true)
 	{
 		Octopus* octo = new Octopus();
 		octo->SetShader("Shader2D_Colour");
-		
+
 		if (octo->Init())
 		{
 			octo->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(octo);
+			eventcontroller->spawnEnemies(octo);
 		}
 		else
 			break;
@@ -238,12 +240,25 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		if (chicken->Init())
 		{
 			chicken->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(chicken);
+			eventcontroller->spawnEnemies(chicken);
 		}
 		else
 			break;
 	}
-	*/
+	while (true)
+	{
+		Spider* spider = new Spider();
+		spider->SetShader("Shader2D_Colour");
+
+		if (spider->Init())
+		{
+			spider->SetPlayer2D(cPlayer2D);
+			eventcontroller->spawnEnemies(spider);
+		}
+		else
+			break;
+	}
+
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -313,13 +328,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	/*float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);*/
-
-	/*if (cPlayer2D->getx())
-	{
-
-	}*/
-
-
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
@@ -408,18 +416,18 @@ void CScene2D::Render(void)
 	CShivs2D->Render();
 	CShivs2D->PostRender();
 
-	for (int i = 0; i < enemyVector.size(); i++)
+	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{
-		enemyVector[i]->PreRender();
-		enemyVector[i]->Render();
-		enemyVector[i]->PostRender();
+		eventcontroller->enemyVector[i]->PreRender();
+		eventcontroller->enemyVector[i]->Render();
+		eventcontroller->enemyVector[i]->PostRender();
 	}
 
-	for (int i = 0; i < projectileVector.size(); i++)
+	for (int i = 0; i < eventcontroller->projectileVector.size(); i++)
 	{
-		projectileVector[i]->PreRender();
-		projectileVector[i]->Render();
-		projectileVector[i]->PostRender();
+		eventcontroller->projectileVector[i]->PreRender();
+		eventcontroller->projectileVector[i]->Render();
+		eventcontroller->projectileVector[i]->PostRender();
 	}
 
 	cGUI_Scene2D->PreRender();

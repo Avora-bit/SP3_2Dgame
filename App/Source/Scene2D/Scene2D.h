@@ -42,11 +42,8 @@
 #include "Map2D.h"
 #include "Player2D.h"
 #include "Shivs2D.h"
-#include "Enemy2D.h"
 #include "Items.h"
 
-#include "Octopus.h"
-#include "Chicken.h"
 #include "GUI_Scene2D.h"
 
 #include "Physics2D.h"
@@ -97,9 +94,6 @@ protected:
 	CPlayer2D* cPlayer2D;
 
 	CShivs2D* CShivs2D;
-
-	vector<CEntity2D*> enemyVector;
-	vector<CEntity2D*> projectileVector;
 
 	//set items
 	vector<CItems2D*> itemVector;

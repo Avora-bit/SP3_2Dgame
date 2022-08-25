@@ -287,7 +287,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
-	static float dashTimer = 0;
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -441,7 +440,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
-			cPhysics2D.SetInitialVelocity(glm::vec2(1.5f, 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
@@ -462,7 +461,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
-		dashTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
 		
@@ -775,10 +773,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dashTimer >= 0.3f)
+		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
 		{
+			
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-			dashTimer = 0;
+			cout << vec2NumMicroSteps.x << endl;
 		}
 	}
 

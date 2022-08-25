@@ -214,17 +214,7 @@ void Spider::Update(const double dElapsedTime)
 			if (shotInterval <= 0)
 			{
 				/*cout << "attacking" << endl;*/
-				Webshot* web = new Webshot();
-				web->SetShader("Shader2D_Colour");
-
-				if (!web->Init())
-				{
-					cout << "Spider webs failed to init" << endl;
-				}
-				web->vec2Index = vec2Index;
-				web->PreRender();
-				web->Render();
-				web->PostRender();
+				
 				shotInterval = 5;
 			}
 		}
