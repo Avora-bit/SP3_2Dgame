@@ -33,6 +33,8 @@ void slot::settextureID(int itemid)
 {
 	//inventorySlots[i].settextureID(cInventoryManager->GetItem("Stick")->GetTextureID());
 
+
+
 	switch (itemid)
 	{
 	case 1:
@@ -55,6 +57,9 @@ void slot::settextureID(int itemid)
 
 void slot::setitemID(int iid)
 {
+
+	int randnum = rand() % 5 + 1;
+
 	itemID = iid;
 
 }

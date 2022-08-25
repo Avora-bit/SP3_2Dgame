@@ -172,7 +172,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		
 		// by tohdj
 		char y[19];
-		for (int n = 0; n < 18; n++)
+		for (int n = 0; n < 19; n++)
 		{
 			ImGui::PushID(n);
 			//don't break line if doesn't reach 3 cells

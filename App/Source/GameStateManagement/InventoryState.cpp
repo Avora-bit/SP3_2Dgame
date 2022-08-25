@@ -71,8 +71,6 @@ bool CInventoryState::Init(void)
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
 
-
-
 	for (int i = 0; i < 9; i++)
 	{
 		/*if (i > 2)
@@ -84,7 +82,7 @@ bool CInventoryState::Init(void)
 			butnum[i].settextureID(butnum[i].getitemID());
 
 
-			cout << "ID IS " << butnum[i].gettextureID() << endl;
+			cout << "INVENTORY STATE IS " << butnum[i].gettextureID() << endl;
 		//}
 		//else
 		//{
@@ -116,12 +114,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 	float buttonWidth = 256;
 	float buttonHeight = 128;
 
-	for (int i = 0; i < 9; i++)
-	{
-		//cout << "player array" << i << " is " << cPlayer2D->getitemval(i) << endl;
-		//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
-		//cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
-	}
+	
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{

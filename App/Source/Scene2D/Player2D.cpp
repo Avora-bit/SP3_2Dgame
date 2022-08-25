@@ -225,11 +225,6 @@ bool CPlayer2D::Init(void)
 
 
 
-
-
-
-
-
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
@@ -245,67 +240,10 @@ bool CPlayer2D::Init(void)
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
 		
-		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
+		cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
 
-		{
-			//if (inventorySlots[i].getitemID() == 1)
-			//{
-			//	//cInventoryItem = cInventoryManager->GetItem("Stick")->GetTextureID();
-			//	inventorySlots->settextureID(cInventoryManager->GetItem("Stick")->GetTextureID());
-			//}
-
-			//LOAD THE IMAGE IN INVENTORY
-			//textureID = il->LoadTextureGetID(fileName.c_str(), false);
-			/*inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Base/wood.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(2, inventorySlots[i].gettextureID()));
-			}
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/bow.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Weapons/bow.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(7, inventorySlots[i].gettextureID()));
-			}
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/sword.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Weapons/sword.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(6, inventorySlots[i].gettextureID()));
-			}
-
-
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Base/stick.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(1, inventorySlots[i].gettextureID()));
-			}*/
-			//inventorySlots[i].Init(il);
-			//cout << "MAP " << i << " IS " << inventorySlots[i].returnMap().at(inventorySlots[i].getitemID()) << endl;
-
-		}
+		
 	}
 
 	

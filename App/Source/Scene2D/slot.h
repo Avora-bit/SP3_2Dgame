@@ -43,6 +43,8 @@ private:
 	unsigned int textureID;
 	unsigned int itemID;
 
+	int quantity;
+
 
 	CInventoryManager* cInventoryManager;
 	CInventoryItem* cInventoryItem;
