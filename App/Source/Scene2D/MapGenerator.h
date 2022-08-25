@@ -142,7 +142,7 @@ public:
 		//rectangular features
 	}
 
-	void PopulateDungeon(string filename) {
+	void PopulateDungeon() {
 		//rectangular features
 	}
 

@@ -39,11 +39,15 @@ CMap2D::~CMap2D(void)
 	// Dynamically deallocate the 3D array used to store the map information
 	for (unsigned int uiLevel = 0; uiLevel < uiNumLevels; uiLevel++)
 	{
-		for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS; iRow++)
+		for (unsigned int uiLayer = 0; uiLayer < 2; uiLayer++)
 		{
-			delete[] arrMapInfo[uiLevel][iRow];
+			for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS; iRow++)
+			{
+				delete[] arrMapInfo[uiLevel][uiLayer][iRow];
+			}
+			delete[] arrMapInfo[uiLevel][uiLayer];
 		}
-		delete [] arrMapInfo[uiLevel];
+		delete[] arrMapInfo[uiLevel];
 	}
 	delete[] arrMapInfo;
 
@@ -162,17 +166,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(96, iTextureID));
 		}
-		//iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/treasure.tga", true);
-		//if (iTextureID == 0)
-		//{
-		//	cout << "Unable to load Image/treasure.tga" << endl;
-		//	return false;
-		//}
-		//else
-		//{
-		//	// Store the texture ID into MapOfTextureIDs
-		//	MapOfTextureIDs.insert(pair<int, int>(95, iTextureID));
-		//}
 	}
 
 	//solid tiles
@@ -199,6 +192,31 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
+		}
+	}
+	//foreground items
+	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/treasure.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/treasure.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(80, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/web.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/web.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(79, iTextureID));
 		}
 	}
 	
