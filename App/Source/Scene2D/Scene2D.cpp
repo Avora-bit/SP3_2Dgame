@@ -73,14 +73,6 @@ CScene2D::~CScene2D(void)
 		CShivs2D = NULL;
 	}
 
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		delete enemyVector[i];
-		enemyVector[i] = NULL;
-	}
-	enemyVector.clear();
-
-
 	for (int i = 0; i < itemVector.size(); i++)
 	{
 		delete itemVector[i];
@@ -224,8 +216,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	camera = Camera::GetInstance();
 	camera->Init();
-
-	enemyVector.clear();
 	/*
 	while (true)
 	{
@@ -322,12 +312,12 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
+	/*float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);*/
 
-	if (cPlayer2D->getx())
+	/*if (cPlayer2D->getx())
 	{
 
-	}
+	}*/
 
 
 
@@ -335,16 +325,6 @@ bool CScene2D::Update(const double dElapsedTime)
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
 
 	camera->Update(dElapsedTime, glm::vec2(trackingPosX, trackingPosY));
-
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		enemyVector[i]->Update(dElapsedTime);
-	}
-
-	for (int i = 0; i < projectileVector.size(); i++)
-	{
-		projectileVector[i]->Update(dElapsedTime);
-	}
 
 	cGUI_Scene2D->Update(dElapsedTime);
 

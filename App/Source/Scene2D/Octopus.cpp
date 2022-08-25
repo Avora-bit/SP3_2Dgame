@@ -108,7 +108,6 @@ void Octopus::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::CHASE:
 		{
-			
 			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)

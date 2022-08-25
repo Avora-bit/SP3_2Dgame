@@ -162,8 +162,8 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	int getx();
-	int gety();
+	//int getx();
+	//int gety();
 
 	float speed_multiplier = 0.25f;
 	float atk;

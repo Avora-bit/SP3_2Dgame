@@ -1,1 +1,4 @@
-﻿  Library.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.lib
+﻿  Settings.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(11,14): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\Library\Source\GameControl\Settings.cpp(12,15): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+  Library.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.lib

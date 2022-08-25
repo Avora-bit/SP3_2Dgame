@@ -12,7 +12,7 @@ slot::slot()
 
 void slot::loadimagebasedID(int itemid, CImageLoader* il)
 {
-	switch (itemid)
+	/*switch (itemid)
 	{
 	case 1:
 		fileName = "Image\\Sp3Images\\Base\\stick.png";
@@ -31,7 +31,7 @@ void slot::loadimagebasedID(int itemid, CImageLoader* il)
 		break;
 	}
 
-	textureID = il->LoadTextureGetID(fileName.c_str(), false);
+	textureID = il->LoadTextureGetID(fileName.c_str(), false);*/
 }
 
 int slot::getitemID()

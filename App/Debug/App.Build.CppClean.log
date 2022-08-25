@@ -23,11 +23,12 @@ d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\application.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundinfo.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundcontroller.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\woodenhilt2d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\swordblade2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\webshot.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\rustyblade2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\sword2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\spider.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\slot.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\shivs2d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\scene2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipebook.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipe.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\projectile2d.obj
@@ -36,9 +37,8 @@ d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\physics2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\octopus.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\map2d.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorymanager.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\rustyblade2d.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\spider.obj
-d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\webshot.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\scene2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\items.obj
 d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.exe
 d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.ilk
 d:\documents\nyp stuff\sp3\sp3_2dgame\debug\app.pdb

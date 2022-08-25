@@ -3,10 +3,9 @@
 #include "Webshot.h"
 #include <stdlib.h>
 
-class Spider:public CEnemy2D
+class Spider : public CEnemy2D
 {
 public:
-
 	Spider();
 	~Spider();
 	bool Init(void);
