@@ -35,15 +35,20 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 	glm::vec2 mousePos = glm::vec2(cMouseController->GetMousePositionX() - CSettings::GetInstance()->iWindowWidth / 2,
 		cMouseController->GetMousePositionY() - CSettings::GetInstance()->iWindowHeight / 2); // mouse pos relative to center of window
 
-	float newPosX = playerPos.x + 2/CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS; // camera pos in vec2index
-	float newPosY = playerPos.y + 2/CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
+	float newPosX = playerPos.x + 2 / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS; // central origin of the player tile
+	float newPosY = playerPos.y + 2 / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
 
-	glm::vec2 pureVec2Index = glm::vec2(1 - newPosX / (CSettings::GetInstance()->NUM_TILES_XAXIS / 2), 1 - newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS / 2));
+	glm::vec2 pureVec2Index = glm::vec2(1 - newPosX / (CSettings::GetInstance()->NUM_TILES_XAXIS / 2),
+										1 - newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS / 2));
+	//player position with respect to center of map?
 	{
+		//update position with mouse
 		newPosX += mousePos.x / CSettings::GetInstance()->NUM_TILES_XAXIS * mouseWeight;
 		newPosY -= mousePos.y / CSettings::GetInstance()->NUM_TILES_YAXIS * mouseWeight;
 	}
-	vec2Index = glm::vec2(1-newPosX/(CSettings::GetInstance()->NUM_TILES_XAXIS/2), 1-newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS/2));
+	vec2Index = glm::vec2(1 - newPosX / (CSettings::GetInstance()->NUM_TILES_XAXIS / 2), 
+						  1 - newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS / 2));
+	//camera new position with weight of the mouse
 	if (vec2Index.y < -bounds) vec2Index.y = -bounds;
 	if (vec2Index.y > bounds) vec2Index.y = bounds;
 	if (vec2Index.x > bounds) vec2Index.x = bounds;
@@ -53,4 +58,5 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 	
 	playerOffset = glm::vec2(cMouseController->GetMousePositionX() - CSettings::GetInstance()->iWindowWidth / 2 * (1 + (vec2Index.x - pureVec2Index.x) * zoom), 
 		cMouseController->GetMousePositionY() - CSettings::GetInstance()->iWindowHeight / 2 * (1 - (vec2Index.y - pureVec2Index.y) * zoom));
+
 }

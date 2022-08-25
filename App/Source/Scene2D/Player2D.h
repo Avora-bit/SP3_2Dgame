@@ -105,6 +105,8 @@ protected:
 
 	CSoundController* cSoundController;
 
+	CGameManager* cGameManager;
+
 	ISound* soundsfx;
 	float soundVol;
 
@@ -152,6 +154,10 @@ protected:
 	slot inventorySlots[9];
 	CImageLoader* il;
 
+
+	map<int, int> MapOfTextureIDs;
+
+
 public:
 	DIRECTION getAttackDirection();
 	double getProjectileForce();
@@ -162,11 +168,12 @@ public:
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
 	int CPlayer2D::getitemval(int arr);
-
+	int gettextureid(int arr);
 
 	void setsound(float vol);
 	float returnsound();
 
 	int CPlayer2D::getx();
 	int CPlayer2D::gety();
+
 };

@@ -165,6 +165,10 @@ protected:
 	//int getx();
 	//int gety();
 
+	glm::vec2 getvec();
+
+
+
 	float speed_multiplier = 0.25f;
 	float atk;
 };

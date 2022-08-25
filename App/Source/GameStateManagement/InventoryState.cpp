@@ -78,6 +78,13 @@ bool CInventoryState::Init(void)
 		/*if (i > 2)
 		{*/
 			butnum[i].setitemID(cPlayer2D->getitemval(i));
+			//cout << cPlayer2D->getitem(i).gettextureID() << endl;
+			//butnum[i].settextureID(cPlayer2D->getitem(i).gettextureID());
+			//butnum[i].settextureID(cPlayer2D->gettextureid(i));
+			butnum[i].settextureID(butnum[i].getitemID());
+
+
+			cout << "ID IS " << butnum[i].gettextureID() << endl;
 		//}
 		//else
 		//{
@@ -85,7 +92,8 @@ bool CInventoryState::Init(void)
 		//	butnum[i].setitemID(hotbar->return_hbcellid(i));
 		//}
 
-		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+		//butnum[i].Init(il);
 	}
 
 	return true;
@@ -112,7 +120,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 	{
 		//cout << "player array" << i << " is " << cPlayer2D->getitemval(i) << endl;
 		//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
-		cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
+		//cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
 	}
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
@@ -157,7 +165,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
 			}
-
 			
 			if (butnum[n].getitemID() != 0)
 			{
@@ -165,11 +172,11 @@ bool CInventoryState::Update(const double dElapsedTime)
 				if (ImGui::IsItemHovered())
 				{
 					//ImGui::Text("Check %s", butnum[n].getitemID());
-
 					if (cMouseController->IsButtonDown(1))
 					{
 						butnum[n].setitemID(0);
-						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+						//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+						butnum[n].settextureID(butnum[n].getitemID());
 
 						//set hotbar to 0
 						if (n <= 2)
@@ -221,9 +228,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 					{
 						hotbar->set_hbcellid(payload_n, butnum[payload_n].getitemID());
 					}
-
-
-
 					cout << endl;
 				}
 				ImGui::EndDragDropTarget();

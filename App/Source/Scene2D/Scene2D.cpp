@@ -116,7 +116,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < 20; i++) {				//rounding out edges
 			island->updateIsland();
 		}
-		island->growsand();		//sand radius of 1
+		island->growsand();		//grow 1 radius of sand
 		//replace proper keys
 		island->convertKeys();
 		island->randreplace(200, 98);			//replace sand with player
@@ -131,8 +131,15 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(96, 98);			//replace grass with tree
 		}
 
-		string filename = "Maps/Island.csv";
-		island->exportmap(filename);
+		string BGfilename = "Maps/IslandBG.csv";
+		island->exportmap(BGfilename);
+
+
+		//foreground
+		string FGfilename = "Maps/IslandFG.csv";
+		island->populateIsland();
+
+		island->exportmap(FGfilename);
 		//clean
 		delete island;
 		island = nullptr;
@@ -151,21 +158,21 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		dungeon->convertKeys();
 		dungeon->randreplace(200, 98);			//replace sand with player
 
-		int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
-		for (int i = 0; i < randspawn; i++) {
-			dungeon->randreplace(96, 98);			//replace sand with cross
-		}
+		//int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
+		//for (int i = 0; i < randspawn; i++) {
+		//	dungeon->randreplace(96, 98);			//replace sand with cross
+		//}
 
-		randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
-		for (int i = 0; i < randspawn; i++) {
-			dungeon->randreplace(96, 98);			//replace grass with tree
-		}
+		//randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
+		//for (int i = 0; i < randspawn; i++) {
+		//	dungeon->randreplace(96, 98);			//replace grass with tree
+		//}
 
-		string filename = "Maps/Dungeon.csv";
-		dungeon->exportmap(filename);
-		//clean
-		delete dungeon;
-		dungeon = nullptr;
+		//string filename = "Maps/Dungeon.csv";
+		//dungeon->exportmap(filename);
+		////clean
+		//delete dungeon;
+		//dungeon = nullptr;
 	}
 
 
@@ -176,21 +183,16 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/Island.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv", 0) == false)
 	{
-		cout << "Failed to load Island.csv" << endl;
+		cout << "Failed to load Island" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/Dungeon.csv", 1) == false)
+	if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
 		return false;
 	}
-
-	/*if (cMap2D->LoadMap("Maps/100x100.csv", 1) == false)
-	{
-		return false;
-	}*/
 	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 
@@ -352,27 +354,18 @@ bool CScene2D::Update(const double dElapsedTime)
 	else if (!(cKeyboardController->IsKeyDown(GLFW_KEY_F1)||cKeyboardController->IsKeyDown(GLFW_KEY_F2))&&buttonPress)
 		buttonPress = false;
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F6))
-	{
-		try {
-			if (!cMap2D->SaveMap("Maps/DM2213_Map_Level_01_SAVEGAMEtest.csv"))
-			{
-				throw runtime_error("Unable to save the current game to a file");
-			}
-		}
-		catch (runtime_error e)
-		{
-			cout << "Runtime error: " << e.what();
-			return false;
-		}
-		return true;
-	}
-
-	if (cGameManager->bLevelCompleted)
+	if (cGameManager->bLevelIncrease)
 	{
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
-		cGameManager->bLevelCompleted = false;
+		cGameManager->bLevelIncrease = false;
 	}
+	if (cGameManager->bLevelDecrease && cMap2D->GetCurrentLevel() > 0)
+	{
+		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
+		cGameManager->bLevelDecrease = false;
+	}
+
+	return true;
 }
 
 /**

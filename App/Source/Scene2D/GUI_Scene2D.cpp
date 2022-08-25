@@ -99,11 +99,15 @@ bool CGUI_Scene2D::Init(void)
 	il = CImageLoader::GetInstance();
 
 
-	/*for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		hbcells[i].setitemID(cPlayer2D->getitemval(i));
-		hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
-	}*/
+
+		hbcells[i].settextureID(hbcells[i].getitemID());
+		//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+		//hbcells[i].Init(il);
+
+	}
 
 
 	return true;
@@ -121,7 +125,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		{
 
 			hbcells[i].setitemID(cPlayer2D->getitemval(i));
-			hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+			hbcells[i].settextureID(hbcells[i].getitemID());
+
+			//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+			
 		}
 	}
 
@@ -331,7 +338,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	//RENDER HOTBAR
 	{
-
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoTitleBar |
@@ -356,15 +362,15 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			if (hbcells[i].getitemID() != 0)
 			{
 				hbcells[i].setitemID(cPlayer2D->getitemval(i));
-				hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+				hbcells[i].settextureID(hbcells[i].getitemID());
 			}
 
 			ImGui::PopID();
-
 		}
 			
-	
+		//if textureid is o, show default image
 
+		//assign texturid to one of them
 		for (int n = 0; n < 3; n++)
 		{
 			ImGui::PushID(n);
@@ -398,7 +404,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					slot tmp = hbcells[n];
 					hbcells[n] = hbcells[payload_n];
 					hbcells[payload_n] = tmp;
-					std::cout << endl;
+					//std::cout << endl;
 				}
 				ImGui::EndDragDropTarget();
 			}
@@ -454,6 +460,16 @@ void CGUI_Scene2D::Render(void)
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+	//render hotbar
+	/*for (int i = 0; i < 3; i++)
+	{
+		hbcells[i].PreRender();
+		hbcells[i].Render();
+		hbcells[i].PostRender();
+
+	}*/
 }
 
 /**
@@ -476,7 +492,8 @@ unsigned CGUI_Scene2D::return_textid(int arr)
 void CGUI_Scene2D::set_hbcellid(int arr, int itemid)
 {
 	hbcells[arr].setitemID(itemid);
-	hbcells[arr].loadimagebasedID(hbcells[arr].getitemID(), il);
+	hbcells[arr].settextureID(hbcells[arr].getitemID());
+	//hbcells[arr].loadimagebasedID(hbcells[arr].getitemID(), il);
 }
 
 

@@ -4,6 +4,8 @@
 #include <iostream>
 
 //include entities
+//foreground and background
+//player instance
 #include "Player2D.h"
 #include "Octopus.h"
 #include "Chicken.h"
