@@ -121,15 +121,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	for (int i = 0; i < 3; i++)
 	{
-		if (!cPlayer2D->AddItem(i))
-		{
+		hbcells[i].setitemID(cPlayer2D->getitemval(i));
+		hbcells[i].settextureID(hbcells[i].getitemID());
 
-			hbcells[i].setitemID(cPlayer2D->getitemval(i));
-			hbcells[i].settextureID(hbcells[i].getitemID());
-
-			//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+		//cout << "ID is " << hbcells[i].gettextureID() << endl;
 			
-		}
 	}
 
 

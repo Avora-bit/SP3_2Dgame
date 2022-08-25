@@ -6,7 +6,7 @@
 slot::slot()
 	//runtimeColour(glm::vec4(1.0f))
 {
-	
+	quantity = 0;
 	/*glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);*/
 
@@ -32,7 +32,6 @@ unsigned slot::gettextureID()
 void slot::settextureID(int itemid)
 {
 	//inventorySlots[i].settextureID(cInventoryManager->GetItem("Stick")->GetTextureID());
-
 	switch (itemid)
 	{
 	case 1:
@@ -53,10 +52,33 @@ void slot::settextureID(int itemid)
 
 }
 
+void slot::AddQuantity(int amt)
+{
+
+	quantity += amt;
+}
+
+void slot::SubtractQuantity(int amt)
+{
+
+	quantity -= amt;
+}
+
+
+
+
+
 void slot::setitemID(int iid)
 {
+
+
 	itemID = iid;
 
+}
+
+int slot::getquantity()
+{
+	return quantity;
 }
 
 

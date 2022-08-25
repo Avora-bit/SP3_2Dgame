@@ -28,20 +28,20 @@
 
 // Include Settings
 #include "GameControl\Settings.h"
-
-
 #include "InventoryItem.h"
 #include "InventoryManager.h"
-
-
 using namespace std;
 #include <iostream>
+
+
 class slot 
 {
 private:
 	string fileName;
 	unsigned int textureID;
 	unsigned int itemID;
+
+	int quantity;
 
 
 	CInventoryManager* cInventoryManager;
@@ -54,9 +54,21 @@ public:
 	slot();
 	~slot();
 
-	int getitemID();
-	unsigned gettextureID();
+
+	void AddQuantity(int amt);
+	void SubtractQuantity(int amt);
+
+	int getquantity(void);
+
+
+	int getitemID(void);
+	unsigned gettextureID(void);
 	void settextureID(int itemid);
+
+	
+
+
+
 	void setitemID(int iid);
 };
 
