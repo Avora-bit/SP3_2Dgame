@@ -77,7 +77,7 @@ public:
 	void SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue);
 
 	// Set the value at certain indices in the arrMapInfo
-	void SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert = true);
+	void SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert = true, const int uilayer = 1);
 
 	// Get the value at certain indices in the arrMapInfo
 	int GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert = true, const int uilayer = 1);		//0 is background, 1 if foreground
@@ -86,7 +86,7 @@ public:
 	bool LoadMap(string BGfilename, string FGfilename, const unsigned int uiLevel = 0);
 	
 	// Find the indices of a certain value in arrMapInfo
-	bool FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert = true);
+	bool FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert = true, const int uilayer = 1);
 
 	// Set current level
 	void SetCurrentLevel(unsigned int uiCurLevel);

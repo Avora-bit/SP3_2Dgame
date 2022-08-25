@@ -155,16 +155,27 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(97, iTextureID));
 		}
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/cross.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/brickfloor.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/cross.tga" << endl;
+			cout << "Unable to load Image/brickfloor.tga" << endl;
 			return false;
 		}
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(96, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/spike.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/spike.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(95, iTextureID));
 		}
 	}
 
@@ -196,6 +207,17 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	}
 	//foreground items
 	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/cross.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/cross.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(80, iTextureID));
+		}
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/treasure.tga", true);
 		if (iTextureID == 0)
 		{
@@ -205,7 +227,29 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(80, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(79, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/ladderdown.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/ladderdown.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(78, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/ladderup.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/ladderup.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(77, iTextureID));
 		}
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/web.tga", true);
 		if (iTextureID == 0)
@@ -216,32 +260,33 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(79, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(76, iTextureID));
 		}
 	}
 	
 	//FOR INVENTORY TESTING PURPOSES - REAGAN
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
-	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
-	}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+		}
 
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Sp3Images/Base/wood.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Sp3Images/Base/wood.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar
@@ -397,26 +442,26 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
  @param iCol A const int variable containing the column index of the element to set to
  @param iValue A const int variable containing the value to assign to this arrMapInfo
  */
-void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert)
-{				//sets map info on foreground
+void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert, const int uilayer)
+{
 	if (bInvert)
-		arrMapInfo[uiCurLevel][1][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
 	else
-		arrMapInfo[uiCurLevel][1][uiRow][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value = iValue;
 }
-
 /**
  @brief Get the value at certain indices in the arrMapInfo
  @param iRow A const int variable containing the row index of the element to get from
  @param iCol A const int variable containing the column index of the element to get from
  @param bInvert A const bool variable which indicates if the row information is inverted
  */
-int CMap2D::GetMapInfo(const unsigned int uiRow, const int unsigned uiCol, const bool bInvert, const int uilayer)
+int CMap2D::GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert, const int uilayer)
 {
 	if (bInvert)
 		return arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value;
 	else
-		return arrMapInfo[uiCurLevel][uilayer][uiRow] [uiCol].value;
+		return arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value;
+	return 0;
 }
 
 /**
@@ -528,13 +573,13 @@ bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int ui
 @param iCol A const int variable containing the column index of the found element
 @param bInvert A const bool variable which indicates if the row information is inverted
 */
-bool CMap2D::FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert)		//finds items in foreground
+bool CMap2D::FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert, const int uilayer)
 {
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
 		{
-			if (arrMapInfo[uiCurLevel][1][uiRow][uiCol].value == iValue)
+			if (arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value == iValue)
 			{
 				if (bInvert)
 					uirRow = cSettings->NUM_TILES_YAXIS - uiRow - 1;
@@ -576,7 +621,6 @@ void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol, int 
 	if ((arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value > 0) &&
 		(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value < 200))
 	{
-		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
  		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value));
 
 		glBindVertexArray(VAO);

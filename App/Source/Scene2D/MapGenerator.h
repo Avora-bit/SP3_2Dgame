@@ -30,19 +30,23 @@ private:
 	int minCorridorLength = 5;
 	int maxCorridorLength = 10;
 
-	int Key_Convert[10][2] = {
+	int Key_Convert[13][2] = {
 		//background tiles
-		{0, 97},			//water		//cannot dash, slows movement speed
-		{1, 99},			//grass		//spawn tree
-		{2, 98},			//sand		//spawn cross
-		{3, 96},			//cross		//spawn treasure
-		{4, 95},			//ladderdown
-		{5, 94},			//ladderup
-		{6, 93},			//brick floor		//no behavior
-		{7, 92},			//trap				//deals small amount of damage to the player, 5 hp
+		{0, 0},				//void
+		{1, 97},			//water		//cannot dash, slows movement speed
+		{2, 99},			//grass		//spawn tree
+		{3, 98},			//sand		//spawn cross
+		{4, 96},			//brick floor		//no behavior
+		{5, 95},			//trap				//deals small amount of damage to the player, 5 hp
 		//solid tiles
-		{8, 100},			//tree
-		{9, 101},			//brick wall
+		{6, 100},			//tree
+		{7, 101},			//brick wall
+		//foreground tiles
+		{8, 80},			//cross		//spawn treasure
+		{9, 79},			//treasure	//spawn loot
+		{10, 78},			//ladderdown
+		{11, 77},			//ladderup
+		{12, 76},			//web		//slows player
 	};
 
 public:
@@ -69,10 +73,17 @@ public:
 		}
 	}
 
-	void randomfill(void) {
+	void randomfill(int typea, int typeb, const float distribution = 0.5f) {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				coremap.at(i * width + j) = rand() % 2;
+				int randchance = rand() % 100;
+				if (randchance < (distribution * 100)) {
+					coremap.at(i * width + j) = typea;
+				}
+				else {
+					coremap.at(i * width + j) = typeb;
+				}
+				
 			}
 		}
 	}
@@ -80,25 +91,25 @@ public:
 	void updateIsland() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				int type = 0; int neighbour = 0;
+				int type = 1; int neighbour = 0;
 				switch (coremap.at(i * width + j))	//value of index
 				{
-				case 0:
-					neighbour = countN((i * width + j), 1);
+				case 1:
+					neighbour = countN((i * width + j), 2);
 					if (neighbour > birthlimit) {				//counts alive, if enough, born
-						type = 1;
+						type = 2;
 					}
 					break;
-				case 1:
-					neighbour = countN((i * width + j), 1);
+				case 2:
+					neighbour = countN((i * width + j), 2);
 					if (neighbour > poplimit) {					//counts other alive, if over populated, die
-						type = 0;
-					}
-					else if (neighbour > sociallimit) {			//counts other alive, if enough, stay alive
 						type = 1;
 					}
+					else if (neighbour > sociallimit) {			//counts other alive, if enough, stay alive
+						type = 2;
+					}
 					else {										//else die
-						type = 0;
+						type = 1;
 					}
 					break;
 				default:
@@ -112,18 +123,16 @@ public:
 
 		coremap = tempmap;
 		tempmap.clear();
-
 	}
 
-	void growsand() {
+	void growtile(int type) {
+		//grow a tile from existing tiles
 		tempmap = coremap;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				int type = 2;
-				if (coremap.at(i * width + j) == 0 &&			//if water
-					(countN(i * width + j, 1) > 0 ||
-						countN(i * width + j, 2) > 0)) {			//at least surrounded by land or sand
-					//grow sand
+				if (coremap.at(i * width + j) == 1 &&			//if water
+					(countN(i * width + j, 2) > 0 ||
+						countN(i * width + j, 3) > 0)) {			//at least surrounded by land or sand
 					tempmap.at(i * width + j) = type;
 				}
 			}
@@ -131,17 +140,8 @@ public:
 		coremap = tempmap;
 		tempmap.clear();
 	}
-	
-	void populateIsland() {
-		//reads from input, then populate forground and export
-		//populate foreground
-	}
 
 	void updateDungeon() {
-		//rectangular features
-	}
-
-	void PopulateDungeon() {
 		//rectangular features
 	}
 
@@ -164,10 +164,16 @@ public:
 		tempmap.clear();
 	}
 
-	void importmap(int x, int y, string filename) {
-		width = x; height = y;
+	void importmap(string filename) {
 		coremap.clear();
-		ifstream map(filename);
+		ifstream imported(filename);
+		//ignore first row
+
+		//check width and height of the map
+		
+		//push all tiles into new vector
+
+
 		////first row
 		//map << "//";
 		//for (int i = 1; i <= width; i++) {
@@ -273,12 +279,31 @@ public:
 		for (int i = 0; i < coremap.size(); i++) {
 			for (int j = 0; j < size(Key_Convert); j++) {
 				if (coremap.at(i) == Key_Convert[j][0]) {
-					tempmap.push_back(Key_Convert[j][1]);
+					coremap.at(i) = Key_Convert[j][1];
+					break;
 				}
 			}
 		}
-		coremap = tempmap;
-		tempmap.clear();
+	}
+
+	void revertKeys() {
+		for (int i = 0; i < coremap.size(); i++) {
+			for (int j = 0; j < size(Key_Convert); j++) {
+				if (coremap.at(i) == Key_Convert[j][1]) {
+					coremap.at(i) = Key_Convert[j][0];
+					break;
+				}
+			}
+		}
+	}
+
+	void deleteall(int type) {
+		//replace tile with 0
+		for (int i = 0; i < coremap.size(); i++) {
+			if (coremap.at(i) == type) {
+				coremap.at(i) = 0;
+			}
+		}
 	}
 
 	//debug only

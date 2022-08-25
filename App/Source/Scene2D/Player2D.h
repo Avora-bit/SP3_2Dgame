@@ -121,14 +121,13 @@ protected:
 	double ProjectileForce = 0;
 
 	// vitals
-	float health;
-	float stamina;
-	float hunger;
 	double invincibility = 0; 
 
-	bool dashTrue;
+	bool dashTrue = true;
 
 	float movementSpeed = 1.f; 
+
+	//bool shovelcheck = true;
 
 	//render
 	float angle;
