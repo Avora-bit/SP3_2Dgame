@@ -59,6 +59,7 @@ public:
 	void SubtractQuantity(int amt);
 
 	int getquantity(void);
+	void setquantity(int amt);
 
 
 	int getitemID(void);

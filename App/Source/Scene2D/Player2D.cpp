@@ -36,7 +36,8 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	, soundsfx(NULL)
+	, dodgesfx(NULL)
+	, grasssfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -78,10 +79,17 @@ CPlayer2D::~CPlayer2D(void)
 		animatedSprites = NULL;
 	}
 
-	if (soundsfx)
+	if (dodgesfx)
 	{
-		delete soundsfx;
-		soundsfx = NULL;
+		delete dodgesfx;
+		dodgesfx = NULL;
+	}
+
+
+	if (grasssfx)
+	{
+		delete grasssfx;
+		grasssfx = NULL;
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -356,65 +364,81 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 
+	//WHEN NEAR CAMPFIRE, COOK THE FOOD
+
+	//FIRST SLOT
+	//if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
+	//{
+	//	if (inventorySlots[0].getitemID() == //food)
+	//	{
+	//		if(//player is next to campire)
+	//			{
+	//				//set cooldown time, which will continuously decrease
+	// 
+	//				//convert the slot id to cooked food
+	//			}
+	//	}
+	//}
+
 
 	/*cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);*/
 	//PLAY SOUND DEPENDING ON DURFACE
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
-	{
+	//if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
+	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
+	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
+	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
+	//{
 
-		//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
-		//{
-		//	case 99: //grass
-		//	{
-				ISound* grassSound = cSoundController->PlaySoundByID_2(7);
-				if (grassSound != nullptr)
-				{
-					soundsfx = grassSound;
-				}
-				if (soundsfx != nullptr)
-				{
-					soundsfx->setVolume(soundVol);
-				}
-		//		break;
-		//	}
-		//	case 98: //sand
-		//	{
-		//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
-		//		if (sandSound != nullptr)
-		//		{
-		//			soundsfx = sandSound;
-		//		}
-		//		if (soundsfx != nullptr)
-		//		{
-		//			soundsfx->setVolume(soundVol);
-		//		}
-		//		break;
-		//	}
-		//	case 97: //water
-		//	{
-		//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
-		//		if (waterSound != nullptr)
-		//		{
-		//			soundsfx = waterSound;
-		//		}
-		//		if (soundsfx != nullptr)
-		//		{
-		//			soundsfx->setVolume(soundVol);
-		//		}
-		//		break;
-		//	}
-		//	default:
-		//	{
-		//		break;
-		//	}
-		//}
+	//	//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	//	//{
+	//	//	case 99: //grass
+	//	//	{
+	//			ISound* grassSound = cSoundController->PlaySoundByID_2(8);
+	//			if (grasssfx != nullptr)
+	//			{
+	//				grasssfx = grassSound;
+	//			}
+	//			if (grasssfx != nullptr)
+	//			{
+	//				grasssfx->setVolume(soundVol* 10);
+	//			}
+	//	//		break;
+	//	//	}
+	//	//	case 98: //sand
+	//	//	{
+	//	//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
+	//	//		if (sandSound != nullptr)
+	//	//		{
+	//	//			dodgesfx = sandSound;
+	//	//		}
+	//	//		if (dodgesfx != nullptr)
+	//	//		{
+	//	//			dodgesfx->setVolume(soundVol);
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//	case 97: //water
+	//	//	{
+	//	//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
+	//	//		if (waterSound != nullptr)
+	//	//		{
+	//	//			dodgesfx = waterSound;
+	//	//		}
+	//	//		if (dodgesfx != nullptr)
+	//	//		{
+	//	//			dodgesfx->setVolume(soundVol);
+	//	//		}
+	//	//		break;
+	//	//	}
+	//	//	default:
+	//	//	{
+	//	//		break;
+	//	//	}
+	//	//}
 
-	}
+	//}
 
 
 	static float staminaTimer = 0;
@@ -576,11 +600,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
 			if (dodgeSound != nullptr)
 			{
-				soundsfx = dodgeSound;
+				dodgesfx = dodgeSound;
 			}
-			if (soundsfx != nullptr)
+			if (dodgesfx != nullptr)
 			{
-				soundsfx->setVolume(soundVol);
+				dodgesfx->setVolume(soundVol);
 			}
 			
 		}
@@ -1326,6 +1350,11 @@ void CPlayer2D::setitem(int arr, int itemid)
 	inventorySlots[arr].settextureID(itemid);
 	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
+}
+
+void CPlayer2D::setitemquantity(int arr, int quantity)
+{
+	inventorySlots[arr].setquantity(quantity);
 }
 
 int CPlayer2D::getitemval(int arr)

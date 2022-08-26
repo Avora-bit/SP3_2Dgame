@@ -101,7 +101,14 @@ protected:
 
 	CGameManager* cGameManager;
 
-	ISound* soundsfx;
+	ISound* dodgesfx;
+	ISound* grasssfx;
+	ISound* watersfx;
+	ISound* sandsfx;
+
+
+
+
 	float soundVol;
 
 	Camera* camera;
@@ -160,6 +167,9 @@ public:
 	bool CPlayer2D::AddItem(int itemid);
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
+
+	void CPlayer2D::setitemquantity(int arr, int quantity);
+
 	int CPlayer2D::getitemval(int arr);
 	int gettextureid(int arr);
 

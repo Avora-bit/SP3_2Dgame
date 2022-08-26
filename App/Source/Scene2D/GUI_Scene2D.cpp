@@ -104,6 +104,9 @@ bool CGUI_Scene2D::Init(void)
 		hbcells[i].setitemID(cPlayer2D->getitemval(i));
 
 		hbcells[i].settextureID(hbcells[i].getitemID());
+
+
+		hbcells[i].setquantity(cPlayer2D->getitem(i).getquantity());
 		//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
 		//hbcells[i].Init(il);
 

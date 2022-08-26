@@ -81,6 +81,11 @@ int slot::getquantity()
 	return quantity;
 }
 
+void slot::setquantity(int amt)
+{
+	quantity = amt;
+}
+
 
 slot::~slot()
 {
