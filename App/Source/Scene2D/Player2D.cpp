@@ -35,6 +35,7 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
+	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -81,7 +82,7 @@ CPlayer2D::~CPlayer2D(void)
 
 	if (soundsfx)
 	{
-		/*delete soundsfx;*/
+		delete soundsfx;
 		soundsfx = NULL;
 	}
 
@@ -364,6 +365,68 @@ void CPlayer2D::Update(const double dElapsedTime)
 		walkKeyDown = false;
 		animatedSprites->PlayAnimation("idle", -1, 1.f);
 	}
+
+
+
+	/*cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);*/
+	//PLAY SOUND DEPENDING ON DURFACE
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
+	{
+
+		//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+		//{
+		//	case 99: //grass
+		//	{
+				ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+				if (grassSound != nullptr)
+				{
+					soundsfx = grassSound;
+				}
+				if (soundsfx != nullptr)
+				{
+					soundsfx->setVolume(soundVol);
+				}
+		//		break;
+		//	}
+		//	case 98: //sand
+		//	{
+		//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
+		//		if (sandSound != nullptr)
+		//		{
+		//			soundsfx = sandSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	case 97: //water
+		//	{
+		//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
+		//		if (waterSound != nullptr)
+		//		{
+		//			soundsfx = waterSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	default:
+		//	{
+		//		break;
+		//	}
+		//}
+
+	}
+
 
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
@@ -1020,7 +1083,7 @@ void CPlayer2D::InteractWithMap(void)
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 	{
 	case 97:		//water
 		//disable dash
@@ -1036,9 +1099,8 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.9f;
 		break;
 
-		//FOR INVENTORY PURPOSES - REAGAN
-		//case 7:
-	case 30:
+	//PICKING UP ITEMS
+	/*case 30:
 	case 40:
 		for (int i = 0; i < 9; i++)
 		{
@@ -1050,7 +1112,7 @@ void CPlayer2D::InteractWithMap(void)
 
 			}
 		}
-		break;
+		break;*/
 
 	default:
 		movementSpeed = 1.f;

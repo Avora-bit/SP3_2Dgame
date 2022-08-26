@@ -204,7 +204,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Crafting", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/20.0, 
 			(CSettings::GetInstance()->iWindowHeight/3.0) - 100));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
@@ -318,9 +318,22 @@ bool CCraftingState::Update(const double dElapsedTime)
 					butnum[payload_n] = tmp;*/
 
 
-					int tmp = butnum[n].gettextureID();
-					butnum[payload_n].settextureID(butnum[n].gettextureID());
+					int tmp = butnum[payload_n].getitemID();
+					butnum[n].setitemID(tmp);
+					butnum[n].settextureID(butnum[n].getitemID());
 					//butnum[payload_n] = tmp;
+
+					if (butnum[n].getquantity() == 0)
+					{
+						butnum[n].setitemID(0);
+						butnum[n].settextureID(butnum[n].getitemID());
+					}
+
+					if (butnum[payload_n].getquantity() == 0)
+					{
+						butnum[payload_n].setitemID(0);
+						butnum[payload_n].settextureID(butnum[payload_n].getitemID());
+					}
 
 
 					butnum[n].AddQuantity(1);

@@ -342,7 +342,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Grab.ogg"), 6, true);
+
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);
 
 
 	cSoundController->AddToPlaylist(3);
