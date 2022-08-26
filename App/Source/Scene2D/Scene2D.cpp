@@ -130,10 +130,9 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(96, 98);			//replace grass with tree
 		}
-
+		
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename);
-
 
 		//foreground
 		string FGfilename = "Maps/IslandFG.csv";
@@ -360,6 +359,8 @@ bool CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
 		cGameManager->bLevelDecrease = false;
 	}
+
+	eventcontroller->update(dElapsedTime);
 
 	return true;
 }
