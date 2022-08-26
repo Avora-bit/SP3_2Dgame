@@ -192,7 +192,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Stamina", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Stamina", "Image/stamina.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
@@ -208,11 +208,11 @@ bool CPlayer2D::Init(void)
 
 
 	//Add ITEMS
-	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
@@ -229,23 +229,33 @@ bool CPlayer2D::Init(void)
 
 
 
+	//MUST CONSIDER THESE POSSIBLE CASES
+	//1. SLOT REACHED MAX LIMIT
+	//2. ITEM PICKED UP IS A DIFFERENT ITEM
+	//3. IF ITEM IS EMPTIED
+	//if(itemid == inventoryslotitemid
+	//if(maxcount reached
+	//id count ==0
+
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		inventorySlots[i].setitemID(0);
-		/*if (i % 2 == 0)
+		//inventorySlots[i].setitemID(0);
+		if (i % 2 == 0)
 		{
-			inventorySlots[i].setitemID(1);
+			inventorySlots[i].setitemID(30);
 		}
 		else
 		{
-			inventorySlots[i].setitemID(2);
-		}*/
+			inventorySlots[i].setitemID(40);
+		}
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
 		
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
+
+		inventorySlots[i].AddQuantity(5);
 		//inventory
 		/*{
 			inventorySlots[i].AddQuantity(1);
@@ -1225,8 +1235,22 @@ bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
 	{
+
+		if (inventorySlots[i].getquantity() == 5)
+		{
+			inventorySlots[i+1].setitemID(itemid);
+			inventorySlots[i+1].settextureID(itemid);
+		}
+		else
+		{
+			inventorySlots[i].AddQuantity(1);
+		}
+
+
 		if (inventorySlots[i].getitemID() == 0)
 		{
+			
+
 			inventorySlots[i].setitemID(itemid);
 			inventorySlots[i].settextureID(itemid);
 
