@@ -67,6 +67,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool getAttacking();
+
 protected:
 	enum DIRECTION
 	{
@@ -101,7 +103,14 @@ protected:
 
 	CGameManager* cGameManager;
 
-	ISound* soundsfx;
+	ISound* dodgesfx;
+	ISound* grasssfx;
+	ISound* watersfx;
+	ISound* sandsfx;
+
+
+
+
 	float soundVol;
 
 	Camera* camera;
@@ -109,17 +118,19 @@ protected:
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
-	bool throwing = false;
-	double maxPForce = 10;
-	double minPForce = 5;
-	double ProjectileForce = 0;
+	bool throwing;
+	double maxPForce;
+	double minPForce;
+	double ProjectileForce;
 
 	// vitals
-	double invincibility = 0; 
+	double invincibility; 
 
-	bool dashTrue = true;
+	bool dashTrue;
 
-	float movementSpeed = 1.f; 
+	float movementSpeed; 
+
+	bool attacking;
 
 	//bool shovelcheck = true;
 
@@ -160,12 +171,12 @@ public:
 	bool CPlayer2D::AddItem(int itemid);
 	slot CPlayer2D::getitem(int arr);
 	void CPlayer2D::setitem(int arr, int itemid);
+
+	void CPlayer2D::setitemquantity(int arr, int quantity);
+
 	int CPlayer2D::getitemval(int arr);
 	int gettextureid(int arr);
 
 	void setsound(float vol);
 	float returnsound();
-
-	
-
 };

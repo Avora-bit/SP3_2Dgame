@@ -18,7 +18,7 @@ CRustyBlade2D::CRustyBlade2D(void)
 	sName = "Rusty Blade";
 
 	baseDamage = 10.0f;
-	baseAtkSpd = 0.2f;
+	baseAtkSpd = 0.4f;
 	baseRange = 2.0f;
 	baseDef = 0.f;
 
@@ -56,6 +56,7 @@ unsigned int CRustyBlade2D::LoadSprite()
 	else
 	{
 		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 5, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
+		animatedSprites->AddAnimation("idle", 0, 0);
 		animatedSprites->AddAnimation("slash", 0, 4);
 
 		return iTextureID;

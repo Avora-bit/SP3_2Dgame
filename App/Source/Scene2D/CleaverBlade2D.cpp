@@ -18,7 +18,7 @@ CCleaverBlade2D::CCleaverBlade2D(void)
 	sName = "Cleaver Blade";
 
 	baseDamage = 35.0f;
-	baseAtkSpd = 1.5f;
+	baseAtkSpd = 1.2f;
 	baseRange = 3.5f;
 	baseDef = 0.f;
 
@@ -56,6 +56,7 @@ unsigned int CCleaverBlade2D::LoadSprite()
 	else
 	{
 		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 5, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
+		animatedSprites->AddAnimation("idle", 0, 0);
 		animatedSprites->AddAnimation("slash", 0, 4);
 
 		return iTextureID;

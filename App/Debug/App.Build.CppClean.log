@@ -1,55 +1,37 @@
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\vc142.pdb
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\vc142.idb
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\hilt2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\gui_scene2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\gamemanager.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\enemy2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\chicken.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\camera.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\blade2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\backgroundentity.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\main.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\victorystate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\playgamestate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\pausestate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\menustate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\inventorystate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\introstate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\gamestatemanager.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\gamestatebase.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\gameoverstate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\craftingstate.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\application.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\soundinfo.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\soundcontroller.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\woodenhilt2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\rustyblade2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\sword2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\slot.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\shivs2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\scene2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\recipebook.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\recipe.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\projectile2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\player2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\physics2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\octopus.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\map2d.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\inventorymanager.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\inventoryitem.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\items.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\mapforeground.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\mapbackground.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\webshot.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\spider.obj
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\debug\app.exe
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.ilk
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\debug\app.pdb
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\player2d.obj.enc
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\scene2d.obj.enc
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\cl.command.1.tlog
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\cl.read.1.tlog
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\cl.write.1.tlog
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\link.command.1.tlog
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\link.read.1.tlog
-c:\users\winst\desktop\school\year 2 semester 1\sp3\sp3_2dgame\sp3_2dgame\app\debug\app.tlog\link.write.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.pdb
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\vc142.idb
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventoryitem.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\hilt2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gui_scene2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gamemanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\camera.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\blade2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\backgroundentity.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\main.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\victorystate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\menustate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorystate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\introstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gamestatemanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\gameoverstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\craftingstate.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundcontroller.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\woodenhilt2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\webshot.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\rustyblade2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\sword2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\slot.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\skeletonshot.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\shivs2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipebook.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\recipe.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\projectile2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\player2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\physics2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\map2d.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\items.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\inventorymanager.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\soundinfo.obj
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.command.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.read.1.tlog
+d:\documents\nyp stuff\sp3\sp3_2dgame\app\debug\app.tlog\cl.write.1.tlog
