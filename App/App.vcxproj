@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Scene2D\Blade2D.cpp" />
     <ClCompile Include="Source\Scene2D\Camera.cpp" />
     <ClCompile Include="Source\Scene2D\Chicken.cpp" />
+    <ClCompile Include="Source\Scene2D\CleaverBlade2D.cpp" />
     <ClCompile Include="Source\Scene2D\Enemy2D.cpp" />
     <ClCompile Include="Source\Scene2D\GameManager.cpp" />
     <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Source\Scene2D\Blade2D.h" />
     <ClInclude Include="Source\Scene2D\Camera.h" />
     <ClInclude Include="Source\Scene2D\Chicken.h" />
+    <ClInclude Include="Source\Scene2D\CleaverBlade2D.h" />
     <ClInclude Include="Source\Scene2D\Enemy2D.h" />
     <ClInclude Include="Source\Scene2D\EventController.h" />
     <ClInclude Include="Source\Scene2D\GameManager.h" />

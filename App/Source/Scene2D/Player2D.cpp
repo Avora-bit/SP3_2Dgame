@@ -22,6 +22,7 @@ using namespace std;
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
+#include "CleaverBlade2D.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -148,15 +149,17 @@ bool CPlayer2D::Init(void)
 	// Load the player texture
 	// Load the ground texture
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/mc.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 3, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idle", 0, 0);
+	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	
 
 	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
@@ -212,11 +215,12 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
+
+	sword->replaceBlade(new CRustyBlade2D());
+
+	sword->getAnimatedSprites()->PlayAnimation("slash", -1, sword->getTotalAtkSpeed());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -338,6 +342,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
+
+	static bool walkKeyDown = false;
+	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W) || cKeyboardController->IsKeyDown(GLFW_KEY_A) || cKeyboardController->IsKeyDown(GLFW_KEY_S) || cKeyboardController->IsKeyDown(GLFW_KEY_D)) && !walkKeyDown)
+	{
+		walkKeyDown = true;
+		animatedSprites->PlayAnimation("walk", -1, 0.5f);
+	}
+	else if ((!cKeyboardController->IsKeyDown(GLFW_KEY_W) && !cKeyboardController->IsKeyDown(GLFW_KEY_A) && !cKeyboardController->IsKeyDown(GLFW_KEY_S) && !cKeyboardController->IsKeyDown(GLFW_KEY_D)) && walkKeyDown)
+	{
+		walkKeyDown = false;
+		animatedSprites->PlayAnimation("idle", -1, 1.f);
+	}
 
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)

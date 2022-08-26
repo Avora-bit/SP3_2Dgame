@@ -6,8 +6,9 @@ Camera::Camera(void)
 	 cMouseController(NULL)
 {
 	vec2Index = glm::vec2(0.0f, 0.0f);
+	pureVec2Index = glm::vec2(0.0f, 0.0f);
 	zoom = 7.f;
-	mouseWeight = 0.05;
+	mouseWeight = 0.1f;
 }
 
 Camera::~Camera(void)
@@ -38,9 +39,8 @@ void Camera::Update(const double dElapsedTime, glm::vec2 playerPos)
 	float newPosX = playerPos.x + 2 / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS; // central origin of the player tile
 	float newPosY = playerPos.y + 2 / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS;
 
-	glm::vec2 pureVec2Index = glm::vec2(1 - newPosX / (CSettings::GetInstance()->NUM_TILES_XAXIS / 2),
-										1 - newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS / 2));
-	//player position with respect to center of map?
+	pureVec2Index = glm::vec2(1 - newPosX / (CSettings::GetInstance()->NUM_TILES_XAXIS / 2),  // UV coord of camera centralised on player
+							  1 - newPosY / (CSettings::GetInstance()->NUM_TILES_YAXIS / 2));
 	{
 		//update position with mouse
 		newPosX += mousePos.x / CSettings::GetInstance()->NUM_TILES_XAXIS * mouseWeight;
