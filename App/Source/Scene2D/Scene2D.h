@@ -91,9 +91,6 @@ protected:
 
 	CPlayer2D* cPlayer2D;
 
-	//set items
-	vector<CItems2D*> itemVector;
-
 	CPhysics2D cPhysics2D;
 
 	Camera* camera;

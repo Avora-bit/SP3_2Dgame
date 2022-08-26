@@ -61,13 +61,6 @@ CScene2D::~CScene2D(void)
 		cPlayer2D = NULL;
 	}
 
-	for (int i = 0; i < itemVector.size(); i++)
-	{
-		delete itemVector[i];
-		itemVector[i] = NULL;
-	}
-	itemVector.clear();
-
 	if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
@@ -432,6 +425,10 @@ void CScene2D::Render(void)
 	cMap2D->PreRender();
 	cMap2D->Render();
 	cMap2D->PostRender();
+
+	cPlayer2D->PreRender();
+	cPlayer2D->Render();
+	cPlayer2D->PostRender();
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
 	{
