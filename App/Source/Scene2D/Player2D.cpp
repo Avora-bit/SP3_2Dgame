@@ -232,27 +232,27 @@ bool CPlayer2D::Init(void)
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		//inventorySlots[i].setitemID(0);
-		if (i % 2 == 0)
+		inventorySlots[i].setitemID(0);
+		/*if (i % 2 == 0)
 		{
 			inventorySlots[i].setitemID(1);
 		}
 		else
 		{
 			inventorySlots[i].setitemID(2);
-		}
+		}*/
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
 		
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
 		//inventory
-		{
-			//inventorySlots[i].AddQuantity(1);
+		/*{
+			inventorySlots[i].AddQuantity(1);
 
 			inventorySlots[i].AddQuantity(1);
 
-		}
+		}*/
 
 
 		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
@@ -1010,7 +1010,7 @@ void CPlayer2D::InteractWithMap(void)
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
 	{
 	case 97:		//water
 		//disable dash
@@ -1028,14 +1028,14 @@ void CPlayer2D::InteractWithMap(void)
 
 		//FOR INVENTORY PURPOSES - REAGAN
 		//case 7:
-	case 2:
-	case 1:
+	case 30:
+	case 40:
 		for (int i = 0; i < 9; i++)
 		{
 			if (inventorySlots[i].getitemID() == 0)
 			{
-				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 				break;
 
 			}
@@ -1051,10 +1051,20 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
 	{
+
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
-			//shovel the cross to spawn treasures
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 79, true, 1);
+			//shovel the cross to spawn treasures/resources, which will be randomly generated
+			int random_generator = rand() % 2 + 1;
+
+			if (random_generator == 2)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 30, true, 1);
+			}
+			else
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 40, true, 1);
+			}
 		}
 		break;
 	case 79:		//treasure
@@ -1081,6 +1091,23 @@ void CPlayer2D::InteractWithMap(void)
 		//reset dash true
 		break;
 	}
+
+
+
+
+	//forage tree
+	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
+	//{
+	//	if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+
+	//	}
+	//}
+
+
+	/*switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	{
+
+	}*/
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1248,14 +1275,6 @@ float CPlayer2D::returnsound()
 }
 
 
-int CPlayer2D::getx()
-{
-	return vec2Index.x;
-}
 
-int CPlayer2D::gety()
-{
-	return vec2Index.y;
-}
 
 
