@@ -51,10 +51,6 @@ public:
 	// PostRender
 	virtual void PostRender(void);
 
-
-
-	virtual glm::vec2 getvec(void);
-
 	// The vec2 which stores the indices of an Entity2D in the Map2D
 	glm::vec2 vec2Index;
 

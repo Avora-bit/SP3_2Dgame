@@ -177,8 +177,3 @@ void CEntity2D::PostRender(void)
 	// Disable blending
 	glDisable(GL_BLEND);
 }
-
-glm::vec2 CEntity2D::getvec(void)
-{
-	return vec2Index;
-}
