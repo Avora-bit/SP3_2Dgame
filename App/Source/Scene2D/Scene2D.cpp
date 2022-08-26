@@ -414,7 +414,7 @@ void CScene2D::PreRender(void)
 	glLoadIdentity();
 
 	// Clear the screen and buffer
-	glClearColor(37/256.f, 50/256.f, 101/256.f, 1.0f);
+	glClearColor(50/256.f, 50/256.f, 50/256.f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Enable 2D texture rendering
