@@ -29,6 +29,7 @@ using namespace std;
  */
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
+	, cMouseController(NULL)
 	, cKeyboardController(NULL)
 	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -99,6 +100,8 @@ bool CPlayer2D::Init(void)
 	// Reset all keys since we are starting a new game
 	cKeyboardController->Reset();
 
+	cMouseController = CMouseController::GetInstance();
+
 
 	camera = Camera::GetInstance();
 
@@ -122,6 +125,19 @@ bool CPlayer2D::Init(void)
 	direction = RIGHT;
 
 	soundVol = 1.f;
+
+	throwing = false;
+	maxPForce = 15;
+	minPForce = 5;
+	ProjectileForce = 0;
+
+	// vitals
+	invincibility = 0;
+
+	dashTrue = true;
+
+	movementSpeed = 1.f;
+	attacking = false;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -219,8 +235,6 @@ bool CPlayer2D::Init(void)
 	cInventoryManager->Add(sword);
 
 	sword->replaceBlade(new CRustyBlade2D());
-
-	sword->getAnimatedSprites()->PlayAnimation("slash", -1, sword->getTotalAtkSpeed());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -355,6 +369,31 @@ void CPlayer2D::Update(const double dElapsedTime)
 		animatedSprites->PlayAnimation("idle", -1, 1.f);
 	}
 
+	static bool leftClickDown = false;
+	if (cInventoryManager->Check("Sword"))
+	{
+		static float attackTimer = 0;
+		attackTimer += dElapsedTime;
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+
+		if (attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = false;
+			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+		}
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = true;
+			leftClickDown = true;
+
+			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
+			attackTimer = 0;
+		}
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		{
+			leftClickDown = false;
+		}
+	}
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -367,17 +406,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 				staminaTimer = 0;
 			}
 		}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
-	{
-		if (vec2Index.x >= 0)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 		{
-			vec2NumMicroSteps.x -= movementSpeed;
-			if (vec2NumMicroSteps.x < 0)
+			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
+				vec2NumMicroSteps.x -= movementSpeed;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
 			}
-		}
 
 			if (!CheckPosition(LEFT))
 			{
@@ -396,6 +435,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//angle = 270;
 			direction = LEFT;
 		}
+
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 			if (vec2Index.y >= 0)
 			{
@@ -407,6 +447,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				}
 			}
 
+			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
@@ -414,7 +455,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-			Constraint(DOWN);
 
 			/*if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
@@ -924,7 +964,7 @@ void CPlayer2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 
-	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
+	angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 
@@ -1194,6 +1234,11 @@ void CPlayer2D::LoseHealth(float health)
 	}
 }
 
+bool CPlayer2D::getAttacking()
+{
+	return attacking;
+}
+
 bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
@@ -1246,16 +1291,3 @@ float CPlayer2D::returnsound()
 {
 	return soundVol;
 }
-
-
-int CPlayer2D::getx()
-{
-	return vec2Index.x;
-}
-
-int CPlayer2D::gety()
-{
-	return vec2Index.y;
-}
-
-

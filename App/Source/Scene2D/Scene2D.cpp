@@ -327,7 +327,6 @@ bool CScene2D::Update(const double dElapsedTime)
 {
 	//setvo
 
-
 	cPlayer2D->Update(dElapsedTime);
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
@@ -408,17 +407,17 @@ void CScene2D::Render(void)
 	cMap2D->Render();
 	cMap2D->PostRender();
 
-	if (CInventoryManager::GetInstance()->Check("Sword"))
+	cPlayer2D->PreRender();
+	cPlayer2D->Render();
+	cPlayer2D->PostRender();
+
+	if (CInventoryManager::GetInstance()->Check("Sword") && cPlayer2D->getAttacking())
 	{
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		sword->PreRender();
 		sword->Render();
 		sword->PostRender();
 	}
-
-	cPlayer2D->PreRender();
-	cPlayer2D->Render();
-	cPlayer2D->PostRender();
 
 	CShivs2D->PreRender();
 	CShivs2D->Render();
