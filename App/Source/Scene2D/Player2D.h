@@ -44,8 +44,6 @@ class Camera;
 
 #include "slot.h"
 
-
-
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -93,16 +91,12 @@ protected:
 	// Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
-	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
-
-	// Mouse Controller singleton instance
 	CMouseController* cMouseController;
 
 	CPhysics2D cPhysics2D;
 
 	CInventoryManager* cInventoryManager;
-
 	CInventoryItem* cInventoryItem;
 
 	CSoundController* cSoundController;

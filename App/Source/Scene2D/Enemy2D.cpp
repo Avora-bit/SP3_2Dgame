@@ -5,10 +5,6 @@
  Date: Mar 2020
  */
 #include "Enemy2D.h"
-
-#include <iostream>
-using namespace std;
-
 // Include GLEW
 #include <GL/glew.h>
 
@@ -26,7 +22,6 @@ CEnemy2D::CEnemy2D(void)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, CShivs2D(NULL)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 {
@@ -53,8 +48,6 @@ CEnemy2D::~CEnemy2D(void)
 	// We won't delete this since it was created elsewhere
 	cPlayer2D = NULL;
 
-	CShivs2D = NULL;
-
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
@@ -78,8 +71,6 @@ bool CEnemy2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
-
-	CShivs2D = CShivs2D::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D

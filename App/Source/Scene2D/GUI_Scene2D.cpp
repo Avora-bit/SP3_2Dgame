@@ -286,8 +286,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::Begin("Hunger", NULL, hungerWindowFlags);
 		/*ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.03f));*/
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 100));
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.09f));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Hunger");
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -310,18 +311,29 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 		ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
 
+		/*ImGui::Begin("Hunger", NULL, staminaFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 100));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));*/
+
+
 		ImGui::Begin("Stamina", NULL, staminaFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.09f));
-		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-		ImGui::SameLine();
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 80));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Stamina");
+		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+			ImVec2(cInventoryItem->vec2Size.x* relativeScale_x,
+				cInventoryItem->vec2Size.y* relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, col);
 		ImGui::ProgressBar(cInventoryItem->GetCount() /
 			(float)cInventoryItem->GetMaxCount(), ImVec2(180.0f *

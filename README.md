@@ -60,10 +60,10 @@ map entities-foreground
 
 items
 0 blank
-1 stick
-2 wood
-6 sword
-7 bow
+30 stick
+40 wood
+50 sword
+60 bow
 
 animations
 
