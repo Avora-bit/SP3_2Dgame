@@ -140,6 +140,12 @@
     <ClCompile Include="Source\Scene2D\slot.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Items.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\CleaverBlade2D.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -255,6 +261,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\EventController.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Items.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\CleaverBlade2D.h">
+      <Filter>Combat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
