@@ -8,6 +8,7 @@
 //player instance
 #include "Map2D.h"
 #include "Player2D.h"
+#include "Enemy2D.h"
 #include "Projectile2D.h"
 //#include "item.h"
 
@@ -26,7 +27,7 @@ public:
 	
 	}
 
-	vector<CEntity2D*> enemyVector;
+	vector<CEnemy2D*> enemyVector;
 	vector<CEntity2D*> projectileVector;
 
 	void Init() {
@@ -37,7 +38,7 @@ public:
 		projectileVector.clear();
 	}
 
-	void spawnEnemies(CEntity2D* enemy) {
+	void spawnEnemies(CEnemy2D* enemy) {
 		enemyVector.push_back(enemy);
 	}
 

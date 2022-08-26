@@ -1,5 +1,7 @@
 #include "Skeleton.h"
 
+#include "EventController.h"
+
 Skeleton::Skeleton()
 {
 	health = 100;
@@ -43,8 +45,6 @@ bool Skeleton::Init(void)
 
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
-
-	eventController = EventController::GetInstance();
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -148,7 +148,7 @@ void Skeleton::Update(const double dElapsedTime)
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
-					eventController->spawnProjectiles(skeletonShot, vec2Index);
+					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
 				}
 				shotInterval = 5;
 			}

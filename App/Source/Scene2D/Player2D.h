@@ -144,6 +144,8 @@ protected:
 
 	void InteractWithMap(void);
 
+	bool InteractWithEnemy();
+
 	bool CheckPosition(DIRECTION eDirection);
 
 	void UpdateHealthLives(void);

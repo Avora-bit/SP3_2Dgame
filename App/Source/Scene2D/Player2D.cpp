@@ -19,10 +19,14 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 
+#include "Enemy2D.h"
+
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
 #include "CleaverBlade2D.h"
+
+#include "EventController.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -435,6 +439,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
+
+			InteractWithEnemy();
 		}
 		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
 		{
@@ -968,6 +974,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
+	InteractWithEnemy();
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);
@@ -1177,9 +1184,6 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	}
 
-
-
-
 	//forage tree
 	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
 	//{
@@ -1193,6 +1197,16 @@ void CPlayer2D::InteractWithMap(void)
 	{
 
 	}*/
+}
+
+bool CPlayer2D::InteractWithEnemy()
+{
+	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
+	for (CEnemy2D* enemy : enemies)
+	{
+
+	}
+	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
