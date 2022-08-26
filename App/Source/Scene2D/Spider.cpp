@@ -11,8 +11,6 @@ Spider::~Spider()
 	// We won't delete this since it was created elsewhere
 	cPlayer2D = NULL;
 
-	CShivs2D = NULL;
-
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 

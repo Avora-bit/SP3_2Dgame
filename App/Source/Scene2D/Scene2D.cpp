@@ -5,31 +5,25 @@
  Date: Mar 2020
  */
 #include "Scene2D.h"
-#include <iostream>
-using namespace std;
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 #include "Sword2D.h"
 
 #include "System\filesystem.h"
 
-
-
-
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
 CScene2D::CScene2D(void)
-	:cMap2D(NULL)
+	: cMap2D(NULL)
 	, cPlayer2D(NULL)
-	, CShivs2D(NULL)
 	, cGUI_Scene2D(NULL)
 	, camera(NULL)
 	, cKeyboardController(NULL)
 	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
+	, eventcontroller(NULL)
 {
 }
 
@@ -65,12 +59,6 @@ CScene2D::~CScene2D(void)
 	{
 		cPlayer2D->Destroy();
 		cPlayer2D = NULL;
-	}
-
-	if (CShivs2D)
-	{
-		CShivs2D->Destroy();
-		CShivs2D = NULL;
 	}
 
 	for (int i = 0; i < itemVector.size(); i++)
@@ -140,7 +128,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		island->deleteall(3);			//delete all sand
 		//tree on grass
-		randspawn = rand() % 100 + 300;			//300-400 trees
+		randspawn = rand() % 100 + 400;			//400-500 trees
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(6, 2);			//replace grass with tree
 		}
@@ -225,17 +213,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		cout << "Failed to load CPlayer2D" << endl;
 		return false;
 	}
-
-	CShivs2D = CShivs2D::GetInstance();
-
-	CShivs2D->SetShader("Shader2D_Colour");
-
-	if (!CShivs2D->Init())
-	{
-		cout << "Failed to load CShivs2D" << endl;
-		return false;
-	}
-
 	camera = Camera::GetInstance();
 	camera->Init();
 
@@ -340,8 +317,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		sword->Update(dElapsedTime);
 	}
-	
-	CShivs2D->Update(dElapsedTime);
 
 	cMap2D->Update(dElapsedTime);
 
@@ -424,10 +399,6 @@ void CScene2D::Render(void)
 		sword->Render();
 		sword->PostRender();
 	}
-
-	CShivs2D->PreRender();
-	CShivs2D->Render();
-	CShivs2D->PostRender();
 
 	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{

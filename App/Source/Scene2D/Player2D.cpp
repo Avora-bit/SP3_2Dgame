@@ -29,6 +29,7 @@ using namespace std;
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
@@ -52,12 +53,9 @@ CPlayer2D::CPlayer2D(void)
  */
 CPlayer2D::~CPlayer2D(void)
 {
-	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
-
 	cMouseController = NULL;
 
-	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
 	camera = NULL;
@@ -93,11 +91,8 @@ CPlayer2D::~CPlayer2D(void)
   */
 bool CPlayer2D::Init(void)
 {
-	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
-	// Reset all keys since we are starting a new game
-	cKeyboardController->Reset();
-
+	cMouseController = CMouseController::GetInstance();
 
 	camera = Camera::GetInstance();
 
@@ -212,9 +207,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
 
@@ -222,8 +214,6 @@ bool CPlayer2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 
 	il = CImageLoader::GetInstance();
-
-
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -243,17 +233,6 @@ bool CPlayer2D::Init(void)
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
 		//inventory
-		{
-			//inventorySlots[i].AddQuantity(1);
-
-			inventorySlots[i].AddQuantity(1);
-
-		}
-
-
-		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
-
-
 		
 	}
 
@@ -834,28 +813,27 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//spawn projectile logic
 	{
 		//replace with mouse control
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
-				ProjectileForce += (dElapsedTime * 5);
+				ProjectileForce += (3 * dElapsedTime);
 			throwing = true;
 		}
-		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
+		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
 		{
 			//replace with mouse position
 			attackDirection = direction;
 			//min force
 			if (ProjectileForce > minPForce) {		//throw if force is high enough
 				//cSoundController->PlaySoundByID(10);		//replace with fire sound
-				//reduce arrow count
 				//reduce ammo count
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-				//add to projectile list
+				
 			}
-			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
-
+			//thrown, reset
 			throwing = false;
 			ProjectileForce = 0;
 		}
