@@ -44,6 +44,11 @@
 #include "Shivs2D.h"
 #include "Items.h"
 
+#include "Octopus.h"
+#include "Chicken.h"
+#include "Spider.h"
+#include "Skeleton.h"
+
 #include "GUI_Scene2D.h"
 
 #include "Physics2D.h"

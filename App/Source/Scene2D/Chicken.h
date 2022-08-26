@@ -5,8 +5,8 @@
 class Chicken:public CEnemy2D
 {
 public:
-
 	Chicken();
+	Chicken(glm::vec2 pos);
 	~Chicken();
 	bool Init(void);
 	void Update(const double dElapsedTime);

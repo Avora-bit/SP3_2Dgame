@@ -50,6 +50,8 @@
     <ClCompile Include="Source\Scene2D\RecipeBook.cpp" />
     <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
     <ClCompile Include="Source\Scene2D\Shivs2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Skeleton.cpp" />
+    <ClCompile Include="Source\Scene2D\SkeletonShot.cpp" />
     <ClCompile Include="Source\Scene2D\slot.cpp" />
     <ClCompile Include="Source\Scene2D\Spider.cpp" />
     <ClCompile Include="Source\Scene2D\Sword2D.cpp" />
@@ -92,6 +94,8 @@
     <ClInclude Include="Source\Scene2D\RecipeBook.h" />
     <ClInclude Include="Source\Scene2D\Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Shivs2D.h" />
+    <ClInclude Include="Source\Scene2D\Skeleton.h" />
+    <ClInclude Include="Source\Scene2D\SkeletonShot.h" />
     <ClInclude Include="Source\Scene2D\slot.h" />
     <ClInclude Include="Source\Scene2D\Spider.h" />
     <ClInclude Include="Source\Scene2D\Sword2D.h" />

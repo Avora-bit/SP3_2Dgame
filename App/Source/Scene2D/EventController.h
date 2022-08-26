@@ -7,9 +7,6 @@
 //foreground and background
 //player instance
 #include "Player2D.h"
-#include "Octopus.h"
-#include "Chicken.h"
-#include "Spider.h"
 #include "Projectile2D.h"
 //#include "item.h"
 
@@ -40,12 +37,12 @@ public:
 		projectileVector.clear();
 	}
 
-	void spawnEnemies(CEnemy2D* enemy) {
+	void spawnEnemies(CEntity2D* enemy) {
 		enemyVector.push_back(enemy);
 	}
 
 	void spawnProjectiles(CProjectile2D* projectile, glm::vec2 vec2Index) {
-		cout << "projectilespawn" << endl;
+		projectile->vec2Index = vec2Index;
 		projectileVector.push_back(projectile);
 	}
 
