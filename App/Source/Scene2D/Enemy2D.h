@@ -29,8 +29,6 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-#include "Shivs2D.h"
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 // Include Mesh Builder
@@ -41,6 +39,9 @@ class CMap2D;
 #include "Camera.h"
 #include "EventController.h"
 #include "Map2D.h"
+
+#include <iostream>
+using namespace std;
 
 
 class CEnemy2D : public CEntity2D
@@ -130,8 +131,6 @@ protected:
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
-
-	CShivs2D* CShivs2D;
 
 	Camera* camera;
 

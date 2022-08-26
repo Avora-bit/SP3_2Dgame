@@ -66,9 +66,6 @@
     <ClCompile Include="Source\Scene2D\Scene2D.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Items.cpp">
-      <Filter>Inventory</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene2D\Octopus.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -114,7 +111,7 @@
     <ClCompile Include="Source\Scene2D\slot.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Items.cpp">
+    <ClCompile Include="Source\Scene2D\CleaverBlade2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Skeleton.cpp">
@@ -198,9 +195,6 @@
     <ClInclude Include="Source\Scene2D\EventController.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Items.h">
-      <Filter>Inventory</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\Chicken.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -243,7 +237,7 @@
     <ClInclude Include="Source\Scene2D\slot.h">
       <Filter>Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Items.h">
+    <ClInclude Include="Source\Scene2D\CleaverBlade2D.h">
       <Filter>Inventory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Skeleton.h">

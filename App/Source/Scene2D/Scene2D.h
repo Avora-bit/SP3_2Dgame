@@ -41,8 +41,6 @@
 // Map2D to check player's movements and actions
 #include "Map2D.h"
 #include "Player2D.h"
-#include "Shivs2D.h"
-#include "Items.h"
 
 #include "Octopus.h"
 #include "Chicken.h"
@@ -53,18 +51,18 @@
 
 #include "Physics2D.h"
 
-
-#include "MapGenerator.h"
-
 #include "Camera.h"
 
 #include "GameManager.h"
 
 #include "../GameStateManagement/InventoryState.h"
 
+#include "MapGenerator.h"
 #include "EventController.h"
 
 // Add your include files here
+
+using namespace std;
 
 class CScene2D : public CSingletonTemplate<CScene2D>
 {
@@ -98,12 +96,6 @@ protected:
 
 	CPlayer2D* cPlayer2D;
 
-	CShivs2D* CShivs2D;
-
-	//set items
-	vector<CItems2D*> itemVector;
-
-
 	CPhysics2D cPhysics2D;
 
 	Camera* camera;
@@ -112,10 +104,7 @@ protected:
 
 	CGameManager* cGameManager;
 
-	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
-
-	// Mouse Controller singleton instance
 	CMouseController* cMouseController;
 
 	CSoundController* cSoundController;

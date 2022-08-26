@@ -22,18 +22,22 @@ using namespace std;
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
+#include "CleaverBlade2D.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
+	, cMouseController(NULL)
 	, cKeyboardController(NULL)
+	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
+	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -52,12 +56,9 @@ CPlayer2D::CPlayer2D(void)
  */
 CPlayer2D::~CPlayer2D(void)
 {
-	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
-
 	cMouseController = NULL;
 
-	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
 	camera = NULL;
@@ -80,7 +81,7 @@ CPlayer2D::~CPlayer2D(void)
 
 	if (soundsfx)
 	{
-		/*delete soundsfx;*/
+		delete soundsfx;
 		soundsfx = NULL;
 	}
 
@@ -93,11 +94,8 @@ CPlayer2D::~CPlayer2D(void)
   */
 bool CPlayer2D::Init(void)
 {
-	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
-	// Reset all keys since we are starting a new game
-	cKeyboardController->Reset();
-
+	cMouseController = CMouseController::GetInstance();
 
 	camera = Camera::GetInstance();
 
@@ -121,6 +119,19 @@ bool CPlayer2D::Init(void)
 	direction = RIGHT;
 
 	soundVol = 1.f;
+
+	throwing = false;
+	maxPForce = 15;
+	minPForce = 5;
+	ProjectileForce = 0;
+
+	// vitals
+	invincibility = 0;
+
+	dashTrue = true;
+
+	movementSpeed = 1.f;
+	attacking = false;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -148,15 +159,17 @@ bool CPlayer2D::Init(void)
 	// Load the player texture
 	// Load the ground texture
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/mc.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 3, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idle", 0, 0);
+	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	
 
 	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
@@ -189,7 +202,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Stamina", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Stamina", "Image/stamina.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
@@ -205,25 +218,30 @@ bool CPlayer2D::Init(void)
 
 
 	//Add ITEMS
-	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
+
+	sword->replaceBlade(new CRustyBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
 	il = CImageLoader::GetInstance();
-
-
+	
+	//MUST CONSIDER THESE POSSIBLE CASES
+	//1. SLOT REACHED MAX LIMIT
+	//2. ITEM PICKED UP IS A DIFFERENT ITEM
+	//3. IF ITEM IS EMPTIED
+	//if(itemid == inventoryslotitemid
+	//if(maxcount reached
+	//id count ==0
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -231,30 +249,28 @@ bool CPlayer2D::Init(void)
 		//inventorySlots[i].setitemID(0);
 		if (i % 2 == 0)
 		{
-			inventorySlots[i].setitemID(1);
+			inventorySlots[i].setitemID(30);
 		}
 		else
 		{
-			inventorySlots[i].setitemID(2);
+			inventorySlots[i].setitemID(40);
 		}
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
 		
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
+
+		inventorySlots[i].AddQuantity(5);
 		//inventory
-		{
-			//inventorySlots[i].AddQuantity(1);
+		/*{
+			inventorySlots[i].AddQuantity(1);
 
 			inventorySlots[i].AddQuantity(1);
 
-		}
-
+		}*/
 
 		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
-
-
-		
 	}
 
 	return true;
@@ -307,6 +323,61 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 	// Store the old position
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
+	{
+
+		//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+		//{
+		//	case 99: //grass
+		//	{
+		ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+		if (grassSound != nullptr)
+		{
+			soundsfx = grassSound;
+		}
+		if (soundsfx != nullptr)
+		{
+			soundsfx->setVolume(soundVol);
+		}
+		//		break;
+		//	}
+		//	case 98: //sand
+		//	{
+		//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
+		//		if (sandSound != nullptr)
+		//		{
+		//			soundsfx = sandSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	case 97: //water
+		//	{
+		//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
+		//		if (waterSound != nullptr)
+		//		{
+		//			soundsfx = waterSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	default:
+		//	{
+		//		break;
+		//	}
+		//}
+
+	}
 	vec2OldIndex = vec2Index;
 
 	// vitals
@@ -339,6 +410,43 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
+	static bool walkKeyDown = false;
+	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W) || cKeyboardController->IsKeyDown(GLFW_KEY_A) || cKeyboardController->IsKeyDown(GLFW_KEY_S) || cKeyboardController->IsKeyDown(GLFW_KEY_D)) && !walkKeyDown)
+	{
+		walkKeyDown = true;
+		animatedSprites->PlayAnimation("walk", -1, 0.5f);
+	}
+	else if ((!cKeyboardController->IsKeyDown(GLFW_KEY_W) && !cKeyboardController->IsKeyDown(GLFW_KEY_A) && !cKeyboardController->IsKeyDown(GLFW_KEY_S) && !cKeyboardController->IsKeyDown(GLFW_KEY_D)) && walkKeyDown)
+	{
+		walkKeyDown = false;
+		animatedSprites->PlayAnimation("idle", -1, 1.f);
+	}
+
+	static bool leftClickDown = false;
+	if (cInventoryManager->Check("Sword"))
+	{
+		static float attackTimer = 0;
+		attackTimer += dElapsedTime;
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+
+		if (attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = false;
+			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+		}
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = true;
+			leftClickDown = true;
+
+			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
+			attackTimer = 0;
+		}
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		{
+			leftClickDown = false;
+		}
+	}
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -351,17 +459,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 				staminaTimer = 0;
 			}
 		}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
-	{
-		if (vec2Index.x >= 0)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 		{
-			vec2NumMicroSteps.x -= movementSpeed;
-			if (vec2NumMicroSteps.x < 0)
+			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
+				vec2NumMicroSteps.x -= movementSpeed;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
 			}
-		}
 
 			if (!CheckPosition(LEFT))
 			{
@@ -380,6 +488,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//angle = 270;
 			direction = LEFT;
 		}
+
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 			if (vec2Index.y >= 0)
 			{
@@ -391,6 +500,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				}
 			}
 
+			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
@@ -398,7 +508,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-			Constraint(DOWN);
 
 			/*if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
@@ -834,28 +943,27 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//spawn projectile logic
 	{
 		//replace with mouse control
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
-				ProjectileForce += (dElapsedTime * 5);
+				ProjectileForce += (3 * dElapsedTime);
 			throwing = true;
 		}
-		else if (cKeyboardController->IsKeyUp(GLFW_KEY_ENTER) && throwing == true)
+		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
 		{
 			//replace with mouse position
 			attackDirection = direction;
 			//min force
 			if (ProjectileForce > minPForce) {		//throw if force is high enough
 				//cSoundController->PlaySoundByID(10);		//replace with fire sound
-				//reduce arrow count
 				//reduce ammo count
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-				//add to projectile list
+				
 			}
-			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
-
+			//thrown, reset
 			throwing = false;
 			ProjectileForce = 0;
 		}
@@ -908,7 +1016,7 @@ void CPlayer2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 
-	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
+	angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 
@@ -1010,21 +1118,20 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.9f;
 		break;
 
-		//FOR INVENTORY PURPOSES - REAGAN
-		//case 7:
-	case 2:
-	case 1:
+	//PICKING UP ITEMS
+	/*case 30:
+	case 40:
 		for (int i = 0; i < 9; i++)
 		{
 			if (inventorySlots[i].getitemID() == 0)
 			{
-				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 				break;
 
 			}
 		}
-		break;
+		break;*/
 
 	default:
 		movementSpeed = 1.f;
@@ -1035,10 +1142,20 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
 	{
+
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
-			//shovel the cross to spawn treasures
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 79, true, 1);
+			//shovel the cross to spawn treasures/resources, which will be randomly generated
+			int random_generator = rand() % 2 + 1;
+
+			if (random_generator == 2)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 30, true, 1);
+			}
+			else
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 40, true, 1);
+			}
 		}
 		break;
 	case 79:		//treasure
@@ -1065,6 +1182,23 @@ void CPlayer2D::InteractWithMap(void)
 		//reset dash true
 		break;
 	}
+
+
+
+
+	//forage tree
+	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
+	//{
+	//	if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+
+	//	}
+	//}
+
+
+	/*switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	{
+
+	}*/
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1178,12 +1312,31 @@ void CPlayer2D::LoseHealth(float health)
 	}
 }
 
+bool CPlayer2D::getAttacking()
+{
+	return attacking;
+}
+
 bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
 	{
+
+		if (inventorySlots[i].getquantity() == 5)
+		{
+			inventorySlots[i+1].setitemID(itemid);
+			inventorySlots[i+1].settextureID(itemid);
+		}
+		else
+		{
+			inventorySlots[i].AddQuantity(1);
+		}
+
+
 		if (inventorySlots[i].getitemID() == 0)
 		{
+			
+
 			inventorySlots[i].setitemID(itemid);
 			inventorySlots[i].settextureID(itemid);
 
@@ -1230,16 +1383,3 @@ float CPlayer2D::returnsound()
 {
 	return soundVol;
 }
-
-
-int CPlayer2D::getx()
-{
-	return vec2Index.x;
-}
-
-int CPlayer2D::gety()
-{
-	return vec2Index.y;
-}
-
-

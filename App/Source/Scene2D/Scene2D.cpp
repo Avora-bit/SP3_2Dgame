@@ -5,31 +5,25 @@
  Date: Mar 2020
  */
 #include "Scene2D.h"
-#include <iostream>
-using namespace std;
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 #include "Sword2D.h"
 
 #include "System\filesystem.h"
 
-
-
-
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
 CScene2D::CScene2D(void)
-	:cMap2D(NULL)
+	: cMap2D(NULL)
 	, cPlayer2D(NULL)
-	, CShivs2D(NULL)
 	, cGUI_Scene2D(NULL)
 	, camera(NULL)
 	, cKeyboardController(NULL)
 	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, cSoundController(NULL)
+	, eventcontroller(NULL)
 {
 }
 
@@ -66,19 +60,6 @@ CScene2D::~CScene2D(void)
 		cPlayer2D->Destroy();
 		cPlayer2D = NULL;
 	}
-
-	if (CShivs2D)
-	{
-		CShivs2D->Destroy();
-		CShivs2D = NULL;
-	}
-
-	for (int i = 0; i < itemVector.size(); i++)
-	{
-		delete itemVector[i];
-		itemVector[i] = NULL;
-	}
-	itemVector.clear();
 
 	if (cGUI_Scene2D)
 	{
@@ -143,12 +124,57 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(8, 3);			//replace sand with cross
 		}
 		island->deleteall(3);			//delete all sand
+
+
 		//tree on grass
-		randspawn = rand() % 100 + 300;			//300-400 trees
+		randspawn = rand() % 100 + 400;			//400-500 trees
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(6, 2);			//replace grass with tree
 		}
+
+
+		randspawn = rand() % 50 + 100;			//50-100 stick
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			island->randreplace(30, 2);			//replace grass with sticks
+		}
+
+		randspawn = rand() % 50 + 100;
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			island->randreplace(40, 2);			//replace grass with wood
+		}
+
+
 		island->deleteall(2);			//delete all grass
+
+
+
+
+		//{0, 0},				//void
+		//{ 1, 97 },			//water		//cannot dash, slows movement speed
+		//{ 2, 99 },			//grass		//spawn tree
+		//{ 3, 98 },			//sand		//spawn cross
+		//{ 4, 96 },			//brick floor		//no behavior
+		//{ 5, 95 },			//trap				//deals small amount of damage to the player, 5 hp
+		////solid tiles
+		//{ 6, 100 },			//tree
+		//{ 7, 101 },			//brick wall
+		////foreground tiles
+		//{ 8, 80 },			//cross		//spawn treasure
+		//{ 9, 79 },			//treasure	//spawn loot
+		//{ 10, 78 },			//ladderdown
+		//{ 11, 77 },			//ladderup
+		//{ 12, 76 },			//web		//slows player
+
+		
+
+
+
+		
+
+
+
 
 		//spawn structure with ladderdown
 
@@ -229,17 +255,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		cout << "Failed to load CPlayer2D" << endl;
 		return false;
 	}
-
-	CShivs2D = CShivs2D::GetInstance();
-
-	CShivs2D->SetShader("Shader2D_Colour");
-
-	if (!CShivs2D->Init())
-	{
-		cout << "Failed to load CShivs2D" << endl;
-		return false;
-	}
-
 	camera = Camera::GetInstance();
 	camera->Init();
 
@@ -322,7 +337,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 6, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Grab.ogg"), 6, true);
+
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);
 
 
 	cSoundController->AddToPlaylist(3);
@@ -352,7 +371,6 @@ bool CScene2D::Update(const double dElapsedTime)
 {
 	//setvo
 
-
 	cPlayer2D->Update(dElapsedTime);
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
@@ -360,8 +378,6 @@ bool CScene2D::Update(const double dElapsedTime)
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		sword->Update(dElapsedTime);
 	}
-	
-	CShivs2D->Update(dElapsedTime);
 
 	cMap2D->Update(dElapsedTime);
 
@@ -439,17 +455,13 @@ void CScene2D::Render(void)
 	cPlayer2D->Render();
 	cPlayer2D->PostRender();
 
-	if (CInventoryManager::GetInstance()->Check("Sword"))
+	if (CInventoryManager::GetInstance()->Check("Sword") && cPlayer2D->getAttacking())
 	{
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		sword->PreRender();
 		sword->Render();
 		sword->PostRender();
 	}
-
-	CShivs2D->PreRender();
-	CShivs2D->Render();
-	CShivs2D->PostRender();
 
 	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{

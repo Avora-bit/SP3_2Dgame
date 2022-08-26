@@ -44,8 +44,6 @@ class Camera;
 
 #include "slot.h"
 
-
-
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -69,6 +67,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool getAttacking();
+
 protected:
 	enum DIRECTION
 	{
@@ -91,16 +91,12 @@ protected:
 	// Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
-	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
-
-	// Mouse Controller singleton instance
 	CMouseController* cMouseController;
 
 	CPhysics2D cPhysics2D;
 
 	CInventoryManager* cInventoryManager;
-
 	CInventoryItem* cInventoryItem;
 
 	CSoundController* cSoundController;
@@ -115,17 +111,19 @@ protected:
 	DIRECTION direction;
 	DIRECTION attackDirection;
 
-	bool throwing = false;
-	double maxPForce = 15;
-	double minPForce = 5;
-	double ProjectileForce = 0;
+	bool throwing;
+	double maxPForce;
+	double minPForce;
+	double ProjectileForce;
 
 	// vitals
-	double invincibility = 0; 
+	double invincibility; 
 
-	bool dashTrue = true;
+	bool dashTrue;
 
-	float movementSpeed = 1.f; 
+	float movementSpeed; 
+
+	bool attacking;
 
 	//bool shovelcheck = true;
 
@@ -171,8 +169,4 @@ public:
 
 	void setsound(float vol);
 	float returnsound();
-
-	int CPlayer2D::getx();
-	int CPlayer2D::gety();
-
 };

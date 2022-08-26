@@ -1,8 +1,8 @@
 ﻿/**
- RustyBlade2D
+ CleaverBlade2D
  */
 
-#include "RustyBlade2D.h"
+#include "CleaverBlade2D.h"
 
 #include <iostream>
 using namespace std;
@@ -13,19 +13,19 @@ using namespace std;
 // Include ImageLoader
 #include "System\ImageLoader.h"
 
-CRustyBlade2D::CRustyBlade2D(void)
+CCleaverBlade2D::CCleaverBlade2D(void)
 {
-	sName = "Rusty Blade";
+	sName = "Cleaver Blade";
 
-	baseDamage = 10.0f;
-	baseAtkSpd = 0.4f;
-	baseRange = 2.0f;
+	baseDamage = 35.0f;
+	baseAtkSpd = 1.2f;
+	baseRange = 3.5f;
 	baseDef = 0.f;
 
-	effect = CBlade2D::AILMENT::NONE;
+	effect = CBlade2D::AILMENT::BURN;
 
 	// animatedSprites =
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/rustyswordslash.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/cleaverbladeslash.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load sword tile texture" << std::endl;
@@ -40,14 +40,14 @@ CRustyBlade2D::CRustyBlade2D(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CRustyBlade2D::~CRustyBlade2D(void)
+CCleaverBlade2D::~CCleaverBlade2D(void)
 {
 }
 
-unsigned int CRustyBlade2D::LoadSprite()
+unsigned int CCleaverBlade2D::LoadSprite()
 {
 	std::cout << "binginbg";
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/rustyswordslash.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/cleaverbladeslash.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load sword tile texture" << std::endl;

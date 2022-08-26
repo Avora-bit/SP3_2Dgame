@@ -88,9 +88,8 @@ bool CProjectile2D::Init(void)
 		std::cout << "Failed to load Shiv tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("hold", 0, 0);
-	animatedSprites->AddAnimation("throw", 1, 1);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("throw", 0, 0);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -113,100 +112,40 @@ void CProjectile2D::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 	vec2OldIndex = vec2Index;
-	if (!cPlayer2D->getProjectileForce())
-	{
-		if (cPlayer2D->getProjectileForce() >= 1.5)
-		{
-			cPhysics2D.SetTime((float)dElapsedTime);
-			cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getProjectileForce(), 0.0f));
-			cPhysics2D.Update();
-			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-			int iIndex_XAxis_OLD = vec2Index.x;
-			int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
-			switch (cPlayer2D->getAttackDirection())
-			{
-			/*case LEFT:
-				if (vec2Index.x >= 0)
-				{
-					vec2NumMicroSteps.x -= fabs(iDisplacement_MicroSteps);
-					if (vec2NumMicroSteps.x < 0)
-					{
-						vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-						vec2Index.x--;
-						distanceTravelled++;
-					}
-				}
 
-				if (!CheckPosition(LEFT) || !Constraint(LEFT) || distanceTravelled >= cPlayer2D->getBowForce() + 1)
-				{
-					vec2Index = vec2OldIndex;
-					vec2NumMicroSteps.x = 0;
-
-					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-					thrown = true;
-					distanceTravelled = 0;
-				}
-				break;
-			case RIGHT:
-				if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-				{
-					vec2NumMicroSteps.x += fabs(iDisplacement_MicroSteps);
-					if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-					{
-						vec2NumMicroSteps.x = 0;
-						vec2Index.x++;
-						distanceTravelled++;
-					}
-				}
-
-				if (!CheckPosition(RIGHT) || !Constraint(RIGHT) || distanceTravelled >= cPlayer2D->getBowForce() + 1)
-				{
-					if (Constraint(RIGHT))
-						vec2Index = vec2OldIndex;
-					vec2NumMicroSteps.x = 0;
-
-					cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
-					thrown = true;
-					distanceTravelled = 0;
-				}
-				break;*/
-			}
-		}
-		else
-		{
-			cPhysics2D.Update();
-			glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-			int iIndex_YAxis_OLD = vec2Index.y;
-			int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
-			{
-				if (vec2Index.y >= 0)
-				{
-					vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-					if (vec2NumMicroSteps.y < 0)
-					{
-						vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-						vec2Index.y--;
-					}
-				}
-			}
-			int iIndex_YAxis_Proposed = vec2Index.y;
-			for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
-			{
-				vec2Index.y = i;
-				/*if (CheckPosition(DOWN) == false)
-				{
-					if (i != iIndex_YAxis_OLD)
-						vec2Index.y = i + 1;
-					cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
-					vec2NumMicroSteps.y = 0;
-					break;
-				}*/
-			}
-		}
+	if (cPlayer2D->getProjectileForce() >= 1.5) {
+		cPhysics2D.SetTime((float)dElapsedTime);
+		cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getProjectileForce(), 0.0f));
+		cPhysics2D.Update();
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+		int iIndex_XAxis_OLD = vec2Index.x;
+		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
 	}
-	else
-	{
-		vec2Index = cPlayer2D->vec2Index;
+	else {
+		cPhysics2D.Update();
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+		int iIndex_YAxis_OLD = vec2Index.y;
+		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); {
+			if (vec2Index.y >= 0) {
+				vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
+				if (vec2NumMicroSteps.y < 0) {
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+		}
+		int iIndex_YAxis_Proposed = vec2Index.y;
+		for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--) {
+			vec2Index.y = i;
+			/*if (CheckPosition(DOWN) == false)
+			{
+				if (i != iIndex_YAxis_OLD)
+					vec2Index.y = i + 1;
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::FLY);
+				vec2NumMicroSteps.y = 0;
+				break;
+			}*/
+		}
 	}
 
 	InteractWithMap();
@@ -244,9 +183,10 @@ void CProjectile2D::Render(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	transform = glm::scale(transform, glm::vec3(camera->zoom, camera->zoom, 0));
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-													vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
+													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
+	angle = atan2(direction.y, direction.x);
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -272,45 +212,45 @@ void CProjectile2D::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
-void CProjectile2D::Constraint(DIRECTION eDirection)
-{
-	if (eDirection == LEFT)
-	{
-		if (vec2Index.x < 0)
-		{
-			vec2Index.x = 0;
-			vec2NumMicroSteps.x = 0;
-		}
-	}
-	else if (eDirection == RIGHT)
-	{
-		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
-		{
-			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS) - 1;
-			vec2NumMicroSteps.x = 0;
-		}
-	}
-	else if (eDirection == UP)
-	{
-		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
-		{
-			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS) - 1;
-			vec2NumMicroSteps.y = 0;
-		}
-	}
-	else if (eDirection == DOWN)
-	{
-		if (vec2Index.y < 0)
-		{
-			vec2Index.y = 0;
-			vec2NumMicroSteps.y = 0;
-		}
-	}
-	else
-	{
-		cout << "Projectiles2D::Constraint: Unknown direction." << endl;
-	}
-}
+//void CProjectile2D::Constraint(DIRECTION eDirection)
+//{
+//	if (eDirection == LEFT)
+//	{
+//		if (vec2Index.x < 0)
+//		{
+//			vec2Index.x = 0;
+//			vec2NumMicroSteps.x = 0;
+//		}
+//	}
+//	else if (eDirection == RIGHT)
+//	{
+//		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
+//		{
+//			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS) - 1;
+//			vec2NumMicroSteps.x = 0;
+//		}
+//	}
+//	else if (eDirection == UP)
+//	{
+//		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
+//		{
+//			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS) - 1;
+//			vec2NumMicroSteps.y = 0;
+//		}
+//	}
+//	else if (eDirection == DOWN)
+//	{
+//		if (vec2Index.y < 0)
+//		{
+//			vec2Index.y = 0;
+//			vec2NumMicroSteps.y = 0;
+//		}
+//	}
+//	else
+//	{
+//		cout << "Projectiles2D::Constraint: Unknown direction." << endl;
+//	}
+//}
 
 void CProjectile2D::InteractWithMap(void)
 {
@@ -330,224 +270,224 @@ bool CProjectile2D::InteractWithPlayer()
 	return false;
 }
 
-bool CProjectile2D::CheckPosition(DIRECTION eDirection)
-{
-	if (eDirection == LEFT)
-	{
-		// If the new position is fully within a row, then check this row only
-		if (vec2NumMicroSteps.y == 0)
-		{
-			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
-			{
-				return false;
-			}
-		}
-		// If the new position is between 2 rows, then check both rows as well
-		else if (vec2NumMicroSteps.y != 0)
-		{
-			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
-			{
-				return false;
-			}
-		}
-	}
-	else if (eDirection == RIGHT)
-	{
-		// If the new position is at the top row, then return true
-		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
-		{
-			vec2NumMicroSteps.x = 0;
-			return true;
-		}
-
-		// If the new position is fully within a row, then check this row only
-		if (vec2NumMicroSteps.y == 0)
-		{
-			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
-			{
-				return false;
-			}
-		}
-		// If the new position is between 2 rows, then check both rows as well
-		else if (vec2NumMicroSteps.y != 0)
-		{
-			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
-			{
-				return false;
-			}
-		}
-
-	}
-	else if (eDirection == UP)
-	{
-		// If the new position is at the top row, then return true
-		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
-		{
-			vec2NumMicroSteps.y = 0;
-			return true;
-		}
-
-		// If the new position is fully within a column, then check this column only
-		if (vec2NumMicroSteps.x == 0)
-		{
-			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
-			{
-				return false;
-			}
-		}
-		// If the new position is between 2 columns, then check both columns as well
-		else if (vec2NumMicroSteps.x != 0)
-		{
-			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
-			{
-				return false;
-			}
-		}
-	}
-	else if (eDirection == DOWN)
-	{
-		// If the new position is fully within a column, then check this column only
-		if (vec2NumMicroSteps.x == 0)
-		{
-			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
-			{
-				return false;
-			}
-		}
-		// If the new position is between 2 columns, then check both columns as well
-		else if (vec2NumMicroSteps.x != 0)
-		{
-			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
-			{
-				return false;
-			}
-		}
-	}
-	else
-	{
-		cout << "Projectiles::CheckPosition: Unknown direction." << endl;
-	}
-
-	return true;
-}
+//bool CProjectile2D::CheckPosition(DIRECTION eDirection)
+//{
+//	if (eDirection == LEFT)
+//	{
+//		// If the new position is fully within a row, then check this row only
+//		if (vec2NumMicroSteps.y == 0)
+//		{
+//			// If the grid is not accessible, then return false
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+//			{
+//				return false;
+//			}
+//		}
+//		// If the new position is between 2 rows, then check both rows as well
+//		else if (vec2NumMicroSteps.y != 0)
+//		{
+//			// If the 2 grids are not accessible, then return false
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
+//				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+//			{
+//				return false;
+//			}
+//		}
+//	}
+//	else if (eDirection == RIGHT)
+//	{
+//		// If the new position is at the top row, then return true
+//		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
+//		{
+//			vec2NumMicroSteps.x = 0;
+//			return true;
+//		}
+//
+//		// If the new position is fully within a row, then check this row only
+//		if (vec2NumMicroSteps.y == 0)
+//		{
+//			// If the grid is not accessible, then return false
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+//			{
+//				return false;
+//			}
+//		}
+//		// If the new position is between 2 rows, then check both rows as well
+//		else if (vec2NumMicroSteps.y != 0)
+//		{
+//			// If the 2 grids are not accessible, then return false
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
+//				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+//			{
+//				return false;
+//			}
+//		}
+//
+//	}
+//	else if (eDirection == UP)
+//	{
+//		// If the new position is at the top row, then return true
+//		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
+//		{
+//			vec2NumMicroSteps.y = 0;
+//			return true;
+//		}
+//
+//		// If the new position is fully within a column, then check this column only
+//		if (vec2NumMicroSteps.x == 0)
+//		{
+//			// If the grid is not accessible, then return false
+//			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+//			{
+//				return false;
+//			}
+//		}
+//		// If the new position is between 2 columns, then check both columns as well
+//		else if (vec2NumMicroSteps.x != 0)
+//		{
+//			// If the 2 grids are not accessible, then return false
+//			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
+//				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+//			{
+//				return false;
+//			}
+//		}
+//	}
+//	else if (eDirection == DOWN)
+//	{
+//		// If the new position is fully within a column, then check this column only
+//		if (vec2NumMicroSteps.x == 0)
+//		{
+//			// If the grid is not accessible, then return false
+//			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+//			{
+//				return false;
+//			}
+//		}
+//		// If the new position is between 2 columns, then check both columns as well
+//		else if (vec2NumMicroSteps.x != 0)
+//		{
+//			// If the 2 grids are not accessible, then return false
+//			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
+//				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+//			{
+//				return false;
+//			}
+//		}
+//	}
+//	else
+//	{
+//		cout << "Projectiles::CheckPosition: Unknown direction." << endl;
+//	}
+//
+//	return true;
+//}
 
 void CProjectile2D::trajectory()
 {
-	if (vec2Direction.y < 0)
-	{
-		// Move left
-		const int iOldIndex = vec2Index.y;
-		if (vec2Index.y >= 0)
-		{
-			vec2NumMicroSteps.y -= mspeed;
-			if (vec2NumMicroSteps.y < 0)
-			{
-				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-				vec2Index.y--;
-			}
-		}
-
-		// Constraint the enemy2D's position within the screen boundary
-		Constraint(DOWN);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(DOWN) == false)
-		{
-			bIsActive = false;
-		}
-
-		// Interact with the Player
-		InteractWithPlayer();
-	}
-	else if (vec2Direction.y > 0)
-	{
-		// Move right
-		const int iOldIndex = vec2Index.y;
-		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
-		{
-			vec2NumMicroSteps.y += mspeed;
-
-			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
-			{
-				vec2NumMicroSteps.y = 0;
-				vec2Index.y++;
-			}
-		}
-
-		// Constraint the enemy2D's position within the screen boundary
-		Constraint(UP);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(UP) == false)
-		{
-			bIsActive = false;
-		}
-
-
-		// Interact with the Player
-		InteractWithPlayer();
-	}
-	if (vec2Direction.x < 0)
-	{
-		// Move left
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x >= 0)
-		{
-			vec2NumMicroSteps.x -= mspeed;
-			if (vec2NumMicroSteps.x < 0)
-			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
-			}
-		}
-
-		// Constraint the enemy2D's position within the screen boundary
-		Constraint(LEFT);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(LEFT) == false)
-		{
-			bIsActive = false;
-		}
-
-		// Interact with the Player
-		InteractWithPlayer();
-	}
-	else if (vec2Direction.x > 0)
-	{
-		// Move right
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			vec2NumMicroSteps.x += mspeed;
-
-			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-			{
-				vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
-			}
-		}
-
-		// Constraint the enemy2D's position within the screen boundary
-		Constraint(RIGHT);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(RIGHT) == false)
-		{
-			bIsActive = false;
-		}
-		InteractWithPlayer();
-	}
+//	if (vec2Direction.y < 0)
+//	{
+//		// Move left
+//		const int iOldIndex = vec2Index.y;
+//		if (vec2Index.y >= 0)
+//		{
+//			vec2NumMicroSteps.y -= mspeed;
+//			if (vec2NumMicroSteps.y < 0)
+//			{
+//				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+//				vec2Index.y--;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(DOWN);
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(DOWN) == false)
+//		{
+//			bIsActive = false;
+//		}
+//
+//		// Interact with the Player
+//		InteractWithPlayer();
+//	}
+//	else if (vec2Direction.y > 0)
+//	{
+//		// Move right
+//		const int iOldIndex = vec2Index.y;
+//		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
+//		{
+//			vec2NumMicroSteps.y += mspeed;
+//
+//			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+//			{
+//				vec2NumMicroSteps.y = 0;
+//				vec2Index.y++;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(UP);
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(UP) == false)
+//		{
+//			bIsActive = false;
+//		}
+//
+//
+//		// Interact with the Player
+//		InteractWithPlayer();
+//	}
+//	if (vec2Direction.x < 0)
+//	{
+//		// Move left
+//		const int iOldIndex = vec2Index.x;
+//		if (vec2Index.x >= 0)
+//		{
+//			vec2NumMicroSteps.x -= mspeed;
+//			if (vec2NumMicroSteps.x < 0)
+//			{
+//				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+//				vec2Index.x--;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(LEFT);
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(LEFT) == false)
+//		{
+//			bIsActive = false;
+//		}
+//
+//		// Interact with the Player
+//		InteractWithPlayer();
+//	}
+//	else if (vec2Direction.x > 0)
+//	{
+//		// Move right
+//		const int iOldIndex = vec2Index.x;
+//		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+//		{
+//			vec2NumMicroSteps.x += mspeed;
+//
+//			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+//			{
+//				vec2NumMicroSteps.x = 0;
+//				vec2Index.x++;
+//			}
+//		}
+//
+//		// Constraint the enemy2D's position within the screen boundary
+//		Constraint(RIGHT);
+//
+//		// Find a feasible position for the enemy2D's current position
+//		if (CheckPosition(RIGHT) == false)
+//		{
+//			bIsActive = false;
+//		}
+//		InteractWithPlayer();
+//	}
 }

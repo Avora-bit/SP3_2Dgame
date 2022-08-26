@@ -34,13 +34,13 @@ void slot::settextureID(int itemid)
 	//inventorySlots[i].settextureID(cInventoryManager->GetItem("Stick")->GetTextureID());
 	switch (itemid)
 	{
-	case 1:
+	case 30:
 		textureID = cInventoryManager->GetItem("Stick")->GetTextureID();
 		break;
-	case 2:
+	case 40:
 		textureID = cInventoryManager->GetItem("Wood")->GetTextureID();
 		break;
-	case 7:
+	case 60:
 		textureID = cInventoryManager->GetItem("Swords")->GetTextureID();
 		break;
 	case 0:
