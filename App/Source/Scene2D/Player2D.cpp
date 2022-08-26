@@ -29,15 +29,14 @@ using namespace std;
  */
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
-	, cKeyboardController(NULL)
 	, cMouseController(NULL)
+	, cKeyboardController(NULL)
 	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	, dodgesfx(NULL)
-	, grasssfx(NULL)
+	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -79,17 +78,10 @@ CPlayer2D::~CPlayer2D(void)
 		animatedSprites = NULL;
 	}
 
-	if (dodgesfx)
+	if (soundsfx)
 	{
-		delete dodgesfx;
-		dodgesfx = NULL;
-	}
-
-
-	if (grasssfx)
-	{
-		delete grasssfx;
-		grasssfx = NULL;
+		delete soundsfx;
+		soundsfx = NULL;
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -126,6 +118,19 @@ bool CPlayer2D::Init(void)
 	direction = RIGHT;
 
 	soundVol = 1.f;
+
+	throwing = false;
+	maxPForce = 15;
+	minPForce = 5;
+	ProjectileForce = 0;
+
+	// vitals
+	invincibility = 0;
+
+	dashTrue = true;
+
+	movementSpeed = 1.f;
+	attacking = false;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -224,8 +229,6 @@ bool CPlayer2D::Init(void)
 
 	sword->replaceBlade(new CRustyBlade2D());
 
-	sword->getAnimatedSprites()->PlayAnimation("slash", -1, sword->getTotalAtkSpeed());
-
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
@@ -319,6 +322,61 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 	// Store the old position
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
+		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
+	{
+
+		//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+		//{
+		//	case 99: //grass
+		//	{
+		ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+		if (grassSound != nullptr)
+		{
+			soundsfx = grassSound;
+		}
+		if (soundsfx != nullptr)
+		{
+			soundsfx->setVolume(soundVol);
+		}
+		//		break;
+		//	}
+		//	case 98: //sand
+		//	{
+		//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
+		//		if (sandSound != nullptr)
+		//		{
+		//			soundsfx = sandSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	case 97: //water
+		//	{
+		//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
+		//		if (waterSound != nullptr)
+		//		{
+		//			soundsfx = waterSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	default:
+		//	{
+		//		break;
+		//	}
+		//}
+
+	}
 	vec2OldIndex = vec2Index;
 
 	// vitals
@@ -363,84 +421,31 @@ void CPlayer2D::Update(const double dElapsedTime)
 		animatedSprites->PlayAnimation("idle", -1, 1.f);
 	}
 
+	static bool leftClickDown = false;
+	if (cInventoryManager->Check("Sword"))
+	{
+		static float attackTimer = 0;
+		attackTimer += dElapsedTime;
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 
-	//WHEN NEAR CAMPFIRE, COOK THE FOOD
+		if (attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = false;
+			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+		}
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = true;
+			leftClickDown = true;
 
-	//FIRST SLOT
-	//if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
-	//{
-	//	if (inventorySlots[0].getitemID() == //food)
-	//	{
-	//		if(//player is next to campire)
-	//			{
-	//				//set cooldown time, which will continuously decrease
-	// 
-	//				//convert the slot id to cooked food
-	//			}
-	//	}
-	//}
-
-
-	/*cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);*/
-	//PLAY SOUND DEPENDING ON DURFACE
-	//if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
-	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
-	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
-	//	|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
-	//{
-
-	//	//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
-	//	//{
-	//	//	case 99: //grass
-	//	//	{
-	//			ISound* grassSound = cSoundController->PlaySoundByID_2(8);
-	//			if (grasssfx != nullptr)
-	//			{
-	//				grasssfx = grassSound;
-	//			}
-	//			if (grasssfx != nullptr)
-	//			{
-	//				grasssfx->setVolume(soundVol* 10);
-	//			}
-	//	//		break;
-	//	//	}
-	//	//	case 98: //sand
-	//	//	{
-	//	//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
-	//	//		if (sandSound != nullptr)
-	//	//		{
-	//	//			dodgesfx = sandSound;
-	//	//		}
-	//	//		if (dodgesfx != nullptr)
-	//	//		{
-	//	//			dodgesfx->setVolume(soundVol);
-	//	//		}
-	//	//		break;
-	//	//	}
-	//	//	case 97: //water
-	//	//	{
-	//	//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
-	//	//		if (waterSound != nullptr)
-	//	//		{
-	//	//			dodgesfx = waterSound;
-	//	//		}
-	//	//		if (dodgesfx != nullptr)
-	//	//		{
-	//	//			dodgesfx->setVolume(soundVol);
-	//	//		}
-	//	//		break;
-	//	//	}
-	//	//	default:
-	//	//	{
-	//	//		break;
-	//	//	}
-	//	//}
-
-	//}
-
-
+			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
+			attackTimer = 0;
+		}
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		{
+			leftClickDown = false;
+		}
+	}
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -453,17 +458,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 				staminaTimer = 0;
 			}
 		}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
-	{
-		if (vec2Index.x >= 0)
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 		{
-			vec2NumMicroSteps.x -= movementSpeed;
-			if (vec2NumMicroSteps.x < 0)
+			if (vec2Index.x >= 0)
 			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
+				vec2NumMicroSteps.x -= movementSpeed;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+					vec2Index.x--;
+				}
 			}
-		}
 
 			if (!CheckPosition(LEFT))
 			{
@@ -482,6 +487,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//angle = 270;
 			direction = LEFT;
 		}
+
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 			if (vec2Index.y >= 0)
 			{
@@ -493,6 +499,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				}
 			}
 
+			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
@@ -500,7 +507,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-			Constraint(DOWN);
 
 			/*if (hasSword || chargeSword)
 				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
@@ -600,11 +606,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
 			if (dodgeSound != nullptr)
 			{
-				dodgesfx = dodgeSound;
+				soundsfx = dodgeSound;
 			}
-			if (dodgesfx != nullptr)
+			if (soundsfx != nullptr)
 			{
-				dodgesfx->setVolume(soundVol);
+				soundsfx->setVolume(soundVol);
 			}
 			
 		}
@@ -1009,7 +1015,7 @@ void CPlayer2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 
-	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
+	angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 
@@ -1305,6 +1311,11 @@ void CPlayer2D::LoseHealth(float health)
 	}
 }
 
+bool CPlayer2D::getAttacking()
+{
+	return attacking;
+}
+
 bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
@@ -1352,11 +1363,6 @@ void CPlayer2D::setitem(int arr, int itemid)
 
 }
 
-void CPlayer2D::setitemquantity(int arr, int quantity)
-{
-	inventorySlots[arr].setquantity(quantity);
-}
-
 int CPlayer2D::getitemval(int arr)
 {
 	return inventorySlots[arr].getitemID();
@@ -1376,8 +1382,3 @@ float CPlayer2D::returnsound()
 {
 	return soundVol;
 }
-
-
-
-
-

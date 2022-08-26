@@ -1,31 +1,587 @@
-﻿  InventoryState.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(124,43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(123,74): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(125,94): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(125,54): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(158,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(157,77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(159,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\GameStateManagement\InventoryState.cpp(159,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  LINK : C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe not found or not built by the last incremental link; performing full link
+﻿  Application.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(54,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(59,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(341,14): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(490,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(627,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(628,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(638,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(639,22): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(650,21): warning C4018: '<': signed/unsigned mismatch
+  InventoryItem.cpp
+  Player2D.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(384,29): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(395,30): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(428,30): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(452,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(468,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(497,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(601,50): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(639,58): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(649,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(650,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(652,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(665,58): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(668,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(673,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(674,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(676,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(690,58): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(693,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(698,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(699,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(701,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(725,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(726,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(728,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(751,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(752,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(754,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(768,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(773,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(774,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(776,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(793,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(798,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(799,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(801,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(815,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(820,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(821,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(823,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(847,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(848,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(850,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(871,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(872,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(874,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(891,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(896,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(897,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(899,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(920,30): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(921,15): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(923,19): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(981,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(982,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1018,81): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1071,51): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1080,51): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1104,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1104,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1142,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1142,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1152,46): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1152,33): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1156,46): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1156,33): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1163,45): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1163,32): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1209,49): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1209,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1214,50): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1214,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1214,111): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1214,97): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1228,52): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1228,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1233,53): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1233,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1233,118): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1233,101): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1247,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1247,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1252,52): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1252,39): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1252,115): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1252,99): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1261,49): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1261,36): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1266,50): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1266,37): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1266,109): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1266,94): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Player2D.cpp(1309,26): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
+  Projectile2D.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(121,24): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(127,24): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(130,58): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(132,71): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(137,29): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(139,18): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(155,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(156,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(257,51): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(257,38): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(260,44): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Projectile2D.cpp(260,31): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Skeleton.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(54,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(59,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(83,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(143,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(162,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(183,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(184,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(193,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(193,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(199,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(217,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(217,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(243,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(243,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(249,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(268,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(268,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  SkeletonShot.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\SkeletonShot.cpp(97,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\SkeletonShot.cpp(98,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\SkeletonShot.cpp(113,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  WoodenHilt2D.cpp
+  Generating Code...
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-Library.lib(Settings.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui_impl_glfw.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui_impl_opengl3.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui_draw.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui_tables.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(imgui_widgets.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(KeyboardController.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(MouseController.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(Entity2D.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(Mesh.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(MeshBuilder.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(SpriteAnimation.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(ShaderManager.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(ImageLoader.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(FPSCounter.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-Library.lib(StopWatch.obj) : warning LNK4204: 'C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
-  App.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe
+  App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe

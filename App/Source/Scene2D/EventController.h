@@ -8,11 +8,8 @@
 //player instance
 #include "Map2D.h"
 #include "Player2D.h"
-//#include "Shivs2D.h"
-
-#include "Octopus.h"
-#include "Chicken.h"
-#include "Spider.h"
+#include "Projectile2D.h"
+//#include "item.h"
 
 using namespace std;
 
@@ -44,8 +41,8 @@ public:
 		enemyVector.push_back(enemy);
 	}
 
-	void spawnProjectiles(CEntity2D* projectile/*, glm::vec2 position, glm::vec2 direction*/) {
-		cout << "projectilespawn" << endl;
+	void spawnProjectiles(CProjectile2D* projectile, glm::vec2 vec2Index) {
+		projectile->vec2Index = vec2Index;
 		projectileVector.push_back(projectile);
 	}
 
