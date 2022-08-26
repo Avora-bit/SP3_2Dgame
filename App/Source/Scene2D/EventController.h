@@ -6,21 +6,19 @@
 //include entities
 //foreground and background
 //player instance
+#include "Map2D.h"
 #include "Player2D.h"
+//#include "Shivs2D.h"
+
 #include "Octopus.h"
 #include "Chicken.h"
 #include "Spider.h"
-#include "Projectile2D.h"
-//#include "item.h"
-
 
 using namespace std;
 
 class EventController : public CSingletonTemplate<EventController> {
 	friend CSingletonTemplate<EventController>;
 private:
-	//vectors to store data
-	//event
 
 public:
 	EventController() {
@@ -35,30 +33,27 @@ public:
 	vector<CEntity2D*> projectileVector;
 
 	void Init() {
+		//get player and map singleton
+
 		//creates all instances
 		enemyVector.clear();
 		projectileVector.clear();
 	}
 
-	void spawnEnemies(CEnemy2D* enemy) {
+	void spawnEnemies(CEntity2D* enemy) {
 		enemyVector.push_back(enemy);
 	}
 
-	void spawnProjectiles(CProjectile2D* projectile, glm::vec2 vec2Index) {
+	void spawnProjectiles(CEntity2D* projectile/*, glm::vec2 position, glm::vec2 direction*/) {
 		cout << "projectilespawn" << endl;
 		projectileVector.push_back(projectile);
 	}
 
-	void spawnitems() {
+	void spawnitems(int itemID/*, location*/) {
 		cout << "itemspawn" << endl;
 	}
 
-	void events() {			//controls events
-		cout << "eventstarted" << endl;
-	}
-
-
-	void update(const double dElapsedTime) {			//runs every frame
+	void update(const double dElapsedTime) {
 		for (int i = 0; i < enemyVector.size(); i++)
 		{
 			enemyVector[i]->Update(dElapsedTime);

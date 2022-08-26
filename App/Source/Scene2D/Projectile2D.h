@@ -26,6 +26,8 @@
 #include "..\SoundController\SoundController.h"
 
 // Include the Map2D as we will use it to check the player's movements and actions
+#include "Map2D.h"
+#include "Player2D.h"
 class CMap2D;
 class CPlayer2D;
 class Camera;
@@ -43,19 +45,18 @@ class Camera;
 #include "InventoryManager.h"
 #include "GameManager.h"
 
-#include <iostream>
-using namespace std;
-
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 
 // Include ImageLoader
 #include "System\ImageLoader.h"
 
-// Include the Map2D as we will use it to check the player's movements and actions
-#include "Map2D.h"
-#include "Player2D.h"
 #include "Primitives/MeshBuilder.h"
+
+
+#include <iostream>
+using namespace std;
+
 
 class CProjectile2D : public CEntity2D
 {
@@ -78,14 +79,6 @@ public:
 	bool bIsActive;
 
 protected:
-	enum DIRECTION
-	{
-		LEFT = 0,
-		RIGHT = 1,
-		UP = 2,
-		DOWN = 3,
-		NUM_DIRECTIONS
-	};
 
 	int atk;
 	float mspeed;
@@ -122,12 +115,12 @@ protected:
 	virtual ~CProjectile2D(void);
 
 	// Constraint the player's position within a boundary
-	void Constraint(DIRECTION eDirection = LEFT);
+	//void Constraint(DIRECTION eDirection = LEFT);
 
 	void InteractWithMap(void);
 	virtual bool InteractWithPlayer();
 
-	bool CheckPosition(DIRECTION eDirection);
+	//bool CheckPosition(DIRECTION eDirection);
 
 	void trajectory();
 };
