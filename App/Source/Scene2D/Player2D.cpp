@@ -31,7 +31,6 @@ CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cMouseController(NULL)
 	, cKeyboardController(NULL)
-	, cMouseController(NULL)
 	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
@@ -121,7 +120,7 @@ bool CPlayer2D::Init(void)
 	soundVol = 1.f;
 
 	throwing = false;
-	maxPForce = 15;
+	maxPForce = 10;
 	minPForce = 5;
 	ProjectileForce = 0;
 
@@ -212,11 +211,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
-
-
 	//Add ITEMS
 	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -228,7 +222,7 @@ bool CPlayer2D::Init(void)
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
 
-	sword->replaceBlade(new CRustyBlade2D());
+	//sword->replaceBlade(new CRustyBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -434,7 +428,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			attacking = false;
 			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
 		}
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
 		{
 			attacking = true;
 			leftClickDown = true;
@@ -442,7 +436,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
 		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
 		{
 			leftClickDown = false;
 		}
