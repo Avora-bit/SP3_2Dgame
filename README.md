@@ -44,19 +44,19 @@ background
 99 grass/
 98 sand/
 97 water/
-96 cross/
-95 ladderdown/
-94 ladderup/
-93 brickfloor/
-92 trap/
+96 brickfloor/
+95 trap/
 
 foreground
 100 tree/
 101 wall/
 
 map entities-foreground
-80 treasure/
-79 web/
+80 cross/
+79 treasure/
+78 ladderdown/
+77 ladderup/
+76 web/
 
 items
 0 blank

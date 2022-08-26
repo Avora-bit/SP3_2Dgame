@@ -10,6 +10,7 @@
 #include "Octopus.h"
 #include "Chicken.h"
 #include "Spider.h"
+#include "Projectile2D.h"
 //#include "item.h"
 
 
@@ -19,8 +20,6 @@ class EventController : public CSingletonTemplate<EventController> {
 	friend CSingletonTemplate<EventController>;
 private:
 	//vectors to store data
-	//enemy
-	//item
 	//event
 
 public:
@@ -43,6 +42,11 @@ public:
 
 	void spawnEnemies(CEnemy2D* enemy) {
 		enemyVector.push_back(enemy);
+	}
+
+	void spawnProjectiles(CProjectile2D* projectile, glm::vec2 vec2Index) {
+		cout << "projectilespawn" << endl;
+		projectileVector.push_back(projectile);
 	}
 
 	void spawnitems() {

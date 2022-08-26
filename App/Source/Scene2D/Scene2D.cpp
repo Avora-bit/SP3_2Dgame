@@ -112,62 +112,87 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		MapGen* island = new MapGen;
 		island->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
-		island->randomfill();
+		island->randomfill(2, 1);
+		//stabilize map
 		for (int i = 0; i < 20; i++) {				//rounding out edges
 			island->updateIsland();
 		}
-		island->growsand();		//grow 1 radius of sand
+		island->growtile(2);		//smooth edge
+		island->growtile(3);		//grow sand
 		//replace proper keys
 		island->convertKeys();
-		island->randreplace(200, 98);			//replace sand with player
 
-		int randspawn = rand() % 5 + 5;		//random number of cross, 5-10 cross
-		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(96, 98);			//replace sand with cross
-		}
-
-		randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
-		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(96, 98);			//replace grass with tree
-		}
-		
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename);
-
+		std::cout << "BG exported";
 		//foreground
-		string FGfilename = "Maps/IslandFG.csv";
-		island->populateIsland();
+		//convert keys back into array
+		island->revertKeys();
+		//delete water
+		island->deleteall(1);			//delete all sand
+		//spawn player
+		island->randreplace(200, 3);
+		//populate the foreground
+		//cross on sand
+		int randspawn = rand() % 10 + 20;		//random number of cross, 20-30 cross
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(8, 3);			//replace sand with cross
+		}
+		island->deleteall(3);			//delete all sand
+		//tree on grass
+		randspawn = rand() % 100 + 300;			//300-400 trees
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(6, 2);			//replace grass with tree
+		}
+		island->deleteall(2);			//delete all grass
 
+		//spawn structure with ladderdown
+
+		//randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
+		//for (int i = 0; i < randspawn; i++) {
+		//	island->randreplace(96, 98);			//replace grass with tree
+		//}
+
+		island->convertKeys();
+		string FGfilename = "Maps/IslandFG.csv";
 		island->exportmap(FGfilename);
+		std::cout << "FG exported";
 		//clean
 		delete island;
 		island = nullptr;
 	}
 	//generate dungeon
 	{
-		MapGen* dungeon = new MapGen;
-		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
-			CSettings::GetInstance()->NUM_TILES_YAXIS);
-		dungeon->randomfill();
-		//for (int i = 0; i < 20; i++) {				//rounding out edges
-		//	dungeon->updateMap();
-		//}
-		dungeon->growsand();		//sand radius of 1
-		//replace proper keys
-		dungeon->convertKeys();
-		dungeon->randreplace(200, 98);			//replace sand with player
+		//MapGen* dungeon = new MapGen;
+		//dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+		//	CSettings::GetInstance()->NUM_TILES_YAXIS);
+		//dungeon->randomfill();
+		////for (int i = 0; i < 20; i++) {				//rounding out edges
+		////	dungeon->updateMap();
+		////}
+		//dungeon->growsand();		//sand radius of 1
+		////replace proper keys
+		//dungeon->convertKeys();
+		//dungeon->randreplace(200, 98);			//replace sand with player
 
-		string BGfilename = "Maps/DungeonBG.csv";
-		dungeon->exportmap(BGfilename);
+		//string BGfilename = "Maps/DungeonBG.csv";
+		//dungeon->exportmap(BGfilename);
 
-		//foreground
-		string FGfilename = "Maps/DungeonFG.csv";
-		dungeon->PopulateDungeon();
+		////foreground
+		//string FGfilename = "Maps/DungeonFG.csv";
 
-		dungeon->exportmap(FGfilename);
-		//clean
-		delete dungeon;
-		dungeon = nullptr;
+		////ladder up
+
+		////spike trap
+
+		////treasure chest
+
+		////spawn last room with boss
+
+		//dungeon->exportmap(FGfilename);
+		////clean
+		//delete dungeon;
+		//dungeon = nullptr;
 	}
 
 
@@ -183,11 +208,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		cout << "Failed to load Island" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
+	/*if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
 		return false;
-	}
+	}*/
 	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 

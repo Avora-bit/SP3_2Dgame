@@ -111,7 +111,7 @@ bool CPlayer2D::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	ProjectileForce = 0;
@@ -122,7 +122,7 @@ bool CPlayer2D::Init(void)
 
 	soundVol = 1.f;
 
-	cMap2D->SetMapInfo(uiRow, uiCol, 98);			//replace player with sand cause they spawn on sand
+	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -225,11 +225,6 @@ bool CPlayer2D::Init(void)
 
 
 
-
-
-
-
-
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
@@ -247,69 +242,20 @@ bool CPlayer2D::Init(void)
 		
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
-
+		//inventory
 		{
-			//if (inventorySlots[i].getitemID() == 1)
-			//{
-			//	//cInventoryItem = cInventoryManager->GetItem("Stick")->GetTextureID();
-			//	inventorySlots->settextureID(cInventoryManager->GetItem("Stick")->GetTextureID());
-			//}
+			//inventorySlots[i].AddQuantity(1);
 
-			//LOAD THE IMAGE IN INVENTORY
-			//textureID = il->LoadTextureGetID(fileName.c_str(), false);
-			/*inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Base/wood.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(2, inventorySlots[i].gettextureID()));
-			}
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/bow.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Weapons/bow.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(7, inventorySlots[i].gettextureID()));
-			}
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/sword.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Weapons/sword.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(6, inventorySlots[i].gettextureID()));
-			}
-
-
-
-			inventorySlots[i].settextureID(CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.png", true));
-			if (iTextureID == 0)
-			{
-				cout << "Unable to load Image/Sp3Images/Base/stick.png" << endl;
-				return false;
-			}
-			else
-			{
-				MapOfTextureIDs.insert(pair<int, int>(1, inventorySlots[i].gettextureID()));
-			}*/
-			//inventorySlots[i].Init(il);
-			//cout << "MAP " << i << " IS " << inventorySlots[i].returnMap().at(inventorySlots[i].getitemID()) << endl;
+			inventorySlots[i].AddQuantity(1);
 
 		}
+
+
+		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
+
+
+		
 	}
-
-	
-
 
 	return true;
 }
@@ -887,6 +833,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//spawn projectile logic
 	{
+		//replace with mouse control
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
@@ -908,6 +855,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 				//add to projectile list
 			}
 			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+
+			throwing = false;
+			ProjectileForce = 0;
 		}
 		else {
 			//reset force
@@ -1041,7 +991,10 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 
 void CPlayer2D::InteractWithMap(void)
 {
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
+	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
+		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
+		//background switch
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 	{
 	case 97:		//water
 		//disable dash
@@ -1056,20 +1009,9 @@ void CPlayer2D::InteractWithMap(void)
 		//slows by abit
 		movementSpeed = 0.9f;
 		break;
-	
-	case 95:		//dungeon ladderdown
-		//add level
-		cGameManager->bLevelIncrease = true;
-		break;
 
-	case 94:		//dungeon ladderup
-		//remove level
-		cGameManager->bLevelDecrease = true;
-		break;
-
-
-	//FOR INVENTORY PURPOSES - REAGAN
-	//case 7:
+		//FOR INVENTORY PURPOSES - REAGAN
+		//case 7:
 	case 2:
 	case 1:
 		for (int i = 0; i < 9; i++)
@@ -1083,10 +1025,44 @@ void CPlayer2D::InteractWithMap(void)
 			}
 		}
 		break;
-	//
+
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
+		break;
+	}
+
+	//foreground switch
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	{
+	case 80:		//cross
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+			//shovel the cross to spawn treasures
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 79, true, 1);
+		}
+		break;
+	case 79:		//treasure
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/ ) {
+			//open chest to spawn loot
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		}
+		break;
+	case 78:		//dungeon ladderdown
+		//add level
+		cGameManager->bLevelIncrease = true;
+		break;
+
+	case 77:		//dungeon ladderup
+		//remove level
+		cGameManager->bLevelDecrease = true;
+		break;
+	case 76:		//web
+		//slow speed
+		//prevent dash
+		break;
+	default:
+		//reset speed
+		//reset dash true
 		break;
 	}
 }
