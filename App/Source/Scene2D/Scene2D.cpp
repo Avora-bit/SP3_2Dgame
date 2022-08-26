@@ -73,12 +73,7 @@ CScene2D::~CScene2D(void)
 		CShivs2D = NULL;
 	}
 
-	for (int i = 0; i < itemVector.size(); i++)
-	{
-		delete itemVector[i];
-		itemVector[i] = NULL;
-	}
-	itemVector.clear();
+	
 
 	if (cGUI_Scene2D)
 	{

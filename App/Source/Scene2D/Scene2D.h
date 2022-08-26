@@ -42,7 +42,6 @@
 #include "Map2D.h"
 #include "Player2D.h"
 #include "Shivs2D.h"
-#include "Items.h"
 
 #include "GUI_Scene2D.h"
 
@@ -95,8 +94,7 @@ protected:
 
 	CShivs2D* CShivs2D;
 
-	//set items
-	vector<CItems2D*> itemVector;
+	
 
 
 	CPhysics2D cPhysics2D;
