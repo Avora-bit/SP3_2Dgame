@@ -313,9 +313,18 @@ bool CCraftingState::Update(const double dElapsedTime)
 					int payload_n = *(const int*)payload->Data;
 
 					//swap images and itemId inside
-					slot tmp = butnum[n];
+					/*slot tmp = butnum[n];
 					butnum[n] = butnum[payload_n];
-					butnum[payload_n] = tmp;
+					butnum[payload_n] = tmp;*/
+
+
+					int tmp = butnum[n].gettextureID();
+					butnum[payload_n].settextureID(butnum[n].gettextureID());
+					//butnum[payload_n] = tmp;
+
+
+					butnum[n].AddQuantity(1);
+					butnum[payload_n].SubtractQuantity(1);
 
 					//payload is what is selected to drag
 					// n is what it's being dragged to

@@ -34,6 +34,7 @@ public:
 	void Update(const double dElapsedTime, glm::vec2 playerPos);
 
 	glm::vec2 vec2Index;
+	glm::vec2 pureVec2Index;
 	float zoom;
 
 	glm::vec2 playerOffset;

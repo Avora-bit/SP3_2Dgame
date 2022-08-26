@@ -18,23 +18,22 @@ CRustyBlade2D::CRustyBlade2D(void)
 	sName = "Rusty Blade";
 
 	baseDamage = 10.0f;
-	baseAtkSpd = 1.0f;
+	baseAtkSpd = 0.2f;
 	baseRange = 2.0f;
 	baseDef = 0.f;
 
 	effect = CBlade2D::AILMENT::NONE;
 
 	// animatedSprites =
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/woodenSword.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/rustyswordslash.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load sword tile texture" << std::endl;
 	}
 	else
 	{
-		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
-		animatedSprites->AddAnimation("slash", 0, 0);
-		animatedSprites->PlayAnimation("slash", 0.3f, -1);
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 5, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
+		animatedSprites->AddAnimation("slash", 0, 4);
 	}
 }
 
@@ -48,7 +47,7 @@ CRustyBlade2D::~CRustyBlade2D(void)
 unsigned int CRustyBlade2D::LoadSprite()
 {
 	std::cout << "binginbg";
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/woodenSword.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/rustyswordslash.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load sword tile texture" << std::endl;
@@ -56,9 +55,8 @@ unsigned int CRustyBlade2D::LoadSprite()
 	}
 	else
 	{
-		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
-		animatedSprites->AddAnimation("slash", 0, 0);
-		animatedSprites->PlayAnimation("slash", 0.3f, -1);
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 5, CSettings::GetInstance()->TILE_WIDTH, CSettings::GetInstance()->TILE_HEIGHT);
+		animatedSprites->AddAnimation("slash", 0, 4);
 
 		return iTextureID;
 	}

@@ -56,6 +56,7 @@ private:
 		{10, 78},			//ladderdown
 		{11, 77},			//ladderup
 		{12, 76},			//web		//slows player
+
 	};
 
 	enum Tile

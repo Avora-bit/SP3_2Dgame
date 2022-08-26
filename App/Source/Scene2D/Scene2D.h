@@ -41,7 +41,6 @@
 // Map2D to check player's movements and actions
 #include "Map2D.h"
 #include "Player2D.h"
-#include "Items.h"
 
 #include "GUI_Scene2D.h"
 

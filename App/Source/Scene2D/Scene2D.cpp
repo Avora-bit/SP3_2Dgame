@@ -127,12 +127,57 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(8, 3);			//replace sand with cross
 		}
 		island->deleteall(3);			//delete all sand
+
+
 		//tree on grass
 		randspawn = rand() % 100 + 400;			//400-500 trees
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(6, 2);			//replace grass with tree
 		}
+
+
+		randspawn = rand() % 50 + 100;			//50-100 stick
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			island->randreplace(30, 2);			//replace grass with sticks
+		}
+
+		randspawn = rand() % 50 + 100;
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			island->randreplace(40, 2);			//replace grass with wood
+		}
+
+
 		island->deleteall(2);			//delete all grass
+
+
+
+
+		//{0, 0},				//void
+		//{ 1, 97 },			//water		//cannot dash, slows movement speed
+		//{ 2, 99 },			//grass		//spawn tree
+		//{ 3, 98 },			//sand		//spawn cross
+		//{ 4, 96 },			//brick floor		//no behavior
+		//{ 5, 95 },			//trap				//deals small amount of damage to the player, 5 hp
+		////solid tiles
+		//{ 6, 100 },			//tree
+		//{ 7, 101 },			//brick wall
+		////foreground tiles
+		//{ 8, 80 },			//cross		//spawn treasure
+		//{ 9, 79 },			//treasure	//spawn loot
+		//{ 10, 78 },			//ladderdown
+		//{ 11, 77 },			//ladderup
+		//{ 12, 76 },			//web		//slows player
+
+		
+
+
+
+		
+
+
+
 
 		//spawn structure with ladderdown
 
@@ -387,10 +432,6 @@ void CScene2D::Render(void)
 	cMap2D->PreRender();
 	cMap2D->Render();
 	cMap2D->PostRender();
-
-	cPlayer2D->PreRender();
-	cPlayer2D->Render();
-	cPlayer2D->PostRender();
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
 	{

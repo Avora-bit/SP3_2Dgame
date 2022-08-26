@@ -22,6 +22,7 @@ using namespace std;
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
+#include "CleaverBlade2D.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -143,15 +144,17 @@ bool CPlayer2D::Init(void)
 	// Load the player texture
 	// Load the ground texture
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/player.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/mc.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load player tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 3, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idle", 0, 0);
+	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	
 
 	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
@@ -184,7 +187,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Stamina", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem = cInventoryManager->Add("Stamina", "Image/stamina.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
@@ -200,20 +203,32 @@ bool CPlayer2D::Init(void)
 
 
 	//Add ITEMS
-	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
+
+	sword->replaceBlade(new CRustyBlade2D());
+
+	sword->getAnimatedSprites()->PlayAnimation("slash", -1, sword->getTotalAtkSpeed());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
 	il = CImageLoader::GetInstance();
+	
+	//MUST CONSIDER THESE POSSIBLE CASES
+	//1. SLOT REACHED MAX LIMIT
+	//2. ITEM PICKED UP IS A DIFFERENT ITEM
+	//3. IF ITEM IS EMPTIED
+	//if(itemid == inventoryslotitemid
+	//if(maxcount reached
+	//id count ==0
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
@@ -221,19 +236,28 @@ bool CPlayer2D::Init(void)
 		//inventorySlots[i].setitemID(0);
 		if (i % 2 == 0)
 		{
-			inventorySlots[i].setitemID(1);
+			inventorySlots[i].setitemID(30);
 		}
 		else
 		{
-			inventorySlots[i].setitemID(2);
+			inventorySlots[i].setitemID(40);
 		}
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
 		
 		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
+
+		inventorySlots[i].AddQuantity(5);
 		//inventory
-		
+		/*{
+			inventorySlots[i].AddQuantity(1);
+
+			inventorySlots[i].AddQuantity(1);
+
+		}*/
+
+		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 	}
 
 	return true;
@@ -317,6 +341,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
 	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
+
+	static bool walkKeyDown = false;
+	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W) || cKeyboardController->IsKeyDown(GLFW_KEY_A) || cKeyboardController->IsKeyDown(GLFW_KEY_S) || cKeyboardController->IsKeyDown(GLFW_KEY_D)) && !walkKeyDown)
+	{
+		walkKeyDown = true;
+		animatedSprites->PlayAnimation("walk", -1, 0.5f);
+	}
+	else if ((!cKeyboardController->IsKeyDown(GLFW_KEY_W) && !cKeyboardController->IsKeyDown(GLFW_KEY_A) && !cKeyboardController->IsKeyDown(GLFW_KEY_S) && !cKeyboardController->IsKeyDown(GLFW_KEY_D)) && walkKeyDown)
+	{
+		walkKeyDown = false;
+		animatedSprites->PlayAnimation("idle", -1, 1.f);
+	}
 
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
@@ -972,7 +1008,7 @@ void CPlayer2D::InteractWithMap(void)
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
 	{
 	case 97:		//water
 		//disable dash
@@ -990,14 +1026,14 @@ void CPlayer2D::InteractWithMap(void)
 
 		//FOR INVENTORY PURPOSES - REAGAN
 		//case 7:
-	case 2:
-	case 1:
+	case 30:
+	case 40:
 		for (int i = 0; i < 9; i++)
 		{
 			if (inventorySlots[i].getitemID() == 0)
 			{
-				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x));
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 				break;
 
 			}
@@ -1013,10 +1049,20 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
 	{
+
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
-			//shovel the cross to spawn treasures
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 79, true, 1);
+			//shovel the cross to spawn treasures/resources, which will be randomly generated
+			int random_generator = rand() % 2 + 1;
+
+			if (random_generator == 2)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 30, true, 1);
+			}
+			else
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 40, true, 1);
+			}
 		}
 		break;
 	case 79:		//treasure
@@ -1043,6 +1089,23 @@ void CPlayer2D::InteractWithMap(void)
 		//reset dash true
 		break;
 	}
+
+
+
+
+	//forage tree
+	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
+	//{
+	//	if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+
+	//	}
+	//}
+
+
+	/*switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	{
+
+	}*/
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1160,8 +1223,22 @@ bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
 	{
+
+		if (inventorySlots[i].getquantity() == 5)
+		{
+			inventorySlots[i+1].setitemID(itemid);
+			inventorySlots[i+1].settextureID(itemid);
+		}
+		else
+		{
+			inventorySlots[i].AddQuantity(1);
+		}
+
+
 		if (inventorySlots[i].getitemID() == 0)
 		{
+			
+
 			inventorySlots[i].setitemID(itemid);
 			inventorySlots[i].settextureID(itemid);
 
@@ -1210,14 +1287,6 @@ float CPlayer2D::returnsound()
 }
 
 
-int CPlayer2D::getx()
-{
-	return vec2Index.x;
-}
 
-int CPlayer2D::gety()
-{
-	return vec2Index.y;
-}
 
 

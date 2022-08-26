@@ -166,7 +166,6 @@ public:
 	void setsound(float vol);
 	float returnsound();
 
-	int CPlayer2D::getx();
-	int CPlayer2D::gety();
+	
 
 };

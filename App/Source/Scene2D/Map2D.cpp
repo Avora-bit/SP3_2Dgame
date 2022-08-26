@@ -274,7 +274,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 		else
 		{
-			MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(30, iTextureID));
 		}
 
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
@@ -285,7 +285,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 		else
 		{
-			MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(40, iTextureID));
 		}
 	}
 
