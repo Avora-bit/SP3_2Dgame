@@ -40,7 +40,6 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -83,11 +82,16 @@ CPlayer2D::~CPlayer2D(void)
 	}
 
 	if (soundsfx)
-	{
-		delete soundsfx;
-		soundsfx = NULL;
-	}
-
+		soundsfx = nullptr;
+	if (dodgesfx)
+		dodgesfx = nullptr;
+	if (grasssfx)
+		grasssfx = nullptr;
+	if (watersfx)
+		watersfx = nullptr;
+	if (sandsfx)
+		sandsfx = nullptr;
+	
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 }
@@ -135,6 +139,8 @@ bool CPlayer2D::Init(void)
 
 	movementSpeed = 1.f;
 	attacking = false;
+
+	soundsfx = nullptr;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -1368,6 +1374,10 @@ void CPlayer2D::setitem(int arr, int itemid)
 	inventorySlots[arr].settextureID(itemid);
 	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
+}
+
+void CPlayer2D::setitemquantity(int arr, int quantity)
+{
 }
 
 int CPlayer2D::getitemval(int arr)

@@ -87,6 +87,8 @@ protected:
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 vec2Direction;
 
+	float mspeed;
+
 	double distanceTravelled;
 
 	// Handler to the CMap2D instance
