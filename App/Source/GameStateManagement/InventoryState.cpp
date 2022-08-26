@@ -82,7 +82,7 @@ bool CInventoryState::Init(void)
 			butnum[i].settextureID(butnum[i].getitemID());
 
 
-			butnum[i].AddQuantity(cPlayer2D->getitem(i).getquantity());
+			butnum[i].setquantity(cPlayer2D->getitem(i).getquantity());
 
 
 			cout << "INVENTORY STATE IS " << butnum[i].gettextureID() << endl;
@@ -120,8 +120,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 	//DISPLAY WORDS
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
-	ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
-		CSettings::GetInstance()->iWindowHeight / 3.0));				// Set the top-left of the window at (10,10)
+	ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 1.0,
+		CSettings::GetInstance()->iWindowHeight / 3.0));			// Set the top-left of the window at (10,10)
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 	//Added rounding for nicer effect
@@ -137,13 +137,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 		if ((n % 3) != 0)
 			ImGui::SameLine();
 
-		//string x = to_string(n);
-		//strcpy(y, x.c_str());
-
-		//render the bar yellow if it's hotbar
-
-		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
-		/*ImGui::CalcTextSize("H", NULL, false, 10);*/
 		ImGui::SetWindowFontScale(4.f);
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
 		/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
@@ -161,8 +154,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Inventory", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/3.0));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth / 2.0) - buttonWidth / 100.0,
+			(CSettings::GetInstance()->iWindowHeight / 3.0) - 100));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -284,6 +277,15 @@ bool CInventoryState::Update(const double dElapsedTime)
 		
 	}
 
+
+	for (int n = 0; n < 9; n++)
+	{
+		cPlayer2D->setitemquantity(n, butnum[n].getquantity());
+		cPlayer2D->setitem(n, butnum[n].getitemID());
+
+		cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n).getquantity() << endl;
+
+	}
 	//For keyboard controls
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{

@@ -1103,8 +1103,7 @@ void CPlayer2D::InteractWithMap(void)
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
-	{
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0)) {
 	case 97:		//water
 		//disable dash
 		dashTrue = false;
@@ -1119,21 +1118,6 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.9f;
 		break;
 
-	//PICKING UP ITEMS
-	/*case 30:
-	case 40:
-		for (int i = 0; i < 9; i++)
-		{
-			if (inventorySlots[i].getitemID() == 0)
-			{
-				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
-				break;
-
-			}
-		}
-		break;*/
-
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1141,9 +1125,7 @@ void CPlayer2D::InteractWithMap(void)
 	}
 
 	//foreground switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
-	{
-
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
@@ -1160,7 +1142,7 @@ void CPlayer2D::InteractWithMap(void)
 		}
 		break;
 	case 79:		//treasure
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/ ) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/) {
 			//open chest to spawn loot
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 		}
@@ -1178,6 +1160,22 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		//prevent dash
 		break;
+
+	//PICKING UP ITEMS
+	/*case 30:
+	case 40:
+		for (int i = 0; i < 9; i++)
+		{
+			if (inventorySlots[i].getitemID() == 0)
+			{
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+				break;
+
+			}
+		}
+		break;*/
+	
 	default:
 		//reset speed
 		//reset dash true

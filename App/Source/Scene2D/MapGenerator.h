@@ -56,11 +56,9 @@ private:
 		{10, 78},			//ladderdown
 		{11, 77},			//ladderup
 		{12, 76},			//web		//slows player
-
 	};
 
-	enum Tile
-	{
+	enum Tile {
 		Unused = ' ',
 		Floor = '.',
 		Corridor = ',',
@@ -68,6 +66,16 @@ private:
 		Door = '+',
 		UpStairs = '<',
 		DownStairs = '>'
+	};
+
+	char Dungeon_Convert[7][2] = {
+		{' ', 96},		//empty			//brick floor
+		{'.', 0},		//out of bounds	//void
+		{',', 96},		//corridor		//brick floor
+		{'#', 101},		//wall			//brick wall
+		{'+', 96},		//door			//brick floor
+		{'<', 78},		////ladderdown
+		{'>', 77},		////ladderup
 	};
 
 	enum Direction

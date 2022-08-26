@@ -252,9 +252,13 @@ bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 				//cout << "VALUE IS " << craftingGameState->returnbutnumval(i) << endl;
 				for (int n = 0; n < 9; n++)
 				{
-					if (cPlayer2D->getitemval(n) == 0)
+					if (cPlayer2D->getitemval(n) == 0
+						|| 
+						(cPlayer2D->getitemval(n) == craftingGameState->returnbutnumval(i)
+							&& cPlayer2D->getitem(n).getquantity() < 5))
 					{
 						cPlayer2D->setitem(n, craftingGameState->returnbutnumval(i));
+
 
 						break;
 					}

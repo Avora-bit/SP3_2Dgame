@@ -253,16 +253,6 @@ bool Application::Init(void)
 
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 
-	// Initialise the CScene2D instance
-	/*
-	cScene2D = CScene2D::GetInstance();
-	if (cScene2D->Init() == false)
-	{
-		cout << "Failed to load Scene2D" << endl;
-		return false;
-	}
-	*/
-
 	// Initialise the CFPSCounter instance
 	cFPSCounter = CFPSCounter::GetInstance();
 	cFPSCounter->Init();
@@ -345,17 +335,6 @@ void Application::Destroy(void)
 		cFPSCounter = NULL;
 	}
 
-
-
-
-
-	/*
-	if (cScene2D)
-	{
-		cScene2D->Destroy();
-		cScene2D = NULL;
-	}
-	*/
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(cSettings->pWindow);
 	//Finalize and clean up GLFW
