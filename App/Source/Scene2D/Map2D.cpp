@@ -39,11 +39,15 @@ CMap2D::~CMap2D(void)
 	// Dynamically deallocate the 3D array used to store the map information
 	for (unsigned int uiLevel = 0; uiLevel < uiNumLevels; uiLevel++)
 	{
-		for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS; iRow++)
+		for (unsigned int uiLayer = 0; uiLayer < 2; uiLayer++)
 		{
-			delete[] arrMapInfo[uiLevel][iRow];
+			for (unsigned int iRow = 0; iRow < cSettings->NUM_TILES_YAXIS; iRow++)
+			{
+				delete[] arrMapInfo[uiLevel][uiLayer][iRow];
+			}
+			delete[] arrMapInfo[uiLevel][uiLayer];
 		}
-		delete [] arrMapInfo[uiLevel];
+		delete[] arrMapInfo[uiLevel];
 	}
 	delete[] arrMapInfo;
 
@@ -81,18 +85,24 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 
 	// Create the arrMapInfo and initialise to 0
 	// Start by initialising the number of levels
-	arrMapInfo = new Grid** [uiNumLevels];
+	arrMapInfo = new Grid*** [uiNumLevels];
 	for (unsigned uiLevel = 0; uiLevel < uiNumLevels; uiLevel++)
 	{
-		arrMapInfo[uiLevel] = new Grid* [uiNumRows];
-		for (unsigned uiRow = 0; uiRow < uiNumRows; uiRow++)
+		//for loop for layer
+		arrMapInfo[uiLevel] = new Grid ** [2];				//2 layers
+		for (unsigned uiLayer = 0; uiLayer < 2; uiLayer++)	//^^
 		{
-			arrMapInfo[uiLevel][uiRow] = new Grid[uiNumCols];
-			for (unsigned uiCol = 0; uiCol < uiNumCols; uiCol++)
+			arrMapInfo[uiLevel][uiLayer] = new Grid * [uiNumRows];
+			for (unsigned uiRow = 0; uiRow < uiNumRows; uiRow++)
 			{
-				arrMapInfo[uiLevel][uiRow][uiCol].value = 0;
+				arrMapInfo[uiLevel][uiLayer][uiRow] = new Grid[uiNumCols];
+				for (unsigned uiCol = 0; uiCol < uiNumCols; uiCol++)
+				{
+					arrMapInfo[uiLevel][uiLayer][uiRow][uiCol].value = 0;
+				}
 			}
 		}
+		
 	}
 
 	// Store the map sizes in cSettings
@@ -145,10 +155,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(97, iTextureID));
 		}
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/cross.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/brickfloor.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/cross.tga" << endl;
+			cout << "Unable to load Image/brickfloor.tga" << endl;
 			return false;
 		}
 		else
@@ -156,17 +166,17 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(96, iTextureID));
 		}
-		//iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/treasure.tga", true);
-		//if (iTextureID == 0)
-		//{
-		//	cout << "Unable to load Image/treasure.tga" << endl;
-		//	return false;
-		//}
-		//else
-		//{
-		//	// Store the texture ID into MapOfTextureIDs
-		//	MapOfTextureIDs.insert(pair<int, int>(95, iTextureID));
-		//}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapTiles/spike.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/spike.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(95, iTextureID));
+		}
 	}
 
 	//solid tiles
@@ -195,29 +205,88 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
 		}
 	}
+	//foreground items
+	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/cross.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/cross.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(80, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/treasure.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/treasure.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(79, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/ladderdown.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/ladderdown.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(78, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/ladderup.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/ladderup.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(77, iTextureID));
+		}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/MapEntities/web.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/web.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(76, iTextureID));
+		}
+	}
 	
 	//FOR INVENTORY TESTING PURPOSES - REAGAN
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
-	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
-	}
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Sp3Images/Base/stick.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+		}
 
-
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Sp3Images/Base/wood.tga" << endl;
-		return false;
-	}
-	else
-	{
-		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Sp3Images/Base/wood.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar
@@ -289,9 +358,13 @@ void CMap2D::Render(void)
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 			// Render a tile
-			RenderTile(uiRow, uiCol);
+			RenderTile(uiRow, uiCol, 0);		//background first
+			RenderTile(uiRow, uiCol, 1);		//foreground after
 		}
 	}
+
+	//add new variable to render tile, accepts uilayer
+	//
 }
 
 /**
@@ -369,65 +442,102 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
  @param iCol A const int variable containing the column index of the element to set to
  @param iValue A const int variable containing the value to assign to this arrMapInfo
  */
-void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert)
+void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert, const int uilayer)
 {
 	if (bInvert)
-		arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
 	else
-		arrMapInfo[uiCurLevel][uiRow][uiCol].value = iValue;
+		arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value = iValue;
 }
-
 /**
  @brief Get the value at certain indices in the arrMapInfo
  @param iRow A const int variable containing the row index of the element to get from
  @param iCol A const int variable containing the column index of the element to get from
  @param bInvert A const bool variable which indicates if the row information is inverted
  */
-int CMap2D::GetMapInfo(const unsigned int uiRow, const int unsigned uiCol, const bool bInvert) const
+int CMap2D::GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert, const int uilayer)
 {
 	if (bInvert)
-		return arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value;
+		return arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value;
 	else
-		return arrMapInfo[uiCurLevel][uiRow][uiCol].value;
+		return arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value;
+	return 0;
 }
 
 /**
  @brief Load a map
  */ 
-bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
+bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int uiLevel)
 {
-	doc = rapidcsv::Document(FileSystem::getPath(filename).c_str());
+	{		//background
+		doc = rapidcsv::Document(FileSystem::getPath(BGfilename).c_str());
 
-	//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
-	//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
+		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
+		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
 
-	// Check if the sizes of CSV data matches the declared arrMapInfo sizes
-	if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
-		(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
-	{
-		if (cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) {
-			cout << (unsigned int)doc.GetColumnCount() << " != " << cSettings->NUM_TILES_XAXIS << endl;
-			cout << "Column of CSV map does not match declared arrMapInfo column size." << endl;
+		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
+		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
+			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
+		{
+			if (cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) {
+				cout << (unsigned int)doc.GetColumnCount() << " != " << cSettings->NUM_TILES_XAXIS << endl;
+				cout << "Column of CSV map does not match declared arrMapInfo column size." << endl;
+			}
+			if (cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()) {
+				cout << (unsigned int)doc.GetRowCount() << " != " << cSettings->NUM_TILES_YAXIS << endl;
+				cout << "Row of CSV map does not match declared arrMapInfo row size." << endl;
+			}
+
+			return false;
 		}
-		if (cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()) {
-			cout << (unsigned int)doc.GetRowCount() << " != " << cSettings->NUM_TILES_YAXIS << endl;
-			cout << "Row of CSV map does not match declared arrMapInfo row size." << endl;
-		}
 
-		
-		return false;
+		// Read the rows and columns of CSV data into arrMapInfo
+		for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+		{
+			// Read a row from the CSV file
+			std::vector<std::string> row = doc.GetRow<std::string>(uiRow);
+
+			// Load a particular CSV value into the arrMapInfo
+			for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
+			{
+				arrMapInfo[uiCurLevel][0][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+			}
+		}
 	}
 
-	// Read the rows and columns of CSV data into arrMapInfo
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
-	{
-		// Read a row from the CSV file
-		std::vector<std::string> row = doc.GetRow<std::string>(uiRow);
-		
-		// Load a particular CSV value into the arrMapInfo
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
+	{		//foreground
+		doc = rapidcsv::Document(FileSystem::getPath(FGfilename).c_str());
+
+		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
+		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
+
+		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
+		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
+			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
 		{
-			arrMapInfo[uiCurLevel][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+			if (cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) {
+				cout << (unsigned int)doc.GetColumnCount() << " != " << cSettings->NUM_TILES_XAXIS << endl;
+				cout << "Column of CSV map does not match declared arrMapInfo column size." << endl;
+			}
+			if (cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()) {
+				cout << (unsigned int)doc.GetRowCount() << " != " << cSettings->NUM_TILES_YAXIS << endl;
+				cout << "Row of CSV map does not match declared arrMapInfo row size." << endl;
+			}
+
+			return false;
+		}
+
+		// Read the rows and columns of CSV data into arrMapInfo
+		for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+		{
+			// Read a row from the CSV file
+			std::vector<std::string> row = doc.GetRow<std::string>(uiRow);
+
+			// Load a particular CSV value into the arrMapInfo
+			for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
+			{
+				arrMapInfo[uiCurLevel][1][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+			}
 		}
 	}
 
@@ -438,23 +548,23 @@ bool CMap2D::LoadMap(string filename, const unsigned int uiCurLevel)
  @brief Save the tilemap to a text file
  @param filename A string variable containing the name of the text file to save the map to
  */
-bool CMap2D::SaveMap(string filename, const unsigned int uiCurLevel)
-{
-	// Update the rapidcsv::Document from arrMapInfo
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
-	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
-		{
-			doc.SetCell(uiCol, uiRow, arrMapInfo[uiCurLevel][uiRow][uiCol].value);
-		}
-		cout << endl;
-	}
-
-	// Save the rapidcsv::Document to a file
-	doc.Save(FileSystem::getPath(filename).c_str());
-
-	return true;
-}
+//bool CMap2D::SaveMap(string filename, const unsigned int uiCurLevel)
+//{
+//	// Update the rapidcsv::Document from arrMapInfo
+//	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+//	{
+//		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
+//		{
+//			doc.SetCell(uiCol, uiRow, arrMapInfo[uiCurLevel][uiRow][uiCol].value);
+//		}
+//		cout << endl;
+//	}
+//
+//	// Save the rapidcsv::Document to a file
+//	doc.Save(FileSystem::getPath(filename).c_str());
+//
+//	return true;
+//}
 
 /**
 @brief Find the indices of a certain value in arrMapInfo
@@ -463,13 +573,13 @@ bool CMap2D::SaveMap(string filename, const unsigned int uiCurLevel)
 @param iCol A const int variable containing the column index of the found element
 @param bInvert A const bool variable which indicates if the row information is inverted
 */
-bool CMap2D::FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert)
+bool CMap2D::FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert, const int uilayer)
 {
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
 		{
-			if (arrMapInfo[uiCurLevel][uiRow][uiCol].value == iValue)
+			if (arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value == iValue)
 			{
 				if (bInvert)
 					uirRow = cSettings->NUM_TILES_YAXIS - uiRow - 1;
@@ -506,13 +616,12 @@ unsigned int CMap2D::GetCurrentLevel(void) const
  @param iRow A const int variable containing the row index of the tile
  @param iCol A const int variable containing the column index of the tile
  */
-void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
+void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol, int layer)
 {
-	if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value > 0) &&
-		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+	if ((arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value > 0) &&
+		(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value < 200))
 	{
-		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
- 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
+ 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value));
 
 		glBindVertexArray(VAO);
 		//CS: Render the tile
@@ -666,7 +775,7 @@ void CMap2D::PrintSelf(void) const
 			{
 				cout.fill('0');
 				cout.width(3);
-				cout << arrMapInfo[uiLevel][uiRow][uiCol].value;
+				cout << arrMapInfo[uiLevel][0][uiRow][uiCol].value;
 				if (uiCol != cSettings->NUM_TILES_XAXIS - 1)
 					cout << ", ";
 				else
@@ -696,20 +805,20 @@ bool CMap2D::isValid(const glm::vec2& pos) const
 /**
  @brief Check if a grid is blocked
  */
-bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert) const
+bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert, const int uilayer)
 {
 	if (bInvert == true)
 	{
-		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 200))
+		if ((arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 100) &&
+			(arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 200))
 			return true;
 		else
 			return false;
 	}
 	else
 	{
-		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+		if ((arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value >= 100) &&
+			(arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value < 200))
 			return true;
 		else
 			return false;

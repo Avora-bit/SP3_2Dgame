@@ -100,6 +100,8 @@ protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
+	float angle;
+
 	// The vec2 which stores the indices of the enemy2D in the Map2D
 	glm::vec2 vec2Index;
 
@@ -159,9 +161,6 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
-
-	//int getx();
-	//int gety();
 
 	float speed_multiplier = 0.25f;
 	float atk;

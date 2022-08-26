@@ -73,14 +73,6 @@ CScene2D::~CScene2D(void)
 		CShivs2D = NULL;
 	}
 
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		delete enemyVector[i];
-		enemyVector[i] = NULL;
-	}
-	enemyVector.clear();
-
-
 	for (int i = 0; i < itemVector.size(); i++)
 	{
 		delete itemVector[i];
@@ -120,60 +112,87 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		MapGen* island = new MapGen;
 		island->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
-		island->randomfill();
+		island->randomfill(2, 1);
+		//stabilize map
 		for (int i = 0; i < 20; i++) {				//rounding out edges
-			island->updateMap();
+			island->updateIsland();
 		}
-		island->growsand();		//sand radius of 1
+		island->growtile(2);		//smooth edge
+		island->growtile(3);		//grow sand
 		//replace proper keys
 		island->convertKeys();
-		island->randreplace(200, 98);			//replace sand with player
 
-		int randspawn = rand() % 5 + 5;		//random number of cross, 5-10 cross
+		string BGfilename = "Maps/IslandBG.csv";
+		island->exportmap(BGfilename);
+		std::cout << "BG exported";
+		//foreground
+		//convert keys back into array
+		island->revertKeys();
+		//delete water
+		island->deleteall(1);			//delete all sand
+		//spawn player
+		island->randreplace(200, 3);
+		//populate the foreground
+		//cross on sand
+		int randspawn = rand() % 10 + 20;		//random number of cross, 20-30 cross
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(96, 98);			//replace sand with cross
+			island->randreplace(8, 3);			//replace sand with cross
 		}
-
-		randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
+		island->deleteall(3);			//delete all sand
+		//tree on grass
+		randspawn = rand() % 100 + 300;			//300-400 trees
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(96, 98);			//replace grass with tree
+			island->randreplace(6, 2);			//replace grass with tree
 		}
+		island->deleteall(2);			//delete all grass
 
-		string filename = "Maps/Island.csv";
-		island->exportmap(filename);
+		//spawn structure with ladderdown
+
+		//randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
+		//for (int i = 0; i < randspawn; i++) {
+		//	island->randreplace(96, 98);			//replace grass with tree
+		//}
+
+		island->convertKeys();
+		string FGfilename = "Maps/IslandFG.csv";
+		island->exportmap(FGfilename);
+		std::cout << "FG exported";
 		//clean
 		delete island;
 		island = nullptr;
 	}
 	//generate dungeon
 	{
-		MapGen* dungeon = new MapGen;
-		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
-			CSettings::GetInstance()->NUM_TILES_YAXIS);
-		dungeon->randomfill();
-		for (int i = 0; i < 20; i++) {				//rounding out edges
-			dungeon->updateMap();
-		}
-		dungeon->growsand();		//sand radius of 1
-		//replace proper keys
-		dungeon->convertKeys();
-		dungeon->randreplace(200, 98);			//replace sand with player
+		//MapGen* dungeon = new MapGen;
+		//dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+		//	CSettings::GetInstance()->NUM_TILES_YAXIS);
+		//dungeon->randomfill();
+		////for (int i = 0; i < 20; i++) {				//rounding out edges
+		////	dungeon->updateMap();
+		////}
+		//dungeon->growsand();		//sand radius of 1
+		////replace proper keys
+		//dungeon->convertKeys();
+		//dungeon->randreplace(200, 98);			//replace sand with player
 
-		int randspawn = rand() % 5 + 5;		//random number of chests, 5-10 chests
-		for (int i = 0; i < randspawn; i++) {
-			dungeon->randreplace(96, 98);			//replace sand with cross
-		}
+		//string BGfilename = "Maps/DungeonBG.csv";
+		//dungeon->exportmap(BGfilename);
 
-		randspawn = rand() % 20 + 20;		//random number of chests, 20-40 trees
-		for (int i = 0; i < randspawn; i++) {
-			dungeon->randreplace(96, 98);			//replace grass with tree
-		}
+		////foreground
+		//string FGfilename = "Maps/DungeonFG.csv";
 
-		string filename = "Maps/Dungeon.csv";
-		dungeon->exportmap(filename);
-		//clean
-		delete dungeon;
-		dungeon = nullptr;
+		////ladder up
+
+		////spike trap
+
+		////treasure chest
+
+		////spawn last room with boss
+
+		//dungeon->exportmap(FGfilename);
+		////clean
+		//delete dungeon;
+		//dungeon = nullptr;
 	}
 
 
@@ -184,19 +203,14 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		return false;
 	}
 
-	if (cMap2D->LoadMap("Maps/Island.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv", 0) == false)
 	{
-		cout << "Failed to load Island.csv" << endl;
+		cout << "Failed to load Island" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/Dungeon.csv", 1) == false)
+	/*if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
-		return false;
-	}
-
-	/*if (cMap2D->LoadMap("Maps/100x100.csv", 1) == false)
-	{
 		return false;
 	}*/
 	
@@ -225,17 +239,17 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	camera = Camera::GetInstance();
 	camera->Init();
 
-	enemyVector.clear();
-	/*
+	eventcontroller = EventController::GetInstance();
+	eventcontroller->Init();
 	while (true)
 	{
 		Octopus* octo = new Octopus();
 		octo->SetShader("Shader2D_Colour");
-		
+
 		if (octo->Init())
 		{
 			octo->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(octo);
+			eventcontroller->spawnEnemies(octo);
 		}
 		else
 			break;
@@ -248,12 +262,25 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		if (chicken->Init())
 		{
 			chicken->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(chicken);
+			eventcontroller->spawnEnemies(chicken);
 		}
 		else
 			break;
 	}
-	*/
+	while (true)
+	{
+		Spider* spider = new Spider();
+		spider->SetShader("Shader2D_Colour");
+
+		if (spider->Init())
+		{
+			spider->SetPlayer2D(cPlayer2D);
+			eventcontroller->spawnEnemies(spider);
+		}
+		else
+			break;
+	}
+
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -322,24 +349,12 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
-	//float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);
-
-	if (cPlayer2D->getx())
-	{
-
-	}
-
-
+	/*float fDistance = cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->);*/
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
 
 	camera->Update(dElapsedTime, glm::vec2(trackingPosX, trackingPosY));
-
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		enemyVector[i]->Update(dElapsedTime);
-	}
 
 	cGUI_Scene2D->Update(dElapsedTime);
 
@@ -359,27 +374,18 @@ bool CScene2D::Update(const double dElapsedTime)
 	else if (!(cKeyboardController->IsKeyDown(GLFW_KEY_F1)||cKeyboardController->IsKeyDown(GLFW_KEY_F2))&&buttonPress)
 		buttonPress = false;
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F6))
-	{
-		try {
-			if (!cMap2D->SaveMap("Maps/DM2213_Map_Level_01_SAVEGAMEtest.csv"))
-			{
-				throw runtime_error("Unable to save the current game to a file");
-			}
-		}
-		catch (runtime_error e)
-		{
-			cout << "Runtime error: " << e.what();
-			return false;
-		}
-		return true;
-	}
-
-	if (cGameManager->bLevelCompleted)
+	if (cGameManager->bLevelIncrease)
 	{
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
-		cGameManager->bLevelCompleted = false;
+		cGameManager->bLevelIncrease = false;
 	}
+	if (cGameManager->bLevelDecrease && cMap2D->GetCurrentLevel() > 0)
+	{
+		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
+		cGameManager->bLevelDecrease = false;
+	}
+
+	return true;
 }
 
 /**
@@ -423,11 +429,18 @@ void CScene2D::Render(void)
 	CShivs2D->Render();
 	CShivs2D->PostRender();
 
-	for (int i = 0; i < enemyVector.size(); i++)
+	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{
-		enemyVector[i]->PreRender();
-		enemyVector[i]->Render();
-		enemyVector[i]->PostRender();
+		eventcontroller->enemyVector[i]->PreRender();
+		eventcontroller->enemyVector[i]->Render();
+		eventcontroller->enemyVector[i]->PostRender();
+	}
+
+	for (int i = 0; i < eventcontroller->projectileVector.size(); i++)
+	{
+		eventcontroller->projectileVector[i]->PreRender();
+		eventcontroller->projectileVector[i]->Render();
+		eventcontroller->projectileVector[i]->PostRender();
 	}
 
 	cGUI_Scene2D->PreRender();

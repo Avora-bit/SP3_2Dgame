@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|ARM64">
-      <Configuration>Debug</Configuration>
-      <Platform>ARM64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -12,10 +8,6 @@
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|ARM64">
-      <Configuration>Release</Configuration>
-      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -30,7 +22,6 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\GameStateManagement\CraftingState.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameOverState.cpp" />
-    <ClCompile Include="Source\GameStateManagement\GameStateBase.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp" />
@@ -61,8 +52,10 @@
     <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
     <ClCompile Include="Source\Scene2D\Shivs2D.cpp" />
     <ClCompile Include="Source\Scene2D\slot.cpp" />
+    <ClCompile Include="Source\Scene2D\Spider.cpp" />
     <ClCompile Include="Source\Scene2D\Sword2D.cpp" />
     <ClCompile Include="Source\Scene2D\RustyBlade2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Webshot.cpp" />
     <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
@@ -93,7 +86,6 @@
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
     <ClInclude Include="Source\Scene2D\Items.h" />
     <ClInclude Include="Source\Scene2D\Map2D.h" />
-    <ClInclude Include="Source\Scene2D\MapGenerator.h" />
     <ClInclude Include="Source\Scene2D\Octopus.h" />
     <ClInclude Include="Source\Scene2D\Physics2D.h" />
     <ClInclude Include="Source\Scene2D\Player2D.h" />
@@ -103,8 +95,10 @@
     <ClInclude Include="Source\Scene2D\Scene2D.h" />
     <ClInclude Include="Source\Scene2D\Shivs2D.h" />
     <ClInclude Include="Source\Scene2D\slot.h" />
+    <ClInclude Include="Source\Scene2D\Spider.h" />
     <ClInclude Include="Source\Scene2D\Sword2D.h" />
     <ClInclude Include="Source\Scene2D\RustyBlade2D.h" />
+    <ClInclude Include="Source\Scene2D\Webshot.h" />
     <ClInclude Include="Source\Scene2D\WoodenHilt2D.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
@@ -135,12 +129,6 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformToolset>v143</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <PlatformToolset />
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <PlatformToolset />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

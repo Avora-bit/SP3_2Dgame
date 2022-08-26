@@ -30,6 +30,7 @@ using namespace std;
 CPlayer2D::CPlayer2D(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
+	, cGameManager(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
@@ -62,6 +63,11 @@ CPlayer2D::~CPlayer2D(void)
 
 	camera = NULL;
 
+	if (cGameManager)
+	{
+		cGameManager = NULL;
+	}
+
 	if (cSoundController)
 	{
 		cSoundController = NULL;
@@ -75,6 +81,7 @@ CPlayer2D::~CPlayer2D(void)
 
 	if (soundsfx)
 	{
+		/*delete soundsfx;*/
 		soundsfx = NULL;
 	}
 
@@ -100,10 +107,12 @@ bool CPlayer2D::Init(void)
 
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
+
+	cGameManager = CGameManager::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	ProjectileForce = 0;
@@ -114,7 +123,7 @@ bool CPlayer2D::Init(void)
 
 	soundVol = 1.f;
 
-	cMap2D->SetMapInfo(uiRow, uiCol, 98);			//replace player with sand cause they spawn on sand
+	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -193,6 +202,19 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+
+
+
+
+
+	//Add ITEMS
+	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 0, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
 
@@ -203,14 +225,42 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
+	il = CImageLoader::GetInstance();
+
+
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		inventorySlots[i].setitemID(0);
+		//inventorySlots[i].setitemID(0);
+		if (i % 2 == 0)
+		{
+			inventorySlots[i].setitemID(1);
+		}
+		else
+		{
+			inventorySlots[i].setitemID(2);
+		}
+
+		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
+		
+		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
+
+		//inventory
+		{
+			//inventorySlots[i].AddQuantity(1);
+
+			inventorySlots[i].AddQuantity(1);
+
+		}
+
+
+		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
+
+
+		
 	}
 
-	il = CImageLoader::GetInstance();
 	return true;
 }
 
@@ -234,7 +284,7 @@ bool CPlayer2D::Reset()
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
+	
 	return true;
 }
 
@@ -247,7 +297,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//{
 	//	cout << "PA" << i << " is " << getitemval(i) << endl;
 	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
-
 	//}
 	//invincibility timer
 	{
@@ -305,9 +354,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		walkKeyDown = false;
 		animatedSprites->PlayAnimation("idle", -1, 1.f);
 	}
-	
 
-	static float dashTimer = 0;
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -461,7 +508,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			dodgeKeyDown = true;
 			cInventoryManager->GetItem("Stamina")->Remove(30.f);
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::DODGE);
-			cPhysics2D.SetInitialVelocity(glm::vec2(1.5f, 0.0f));
+			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
 			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
@@ -482,15 +529,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
-		dashTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
+		
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
 		cPhysics2D.SetTime(float(dElapsedTime));
 		cPhysics2D.Update();
 		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
 		glm::vec2 iIndex_OLD = vec2Index;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+		int iDisplacement_MicroSteps = (int)(v2Displacement.x / 0.015625f);
 		switch (direction)
 		{
 		case UP:
@@ -508,12 +555,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			Constraint(UP);
 			int iIndex_YAxis_Proposed = vec2Index.y;
-			for (int i = iIndex_OLD.y; i >= iIndex_YAxis_Proposed; i--)
+			for (int i = iIndex_OLD.y; i <= iIndex_YAxis_Proposed; i++)
 			{
 				vec2Index.y = i;
 				if (CheckPosition(UP) == false)
 				{
-					vec2Index.y = vec2OldIndex.y;
 					vec2NumMicroSteps.y = 0;
 					break;
 				}
@@ -574,8 +620,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 			{
-				vec2NumMicroSteps.x += fabs(iDisplacement_MicroSteps);
-				if (vec2NumMicroSteps.x > (int)cSettings->NUM_STEPS_PER_TILE_XAXIS)
+				vec2NumMicroSteps.x += iDisplacement_MicroSteps;
+				if (vec2NumMicroSteps.x > cSettings->NUM_STEPS_PER_TILE_XAXIS)
 				{
 					vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
 					if (vec2NumMicroSteps.x < 0)
@@ -585,12 +631,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			Constraint(RIGHT);
 			int iIndex_XAxis_Proposed = vec2Index.x;
-			for (int i = iIndex_OLD.x; i >= iIndex_XAxis_Proposed; i--)
+			for (int i = iIndex_OLD.x; i <= iIndex_XAxis_Proposed; i++)
 			{
 				vec2Index.x = i;
 				if (CheckPosition(RIGHT) == false)
 				{
-					vec2Index.x = vec2OldIndex.x;
 					vec2NumMicroSteps.x = 0;
 					break;
 				}
@@ -794,17 +839,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 			break;
 		}
 		}
-
+		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dashTimer >= 0.3f)
+		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-			dashTimer = 0;
 		}
 	}
 
 	//spawn projectile logic
 	{
+		//replace with mouse control
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_ENTER) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
@@ -826,6 +871,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 				//add to projectile list
 			}
 			//std::cout << cInventoryManager->GetItem("Shivs")->GetCount() << std::endl;
+
+			throwing = false;
+			ProjectileForce = 0;
 		}
 		else {
 			//reset force
@@ -848,6 +896,7 @@ void CPlayer2D::Update(const double dElapsedTime)
  */
 void CPlayer2D::PreRender(void)
 {
+	// Activate blending mode
 	// Activate blending mode
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -948,7 +997,6 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.y = 0;
 			vec2NumMicroSteps.y = 0;
-
 		}
 	}
 	else
@@ -959,7 +1007,10 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 
 void CPlayer2D::InteractWithMap(void)
 {
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
+	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
+		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
+		//background switch
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 	{
 	case 97:		//water
 		//disable dash
@@ -975,10 +1026,8 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.9f;
 		break;
 
-
-
-
-	//FOR INVENTORY PURPOSES - REAGAN
+		//FOR INVENTORY PURPOSES - REAGAN
+		//case 7:
 	case 2:
 	case 1:
 		for (int i = 0; i < 9; i++)
@@ -992,10 +1041,44 @@ void CPlayer2D::InteractWithMap(void)
 			}
 		}
 		break;
-	//
+
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
+		break;
+	}
+
+	//foreground switch
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+	{
+	case 80:		//cross
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+			//shovel the cross to spawn treasures
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 79, true, 1);
+		}
+		break;
+	case 79:		//treasure
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/ ) {
+			//open chest to spawn loot
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		}
+		break;
+	case 78:		//dungeon ladderdown
+		//add level
+		cGameManager->bLevelIncrease = true;
+		break;
+
+	case 77:		//dungeon ladderup
+		//remove level
+		cGameManager->bLevelDecrease = true;
+		break;
+	case 76:		//web
+		//slow speed
+		//prevent dash
+		break;
+	default:
+		//reset speed
+		//reset dash true
 		break;
 	}
 }
@@ -1118,10 +1201,12 @@ bool CPlayer2D::AddItem(int itemid)
 		if (inventorySlots[i].getitemID() == 0)
 		{
 			inventorySlots[i].setitemID(itemid);
-			inventorySlots[i].loadimagebasedID(itemid, il);
+			inventorySlots[i].settextureID(itemid);
 
-			if (i < 3) return false;
-
+			if (i < 3)
+			{
+				return false;
+			}
 			break;
 		}
 	}
@@ -1137,13 +1222,19 @@ slot CPlayer2D::getitem(int arr)
 void CPlayer2D::setitem(int arr, int itemid)
 {
 	inventorySlots[arr].setitemID(itemid);
-	inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
+	inventorySlots[arr].settextureID(itemid);
+	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
 }
 
 int CPlayer2D::getitemval(int arr)
 {
 	return inventorySlots[arr].getitemID();
+}
+
+int CPlayer2D::gettextureid(int arr)
+{
+	return inventorySlots[arr].gettextureID();
 }
 
 void CPlayer2D::setsound(float vol)
@@ -1166,3 +1257,5 @@ int CPlayer2D::gety()
 {
 	return vec2Index.y;
 }
+
+

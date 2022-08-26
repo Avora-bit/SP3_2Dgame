@@ -1,12 +1,12 @@
-#include "Octopus.h"
+#include "Spider.h"
 
-Octopus::Octopus()
+Spider::Spider()
 {
-	health = 20;
-	atk = 10;
+	health = 30;
+	atk = 20;
 }
 
-Octopus::~Octopus()
+Spider::~Spider()
 {
 	// We won't delete this since it was created elsewhere
 	cPlayer2D = NULL;
@@ -24,7 +24,7 @@ Octopus::~Octopus()
 	glDeleteBuffers(1, &EBO);
 }
 
-bool Octopus::Init(void)
+bool Spider::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -38,7 +38,7 @@ bool Octopus::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(301, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(303, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -49,23 +49,23 @@ bool Octopus::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
 
+
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
 	//CS: Create the Quad Mesh using the mesh builder
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/octopus.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Enemies/spider.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load enemy tile texture" << std::endl;
+		std::cout << "Failed to load Spider tile texture" << std::endl;
 		return false;
 	}
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//animatedSprites->AddAnimation("idle", 1, 1);
 
-	//animatedSprites->PlayAnimation("idle", -1, 0.3f);
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -75,12 +75,12 @@ bool Octopus::Init(void)
 	bIsActive = true;
 	angle = 360;
 	timer = 0;
-	stuck = false;
-
+	directionChosen = false;
+	shotInterval = 0;
 	return true;
 }
 
-void Octopus::Update(const double dElapsedTime)
+void Spider::Update(const double dElapsedTime)
 {
 	timer += dElapsedTime;
 
@@ -94,96 +94,138 @@ void Octopus::Update(const double dElapsedTime)
 	{
 		case CEnemy2D::IDLE:
 		{
+			directionChosen = false;
+			vec2Direction = glm::vec2(0, 0);
 			if (iFSMCounter > iMaxFSMCounter)
 			{
-				if (timer >= 1) // after 3s idle, go into patrol
+				if (timer >= 2.5) // after 3s idle, go into patrol
 				{
 					timer = 0;
-					sCurrentFSM = CHASE;
+					sCurrentFSM = PATROL;
 					iFSMCounter = 0;
 				}
+			}
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			{
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
+			}
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+			{
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
 			}
 			iFSMCounter++;
 			break;
 		}
-		case CEnemy2D::CHASE:
+		case CEnemy2D::PATROL:
 		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 1.0f)
+			if (iFSMCounter > iMaxFSMCounter)
+			{
+				timer = 0;
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				//cout << "Switching to Idle State" << endl;
+			}
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
+			{
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
+			}
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+			{
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}
+			else
+			{
+				// Patrol around
+				// Update the Enemy2D's position for patrol
+				randomDirection();
+				UpdatePosition();
+			}
+			iFSMCounter++;
+			break;
+		}
+		case CEnemy2D::RUN:
+		{
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f)
 			{
 				if (iFSMCounter > iMaxFSMCounter)
 				{
 					timer = 0;
-					sCurrentFSM = ATTACK;
+					sCurrentFSM = IDLE;
 					iFSMCounter = 0;
 					break;
 				}
 			}
-			auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
-				cPlayer2D->vec2Index, heuristic::euclidean, 10);
 
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
-				if (bFirstPosition == true)
-				{
-					vec2Destination = coord;
+				vec2Direction = vec2Index - cPlayer2D->vec2Index;
+				vec2Direction = -vec2Direction;
 
-					if (!stuck)
-						vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
-				}
-				else
+				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
+					cPlayer2D->vec2Index, heuristic::euclidean, 10);
+
+				bool bFirstPosition = true;
+				for (const auto& coord : path)
 				{
-					if ((coord - vec2Destination) == vec2Direction)
+					if (bFirstPosition == true)
 					{
 						vec2Destination = coord;
+
+						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = -vec2Direction;
+						bFirstPosition = false;
 					}
 					else
-						break;
+					{
+						if ((coord - vec2Destination) == vec2Direction)
+						{
+							vec2Destination = coord;
+						}
+						else
+							break;
+					}
 				}
 			}
-			if (stuck)
-			{
-				if (CheckPosition(stuckDirection))
-					stuck = false;
-			}
 			UpdatePosition();
-			
-			if (!stuck)
-				vec2Direction = vec2Index - cPlayer2D->vec2Index;
 			iFSMCounter++;
 			break;
 		}
 		case CEnemy2D::ATTACK:
 		{
-			static float attackTimer = 0;
-			attackTimer += dElapsedTime;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			vec2Direction = glm::vec2(0, 0);
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 2.5f)
 			{
-				if (attackTimer >= 1)
-				{
-					cPlayer2D->LoseHealth(atk);
-					attackTimer = 0;
-				}
+				sCurrentFSM = RUN;
+				iFSMCounter = 0;
+				break;
 			}
-			else
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
 			{
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
-				timer = 0;
 				break;
 			}
-			iFSMCounter++;
-			break;
+			
+			shotInterval -= dElapsedTime;
+			if (shotInterval <= 0)
+			{
+				/*cout << "attacking" << endl;*/
+				
+				shotInterval = 5;
+			}
 		}
 	}
-	//animatedSprites->Update(dElapsedTime);
+	/*animatedSprites->Update(dElapsedTime);*/
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
 
-void Octopus::UpdatePosition(void)
+void Spider::UpdatePosition(void)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -209,32 +251,9 @@ void Octopus::UpdatePosition(void)
 		{
 			vec2Index.y = vec2OldIndex.y;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y < 0)
-			{
-				stuck = true;
-				stuckDirection = DOWN;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
+			directionChosen = false;
+			randomDirection();
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.y > 0)
 	{
@@ -259,32 +278,9 @@ void Octopus::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
-			if (!stuck)
-				stuckPosition = vec2Index;
-			if (vec2Direction.y > 0)
-			{
-				stuck = true;
-				stuckDirection = UP;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.x < 0 && CheckPosition(LEFT))
-				{
-					repositionDirection = LEFT;
-				}
-				else if (vec2Direction.x > 0 && CheckPosition(RIGHT))
-				{
-					repositionDirection = RIGHT;
-				}
-				if (repositionDirection == RIGHT || (vec2Index == stuckPosition && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 1.0f))
-					vec2Direction = glm::vec2(1, 0);
-				else if (vec2Index != stuckPosition)
-					vec2Direction = glm::vec2(-1, 0);
-			}
+			directionChosen = false;
+			randomDirection();
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	if (vec2Direction.x < 0)
 	{
@@ -309,30 +305,9 @@ void Octopus::UpdatePosition(void)
 		{
 			vec2Index.x = vec2OldIndex.x;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x < 0)
-			{
-				stuck = true;
-				stuckDirection = LEFT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
-			}
+			directionChosen = false;
+			randomDirection();
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.x > 0)
 	{
@@ -358,28 +333,83 @@ void Octopus::UpdatePosition(void)
 		{
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
-			if (vec2Direction.x > 0)
+			directionChosen = false;
+			randomDirection();
+		}
+	}
+}
+
+bool Spider::randomDirection()
+{
+	if (!directionChosen)
+	{
+		int i = rand() % 4;
+		switch (i)
+		{
+		case 0:
+		{
+			if (CheckPosition(DOWN) && checkDirection(DOWN))
 			{
-				stuck = true;
-				stuckDirection = RIGHT;
-			}
-			if (stuck)
-			{
-				if (vec2Direction.y < 0 && CheckPosition(DOWN))
-				{
-					repositionDirection = DOWN;
-				}
-				else if (vec2Direction.y > 0 && CheckPosition(UP))
-				{
-					repositionDirection = UP;
-				}
-				if (repositionDirection == UP)
-					vec2Direction = glm::vec2(0, 1);
-				else
-					vec2Direction = glm::vec2(0, -1);
+				vec2Direction = glm::vec2(0, -1);
+				directionChosen = true;
+				return true;
 			}
 		}
-		// Interact with the Player
-		//InteractWithPlayer();
+		case 1:
+		{
+			if (CheckPosition(UP) && checkDirection(UP))
+			{
+				vec2Direction = glm::vec2(0, 1);
+				directionChosen = true;
+				return true;
+			}
+		}
+		case 2:
+		{
+			if (CheckPosition(LEFT) && checkDirection(LEFT))
+			{
+				vec2Direction = glm::vec2(-1, 0);
+				directionChosen = true;
+				return true;
+			}
+		}
+		case 3:
+		{
+			if (CheckPosition(RIGHT) && checkDirection(RIGHT))
+			{
+				vec2Direction = glm::vec2(1, 0);
+				directionChosen = true;
+				return true;
+			}
+		}
+		}
 	}
+	return false;
+}
+
+bool Spider::checkDirection(DIRECTION eDirection)
+{
+	if (sCurrentFSM == RUN)
+	{
+		switch (eDirection)
+		{
+		case DOWN:
+			if (vec2Index.y - cPlayer2D->vec2Index.y > 0)
+				return false;
+			break;
+		case UP:
+			if (vec2Index.y - cPlayer2D->vec2Index.y < 0)
+				return false;
+			break;
+		case LEFT:
+			if (vec2Index.x - cPlayer2D->vec2Index.x < 0)
+				return false;
+			break;
+		case RIGHT:
+			if (vec2Index.x - cPlayer2D->vec2Index.x > 0)
+				return false;
+			break;
+		}
+	}
+	return true;
 }

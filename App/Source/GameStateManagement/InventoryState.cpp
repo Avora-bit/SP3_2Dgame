@@ -71,13 +71,21 @@ bool CInventoryState::Init(void)
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
 
-
-
 	for (int i = 0; i < 9; i++)
 	{
 		/*if (i > 2)
 		{*/
 			butnum[i].setitemID(cPlayer2D->getitemval(i));
+			//cout << cPlayer2D->getitem(i).gettextureID() << endl;
+			//butnum[i].settextureID(cPlayer2D->getitem(i).gettextureID());
+			//butnum[i].settextureID(cPlayer2D->gettextureid(i));
+			butnum[i].settextureID(butnum[i].getitemID());
+
+
+			butnum[i].AddQuantity(cPlayer2D->getitem(i).getquantity());
+
+
+			cout << "INVENTORY STATE IS " << butnum[i].gettextureID() << endl;
 		//}
 		//else
 		//{
@@ -85,7 +93,8 @@ bool CInventoryState::Init(void)
 		//	butnum[i].setitemID(hotbar->return_hbcellid(i));
 		//}
 
-		butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
+		//butnum[i].Init(il);
 	}
 
 	return true;
@@ -108,13 +117,43 @@ bool CInventoryState::Update(const double dElapsedTime)
 	float buttonWidth = 256;
 	float buttonHeight = 128;
 
-	for (int i = 0; i < 9; i++)
-	{
-		//cout << "player array" << i << " is " << cPlayer2D->getitemval(i) << endl;
-		//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
-		cout << "player array" << i << " is " << butnum[i].getitemID() << endl;
-	}
+	//DISPLAY WORDS
+		// Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("QuantityText", NULL, window_flags);
+	ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
+		CSettings::GetInstance()->iWindowHeight / 3.0));				// Set the top-left of the window at (10,10)
+	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
+	//Added rounding for nicer effect
+	ImGuiStyle& style2 = ImGui::GetStyle();
+	style2.FrameRounding = 200.0f;
+
+	// by tohdj
+	for (int n = 0; n < 9; n++)
+	{
+		ImGui::PushID(n);
+
+		//don't break line if doesn't reach 3 cells
+		if ((n % 3) != 0)
+			ImGui::SameLine();
+
+		//string x = to_string(n);
+		//strcpy(y, x.c_str());
+
+		//render the bar yellow if it's hotbar
+
+		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
+		/*ImGui::CalcTextSize("H", NULL, false, 10);*/
+		ImGui::SetWindowFontScale(4.f);
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
+		/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
+
+		ImGui::PopID();
+	}
+	ImGui::End();
+
+
+	//DISPLAY INVENTORY PICTURES
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
 		static float f = 0.0f;
@@ -149,15 +188,21 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//render the bar yellow if it's hotbar
 			if (n >= 3)
 			{
+				/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0),
+					const ImVec2 & uv1 = ImVec2(1, 1), int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0),
+					const ImVec4 & tint_col = ImVec4(1, 1, 1, 1));*/
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
 					-1, ImVec4(1, 1, 0, 1) );
-				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
+				
 			}
 			else
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
+				
 			}
 
+
+			
 			
 			if (butnum[n].getitemID() != 0)
 			{
@@ -165,11 +210,14 @@ bool CInventoryState::Update(const double dElapsedTime)
 				if (ImGui::IsItemHovered())
 				{
 					//ImGui::Text("Check %s", butnum[n].getitemID());
-
 					if (cMouseController->IsButtonDown(1))
 					{
 						butnum[n].setitemID(0);
-						butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+						//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
+						butnum[n].settextureID(butnum[n].getitemID());
+
+						butnum[n].SubtractQuantity(1);
+						//break;
 
 						//set hotbar to 0
 						if (n <= 2)
@@ -183,6 +231,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 				// Our buttons are both drag sources and drag targets here!
 				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 				{
+					//butnum[n].SubtractQuantity(1);
 
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
@@ -221,9 +270,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 					{
 						hotbar->set_hbcellid(payload_n, butnum[payload_n].getitemID());
 					}
-
-
-
 					cout << endl;
 				}
 				ImGui::EndDragDropTarget();
@@ -231,6 +277,11 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::PopID();
 		}
 		ImGui::End();
+
+
+
+
+		
 	}
 
 	//For keyboard controls
