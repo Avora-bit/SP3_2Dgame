@@ -113,6 +113,10 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		island->deleteall(1);			//delete all sand
 		//spawn player
 		island->randreplace(200, 3);
+		//for (int i = 0; i < 2; i++)
+		//{
+		//	island->randreplace(303, 3); //test enemies
+		//}
 		//populate the foreground
 		//cross on sand
 		int randspawn = rand() % 10 + 20;		//random number of cross, 20-30 cross
@@ -258,44 +262,60 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	eventcontroller->Init();
 	while (true)
 	{
-		Octopus* octo = new Octopus();
+		Octopus* octo = new Octopus(glm::vec2(50,50));
 		octo->SetShader("Shader2D_Colour");
 
 		if (octo->Init())
 		{
 			octo->SetPlayer2D(cPlayer2D);
 			eventcontroller->spawnEnemies(octo);
+			break;
 		}
 		else
 			break;
 	}
 	while (true)
 	{
-		Chicken* chicken = new Chicken();
+		Chicken* chicken = new Chicken(cPlayer2D->vec2Index);
 		chicken->SetShader("Shader2D_Colour");
 
 		if (chicken->Init())
 		{
 			chicken->SetPlayer2D(cPlayer2D);
 			eventcontroller->spawnEnemies(chicken);
+			break;
 		}
 		else
 			break;
 	}
 	while (true)
 	{
-		Spider* spider = new Spider();
+		Spider* spider = new Spider(cPlayer2D->vec2Index);
 		spider->SetShader("Shader2D_Colour");
 
 		if (spider->Init())
 		{
 			spider->SetPlayer2D(cPlayer2D);
 			eventcontroller->spawnEnemies(spider);
+			break;
 		}
 		else
 			break;
 	}
+	/*while (true)
+	{
+		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
+		skeleton->SetShader("Shader2D_Colour");
 
+		if (skeleton->Init())
+		{
+			skeleton->SetPlayer2D(cPlayer2D);
+			eventcontroller->spawnEnemies(skeleton);
+			break;
+		}
+		else
+			break;
+	}*/
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -400,6 +420,8 @@ bool CScene2D::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
 		cGameManager->bLevelDecrease = false;
 	}
+
+	eventcontroller->update(dElapsedTime);
 
 	return true;
 }

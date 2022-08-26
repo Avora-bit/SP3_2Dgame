@@ -6,6 +6,13 @@ Spider::Spider()
 	atk = 20;
 }
 
+Spider::Spider(glm::vec2 pos)
+{
+	vec2Index = pos;
+	health = 30;
+	atk = 20;
+}
+
 Spider::~Spider()
 {
 	// We won't delete this since it was created elsewhere
@@ -33,21 +40,9 @@ bool Spider::Init(void)
 	cMap2D = CMap2D::GetInstance();
 
 	cPlayer2D = CPlayer2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(303, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
 
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::vec2(0, 0);
-
-
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);

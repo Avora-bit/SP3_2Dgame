@@ -114,6 +114,12 @@
     <ClCompile Include="Source\Scene2D\CleaverBlade2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Skeleton.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\SkeletonShot.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -233,6 +239,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\CleaverBlade2D.h">
       <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Skeleton.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\SkeletonShot.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

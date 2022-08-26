@@ -37,7 +37,7 @@ class CMap2D;
 #include "Primitives/SpriteAnimation.h"
 
 #include "Camera.h"
-
+#include "EventController.h"
 #include "Map2D.h"
 
 #include <iostream>
