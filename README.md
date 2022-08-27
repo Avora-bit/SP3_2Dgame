@@ -50,6 +50,7 @@ background
 foreground
 100 tree/
 101 wall/
+102 campfire/
 
 map entities-foreground
 80 cross/
@@ -64,6 +65,8 @@ items
 40 wood
 50 sword
 60 bow
+70 raw food
+81 cooked food
 
 animations
 

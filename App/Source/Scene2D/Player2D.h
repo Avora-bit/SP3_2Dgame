@@ -109,9 +109,6 @@ protected:
 	ISound* watersfx;
 	ISound* sandsfx;
 
-
-
-
 	float soundVol;
 
 	Camera* camera;

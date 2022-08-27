@@ -76,8 +76,6 @@ bool CProjectile2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
-	distanceTravelled = 0;
-
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -365,10 +363,6 @@ bool CProjectile2D::CheckPosition(DIRECTION eDirection)
 			}
 		}
 	}
-	else
-	{
-		cout << "Projectiles::CheckPosition: Unknown direction." << endl;
-	}
 
 	return true;
 }
@@ -391,9 +385,15 @@ void CProjectile2D::trajectory()			//update position
 		}
 
 		// Find a feasible position for the enemy2D's current position
-		if (!CheckPosition(UP) || !CheckPosition(DOWN)) bIsActive = false;
 		// Constraint the enemy2D's position within the screen boundary
-		Constraint(UP); Constraint(DOWN);
+		if (vec2Direction.y < 0) {
+			if (!CheckPosition(DOWN)) bIsActive = false;
+			Constraint(DOWN);
+		}
+		else if (vec2Direction.y > 0) {
+			if (!CheckPosition(UP)) bIsActive = false;
+			Constraint(UP);
+		}
 	}
 	{			//horizontal movement
 		const int iOldIndex = vec2Index.x;

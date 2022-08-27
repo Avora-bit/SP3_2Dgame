@@ -46,7 +46,7 @@ CCraftingState::CCraftingState(void)
 	: cPlayer2D(NULL)
 	, cMouseController(NULL)
 	, cSettings(NULL)
-	, guiscene2d(NULL)
+	, hotbar(NULL)
 	, il(NULL)
 	, recipebook(NULL)
 {
@@ -83,7 +83,7 @@ bool CCraftingState::Init(void)
 
 	cSettings = CSettings::GetInstance();
 
-	guiscene2d = CGUI_Scene2D::GetInstance();
+	hotbar = CGUI_Scene2D::GetInstance();
 
 	il = CImageLoader::GetInstance();
 	
@@ -109,10 +109,11 @@ bool CCraftingState::Init(void)
 
 
 		}
+		//IF THE SLOT IS LINKED TO INVENTORY
 		else if(i != 18 && i >=9)
 		{
 			//hotbar
-			//butnum[i].setitemID(guiscene2d->return_hbcellid(i - 9));
+			//butnum[i].setitemID(hotbar->return_hbcellid(i - 9));
 			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
 			butnum[i].settextureID(butnum[i].getitemID());
 
@@ -183,14 +184,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
-
-			//string x = to_string(n);
-			//strcpy(y, x.c_str());
-
-			//render the bar yellow if it's hotbar
-
-			//ImGui::TextColored(ImVec4(1, 1, 0, 1), "H");
-			/*ImGui::CalcTextSize("H", NULL, false, 10);*/
 			ImGui::SetWindowFontScale(4.f);
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
 			/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
@@ -198,10 +191,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 			ImGui::PopID();
 		}
 		ImGui::End();
-
-
-
-
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Crafting", NULL, window_flags);
@@ -226,32 +215,19 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 		}
 
-
 		// by tohdj
-		char y[19];
 		for (int n = 0; n < 19; n++)
 		{
 			ImGui::PushID(n);
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
-			string x = to_string(n);
-			//string x = to_string(butnum[n].itemID);
 
-			strcpy(y, x.c_str());
-
-			//ImGui::Button(y, ImVec2(50, 50));
-			//construct 9 buttons
-			/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0), const ImVec2 & uv1 = ImVec2(1, 1),
-				int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0), const ImVec4 & tint_col = ImVec4(1, 1, 1, 1)); */
-
-
-			//if item is in inventory slot
+			//IF ITEM IS IN INVENTORY SLOT
 			if (n >= 9 && n < 18)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
 					-1, ImVec4(1, 1, 0, 1));
-
 
 				if (butnum[n].getitemID() != 0)
 				{
@@ -261,30 +237,20 @@ bool CCraftingState::Update(const double dElapsedTime)
 						//ImGui::Text("Check %s", butnum[n].getitemID());
 						if (cMouseController->IsButtonDown(1) && butnum[n].getquantity() != 0)
 						{
-							
-							//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 							butnum[n].settextureID(butnum[n].getitemID());
-
 							butnum[n].SubtractQuantity(1);
-
-							//break;
 
 							if (butnum[n].getquantity() == 0)
 							{
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(0);
-								//set hotbar to 0
+
+								//REDUCE THE QUANTITY IN HOTBAR AS WELL
 								if (n <= 2)
 								{
-									guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
-
-									//guiscene2d->return;
-
+									hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
 								}
 							}
-
-							//cout << "PLAYER QUANTITY IS " << butnum[n].getquantity() << endl;
-
 						}
 					}
 				}
@@ -298,24 +264,24 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
 				butnum[n].settextureID(butnum[n].getitemID());
 
-			
-				//BRING ITEM TO INVENTORY	
+				//BRING OUTPUT ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
 					if (cMouseController->IsButtonDown(0))
 					{
 						for (int x = 9; x < 18; x++)
 						{
+							//IF ITEM IS EMPTY
 							if (butnum[x].getitemID() == 0)
 							{
 								//set in inventiory slot 
 								butnum[x].setitemID(butnum[n].getitemID());
 								butnum[x].settextureID(butnum[x].getitemID());
-
-								//butnum[x].loadimagebasedID(butnum[x].getitemID(), il);
+								butnum[x].AddQuantity(1);
 
 								//set the inventory to the item
 								cPlayer2D->setitem(x - 9, butnum[x].getitemID());
+
 								//empty everything in the crafting slot
 								for (int i = 0; i < 9; i++)
 								{
@@ -323,10 +289,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 									butnum[i].settextureID(butnum[i].getitemID());
 									butnum[i].setquantity(0);
 								}
+
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
-								butnum[n].AddQuantity(1);
+								//butnum[n].SubtractQuantity(1);
+
 								break;
 							}
 						}
@@ -350,7 +318,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
 					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
 			}
@@ -363,34 +330,22 @@ bool CCraftingState::Update(const double dElapsedTime)
 					IM_ASSERT(payload->DataSize == sizeof(int));
 					int payload_n = *(const int*)payload->Data;
 
-					//swap images and itemId inside
-					/*slot tmp = butnum[n];
-					butnum[n] = butnum[payload_n];
-					butnum[payload_n] = tmp;*/
+					//PAYLOAD_N IS WHAT IS SELECTED TO DRAG
+					//N IS WHAT IT'S BEEN SELECTED TO BE DRAGGED TO
 
-
-					//payload is what is selected to drag
-					// n is what it's being dragged to
-
-
-
+					//IF ITEM IS NOT DRAGGED INTO INVENTORY
 					if (n < 9)
 					{
-
 						if (butnum[n].getitemID() == 0)
 						{
 							int tmp = butnum[payload_n].getitemID();
 							butnum[n].setitemID(tmp);
 							butnum[n].settextureID(butnum[n].getitemID());
-
-							/*butnum[n].setitemID(0);
-							butnum[n].settextureID(butnum[n].getitemID());*/
-
 							butnum[n].AddQuantity(1);
 							butnum[payload_n].SubtractQuantity(1);
 						}
 					}
-					//if it is inventory
+					//IF ITEM IS DRAGGED INTO INVENTORY
 					else
 					{
 						if (butnum[n].getquantity() < 5
@@ -398,77 +353,44 @@ bool CCraftingState::Update(const double dElapsedTime)
 						{
 							int tmp = butnum[payload_n].getitemID();
 							butnum[n].setitemID(tmp);
-							
-
 							butnum[n].AddQuantity(1);
 							butnum[payload_n].SubtractQuantity(1);
 						}
-					}
 
 
-					if (butnum[n].getquantity() == 0)
-					{
-						butnum[n].settextureID(0);
-					}
-
-					if (butnum[payload_n].getquantity() == 0)
-					{
-						butnum[payload_n].settextureID(0);
-
-					}
-
-				/*	if (butnum[payload_n].getquantity() == 0)
-					{
-						butnum[payload_n].setitemID(0);
-						butnum[payload_n].settextureID(butnum[payload_n].getitemID());
-
-						butnum[n].AddQuantity(1);
-						butnum[payload_n].SubtractQuantity(1);
-					}*/
-
-					//if the slot is in the inventory slot
-					if (n >= 9 && n < 18)
-					{
-						//HOTBAR
+						//IF IT'S DRAGGED TO THE FIRST 3 INVENTORY SLOTS
 						if (n < 12)
 						{
-							guiscene2d->set_hbcellid(n - 9, butnum[n].getitemID());
-
+							hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
 						}
 						cPlayer2D->setitem(n - 9, butnum[n].getitemID());
-						
-						//cPlayer2D->getitem(payload_n).SubtractQuantity(1);
-
-
 					}
+
 					if (payload_n >= 9 && payload_n < 18)
 					{
 						//HOTBAR
 						if (payload_n < 12)
 						{
-							guiscene2d->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
+							hotbar->set_hbcellid(payload_n - 9, butnum[payload_n].getitemID());
 
 						}
 						cPlayer2D->setitem(payload_n - 9, butnum[payload_n].getitemID());
-						//cPlayer2D->getitem(payload_n - 9).SubtractQuantity(1);
-
 					}
 				}
-
-
 				ImGui::EndDragDropTarget();
 			}
 			ImGui::PopID();
 
+			//IF QUANTITY IS 0, SET TEXTUREID TO 0 
+			if (butnum[n].getquantity() == 0 && n != 18)
+			{
+				butnum[n].setitemID(0);
+				butnum[n].settextureID(0);
+			}
 		}
-
-		
-
-
 		ImGui::End();
 	}
 
-		
 	//For keyboard controls
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{
@@ -503,9 +425,9 @@ void CCraftingState::Render(void)
 void CCraftingState::Destroy(void)
 {
 
-	if (guiscene2d)
+	if (hotbar)
 	{
-		guiscene2d = NULL;
+		hotbar = NULL;
 	}
 
 	if (cMouseController)
@@ -530,11 +452,6 @@ void CCraftingState::Destroy(void)
 
 	delete il;
 	il = nullptr;
-
-	/*for (int i = 0; i < 12; i++)
-	{
-		delete butnum[i];
-	}*/
 }
 
 int CCraftingState::returnbutnumval(int arr)
@@ -542,7 +459,17 @@ int CCraftingState::returnbutnumval(int arr)
 	return butnum[arr].getitemID();
 }
 
+int CCraftingState::return_butnumQuantity(int arr)
+{
+	return butnum[arr].getquantity();
+}
+
 void CCraftingState::setbutnumvalto(int arr, int val)
 {
 	butnum[arr].setitemID(val);
+}
+
+void CCraftingState::setquantity(int arr, int quantity)
+{
+	butnum[arr].setquantity(quantity);
 }

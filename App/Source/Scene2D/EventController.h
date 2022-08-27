@@ -62,4 +62,16 @@ public:
 			projectileVector[i]->Update(dElapsedTime);
 		}
 	}
+
+
+	//FOR SOUND - REAGAN
+	size_t rreturn_vectorSize()
+	{
+		return enemyVector.size();
+	}
+
+	glm::vec2 return_enemyIndex(int i)
+	{
+		return enemyVector[i]->vec2Index;
+	}
 };
