@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy2D.h"
 #include "SkeletonShot.h"
-#include "EventController.h"
 #include <stdlib.h>
 
 class Skeleton : public CEnemy2D
@@ -16,5 +15,4 @@ public:
 private:
 	float shotInterval;
 	float attackTimer;
-	EventController* eventController;
 };

@@ -19,10 +19,14 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 
+#include "Enemy2D.h"
+
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
 #include "CleaverBlade2D.h"
+
+#include "EventController.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -36,7 +40,7 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	//, soundsfx(NULL)
+	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -78,12 +82,17 @@ CPlayer2D::~CPlayer2D(void)
 		animatedSprites = NULL;
 	}
 
-	/*if (soundsfx)
-	{
-		delete soundsfx;
-		soundsfx = NULL;
-	}*/
-
+	if (soundsfx)
+		soundsfx = nullptr;
+	if (dodgesfx)
+		dodgesfx = nullptr;
+	if (grasssfx)
+		grasssfx = nullptr;
+	if (watersfx)
+		watersfx = nullptr;
+	if (sandsfx)
+		sandsfx = nullptr;
+	
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 }
@@ -120,7 +129,7 @@ bool CPlayer2D::Init(void)
 	soundVol = 1.f;
 
 	throwing = false;
-	maxPForce = 15;
+	maxPForce = 10;
 	minPForce = 5;
 	ProjectileForce = 0;
 
@@ -131,6 +140,8 @@ bool CPlayer2D::Init(void)
 
 	movementSpeed = 1.f;
 	attacking = false;
+
+	soundsfx = nullptr;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -211,11 +222,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
-
-
 	//Add ITEMS
 	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -227,7 +233,7 @@ bool CPlayer2D::Init(void)
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
 
-	sword->replaceBlade(new CRustyBlade2D());
+	//sword->replaceBlade(new CRustyBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -433,15 +439,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 			attacking = false;
 			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
 		}
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
 		{
 			attacking = true;
 			leftClickDown = true;
 
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
+
+			InteractWithEnemy();
 		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
 		{
 			leftClickDown = false;
 		}
@@ -973,6 +981,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
+	InteractWithEnemy();
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);
@@ -1180,7 +1189,6 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	}
 
-
 	//forage tree
 	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
 	//{
@@ -1194,6 +1202,16 @@ void CPlayer2D::InteractWithMap(void)
 	{
 
 	}*/
+}
+
+bool CPlayer2D::InteractWithEnemy()
+{
+	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
+	for (CEnemy2D* enemy : enemies)
+	{
+
+	}
+	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1357,6 +1375,10 @@ void CPlayer2D::setitem(int arr, int itemid)
 	inventorySlots[arr].settextureID(itemid);
 	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
+}
+
+void CPlayer2D::setitemquantity(int arr, int quantity)
+{
 }
 
 int CPlayer2D::getitemval(int arr)

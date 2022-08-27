@@ -103,13 +103,11 @@ protected:
 
 	CGameManager* cGameManager;
 
-	/*ISound* dodgesfx;
+	ISound* soundsfx;
+	ISound* dodgesfx;
 	ISound* grasssfx;
 	ISound* watersfx;
-	ISound* sandsfx;*/
-
-
-
+	ISound* sandsfx;
 
 	float soundVol;
 
@@ -150,6 +148,8 @@ protected:
 	void Constraint(DIRECTION eDirection = LEFT);
 
 	void InteractWithMap(void);
+
+	bool InteractWithEnemy();
 
 	bool CheckPosition(DIRECTION eDirection);
 
