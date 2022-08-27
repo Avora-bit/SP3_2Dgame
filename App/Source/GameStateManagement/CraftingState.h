@@ -65,8 +65,12 @@ public:
 
 	int returnbutnumval(int arr);
 
+	int return_butnumQuantity(int arr);
+
 	void setbutnumvalto(int arr, int val);
 
+
+	void setquantity(int arr, int quantity);
 	//butnum[i].setitemID(0);
 
 
@@ -79,7 +83,7 @@ protected:
 	
 	CSettings* cSettings;
 
-	CGUI_Scene2D* guiscene2d;
+	CGUI_Scene2D* hotbar;
 
 	CImageLoader* il;
 

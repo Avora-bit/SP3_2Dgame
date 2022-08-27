@@ -287,6 +287,39 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			MapOfTextureIDs.insert(pair<int, int>(40, iTextureID));
 		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Campfire.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Campfire.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(102, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Food/Raw_Food.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Raw_Food.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(70, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Food/Cooked_Food.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Cooked_Food.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(81, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar

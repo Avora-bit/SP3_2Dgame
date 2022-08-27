@@ -73,6 +73,9 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	// The vec2 which stores the indices of the enemy2D in the Map2D
+	glm::vec2 vec2Index;
+
 protected:
 	enum DIRECTION
 	{
@@ -102,8 +105,7 @@ protected:
 
 	float angle;
 
-	// The vec2 which stores the indices of the enemy2D in the Map2D
-	glm::vec2 vec2Index;
+	
 
 	// The vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
 	// A tile's width or height is in multiples of these microsteps
