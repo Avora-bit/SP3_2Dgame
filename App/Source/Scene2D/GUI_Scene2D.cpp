@@ -99,15 +99,18 @@ bool CGUI_Scene2D::Init(void)
 	il = CImageLoader::GetInstance();
 
 
-	for (int i = 0; i < 3; i++)
-	{
-		hbcells[i].setitemID(cPlayer2D->getitemval(i));
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	hbcells[i].setitemID(cPlayer2D->getitemval(i));
 
-		hbcells[i].settextureID(hbcells[i].getitemID());
-		//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
-		//hbcells[i].Init(il);
+	//	hbcells[i].settextureID(hbcells[i].getitemID());
 
-	}
+
+	//	hbcells[i].setquantity(cPlayer2D->getitem(i).getquantity());
+	//	//hbcells[i].loadimagebasedID(hbcells[i].getitemID(), il);
+	//	//hbcells[i].Init(il);
+
+	//}
 
 
 	return true;
@@ -123,7 +126,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	{
 		hbcells[i].setitemID(cPlayer2D->getitemval(i));
 		hbcells[i].settextureID(hbcells[i].getitemID());
-
 		//cout << "ID is " << hbcells[i].gettextureID() << endl;
 			
 	}

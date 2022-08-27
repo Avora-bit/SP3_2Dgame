@@ -104,6 +104,11 @@ protected:
 	CGameManager* cGameManager;
 
 	ISound* soundsfx;
+	ISound* dodgesfx;
+	ISound* grasssfx;
+	ISound* watersfx;
+	ISound* sandsfx;
+
 	float soundVol;
 
 	Camera* camera;
@@ -144,6 +149,8 @@ protected:
 
 	void InteractWithMap(void);
 
+	bool InteractWithEnemy();
+
 	bool CheckPosition(DIRECTION eDirection);
 
 	void UpdateHealthLives(void);
@@ -161,10 +168,13 @@ public:
 
 	void LoseHealth(float health);
 
-	bool CPlayer2D::AddItem(int itemid);
-	slot CPlayer2D::getitem(int arr);
-	void CPlayer2D::setitem(int arr, int itemid);
-	int CPlayer2D::getitemval(int arr);
+	bool AddItem(int itemid);
+	slot getitem(int arr);
+	void setitem(int arr, int itemid);
+
+	void setitemquantity(int arr, int quantity);
+
+	int getitemval(int arr);
 	int gettextureid(int arr);
 
 	void setsound(float vol);

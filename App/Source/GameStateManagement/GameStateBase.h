@@ -27,4 +27,13 @@ public:
 	};
 
 	virtual void setbutnumvalto(int arr, int val) {};
+
+
+
+	virtual void setquantity(int arr, int quantity) {
+
+	}
+	virtual int return_butnumQuantity(int arr) {
+		return arr;
+	}
 };

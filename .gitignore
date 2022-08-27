@@ -23,3 +23,7 @@ Library/Debug/Library.log
 Library/Debug/Library.Build.CppClean.log
 .vs/NYP_Framework/v16/.suo
 App/Debug/App.log
+App/Maps/IslandBG.csv
+App/Maps/IslandFG.csv
+App/Maps/DungeonBG.csv
+App/Maps/DungeonFG.csv

@@ -12,7 +12,6 @@
 SkeletonShot::SkeletonShot()
 {
 	atk = 30;
-	mspeed = 1.0f;
 }
 
 /**

@@ -57,6 +57,9 @@ class Camera;
 #include <iostream>
 using namespace std;
 
+enum DIRECTION {
+	UP = 0, DOWN, LEFT, RIGHT
+};
 
 class CProjectile2D : public CEntity2D
 {
@@ -81,11 +84,11 @@ public:
 protected:
 
 	int atk;
-	float mspeed;
-
+	int range;		//pending
 	glm::vec2 vec2OldIndex;		//coords
-	glm::vec2 direction;		//direction of movement
-	float angle = 0.f;		//calculated based on direction
+	glm::vec2 vec2Direction;
+
+	float mspeed;
 
 	double distanceTravelled;
 
@@ -104,7 +107,6 @@ protected:
 
 	CPhysics2D cPhysics2D;
 
-	glm::vec2 vec2Direction;
 	// Player's colour
 	glm::vec4 runtimeColour;
 
@@ -115,12 +117,12 @@ protected:
 	virtual ~CProjectile2D(void);
 
 	// Constraint the player's position within a boundary
-	//void Constraint(DIRECTION eDirection = LEFT);
+	void Constraint(DIRECTION eDirection = LEFT);
 
 	void InteractWithMap(void);
 	virtual bool InteractWithPlayer();
 
-	//bool CheckPosition(DIRECTION eDirection);
+	bool CheckPosition(DIRECTION eDirection);
 
 	void trajectory();
 };

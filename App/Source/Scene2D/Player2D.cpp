@@ -19,10 +19,14 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 
+#include "Enemy2D.h"
+
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "RustyBlade2D.h"
 #include "CleaverBlade2D.h"
+
+#include "EventController.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -79,11 +83,16 @@ CPlayer2D::~CPlayer2D(void)
 	}
 
 	if (soundsfx)
-	{
-		delete soundsfx;
-		soundsfx = NULL;
-	}
-
+		soundsfx = nullptr;
+	if (dodgesfx)
+		dodgesfx = nullptr;
+	if (grasssfx)
+		grasssfx = nullptr;
+	if (watersfx)
+		watersfx = nullptr;
+	if (sandsfx)
+		sandsfx = nullptr;
+	
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 }
@@ -120,7 +129,7 @@ bool CPlayer2D::Init(void)
 	soundVol = 1.f;
 
 	throwing = false;
-	maxPForce = 15;
+	maxPForce = 10;
 	minPForce = 5;
 	ProjectileForce = 0;
 
@@ -131,6 +140,8 @@ bool CPlayer2D::Init(void)
 
 	movementSpeed = 1.f;
 	attacking = false;
+
+	soundsfx = nullptr;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -211,11 +222,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-
-
-
-
-
 	//Add ITEMS
 	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -227,7 +233,7 @@ bool CPlayer2D::Init(void)
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
 
-	sword->replaceBlade(new CRustyBlade2D());
+	//sword->replaceBlade(new CRustyBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -333,7 +339,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//{
 		//	case 99: //grass
 		//	{
-		ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+		/*ISound* grassSound = cSoundController->PlaySoundByID_2(7);
 		if (grassSound != nullptr)
 		{
 			soundsfx = grassSound;
@@ -341,7 +347,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (soundsfx != nullptr)
 		{
 			soundsfx->setVolume(soundVol);
-		}
+		}*/
 		//		break;
 		//	}
 		//	case 98: //sand
@@ -433,15 +439,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 			attacking = false;
 			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
 		}
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && attackTimer > sword->getTotalAtkSpeed())
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
 		{
 			attacking = true;
 			leftClickDown = true;
 
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
+
+			InteractWithEnemy();
 		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown)
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
 		{
 			leftClickDown = false;
 		}
@@ -603,7 +611,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
-			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+			/*ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
 			if (dodgeSound != nullptr)
 			{
 				soundsfx = dodgeSound;
@@ -611,7 +619,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if (soundsfx != nullptr)
 			{
 				soundsfx->setVolume(soundVol);
-			}
+			}*/
 			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
@@ -973,6 +981,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
+	InteractWithEnemy();
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);
@@ -1101,8 +1110,7 @@ void CPlayer2D::InteractWithMap(void)
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
-	{
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0)) {
 	case 97:		//water
 		//disable dash
 		dashTrue = false;
@@ -1117,21 +1125,6 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.9f;
 		break;
 
-	//PICKING UP ITEMS
-	/*case 30:
-	case 40:
-		for (int i = 0; i < 9; i++)
-		{
-			if (inventorySlots[i].getitemID() == 0)
-			{
-				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
-				break;
-
-			}
-		}
-		break;*/
-
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1139,9 +1132,7 @@ void CPlayer2D::InteractWithMap(void)
 	}
 
 	//foreground switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
-	{
-
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
@@ -1158,7 +1149,7 @@ void CPlayer2D::InteractWithMap(void)
 		}
 		break;
 	case 79:		//treasure
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/ ) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/) {
 			//open chest to spawn loot
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 		}
@@ -1176,14 +1167,27 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		//prevent dash
 		break;
+
+	//PICKING UP ITEMS
+	/*case 30:
+	case 40:
+		for (int i = 0; i < 9; i++)
+		{
+			if (inventorySlots[i].getitemID() == 0)
+			{
+				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+				break;
+
+			}
+		}
+		break;*/
+	
 	default:
 		//reset speed
 		//reset dash true
 		break;
 	}
-
-
-
 
 	//forage tree
 	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
@@ -1198,6 +1202,16 @@ void CPlayer2D::InteractWithMap(void)
 	{
 
 	}*/
+}
+
+bool CPlayer2D::InteractWithEnemy()
+{
+	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
+	for (CEnemy2D* enemy : enemies)
+	{
+
+	}
+	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1361,6 +1375,11 @@ void CPlayer2D::setitem(int arr, int itemid)
 	inventorySlots[arr].settextureID(itemid);
 	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
 
+}
+
+void CPlayer2D::setitemquantity(int arr, int quantity)
+{
+	inventorySlots[arr].setquantity(quantity);
 }
 
 int CPlayer2D::getitemval(int arr)
