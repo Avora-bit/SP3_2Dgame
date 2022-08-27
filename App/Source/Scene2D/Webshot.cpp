@@ -12,7 +12,6 @@
 Webshot::Webshot(void)
 {
 	atk = 20;
-	mspeed = 1.0f;
 }
 
 /**

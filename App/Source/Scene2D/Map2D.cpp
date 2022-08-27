@@ -504,10 +504,6 @@ bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int ui
 {
 	{		//background
 		doc = rapidcsv::Document(FileSystem::getPath(BGfilename).c_str());
-
-		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
-		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
-
 		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
 		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
 			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
@@ -540,10 +536,6 @@ bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int ui
 
 	{		//foreground
 		doc = rapidcsv::Document(FileSystem::getPath(FGfilename).c_str());
-
-		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
-		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
-
 		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
 		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
 			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
@@ -829,8 +821,6 @@ void CMap2D::PrintSelf(void) const
  */
 bool CMap2D::isValid(const glm::vec2& pos) const
 {
-	//return (pos.x >= 0) && (pos.x < m_dimensions.x) &&
-	//	(pos.y >= 0) && (pos.y < m_dimensions.y);
 	return (pos.x >= 0) && (pos.x < cSettings->NUM_TILES_XAXIS) &&
 		(pos.y >= 0) && (pos.y < cSettings->NUM_TILES_YAXIS);
 }

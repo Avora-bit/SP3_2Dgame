@@ -40,10 +40,7 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	, dodgesfx(NULL)
-	, watersfx(NULL)
-	, grasssfx(NULL)
-	, sandsfx(NULL)
+	, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -85,27 +82,16 @@ CPlayer2D::~CPlayer2D(void)
 		animatedSprites = NULL;
 	}
 
-	
+	if (soundsfx)
+		soundsfx = nullptr;
 	if (dodgesfx)
-	{
-		delete dodgesfx;
 		dodgesfx = nullptr;
-	}
 	if (grasssfx)
-	{
-		delete grasssfx;
 		grasssfx = nullptr;
-	}
 	if (watersfx)
-	{
-		delete watersfx;
 		watersfx = nullptr;
-	}
 	if (sandsfx)
-	{
-		delete sandsfx;
 		sandsfx = nullptr;
-	}
 	
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -155,6 +141,7 @@ bool CPlayer2D::Init(void)
 	movementSpeed = 1.f;
 	attacking = false;
 
+	soundsfx = nullptr;
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
 
@@ -236,21 +223,11 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	//Add ITEMS
-	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
-	cInventoryItem = cInventoryManager->Add("Campfire", "Image/Campfire.tga", 0, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
-
-	cInventoryItem = cInventoryManager->Add("Raw Food", "Image/Sp3Images/Food/Raw_food.tga", 5, 0);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
-	cInventoryItem = cInventoryManager->Add("Cooked Food", "Image/Sp3Images/Food/Cooked_food.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
@@ -263,42 +240,48 @@ bool CPlayer2D::Init(void)
 
 	il = CImageLoader::GetInstance();
 	
-	cooking_mode = false;
-	cooking_time = 3.f;
-	campfireVec2.x = 0;
-	campfireVec2.y = 0;
+	//MUST CONSIDER THESE POSSIBLE CASES
+	//1. SLOT REACHED MAX LIMIT
+	//2. ITEM PICKED UP IS A DIFFERENT ITEM
+	//3. IF ITEM IS EMPTIED
+	//if(itemid == inventoryslotitemid
+	//if(maxcount reached
+	//id count ==0
 
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		inventorySlots[i].setitemID(0);
-		/*if (i % 2 == 0)
+		//inventorySlots[i].setitemID(0);
+		if (i % 2 == 0)
 		{
 			inventorySlots[i].setitemID(30);
 		}
 		else
 		{
 			inventorySlots[i].setitemID(40);
-		}*/
+		}
 
 		inventorySlots[i].settextureID(inventorySlots[i].getitemID());
+		
+		cout << "MAP " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 
-		//inventorySlots[i].AddQuantity(5);
+
+		inventorySlots[i].AddQuantity(5);
+		//inventory
+		/*{
+			inventorySlots[i].AddQuantity(1);
+
+			inventorySlots[i].AddQuantity(1);
+
+		}*/
+
+		//cout << "PLAYER 2D " << i << " IS " << inventorySlots[i].gettextureID() << endl;
 	}
-
-
-	/*inventorySlots[0].setitemID(102);
-	inventorySlots[0].AddQuantity(1);*/
-
-	inventorySlots[1].setitemID(70);
-	inventorySlots[1].AddQuantity(3);
-
-
 
 	return true;
 }
 
-/**dddd
+/**
  @brief Reset this instance
  */
 bool CPlayer2D::Reset()
@@ -330,7 +313,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//for (int i = 0; i < 9; i++)
 	//{
 	//	cout << "PA" << i << " is " << getitemval(i) << endl;
-	//	//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
+	//	//cout << "player array" << i << " is " << guiscene2d->return_hbcellid(i) << endl;
 	//}
 	//invincibility timer
 	{
@@ -346,111 +329,58 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	// Store the old position
 
-	//PLAYSOUND DEPENDING ON SURFACE TYPE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
 
-		switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
+		//switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
+		//{
+		//	case 99: //grass
+		//	{
+		/*ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+		if (grassSound != nullptr)
 		{
-		case 99: //grass
+			soundsfx = grassSound;
+		}
+		if (soundsfx != nullptr)
 		{
-			if (sandsfx != nullptr)
-			{
-				sandsfx->setVolume(0.f);
-				//sandsfx = nullptr;
-			}
-			if (watersfx != nullptr)
-			{
-				watersfx->setVolume(0.f);
-				//watersfx = nullptr;
-			}
-
-			ISound* grassSound = cSoundController->PlaySoundByID_2(7);
-			if (grassSound != nullptr)
-			{
-				grasssfx = grassSound;
-			}
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(soundVol);
-			}
-
-			break;
-		}
-		case 98: //sand
-		{
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(0.f);
-				//grasssfx = nullptr;
-			}
-			if (watersfx != nullptr)
-			{
-				watersfx->setVolume(0.f);
-				//watersfx = nullptr;
-			}
-			ISound* sandSound = cSoundController->PlaySoundByID_2(9);
-			if (sandSound != nullptr)
-			{
-				sandsfx = sandSound;
-			}
-			if (sandsfx != nullptr)
-			{
-				sandsfx->setVolume(soundVol);
-			}
-			break;
-		}
-		case 97: //water
-		{
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(0.f);
-				//grasssfx = nullptr;
-			}
-			if (sandsfx != nullptr)
-			{
-				sandsfx->setVolume(0.f);
-				//sandsfx = nullptr;
-			}
-
-			ISound* waterSound = cSoundController->PlaySoundByID_2(8);
-			if (waterSound != nullptr)
-			{
-				watersfx = waterSound;
-			}
-			if (watersfx != nullptr)
-			{
-				watersfx->setVolume(soundVol);
-			}
-			break;
-		}
-		default:
-		{
-			break;
-		}
-		}
-
-	}
-	else
-	{
-		if (grasssfx != nullptr)
-		{
-			grasssfx->setVolume(0.f);
-			//grasssfx = nullptr;
-		}
-		if (sandsfx != nullptr)
-		{
-			sandsfx->setVolume(0.f);
-			//sandsfx = nullptr;
-		}
-		if (watersfx != nullptr)
-		{
-			watersfx->setVolume(0.f);
-			//watersfx = nullptr;
-		}
+			soundsfx->setVolume(soundVol);
+		}*/
+		//		break;
+		//	}
+		//	case 98: //sand
+		//	{
+		//		ISound* sandSound = cSoundController->PlaySoundByID_2(8);
+		//		if (sandSound != nullptr)
+		//		{
+		//			soundsfx = sandSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	case 97: //water
+		//	{
+		//		ISound* waterSound = cSoundController->PlaySoundByID_2(9);
+		//		if (waterSound != nullptr)
+		//		{
+		//			soundsfx = waterSound;
+		//		}
+		//		if (soundsfx != nullptr)
+		//		{
+		//			soundsfx->setVolume(soundVol);
+		//		}
+		//		break;
+		//	}
+		//	default:
+		//	{
+		//		break;
+		//	}
+		//}
 
 	}
 	vec2OldIndex = vec2Index;
@@ -458,151 +388,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// vitals
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
-
-
-	//FORAGE FOR TREES(Get sticks)
-	if (cMouseController->IsButtonDown(0))
-	{
-		//right
-		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 100) && direction == 1))
-		{
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 30, true, 1);
-		}
-		//left
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 100)
-			&& direction == 0)
-		{
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 30, true, 1);
-		}
-		//down
-		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 100)
-			&& direction == 3)
-		{
-			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 30, true, 1);
-		}
-		//up
-		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 100)
-			&& direction == 2)
-		{
-			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 30, true, 1);
-		}
-	}
-
-
-	//PLACE CAMPFIRE
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
-	{
-		if (inventorySlots[0].getitemID() == 102)
-		{
-			//inventorySlots
-			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
-		}
-		//COOK FOOD
-		else if (inventorySlots[0].getitemID() == 70)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-				/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-				/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-				/*	&& direction == 2*/))
-			{
-				cooking_mode = true;
-				campfireVec2.y = vec2Index.y;
-				campfireVec2.x = vec2Index.x;
-
-			}
-		}
-		//EAT FOOD
-		else if (inventorySlots[0].getitemID() == 81)
-		{
-			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
-		}
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_2))
-	{
-		if (inventorySlots[1].getitemID() == 102)
-		{
-			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
-		}
-		//COOK FOOD
-		else if (inventorySlots[1].getitemID() == 70)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
-			{
-				cooking_mode = true;
-				campfireVec2.y = vec2Index.y;
-				campfireVec2.x = vec2Index.x;
-			}
-		}
-		//EAT FOOD
-		else if (inventorySlots[1].getitemID() == 81)
-		{
-			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
-		}
-	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_3))
-	{
-		if (inventorySlots[2].getitemID() == 102)
-		{
-			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
-		}
-		//COOK FOOD
-		else if (inventorySlots[2].getitemID() == 70)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
-			{
-				cooking_mode = true;
-				campfireVec2.y = vec2Index.y;
-				campfireVec2.x = vec2Index.x;
-			}
-		}
-		//EAT FOOD
-		else if (inventorySlots[2].getitemID() == 81)
-		{
-			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
-
-
-		}
-	}
-
-	//cout << "COOKING MODE " << cooking_mode << endl;
-	/*cout << "VEC Y " << campfireVec2.y << endl;
-	cout << "VEC X " << campfireVec2.x << endl;*/
-
-	//TIMER TO COOK FOOD
-	if (cooking_mode)
-	{
-		cooking_time -= 1.f * dElapsedTime;
-	}
-
-	if (cooking_time <= 0)
-	{
-		cooking_mode = false;
-		cMap2D->SetMapInfo(vec2Index.y + 2, vec2Index.x, 81, true, 1);
-		cooking_time = 3.f;
-	}
-
-
 
 	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
 	{
@@ -826,15 +611,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
-			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+			/*ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
 			if (dodgeSound != nullptr)
 			{
-				dodgesfx = dodgeSound;
+				soundsfx = dodgeSound;
 			}
-			if (dodgesfx != nullptr)
+			if (soundsfx != nullptr)
 			{
-				dodgesfx->setVolume(soundVol * .8f);
-			}
+				soundsfx->setVolume(soundVol);
+			}*/
 			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
@@ -1332,12 +1117,14 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		movementSpeed = 0.5f;
 		break;
+
 	case 93:		//spikes
 		//deals damage
 		LoseHealth(5);
 		//slows by abit
 		movementSpeed = 0.9f;
 		break;
+
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1382,20 +1169,19 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 
 	//PICKING UP ITEMS
-	case 70:
-	case 81:
-	case 30:
+	/*case 30:
 	case 40:
-		/*for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			if (inventorySlots[i].getitemID() == 0)
-			{*/
+			{
 				AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 				break;
 
-			/*}
-		}*/
-		break;
+			}
+		}
+		break;*/
 	
 	default:
 		//reset speed
@@ -1499,8 +1285,6 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	{
 		cout << "CPlayer2D::CheckPosition: Unknown direction." << endl;
 	}
-
-
 	return true;
 }
 
@@ -1550,44 +1334,33 @@ bool CPlayer2D::AddItem(int itemid)
 {
 	for (int i = 0; i < 9; i++)
 	{
-		//IF THE SLOT IS EMPTY
-		if (inventorySlots[i].getitemID() == 0 )
+
+		if (inventorySlots[i].getquantity() == 5)
 		{
-			inventorySlots[i].setitemID(itemid);
-			inventorySlots[i].settextureID(itemid);
-			inventorySlots[i].AddQuantity(1);
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
-			break;
+			inventorySlots[i+1].setitemID(itemid);
+			inventorySlots[i+1].settextureID(itemid);
 		}
-		//IF THE SLOT IS FULL
 		else
 		{
-			//IF THE DECLARED ITEMID IN THE SLOT IS THE SAME AS THE ITEM PICKED UP
-			if (inventorySlots[i].getitemID() == itemid)
-			{
-				//IF THE QUANTITY IS BELOW 5
-				if (inventorySlots[i].getquantity() < 5)
-				{
-					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
-					inventorySlots[i].AddQuantity(1);
-					break;
-				}
-				else
-				{
-					continue;
-				}
-			}
-			else
-			{
-				continue;
-			}
+			inventorySlots[i].AddQuantity(1);
 		}
 
-		if (i < 3)
+
+		if (inventorySlots[i].getitemID() == 0)
 		{
-			return false;
+			
+
+			inventorySlots[i].setitemID(itemid);
+			inventorySlots[i].settextureID(itemid);
+
+			if (i < 3)
+			{
+				return false;
+			}
+			break;
 		}
 	}
+
 	return true;
 }
 

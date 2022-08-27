@@ -103,15 +103,11 @@ protected:
 
 	CGameManager* cGameManager;
 
+	ISound* soundsfx;
 	ISound* dodgesfx;
 	ISound* grasssfx;
 	ISound* watersfx;
 	ISound* sandsfx;
-
-	float cooking_time;
-	bool cooking_mode;
-
-	glm::vec2 campfireVec2;
 
 	float soundVol;
 
