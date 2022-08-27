@@ -60,8 +60,6 @@ CSword2D::CSword2D(CHilt2D* hilt, CBlade2D* blade)
 
 	SetShader("Shader2D_Colour");
 	iTextureID = blade->LoadSprite();
-
-	scaleFactor = glm::vec2(3, 2);
 }
 
 /**
@@ -166,7 +164,7 @@ void CSword2D::Render(void)
 		glm::vec3(vec2UVCoordinate.x + camera->pureVec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
 			vec2UVCoordinate.y + camera->pureVec2Index.y + +cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
 			0.0f));
-	transform = glm::scale(transform, glm::vec3(-scaleFactor.x, -scaleFactor.y, 0));
+	transform = glm::scale(transform, glm::vec3(-getTotalRange()*1.5, -getTotalRange(), 0));
 
 
 	// Update the shaders with the latest transform

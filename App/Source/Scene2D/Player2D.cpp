@@ -139,6 +139,7 @@ bool CPlayer2D::Init(void)
 
 	movementSpeed = 1.f;
 	attacking = false;
+	attackTimer = 0;
 
 	soundsfx = nullptr;
 
@@ -229,10 +230,8 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
-
-	//sword->replaceBlade(new CRustyBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -429,7 +428,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword"))
 	{
-		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 
@@ -445,7 +443,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
-
 			InteractWithEnemy();
 		}
 		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
@@ -979,8 +976,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			ProjectileForce = 0;
 		}
 	}
-
-	InteractWithEnemy();
+	
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);
@@ -1203,14 +1199,27 @@ void CPlayer2D::InteractWithMap(void)
 	}*/
 }
 
-bool CPlayer2D::InteractWithEnemy()
+void CPlayer2D::InteractWithEnemy() // more of AttackEnemy action
 {
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-
+		if (enemy->bIsActive)
+		{
+			if (attackTimer == 0 && attacking)
+			{
+				std::cout << (atan2(enemy->getVec2Index().x - vec2Index.x, enemy->getVec2Index().y - vec2Index.y) / 3.14159265359) * 180.0 << std::endl;
+				CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+				if (cPhysics2D.CalculateDistance(vec2Index, enemy->getVec2Index()) <= sword->getTotalRange() &&
+					(atan2(enemy->getVec2Index().x - vec2Index.x, enemy->getVec2Index().y - vec2Index.y) / 3.14159265359) * 180.0 >= angle - (50 + sword->getTotalRange() * 2) &&
+					(atan2(enemy->getVec2Index().x - vec2Index.x, enemy->getVec2Index().y - vec2Index.y) / 3.14159265359) * 180.0 <= angle + (50 + sword->getTotalRange() * 2))
+				{
+					std::cout << "bonk";
+					enemy->takeDamage(sword->getTotalDamage());
+				}
+			}
+		}
 	}
-	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
