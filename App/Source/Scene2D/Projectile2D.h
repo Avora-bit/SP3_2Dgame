@@ -84,6 +84,7 @@ public:
 protected:
 
 	int atk;
+	int range;		//pending
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 vec2Direction;
 

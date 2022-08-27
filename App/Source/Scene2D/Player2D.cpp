@@ -36,7 +36,7 @@ CPlayer2D::CPlayer2D(void)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 	, camera(NULL)
-	, soundsfx(NULL)
+	//, soundsfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -78,11 +78,11 @@ CPlayer2D::~CPlayer2D(void)
 		animatedSprites = NULL;
 	}
 
-	if (soundsfx)
+	/*if (soundsfx)
 	{
 		delete soundsfx;
 		soundsfx = NULL;
-	}
+	}*/
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -333,7 +333,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//{
 		//	case 99: //grass
 		//	{
-		ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+		/*ISound* grassSound = cSoundController->PlaySoundByID_2(7);
 		if (grassSound != nullptr)
 		{
 			soundsfx = grassSound;
@@ -341,7 +341,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (soundsfx != nullptr)
 		{
 			soundsfx->setVolume(soundVol);
-		}
+		}*/
 		//		break;
 		//	}
 		//	case 98: //sand
@@ -603,7 +603,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetInitialVelocity(glm::vec2(2.5f, 0.0f));
 
 			//Sound to make dodge
-			ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
+			/*ISound* dodgeSound = cSoundController->PlaySoundByID_2(5);
 			if (dodgeSound != nullptr)
 			{
 				soundsfx = dodgeSound;
@@ -611,7 +611,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if (soundsfx != nullptr)
 			{
 				soundsfx->setVolume(soundVol);
-			}
+			}*/
 			
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
@@ -1367,6 +1367,10 @@ int CPlayer2D::getitemval(int arr)
 int CPlayer2D::gettextureid(int arr)
 {
 	return inventorySlots[arr].gettextureID();
+}
+
+void CPlayer2D::setitemquantity(int arr, int quantity) {
+
 }
 
 void CPlayer2D::setsound(float vol)

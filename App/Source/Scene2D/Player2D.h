@@ -103,10 +103,10 @@ protected:
 
 	CGameManager* cGameManager;
 
-	ISound* dodgesfx;
+	/*ISound* dodgesfx;
 	ISound* grasssfx;
 	ISound* watersfx;
-	ISound* sandsfx;
+	ISound* sandsfx;*/
 
 
 
@@ -168,13 +168,13 @@ public:
 
 	void LoseHealth(float health);
 
-	bool CPlayer2D::AddItem(int itemid);
-	slot CPlayer2D::getitem(int arr);
-	void CPlayer2D::setitem(int arr, int itemid);
+	bool AddItem(int itemid);
+	slot getitem(int arr);
+	void setitem(int arr, int itemid);
 
-	void CPlayer2D::setitemquantity(int arr, int quantity);
+	void setitemquantity(int arr, int quantity);
 
-	int CPlayer2D::getitemval(int arr);
+	int getitemval(int arr);
 	int gettextureid(int arr);
 
 	void setsound(float vol);

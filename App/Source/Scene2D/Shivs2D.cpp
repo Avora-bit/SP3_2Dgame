@@ -12,7 +12,6 @@
 CShivs2D::CShivs2D(void)
 {
 	atk = 20;
-	mspeed = 1.0f;
 }
 
 /**
