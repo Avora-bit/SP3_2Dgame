@@ -1379,6 +1379,7 @@ void CPlayer2D::setitem(int arr, int itemid)
 
 void CPlayer2D::setitemquantity(int arr, int quantity)
 {
+	inventorySlots[arr].setquantity(quantity);
 }
 
 int CPlayer2D::getitemval(int arr)
@@ -1389,10 +1390,6 @@ int CPlayer2D::getitemval(int arr)
 int CPlayer2D::gettextureid(int arr)
 {
 	return inventorySlots[arr].gettextureID();
-}
-
-void CPlayer2D::setitemquantity(int arr, int quantity) {
-
 }
 
 void CPlayer2D::setsound(float vol)
