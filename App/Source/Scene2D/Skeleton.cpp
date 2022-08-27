@@ -3,14 +3,14 @@
 Skeleton::Skeleton()
 {
 	health = 100;
-	atk = 30;
+	atk = 0;
 }
 
 Skeleton::Skeleton(glm::vec2 pos)
 {
 	vec2Index = pos;
 	health = 100;
-	atk = 30;
+	atk = 0;
 }
 
 Skeleton::~Skeleton()
@@ -105,11 +105,6 @@ void Skeleton::Update(const double dElapsedTime)
 		case CEnemy2D::CHASE:
 		{
 			animatedSprites->PlayAnimation("closed", -1, 0.3f);
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
-			{
-				sCurrentFSM = ATTACK;
-				iFSMCounter = 0;
-			}
 			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f)
 			{
 				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
@@ -141,7 +136,12 @@ void Skeleton::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 			}
 			shotInterval -= dElapsedTime;
-			if (shotInterval <= 0)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			{
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}
+			else if (shotInterval <= 0)
 			{
 				animatedSprites->PlayAnimation("opened", -1, 0.3f);
 				SkeletonShot* skeletonShot = new SkeletonShot();
@@ -204,7 +204,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
 
-		DIRECTION repositionDirection = LEFT;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(DOWN) == false)
 		{
@@ -229,7 +228,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
 
-		DIRECTION repositionDirection = LEFT;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(UP) == false)
 		{
@@ -254,7 +252,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
-		DIRECTION repositionDirection = DOWN;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(LEFT) == false)
 		{
@@ -280,7 +277,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
 
-		DIRECTION repositionDirection = DOWN;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{
