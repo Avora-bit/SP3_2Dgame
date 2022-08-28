@@ -15,9 +15,6 @@
     <ClCompile Include="Source\GameStateManagement\CraftingState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
@@ -120,6 +117,9 @@
     <ClCompile Include="Source\Scene2D\SkeletonShot.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -130,9 +130,6 @@
       <Filter>SoundController</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameOverState.h">
-      <Filter>GameStateManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\GameStateManager.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameStateBase.h">
@@ -245,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\SkeletonShot.h">
       <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\GameStateManager.h">
+      <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

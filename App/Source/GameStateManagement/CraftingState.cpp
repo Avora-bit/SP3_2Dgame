@@ -159,17 +159,20 @@ bool CCraftingState::Update(const double dElapsedTime)
 	float buttonWidth = 256;
 	float buttonHeight = 128;
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	
 	{
 		static float f = 0.0f;
 		static int counter = 0;
 
 
 		//DISPLAY WORDS
-		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("QuantityText", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 1.0,
-			CSettings::GetInstance()->iWindowHeight / 3.0));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.68) /*- buttonWidth/100.0*/,
+		//	(CSettings::GetInstance()->iWindowHeight / 30.0)));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
+			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -177,25 +180,29 @@ bool CCraftingState::Update(const double dElapsedTime)
 		style2.FrameRounding = 200.0f;
 
 		// by tohdj
-		for (int n = 0; n < 18; n++)
+		for (int n = 9; n < 18; n++)
 		{
 			ImGui::PushID(n);
 
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
+
 			ImGui::SetWindowFontScale(4.f);
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
+			ImGui::TextColored(ImVec4(0, 1, 0, 1), "% d", butnum[n].getquantity()
 			/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
 
 			ImGui::PopID();
 		}
 		ImGui::End();
+		
 
-		// Create a window called "Hello, world!" and append into it.
+
+
+
 		ImGui::Begin("Crafting", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth/2.0) - buttonWidth/100.0, 
-			(CSettings::GetInstance()->iWindowHeight/3.0) - 100));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth* 0.65) /*- buttonWidth/100.0*/, 
+			(CSettings::GetInstance()->iWindowHeight/10.0)));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -210,9 +217,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 		{
 			cPlayer2D->setitemquantity(n - 9, butnum[n].getquantity());
 			cPlayer2D->setitem(n - 9, butnum[n].getitemID());
-			
-			cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n - 9).getquantity() << endl;
-
 		}
 
 		// by tohdj
@@ -227,7 +231,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 			if (n >= 9 && n < 18)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
-					-1, ImVec4(1, 1, 0, 1));
+					9, ImVec4(1, 1, 0, 1));
 
 				if (butnum[n].getitemID() != 0)
 				{
@@ -259,7 +263,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 			else if(n == 18)
 			{
 				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
-					-1, ImVec4(1, 0, 0, 1));
+					9, ImVec4(1, 0, 0, 1));
+				
+
 				//OUTPUT INVENTORY
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
 				butnum[n].settextureID(butnum[n].getitemID());
@@ -305,7 +311,8 @@ bool CCraftingState::Update(const double dElapsedTime)
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+					9);
 				gridrecipe.SetRecipeIndex(n + 1, butnum[n].getitemID());
 
 			}

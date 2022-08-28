@@ -103,11 +103,15 @@ protected:
 
 	CGameManager* cGameManager;
 
-	ISound* soundsfx;
 	ISound* dodgesfx;
 	ISound* grasssfx;
 	ISound* watersfx;
 	ISound* sandsfx;
+
+	float cooking_time;
+	bool cooking_mode;
+
+	glm::vec2 campfireVec2;
 
 	float soundVol;
 
@@ -129,7 +133,7 @@ protected:
 	float movementSpeed; 
 
 	bool attacking;
-	float attackTimer;
+
 	//bool shovelcheck = true;
 
 	//render
@@ -149,7 +153,7 @@ protected:
 
 	void InteractWithMap(void);
 
-	void InteractWithEnemy();
+	bool InteractWithEnemy();
 
 	bool CheckPosition(DIRECTION eDirection);
 
