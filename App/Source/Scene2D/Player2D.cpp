@@ -1505,8 +1505,19 @@ bool CPlayer2D::InteractWithEnemy()
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-
-
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		float enemyAngle = (atan2(((enemy->getVec2Index().y + enemy->getVec2MicroSteps().y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS) - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS)),
+			((enemy->getVec2Index().x + enemy->getVec2MicroSteps().x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS) - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS))) / 3.14159265359) * 180.0f;
+		if (enemyAngle - angle + 90 > 270)
+			enemyAngle -= 360;
+		if (cPhysics2D.CalculateDistance(vec2Index + vec2NumMicroSteps / cSettings->NUM_STEPS_PER_TILE_XAXIS,
+			enemy->getVec2Index() + enemy->getVec2MicroSteps() / cSettings->NUM_STEPS_PER_TILE_XAXIS) <= sword->getTotalRange() &&
+			enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
+			enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
+		{
+			std::cout << "bonk";
+			enemy->takeDamage(sword->getTotalDamage());
+		}
 
 		//PLAY SOUND DEPENDING ON PLAYER'S DISTANCE FROM ENEMY
 		float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
