@@ -173,7 +173,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
 			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
-		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style2 = ImGui::GetStyle();
@@ -238,7 +238,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 					//Discard items
 					if (ImGui::IsItemHovered())
 					{
-						//ImGui::Text("Check %s", butnum[n].getitemID());
 						if (cMouseController->IsButtonDown(1) && butnum[n].getquantity() != 0)
 						{
 							butnum[n].settextureID(butnum[n].getitemID());

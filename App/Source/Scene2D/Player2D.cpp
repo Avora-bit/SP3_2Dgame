@@ -44,6 +44,8 @@ CPlayer2D::CPlayer2D(void)
 	, watersfx(NULL)
 	, grasssfx(NULL)
 	, sandsfx(NULL)
+	, firesfx(NULL)
+	,enemysfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -105,6 +107,16 @@ CPlayer2D::~CPlayer2D(void)
 	{
 		delete sandsfx;
 		sandsfx = nullptr;
+	}
+	if (firesfx)
+	{
+		delete firesfx;
+		firesfx = nullptr;
+	}
+	if (enemysfx)
+	{
+		delete enemysfx;
+		enemysfx = nullptr;
 	}
 	
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -254,6 +266,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Cooked Food", "Image/Sp3Images/Food/Cooked_food.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
+	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
+
 	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
 	cInventoryManager->Add(sword);
 
@@ -347,7 +362,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	// Store the old position
 
-	//PLAYSOUND DEPENDING ON SURFACE TYPE
+
+	//IF PLAYER IS NEAR FIRE
+
+
+
+
+	//PLAY SOUND DEPENDING ON SURFACE TYPE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
@@ -489,13 +510,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
-	//PLACE CAMPFIRE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
 	{
+		//PLACE CAMPFIRE
 		if (inventorySlots[0].getitemID() == 102)
 		{
-			//inventorySlots
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
 			inventorySlots[0].setquantity(0);
 		}
@@ -514,7 +533,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
-
 			}
 		}
 		//EAT FOOD
@@ -522,10 +540,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(20);
+			cInventoryItem = cInventoryManager->GetItem("Hunger");
+			cInventoryItem->Add(20);
 		}
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_2))
 	{
+		//PLACE CAMPFIRE
 		if (inventorySlots[1].getitemID() == 102)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
@@ -554,10 +575,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(20);
+			cInventoryItem = cInventoryManager->GetItem("Hunger");
+			cInventoryItem->Add(20);
 		}
 	}
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_3))
 	{
+		//PLACE CAMPFIRE
 		if (inventorySlots[2].getitemID() == 102)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
@@ -586,14 +610,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
 			cInventoryItem->Add(20);
-
-
+			cInventoryItem = cInventoryManager->GetItem("Hunger");
+			cInventoryItem->Add(20);
 		}
 	}
 
 	//cout << "COOKING MODE " << cooking_mode << endl;
 	/*cout << "VEC Y " << campfireVec2.y << endl;
 	cout << "VEC X " << campfireVec2.x << endl;*/
+
+	/*UseHotBar(GLFW_KEY_1);
+	UseHotBar(GLFW_KEY_2);
+	UseHotBar(GLFW_KEY_3);*/
+
 
 	//TIMER TO COOK FOOD
 	if (cooking_mode)
@@ -608,7 +637,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cooking_time = 3.f;
 	}
 
-
 	//SET INVENTORY TEXTURE ID To 0 IF QUANTITY IS 0
 	for (int i = 0; i < 9; i++)
 	{
@@ -618,7 +646,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			inventorySlots[i].settextureID(0);
 		}
 	}
-
 
 	if (hungerTimer >= 10 && cInventoryManager->GetItem("Hunger")->GetCount() > 0)
 	{
@@ -1217,6 +1244,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
+
+	
 	InteractWithEnemy();
 	InteractWithMap();
 
@@ -1341,6 +1370,45 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 }
 
+void CPlayer2D::UseHotBar(const int GLFW_KEY)
+{
+	if (cKeyboardController->IsKeyDown(GLFW_KEY))
+	{
+		//PLACE CAMPFIRE
+		if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 102)
+		{
+			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
+			inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].setquantity(0);
+		}
+		//COOK FOOD
+		else if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 70)
+		{
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
+				/*&& direction == 1*/)
+				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
+					/*	&& direction == 0*/)
+				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
+					/*	&& direction == 3*/)
+				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
+					/*	&& direction == 2*/))
+			{
+				cooking_mode = true;
+				campfireVec2.y = vec2Index.y;
+				campfireVec2.x = vec2Index.x;
+			}
+		}
+		//EAT FOOD
+		else if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 81)
+		{
+			cInventoryItem = cInventoryManager->GetItem("Health");
+			cInventoryItem->Add(20);
+			cInventoryItem = cInventoryManager->GetItem("Hunger");
+			cInventoryItem->Add(20);
+		}
+		cout << "KEY IS " << cKeyboardController->IsKeyDown(GLFW_KEY) << endl;
+	}
+}
+
 void CPlayer2D::InteractWithMap(void)
 {
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
@@ -1407,6 +1475,7 @@ void CPlayer2D::InteractWithMap(void)
 	case 81:
 	case 30:
 	case 40:
+	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
 		break;
 	
@@ -1431,31 +1500,38 @@ void CPlayer2D::InteractWithMap(void)
 	}*/
 }
 
-void CPlayer2D::InteractWithEnemy() // more of AttackEnemy action
+bool CPlayer2D::InteractWithEnemy()
 {
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-		if (enemy->bIsActive)
+
+
+
+		//PLAY SOUND DEPENDING ON PLAYER'S DISTANCE FROM ENEMY
+		float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
+		if (fDistance < 5.f)
 		{
-			if (attackTimer == 0 && attacking)
+			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
+			if (enemySound != nullptr)
 			{
-				CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
-				float enemyAngle = (atan2(((enemy->getVec2Index().y+enemy->getVec2MicroSteps().y/cSettings->NUM_STEPS_PER_TILE_YAXIS + 2/cSettings->NUM_STEPS_PER_TILE_YAXIS) - (vec2Index.y+vec2NumMicroSteps.y/ cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS)),
-					((enemy->getVec2Index().x + enemy->getVec2MicroSteps().x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS) - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS))) / 3.14159265359) * 180.0f;
-				if (enemyAngle - angle + 90 > 270)
-					enemyAngle -= 360;
-				if (cPhysics2D.CalculateDistance(vec2Index+vec2NumMicroSteps/cSettings->NUM_STEPS_PER_TILE_XAXIS, 
-					enemy->getVec2Index()+enemy->getVec2MicroSteps()/ cSettings->NUM_STEPS_PER_TILE_XAXIS) <= sword->getTotalRange() &&
-					enemyAngle - angle+90 >= -40 + sword->getTotalRange() * 2 &&
-					enemyAngle - angle+90 <= 40 + sword->getTotalRange() * 2)
-				{
-					std::cout << "bonk";
-					enemy->takeDamage(sword->getTotalDamage());
-				}
+				enemysfx = enemySound;
+			}
+			if (enemysfx != nullptr)
+			{
+				enemysfx->setVolume(soundVol);
 			}
 		}
+		else
+		{
+			if (enemysfx != nullptr)
+			{
+				enemysfx->setVolume(0.f);
+			}
+
+		}
 	}
+	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
@@ -1592,8 +1668,10 @@ bool CPlayer2D::AddItem(int itemid)
 		//IF THE SLOT IS FULL
 		else
 		{
+			//IF ITEM IS NOT A NON STACKABLE ITEM (IE CAMPFIRE)
 			//IF THE DECLARED ITEMID IN THE SLOT IS THE SAME AS THE ITEM PICKED UP
-			if (inventorySlots[i].getitemID() == itemid)
+			if (inventorySlots[i].getitemID() == itemid
+				&& inventorySlots[i].getitemID() != 50)
 			{
 				//IF THE QUANTITY IS BELOW 5
 				if (inventorySlots[i].getquantity() < 5)
@@ -1611,6 +1689,7 @@ bool CPlayer2D::AddItem(int itemid)
 			{
 				continue;
 			}
+			
 		}
 
 		if (i < 3)
