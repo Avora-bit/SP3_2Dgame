@@ -1500,7 +1500,7 @@ void CPlayer2D::InteractWithMap(void)
 	}*/
 }
 
-bool CPlayer2D::InteractWithEnemy()
+void CPlayer2D::InteractWithEnemy()
 {
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
@@ -1542,7 +1542,6 @@ bool CPlayer2D::InteractWithEnemy()
 
 		}
 	}
-	return false;
 }
 
 bool CPlayer2D::CheckPosition(DIRECTION eDirection)
