@@ -154,6 +154,7 @@ bool CPlayer2D::Init(void)
 
 	movementSpeed = 1.f;
 	attacking = false;
+	attackTimer = 0;
 
 
 	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand

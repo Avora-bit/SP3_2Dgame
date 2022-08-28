@@ -133,6 +133,7 @@ protected:
 	float movementSpeed; 
 
 	bool attacking;
+	float attackTimer;
 
 	//bool shovelcheck = true;
 
@@ -153,7 +154,7 @@ protected:
 
 	void InteractWithMap(void);
 
-	bool InteractWithEnemy();
+	void InteractWithEnemy();
 
 	bool CheckPosition(DIRECTION eDirection);
 
