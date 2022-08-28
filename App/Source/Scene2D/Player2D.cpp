@@ -687,9 +687,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword")
-		&& (inventorySlots[0].getitemID() == 60
-		|| inventorySlots[1].getitemID() == 60
-		|| inventorySlots[2].getitemID() == 60))
+		//&& (inventorySlots[0].getitemID() == 60
+		//|| inventorySlots[1].getitemID() == 60
+		//|| inventorySlots[2].getitemID() == 60
+		)
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
@@ -1244,9 +1245,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
-	
-	InteractWithEnemy();
 	InteractWithMap();
 
 	animatedSprites->Update(dElapsedTime);

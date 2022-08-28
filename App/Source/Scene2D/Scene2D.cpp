@@ -485,10 +485,6 @@ void CScene2D::Render(void)
 	cMap2D->Render();
 	cMap2D->PostRender();
 
-	cPlayer2D->PreRender();
-	cPlayer2D->Render();
-	cPlayer2D->PostRender();
-
 	if (CInventoryManager::GetInstance()->Check("Sword") && cPlayer2D->getAttacking())
 	{
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
@@ -496,6 +492,10 @@ void CScene2D::Render(void)
 		sword->Render();
 		sword->PostRender();
 	}
+
+	cPlayer2D->PreRender();
+	cPlayer2D->Render();
+	cPlayer2D->PostRender();
 
 	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{
