@@ -504,11 +504,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-				/*	&& direction == 0*/)
+					/*	&& direction == 0*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-				/*	&& direction == 3*/)
+					/*	&& direction == 3*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-				/*	&& direction == 2*/))
+					/*	&& direction == 2*/))
 			{
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
@@ -658,7 +658,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword"))
+	if (cInventoryManager->Check("Sword")
+		&& (inventorySlots[0].getitemID() == 60
+		|| inventorySlots[1].getitemID() == 60
+		|| inventorySlots[2].getitemID() == 60))
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
@@ -684,6 +687,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			leftClickDown = false;
 		}
 	}
+	
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -1176,6 +1180,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 	}
+
 
 	//spawn projectile logic
 	{
