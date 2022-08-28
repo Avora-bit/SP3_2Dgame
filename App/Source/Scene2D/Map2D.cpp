@@ -320,6 +320,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			MapOfTextureIDs.insert(pair<int, int>(81, iTextureID));
 		}
+
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/sword.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/sword.png" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar

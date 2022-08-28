@@ -71,6 +71,8 @@ bool CInventoryState::Init(void)
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
 
+
+	cSettings =  CSettings::GetInstance();
 	for (int i = 0; i < 9; i++)
 	{
 		/*if (i > 2)
@@ -105,6 +107,12 @@ bool CInventoryState::Init(void)
  */
 bool CInventoryState::Update(const double dElapsedTime)
 {
+
+	// Calculate the relative scale to our default windows width
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -156,7 +164,9 @@ bool CInventoryState::Update(const double dElapsedTime)
 		ImGui::Begin("Inventory", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
 			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style = ImGui::GetStyle();

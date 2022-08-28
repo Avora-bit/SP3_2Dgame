@@ -107,6 +107,9 @@ protected:
 	ISound* grasssfx;
 	ISound* watersfx;
 	ISound* sandsfx;
+	ISound* firesfx;
+	ISound* enemysfx;
+
 
 	float cooking_time;
 	bool cooking_mode;
@@ -150,6 +153,8 @@ protected:
 
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
+
+	void UseHotBar(const int GLFW_KEY);
 
 	void InteractWithMap(void);
 

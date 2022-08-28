@@ -243,7 +243,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 
 
-	//health bar
+	//RENDER HEALTH BAR
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 		ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -309,7 +309,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 
-	//stamina
+	//RENDER STAMINA BAR
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
 		ImGuiWindowFlags staminaFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -324,9 +324,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 100));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));*/
 
-
 		ImGui::Begin("Stamina", NULL, staminaFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.03f + 80));
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.15f));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Stamina");
@@ -356,17 +355,13 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
-		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.69f)/2, cSettings->iWindowHeight * 0.01f + 500));
-		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.69f)/2, cSettings->iWindowHeight * .85f));
+		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 
-		char y[3];
 		for (int i = 0; i < 3; i++) {
 			ImGui::PushID(i);
 			ImGui::SameLine();
 			
-			string x = to_string(i);
-			strcpy(y, x.c_str());
-
 			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
 
 			if (hbcells[i].getitemID() != 0)
@@ -387,8 +382,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
-			string x = to_string(n);
-			strcpy(y, x.c_str());
+			
 			if (hbcells[n].getitemID() != 0)
 			{
 				// Our buttons are both drag sources and drag targets here!
@@ -397,7 +391,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
 					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
 			}
