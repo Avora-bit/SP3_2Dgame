@@ -75,7 +75,11 @@ public:
 
 	glm::vec2 getVec2Index();
 	glm::vec2 getVec2MicroSteps();
+
 	void takeDamage(float damage);
+
+
+	float getHealth();
 
 protected:
 	enum DIRECTION

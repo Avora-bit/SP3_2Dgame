@@ -332,6 +332,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
 		}
+
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/rock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/rock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar

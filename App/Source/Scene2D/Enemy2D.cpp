@@ -563,3 +563,8 @@ void CEnemy2D::takeDamage(float damage)
 	health -= damage;
 	runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
 }
+
+float CEnemy2D::getHealth()
+{
+	return health;
+}

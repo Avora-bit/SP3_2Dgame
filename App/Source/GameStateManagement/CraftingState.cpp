@@ -85,6 +85,8 @@ bool CCraftingState::Init(void)
 
 	hotbar = CGUI_Scene2D::GetInstance();
 
+	cMap2D = CMap2D::GetInstance();
+
 	il = CImageLoader::GetInstance();
 	
 	recipebook = new RecipeBook("Recipes.txt");
@@ -106,8 +108,6 @@ bool CCraftingState::Init(void)
 			butnum[i].setitemID(0);
 			butnum[i].settextureID(butnum[i].getitemID());
 			butnum[i].setquantity(0);
-
-
 		}
 		//IF THE SLOT IS LINKED TO INVENTORY
 		else if(i != 18 && i >=9)
@@ -116,25 +116,13 @@ bool CCraftingState::Init(void)
 			//butnum[i].setitemID(hotbar->return_hbcellid(i - 9));
 			butnum[i].setitemID(cPlayer2D -> getitemval(i - 9));
 			butnum[i].settextureID(butnum[i].getitemID());
-
-
 			butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
 
 			//cout << "ID IS " << butnum[i].gettextureID() << endl;
 		}
 
 		butnum[i].settextureID(butnum[i].getitemID());
-
-
-
-		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
-		//butnum[i].Init(il);
-
-		//MapOfTextureIDs.at(butnum[i].getitemID())
 	}
-
-	
-
 	return true;
 }
 
@@ -160,6 +148,18 @@ bool CCraftingState::Update(const double dElapsedTime)
 	float buttonHeight = 128;
 
 	
+	//IF ITEM IS PICKED UP WHILE IN THIS STATE, UPDATE THE SLOTS
+	/*if (cPlayer2D->AddItem())
+	{*/
+	//	for (int i = 9; i < 18; i++)
+	//	{
+	//		butnum[i].setitemID(cPlayer2D->getitemval(i - 9));
+	//		butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
+	//		butnum[i].settextureID(butnum[i].getitemID());
+	//	}
+	////}
+
+
 	{
 		static float f = 0.0f;
 		static int counter = 0;
@@ -171,9 +171,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 		//	(CSettings::GetInstance()->iWindowHeight / 30.0)));				// Set the top-left of the window at (10,10)
 		//ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
-		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
-			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
-		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60),
+			(CSettings::GetInstance()->iWindowHeight / 2.4f)));
+		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style2 = ImGui::GetStyle();
@@ -186,10 +186,22 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
-				ImGui::SameLine();
+				ImGui::SameLine(0.f, 70.f);
+			if ((n % 3) == 0)
+			{
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+			}
 
-			ImGui::SetWindowFontScale(4.f);
-			ImGui::TextColored(ImVec4(0, 1, 0, 1), "% d", butnum[n].getquantity()
+			ImGui::SetWindowFontScale(2.f);
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
 			/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
 
 			ImGui::PopID();
@@ -201,8 +213,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 
 
 		ImGui::Begin("Crafting", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth* 0.65) /*- buttonWidth/100.0*/, 
-			(CSettings::GetInstance()->iWindowHeight/10.0)));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.54) /*- buttonWidth/100.0*/,
+			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -225,12 +238,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 			ImGui::PushID(n);
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
-				ImGui::SameLine();
+				ImGui::SameLine(0.f, 40.f);
 
 			//IF ITEM IS IN INVENTORY SLOT
 			if (n >= 9 && n < 18)
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), ImVec2(0, 0), ImVec2(1, 1),
 					9, ImVec4(1, 1, 0, 1));
 
 				if (butnum[n].getitemID() != 0)
@@ -261,9 +274,8 @@ bool CCraftingState::Update(const double dElapsedTime)
 			//IF ITEM IS OUTPUT SLOT
 			else if(n == 18)
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), ImVec2(0, 0), ImVec2(1, 1),
 					9, ImVec4(1, 0, 0, 1));
-				
 
 				//OUTPUT INVENTORY
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
@@ -298,19 +310,16 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
-								//butnum[n].SubtractQuantity(1);
 
 								break;
 							}
 						}
 					}
 				}
-
-				//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1),
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), ImVec2(0, 0), ImVec2(1, 1),
 					9);
 				gridrecipe.SetRecipeIndex(n + 1, butnum[n].getitemID());
 
@@ -351,7 +360,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							butnum[payload_n].SubtractQuantity(1);
 						}
 					}
-					//IF ITEM IS DRAGGED INTO INVENTORY
+					//IF ITEM IS DRAGGED INTO INVENTORY SECTION
 					else
 					{
 						if (butnum[n].getquantity() < 5

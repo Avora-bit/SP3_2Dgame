@@ -121,14 +121,15 @@ bool CGUI_Scene2D::Init(void)
  */
 void CGUI_Scene2D::Update(const double dElapsedTime)
 {
-
+	
 	for (int i = 0; i < 3; i++)
 	{
 		hbcells[i].setitemID(cPlayer2D->getitemval(i));
 		hbcells[i].settextureID(hbcells[i].getitemID());
+		hbcells[i].setquantity(cPlayer2D->getitem(i).getquantity());
 		//cout << "ID is " << hbcells[i].gettextureID() << endl;
-			
 	}
+	
 
 
 	// Calculate the relative scale to our default windows width
@@ -345,9 +346,33 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 
 
+
+	//DISPLAY WORDS
+		// Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("QuantityText", NULL, window_flags);
+	ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.85f) / 2, cSettings->iWindowHeight * .85f));
+	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+	for (int n = 0; n < 3; n++)
+	{
+		ImGui::PushID(n);
+
+		//don't break line if doesn't reach 3 cells
+		if ((n % 3) != 0)
+			ImGui::SameLine(0.f, 85.f);
+
+
+		ImGui::SetWindowFontScale(2.f);
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", hbcells[n].getquantity()
+		/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
+
+		ImGui::PopID();
+	}
+	ImGui::End();
+
+
 	//RENDER HOTBAR
 	{
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.6f));  // Set a background color
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));  // Set a background color
 		ImGuiWindowFlags hotbarWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoMove |
@@ -355,12 +380,12 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
-		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.69f)/2, cSettings->iWindowHeight * .85f));
+		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.60f)/2, cSettings->iWindowHeight * .85f));
 		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 
 		for (int i = 0; i < 3; i++) {
 			ImGui::PushID(i);
-			ImGui::SameLine();
+			ImGui::SameLine(0.f, 50.f);
 			
 			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
 
