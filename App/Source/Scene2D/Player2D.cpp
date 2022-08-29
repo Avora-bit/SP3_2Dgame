@@ -306,7 +306,7 @@ bool CPlayer2D::Init(void)
 	}
 
 
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 77);
+	cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 77);
 
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
@@ -1474,23 +1474,22 @@ void CPlayer2D::InteractWithMap(void)
 		//remove level
 		unsigned int uiRow = -1;
 		unsigned int uiCol = -1;
-		//if (cMap2D->FindValue(77, uiRow, uiCol) == true)
-		//{
-		//	if (cMap2D->GetCurrentLevel() % 2 == 0)
-		//	{
-		//		//cMap2D->SetMapInfo_2(getprevlevel(), gety(), getx() - 1, 200);
-		//		cMap2D->SetMapInfo(uiRow, uiCol - 1, 200);
-		//		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
-		//	}
-		//	else
-		//	{
-		//		//cMap2D->SetMapInfo_2(getprevlevel(), gety(), getx() + 1, 200);
-		//		cMap2D->SetMapInfo(uiRow, uiCol + 1, 200);
-		//		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
-		//	}
-		//	reset_pos();
-		//}
+		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
+		{
+			if (cMap2D->GetCurrentLevel() == 0)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 0);
+				cMap2D->SetCurrentLevel(1);
+			}
+			else
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
 
+				//cMap2D->SetMapInfo_2(getprevlevel(), gety(), getx() + 1, 200);
+				cMap2D->SetCurrentLevel(0);
+			}
+			reset_pos();
+		}
 		cGameManager->bLevelDecrease = true;
 		break;
 	}
