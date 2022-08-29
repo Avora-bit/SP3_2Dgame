@@ -5,14 +5,14 @@
 Skeleton::Skeleton()
 {
 	health = 100;
-	atk = 0;
+	atk = 10;
 }
 
 Skeleton::Skeleton(glm::vec2 pos)
 {
 	vec2Index = pos;
 	health = 100;
-	atk = 0;
+	atk = 10;
 }
 
 Skeleton::~Skeleton()
@@ -59,10 +59,12 @@ bool Skeleton::Init(void)
 		return false;
 	}
 
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("closed", 1, 1);
-	animatedSprites->AddAnimation("opened", 2, 2);
-	animatedSprites->PlayAnimation("closed", -1, 0.3f);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("closed", 0, 0);
+	animatedSprites->AddAnimation("opened", 1, 1);
+	animatedSprites->AddAnimation("animatedMouth", 0, 1);
+	animatedSprites->AddAnimation("sleep", 2, 3);
+	animatedSprites->PlayAnimation("sleep", -1, 0.3f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -72,9 +74,12 @@ bool Skeleton::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	angle = 360;
+	scaleX = 3;
+	scaleY = 3;
 	timer = 0;
 	shotInterval = 0;
 	attackTimer = 1;
+	sleep = true;
 	return true;
 }
 
@@ -94,7 +99,7 @@ void Skeleton::Update(const double dElapsedTime)
 		{
 			animatedSprites->PlayAnimation("closed", -1, 0.3f);
 			vec2Direction = glm::vec2(0, 0);
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f + scaleX)
 			{
 				sCurrentFSM = CHASE;
 				iFSMCounter = 0;
@@ -102,10 +107,25 @@ void Skeleton::Update(const double dElapsedTime)
 			iFSMCounter++;
 			break;
 		}
+		case CEnemy2D::SLEEP:
+		{
+			animatedSprites->PlayAnimation("sleep", -1, 0.3f);
+			vec2Direction = glm::vec2(0, 0);
+			if (!sleep)
+			{
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+			}
+			iFSMCounter++;
+			break;
+		}
 		case CEnemy2D::CHASE:
 		{
-			animatedSprites->PlayAnimation("closed", -1, 0.3f);
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f)
+			if (shotInterval < 1.5)
+				animatedSprites->PlayAnimation("opened", -1, 0.3f);
+			else 
+				animatedSprites->PlayAnimation("closed", -1, 0.3f);
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f + scaleX && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f + scaleX)
 			{
 				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
 					cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -130,24 +150,24 @@ void Skeleton::Update(const double dElapsedTime)
 					}
 				}
 			}
-			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) >= 10.0f)
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) >= 10.0f + scaleX)
 			{
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 			}
 			shotInterval -= dElapsedTime;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= -0.5f + scaleX)
 			{
 				sCurrentFSM = ATTACK;
 				iFSMCounter = 0;
 			}
 			else if (shotInterval <= 0)
 			{
-				animatedSprites->PlayAnimation("opened", -1, 0.3f);
 				SkeletonShot* skeletonShot = new SkeletonShot();
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
+					skeletonShot->setDirection(cPlayer2D->vec2Index - vec2Index);
 					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
 				}
 				shotInterval = 5;
@@ -158,13 +178,13 @@ void Skeleton::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::ATTACK:
 		{
-			animatedSprites->PlayAnimation("opened", -1, 0.3f);
+			animatedSprites->PlayAnimation("animatedMouth", -1, 0.5f);
 			attackTimer += dElapsedTime;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= -0.5f + scaleX)
 			{
-				if (attackTimer >= 1)
+				if (attackTimer >= 1.5)
 				{
-					cPlayer2D->LoseHealth(atk);
+					InteractWithPlayer();
 					attackTimer = 0;
 				}
 			}

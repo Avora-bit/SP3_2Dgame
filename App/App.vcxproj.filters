@@ -120,6 +120,9 @@
     <ClCompile Include="Source\Scene2D\SkeletonShot.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\Bob.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -244,6 +247,9 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\SkeletonShot.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Bob.h">
       <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>

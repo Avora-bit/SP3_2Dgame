@@ -16,6 +16,7 @@ public:
 	// Init
 	bool Init(void);
 
+	void setDirection(glm::vec2 direction);
 	// Update
 	void Update(const double dElapsedTime);
 

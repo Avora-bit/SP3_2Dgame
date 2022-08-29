@@ -97,7 +97,8 @@ bool CProjectile2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 
 	bIsActive = true;
-
+	scaleX = 1;
+	scaleY = 1;
 	return true;
 }
 
@@ -163,6 +164,8 @@ void CProjectile2D::PreRender(void)
  */
 void CProjectile2D::Render(void)
 {
+	if (!bIsActive)
+		return;
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
@@ -176,6 +179,8 @@ void CProjectile2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 	transform = glm::rotate(transform, glm::radians(atan2(vec2Direction.y, vec2Direction.x)), glm::vec3(0, 0, 1));
+
+	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
