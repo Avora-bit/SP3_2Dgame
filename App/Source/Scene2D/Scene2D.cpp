@@ -198,7 +198,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		dungeon = nullptr;
 	}
 
-
 	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
@@ -208,14 +207,14 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv", 0) == false)
 	{
-		cout << "Failed to load Island" << endl;
+		cout << "Failed to load Island.csv" << endl;
 		return false;
 	}
-	/*if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
+	if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
 		return false;
-	}*/
+	}
 	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 

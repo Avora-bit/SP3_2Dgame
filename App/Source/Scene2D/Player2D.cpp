@@ -145,10 +145,12 @@ bool CPlayer2D::Init(void)
 
 	cGameManager = CGameManager::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
+	unsigned int uiRow = 1;
+	unsigned int uiCol = 1;
+	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1)) {}
+	else if (cMap2D->FindValue(78, uiRow, uiCol, true, 1)) {}
+	else if (cMap2D->FindValue(77, uiRow, uiCol, true, 1)) {}
+	else return false;		//unable to find valid position to spawn player
 
 	ProjectileForce = 0;
 
