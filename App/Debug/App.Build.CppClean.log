@@ -14,9 +14,11 @@ d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\victor
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\playgamestate.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\pausestate.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\menustate.obj
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\inventorystate.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\introstate.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\gamestatemanager.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\gameoverstate.obj
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\craftingstate.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\application.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\soundcontroller.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\woodenhilt2d.obj
@@ -39,6 +41,12 @@ d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\map2d.
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\inventorymanager.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\inventoryitem.obj
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\soundinfo.obj
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\debug\app.exe
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.ilk
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\debug\app.pdb
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.read.1.tlog
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.write.1.tlog
 d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\cl.command.1.tlog
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.read.1.tlog
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.write.1.tlog
+d:\personal\schoolwork\y2s1\dm2292-sp3\nyp_team5_sp3\sp3_2dgame\app\debug\app.tlog\link.command.1.tlog

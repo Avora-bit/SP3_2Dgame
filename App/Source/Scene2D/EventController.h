@@ -27,7 +27,7 @@ public:
 	
 	}
 
-	vector<CEnemy2D*> enemyVector;
+	vector<CEnemy2D*> enemyVector; // existing entities
 	vector<CEntity2D*> projectileVector;
 
 	void Init() {
@@ -61,5 +61,15 @@ public:
 		{
 			projectileVector[i]->Update(dElapsedTime);
 		}
+	}
+	//FOR SOUND - REAGAN
+	size_t rreturn_vectorSize()
+	{
+		return enemyVector.size();
+	}
+
+	glm::vec2 return_enemyIndex(int i)
+	{
+		return enemyVector[i]->getVec2Index();
 	}
 };

@@ -376,3 +376,8 @@ void Octopus::UpdatePosition(void)
 		//InteractWithPlayer();
 	}
 }
+
+glm::vec2 Octopus::getVec2Index()
+{
+	return vec2Index;
+}

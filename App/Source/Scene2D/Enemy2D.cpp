@@ -547,3 +547,19 @@ void CEnemy2D::UpdatePosition(void)
 		//InteractWithPlayer();
 	}
 }
+
+glm::vec2 CEnemy2D::getVec2Index()
+{
+	return vec2Index;
+}
+
+glm::vec2 CEnemy2D::getVec2MicroSteps()
+{
+	return vec2NumMicroSteps;
+}
+
+void CEnemy2D::takeDamage(float damage)
+{
+	health -= damage;
+	runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+}

@@ -46,7 +46,6 @@ CRustyBlade2D::~CRustyBlade2D(void)
 
 unsigned int CRustyBlade2D::LoadSprite()
 {
-	std::cout << "binginbg";
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/rustyswordslash.png", true);
 	if (iTextureID == 0)
 	{

@@ -11,6 +11,8 @@ public:
 	bool Init(void);
 	void Update(const double dElapsedTime);
 	void UpdatePosition(void);
+	glm::vec2 getVec2Index();
+
 
 private:
 	bool stuck = false;

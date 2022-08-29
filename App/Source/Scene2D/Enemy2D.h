@@ -73,6 +73,10 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	glm::vec2 getVec2Index();
+	glm::vec2 getVec2MicroSteps();
+	void takeDamage(float damage);
+
 protected:
 	enum DIRECTION
 	{

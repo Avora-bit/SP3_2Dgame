@@ -103,11 +103,18 @@ protected:
 
 	CGameManager* cGameManager;
 
-	ISound* soundsfx;
 	ISound* dodgesfx;
 	ISound* grasssfx;
 	ISound* watersfx;
 	ISound* sandsfx;
+	ISound* firesfx;
+	ISound* enemysfx;
+
+
+	float cooking_time;
+	bool cooking_mode;
+
+	glm::vec2 campfireVec2;
 
 	float soundVol;
 
@@ -129,6 +136,7 @@ protected:
 	float movementSpeed; 
 
 	bool attacking;
+	float attackTimer;
 
 	//bool shovelcheck = true;
 
@@ -147,9 +155,11 @@ protected:
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
 
+	void UseHotBar(const int GLFW_KEY);
+
 	void InteractWithMap(void);
 
-	bool InteractWithEnemy();
+	void InteractWithEnemy();
 
 	bool CheckPosition(DIRECTION eDirection);
 

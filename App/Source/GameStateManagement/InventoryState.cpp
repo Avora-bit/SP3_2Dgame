@@ -71,6 +71,8 @@ bool CInventoryState::Init(void)
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
 
+
+	cSettings =  CSettings::GetInstance();
 	for (int i = 0; i < 9; i++)
 	{
 		/*if (i > 2)
@@ -105,6 +107,12 @@ bool CInventoryState::Init(void)
  */
 bool CInventoryState::Update(const double dElapsedTime)
 {
+
+	// Calculate the relative scale to our default windows width
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -120,8 +128,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 	//DISPLAY WORDS
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
-	ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 1.0,
-		CSettings::GetInstance()->iWindowHeight / 3.0));			// Set the top-left of the window at (10,10)
+	ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
+		(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 	//Added rounding for nicer effect
@@ -154,19 +162,21 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Inventory", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth / 2.0) - buttonWidth / 100.0,
-			(CSettings::GetInstance()->iWindowHeight / 3.0) - 100));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.65) /*- buttonWidth/100.0*/,
+			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.FrameRounding = 200.0f;
 
 		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Inventory Menu");
+		ImGui::SetWindowFontScale(4.f);
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Inventory Menu");
 		
 		// by tohdj
-		char y[9];
 		for (int n = 0; n < 9; n++)
 		{
 			ImGui::PushID(n);
@@ -174,9 +184,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
 				ImGui::SameLine();
-
-			string x = to_string(n);
-			strcpy(y, x.c_str());
 
 			//render the bar yellow if it's hotbar
 			if (n >= 3)
@@ -194,9 +201,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 				
 			}
 
-
-			
-			
 			if (butnum[n].getitemID() != 0)
 			{
 				//Discard items
@@ -229,7 +233,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
 					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
 			}
@@ -283,7 +286,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		cPlayer2D->setitemquantity(n, butnum[n].getquantity());
 		cPlayer2D->setitem(n, butnum[n].getitemID());
 
-		cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n).getquantity() << endl;
+		/*cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n).getquantity() << endl;*/
 
 	}
 	//For keyboard controls
