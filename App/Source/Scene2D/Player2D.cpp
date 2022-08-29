@@ -511,25 +511,25 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (cMouseController->IsButtonDown(0))
 	{
 		//right
-		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 100) && direction == 1))
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, true, 1) == 100 /*&& direction == 1*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 30, true, 1);
 		}
 		//left
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 100)
-			&& direction == 0)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, true, 1) == 100
+			/*&& direction == 0*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 30, true, 1);
 		}
 		//down
-		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 100)
-			&& direction == 3)
+		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
+			/*&& direction == 3*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 30, true, 1);
 		}
 		//up
-		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 100)
-			&& direction == 2)
+		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
+			/*&& direction == 2*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 30, true, 1);
 		}
@@ -1564,11 +1564,7 @@ void CPlayer2D::InteractWithEnemy()
 			enemy->takeDamage(sword->getTotalDamage());
 		}
 
-		//SPAWN FOOD IF DEAD
-		if (enemy->getHealth() <= 0)
-		{
-			cMap2D->SetMapInfo(enemy->getVec2Index().y, enemy->getVec2Index().x, 70);
-		}
+		
 
 		//PLAY SOUND DEPENDING ON PLAYER'S DISTANCE FROM ENEMY
 		/*float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
