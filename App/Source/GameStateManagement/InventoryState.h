@@ -20,6 +20,7 @@
 
 #include"../Scene2D/GUI_Scene2D.h"
 #include "../Scene2D/slot.h"
+#include "../Scene2D/Map2D.h"
 
 
 #include "GameControl/Settings.h"
@@ -66,6 +67,8 @@ protected:
 	CGUI_Scene2D* hotbar;
 
 	CImageLoader* il;
+
+	CMap2D* cMap2D;
 
 	CSettings* cSettings;
 

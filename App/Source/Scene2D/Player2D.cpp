@@ -148,6 +148,8 @@ bool CPlayer2D::Init(void)
 
 	ProjectileForce = 0;
 
+	walkingTime = 0;
+
 	angle = 0;
 
 	direction = RIGHT;
@@ -306,8 +308,8 @@ bool CPlayer2D::Init(void)
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
 
-	inventorySlots[1].setitemID(70);
-	inventorySlots[1].AddQuantity(3);
+	/*inventorySlots[1].setitemID(70);
+	inventorySlots[1].AddQuantity(3);*/
 
 
 
@@ -322,7 +324,7 @@ bool CPlayer2D::Reset()
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
+		return false;	// Unable to find the start position of taaaaaaaaaahe player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
@@ -374,11 +376,22 @@ void CPlayer2D::Update(const double dElapsedTime)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
+		walkingTime += 0.5f * dElapsedTime;
+		//walkingTime = max(0, 1);
+
+		if (walkingTime >= 1)
+		{
+			walkingTime = 1;
+		}
+
+		cout << "WALKING TIME" << walkingTime << endl;
 
 		switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 		{
 		case 99: //grass
 		{
+			//walkingTime = 0;
+
 			if (sandsfx != nullptr)
 			{
 				sandsfx->setVolume(0.f);
@@ -397,23 +410,29 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			if (grasssfx != nullptr)
 			{
-				grasssfx->setVolume(soundVol);
+				grasssfx->setVolume(soundVol * walkingTime);
 			}
 
 			break;
 		}
 		case 98: //sand
 		{
+			//walkingTime = 0;
+
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
 				//grasssfx = nullptr;
 			}
+
 			if (watersfx != nullptr)
 			{
 				watersfx->setVolume(0.f);
 				//watersfx = nullptr;
 			}
+
+			
+
 			ISound* sandSound = cSoundController->PlaySoundByID_2(9);
 			if (sandSound != nullptr)
 			{
@@ -421,12 +440,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			if (sandsfx != nullptr)
 			{
-				sandsfx->setVolume(soundVol);
+				sandsfx->setVolume(soundVol * walkingTime);
 			}
 			break;
 		}
 		case 97: //water
 		{
+			//walkingTime = 0;
+
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
@@ -445,7 +466,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 			if (watersfx != nullptr)
 			{
-				watersfx->setVolume(soundVol);
+				watersfx->setVolume(soundVol* walkingTime);
+
 			}
 			break;
 		}
@@ -458,6 +480,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else
 	{
+		walkingTime = 0;
+
 		if (grasssfx != nullptr)
 		{
 			grasssfx->setVolume(0.f);
@@ -1483,19 +1507,6 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	}
 
-	//forage tree
-	//if (vec2Index-cMap2D->GetMapInfo(vec2Index.x, vec2Index.y, 100) < 1)
-	//{
-	//	if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
-
-	//	}
-	//}
-
-
-	/*switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1))
-	{
-
-	}*/
 }
 
 void CPlayer2D::InteractWithEnemy()
@@ -1517,8 +1528,14 @@ void CPlayer2D::InteractWithEnemy()
 			enemy->takeDamage(sword->getTotalDamage());
 		}
 
+		//SPAWN FOOD IF DEAD
+		if (enemy->getHealth() <= 0)
+		{
+			cMap2D->SetMapInfo(enemy->getVec2Index().y, enemy->getVec2Index().x, 70);
+		}
+
 		//PLAY SOUND DEPENDING ON PLAYER'S DISTANCE FROM ENEMY
-		float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
+		/*float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
 		if (fDistance < 5.f)
 		{
 			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
@@ -1538,7 +1555,7 @@ void CPlayer2D::InteractWithEnemy()
 				enemysfx->setVolume(0.f);
 			}
 
-		}
+		}*/
 	}
 }
 

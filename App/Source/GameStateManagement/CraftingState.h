@@ -27,6 +27,7 @@
 #include"../Scene2D/GUI_Scene2D.h"
 
 #include "../Scene2D/slot.h"
+#include "../Scene2D/Map2D.h"
 
 
 #include "../Scene2D/Player2D.h"
@@ -81,6 +82,8 @@ protected:
 
 	CPlayer2D* cPlayer2D;
 	
+	CMap2D* cMap2D;
+
 	CSettings* cSettings;
 
 	CGUI_Scene2D* hotbar;

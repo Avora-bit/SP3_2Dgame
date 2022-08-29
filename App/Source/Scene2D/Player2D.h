@@ -109,7 +109,7 @@ protected:
 	ISound* sandsfx;
 	ISound* firesfx;
 	ISound* enemysfx;
-
+	float walkingTime;
 
 	float cooking_time;
 	bool cooking_mode;
