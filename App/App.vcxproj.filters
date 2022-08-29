@@ -246,6 +246,7 @@
     <ClInclude Include="Source\Scene2D\SkeletonShot.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene2D\MapGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
