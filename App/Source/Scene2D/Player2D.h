@@ -157,6 +157,7 @@ protected:
 
 	void UseHotBar(const int GLFW_KEY);
 
+	bool reset_pos();
 	void InteractWithMap(void);
 
 	void InteractWithEnemy();

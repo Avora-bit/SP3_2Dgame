@@ -214,25 +214,25 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//DRAG AND DROP SYSTEM
 			if (butnum[n].getitemID() != 0)
 			{
-				//Discard items
+				//DISCARD ITEMS
 				if (ImGui::IsItemHovered())
 				{
-					//ImGui::Text("Check %s", butnum[n].getitemID());
-					if (cMouseController->IsButtonDown(1))
+					if (cMouseController->IsButtonDown(1) && butnum[n].getquantity() != 0)
 					{
-						butnum[n].setitemID(0);
-						//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 						butnum[n].settextureID(butnum[n].getitemID());
-
 						butnum[n].SubtractQuantity(1);
-						//break;
 
-						//set hotbar to 0
-						if (n <= 2)
+						if (butnum[n].getquantity() == 0)
 						{
-							hotbar->set_hbcellid(n, butnum[n].getitemID());
+							butnum[n].setitemID(0);
+							butnum[n].settextureID(0);
 						}
 
+						//REDUCE THE QUANTITY IN HOTBAR AS WELL
+						if (n <= 2)
+						{
+							hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
+						}
 					}
 				}
 

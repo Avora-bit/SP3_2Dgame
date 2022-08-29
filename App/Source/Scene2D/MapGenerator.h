@@ -77,6 +77,8 @@ public:
 		//items
 		Stick = 30,
 		Wood = 40,
+		Rock = 49,
+		
 	};
 
 	MapGen() {

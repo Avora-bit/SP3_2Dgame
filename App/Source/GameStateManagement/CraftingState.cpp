@@ -260,12 +260,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 							{
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(0);
+							}
 
-								//REDUCE THE QUANTITY IN HOTBAR AS WELL
-								if (n <= 2)
-								{
-									hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
-								}
+							//REDUCE THE QUANTITY IN HOTBAR AS WELL
+							if (n <= 2)
+							{
+								hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
 							}
 						}
 					}
@@ -371,8 +371,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 							butnum[n].AddQuantity(1);
 							butnum[payload_n].SubtractQuantity(1);
 						}
-
-
 						//IF IT'S DRAGGED TO THE FIRST 3 INVENTORY SLOTS
 						if (n < 12)
 						{
