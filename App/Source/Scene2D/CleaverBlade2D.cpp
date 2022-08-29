@@ -46,7 +46,6 @@ CCleaverBlade2D::~CCleaverBlade2D(void)
 
 unsigned int CCleaverBlade2D::LoadSprite()
 {
-	std::cout << "binginbg";
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/cleaverbladeslash.png", true);
 	if (iTextureID == 0)
 	{

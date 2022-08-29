@@ -70,31 +70,16 @@ bool CInventoryState::Init(void)
 	
 	hotbar = CGUI_Scene2D::GetInstance();
 	cPlayer2D = CPlayer2D::GetInstance();
+	cMap2D = CMap2D::GetInstance();
+
+	cSettings =  CSettings::GetInstance();
 
 	for (int i = 0; i < 9; i++)
 	{
-		/*if (i > 2)
-		{*/
-			butnum[i].setitemID(cPlayer2D->getitemval(i));
-			//cout << cPlayer2D->getitem(i).gettextureID() << endl;
-			//butnum[i].settextureID(cPlayer2D->getitem(i).gettextureID());
-			//butnum[i].settextureID(cPlayer2D->gettextureid(i));
-			butnum[i].settextureID(butnum[i].getitemID());
-
-
-			butnum[i].setquantity(cPlayer2D->getitem(i).getquantity());
-
-
-			cout << "INVENTORY STATE IS " << butnum[i].gettextureID() << endl;
-		//}
-		//else
-		//{
-		//	//the first three items are from the hotbar
-		//	butnum[i].setitemID(hotbar->return_hbcellid(i));
-		//}
-
-		//butnum[i].loadimagebasedID(butnum[i].getitemID(), il);
-		//butnum[i].Init(il);
+		butnum[i].setitemID(cPlayer2D->getitemval(i));
+		butnum[i].settextureID(butnum[i].getitemID());
+		butnum[i].setquantity(cPlayer2D->getitem(i).getquantity());
+		//cout << "INVENTORY STATE IS " << butnum[i].gettextureID() << endl;
 	}
 
 	return true;
@@ -105,6 +90,23 @@ bool CInventoryState::Init(void)
  */
 bool CInventoryState::Update(const double dElapsedTime)
 {
+
+	// Calculate the relative scale to our default windows width
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+
+	//IF ITEM IS PICKED UP WHILE IN THIS STATE, UPDATE THE SLOTS
+	/*if (cPlayer2D->AddItem() == true)
+	{*/
+		for (int i = 0; i < 9; i++)
+		{
+			butnum[i].setitemID(cPlayer2D->getitemval(i));
+			butnum[i].setquantity(cPlayer2D->getitem(i).getquantity());
+			butnum[i].settextureID(butnum[i].getitemID());
+		}
+		/*cout << "IS " << cPlayer2D->AddItem() << endl;
+	}*/
+
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -120,24 +122,31 @@ bool CInventoryState::Update(const double dElapsedTime)
 	//DISPLAY WORDS
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
-	ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 1.0,
-		CSettings::GetInstance()->iWindowHeight / 3.0));			// Set the top-left of the window at (10,10)
+	ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60) ,
+		(CSettings::GetInstance()->iWindowHeight / 4.7)));				
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-
-	//Added rounding for nicer effect
-	ImGuiStyle& style2 = ImGui::GetStyle();
-	style2.FrameRounding = 200.0f;
-
-	// by tohdj
 	for (int n = 0; n < 9; n++)
 	{
 		ImGui::PushID(n);
 
 		//don't break line if doesn't reach 3 cells
 		if ((n % 3) != 0)
-			ImGui::SameLine();
+			ImGui::SameLine(0.f, 70.f);
+		if ((n % 3) == 0)
+		{
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::Spacing();
+		}
 
-		ImGui::SetWindowFontScale(4.f);
+
+		ImGui::SetWindowFontScale(2.f);
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity()
 		/*cInventoryItem->GetCount(), cInventoryItem->GetMaxCount()*/);
 
@@ -154,29 +163,23 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Inventory", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth / 2.0) - buttonWidth / 100.0,
-			(CSettings::GetInstance()->iWindowHeight / 3.0) - 100));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.54) /*- buttonWidth/100.0*/,
+			(CSettings::GetInstance()->iWindowHeight / 10.0)));				// Set the top-left of the window at (10,10)
+		//ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
-		//Added rounding for nicer effect
-		ImGuiStyle& style = ImGui::GetStyle();
-		style.FrameRounding = 200.0f;
-
-		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Inventory Menu");
+		ImGui::SetWindowFontScale(4.f);
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Inventory");
 		
 		// by tohdj
-		char y[9];
+		//char y[9];
 		for (int n = 0; n < 9; n++)
 		{
 			ImGui::PushID(n);
 
 			//don't break line if doesn't reach 3 cells
 			if ((n % 3) != 0)
-				ImGui::SameLine();
-
-			string x = to_string(n);
-			strcpy(y, x.c_str());
+				ImGui::SameLine(0.f, 40.f);
 
 			//render the bar yellow if it's hotbar
 			if (n >= 3)
@@ -184,19 +187,31 @@ bool CInventoryState::Update(const double dElapsedTime)
 				/*ImageButton(ImTextureID user_texture_id, const ImVec2 & size, const ImVec2 & uv0 = ImVec2(0, 0),
 					const ImVec2 & uv1 = ImVec2(1, 1), int frame_padding = -1, const ImVec4 & bg_col = ImVec4(0, 0, 0, 0),
 					const ImVec4 & tint_col = ImVec4(1, 1, 1, 1));*/
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1,1),
-					-1, ImVec4(1, 1, 0, 1) );
-				
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), 
+					ImVec2(0, 0), ImVec2(1,1),
+					10, ImVec4(1, 1, 0, 1) );
+
+				//ImGui::ImageButtonWithText((ImTextureID)butnum[n].gettextureID(),
+				//	to_string(butnum[n].getquantity()).c_str(),
+				//	ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), 10, 
+				//	ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
+
+				//
+				//ImGui::SetWindowFontScale(1.5f);
+				////ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity());	
+				//ImGui::Text("% d", butnum[n].getquantity());
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(50, 50));
+				ImGui::ImageButton((ImTextureID)butnum[n].gettextureID(), ImVec2(CSettings::GetInstance()->iWindowWidth * 0.05, CSettings::GetInstance()->iWindowWidth * 0.05), ImVec2(0, 0), ImVec2(1, 1),
+					10);
+				/*ImGui::SetWindowFontScale(1.5f);
+				ImGui::TextColored(ImVec4(1, 0, 0, 1), "% d", butnum[n].getquantity());*/
 				
 			}
 
 
-			
-			
+			//DRAG AND DROP SYSTEM
 			if (butnum[n].getitemID() != 0)
 			{
 				//Discard items
@@ -229,7 +244,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 					// Set payload to carry the index of our item (could be anything)
 					//&n is to get the data directly from IMGUI
 					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-					ImGui::Text("Check %s", y);
 					ImGui::EndDragDropSource();
 				}
 			}
@@ -267,14 +281,12 @@ bool CInventoryState::Update(const double dElapsedTime)
 				}
 				ImGui::EndDragDropTarget();
 			}
+			
+
+
 			ImGui::PopID();
 		}
 		ImGui::End();
-
-
-
-
-		
 	}
 
 
@@ -283,7 +295,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		cPlayer2D->setitemquantity(n, butnum[n].getquantity());
 		cPlayer2D->setitem(n, butnum[n].getitemID());
 
-		cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n).getquantity() << endl;
+		/*cout << "PLAYER QUANTITY IS " << cPlayer2D->getitem(n).getquantity() << endl;*/
 
 	}
 	//For keyboard controls

@@ -234,7 +234,7 @@ void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
  */
 void CEnemy2D::Constraint(DIRECTION eDirection)
 {
-	if (eDirection == LEFT)
+	if (eDirection == LEFT || eDirection == TOPLEFT || eDirection == BOTTOMLEFT)
 	{
 		if (vec2Index.x < 0)
 		{
@@ -242,7 +242,7 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
 			vec2NumMicroSteps.x = 0;
 		}
 	}
-	else if (eDirection == RIGHT)
+	if (eDirection == RIGHT || eDirection == TOPRIGHT || eDirection == BOTTOMRIGHT)
 	{
 		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
 		{
@@ -250,7 +250,7 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
 			vec2NumMicroSteps.x = 0;
 		}
 	}
-	else if (eDirection == UP)
+	if (eDirection == UP || eDirection == TOPLEFT || eDirection == TOPRIGHT)
 	{
 		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
 		{
@@ -258,17 +258,13 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
 			vec2NumMicroSteps.y = 0;
 		}
 	}
-	else if (eDirection == DOWN)
+	if (eDirection == DOWN || eDirection == BOTTOMLEFT || eDirection == BOTTOMRIGHT)
 	{
 		if (vec2Index.y < 0)
 		{
 			vec2Index.y = 0;
 			vec2NumMicroSteps.y = 0;
 		}
-	}
-	else
-	{
-		cout << "CEnemy2D::Constraint: Unknown direction." << endl;
 	}
 }
 
@@ -278,7 +274,7 @@ void CEnemy2D::Constraint(DIRECTION eDirection)
  */
 bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 {
-	if (eDirection == LEFT)
+	if (eDirection == LEFT || eDirection == TOPLEFT || eDirection == BOTTOMLEFT)
 	{
 		// If the new position is fully within a row, then check this row only
 		if (vec2NumMicroSteps.y == 0)
@@ -300,7 +296,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 			}
 		}
 	}
-	else if (eDirection == RIGHT)
+	if (eDirection == RIGHT || eDirection == TOPRIGHT || eDirection == BOTTOMRIGHT)
 	{
 		// If the new position is at the top row, then return true
 		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
@@ -330,7 +326,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 		}
 
 	}
-	else if (eDirection == UP)
+	if (eDirection == UP || eDirection == TOPLEFT || eDirection == TOPRIGHT)
 	{
 		// If the new position is at the top row, then return true
 		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
@@ -359,7 +355,7 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 			}
 		}
 	}
-	else if (eDirection == DOWN)
+	if (eDirection == DOWN || eDirection == BOTTOMLEFT || eDirection == BOTTOMRIGHT)
 	{
 		// If the new position is fully within a column, then check this column only
 		if (vec2NumMicroSteps.x == 0)
@@ -380,10 +376,6 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 				return false;
 			}
 		}
-	}
-	else
-	{
-		cout << "CEnemy2D::CheckPosition: Unknown direction." << endl;
 	}
 
 	return true;
@@ -446,9 +438,10 @@ void CEnemy2D::UpdatePosition(void)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
+
 	if (vec2Direction.y < 0)
 	{
-		// Move left
+		// Move down
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
@@ -475,7 +468,7 @@ void CEnemy2D::UpdatePosition(void)
 	}
 	else if (vec2Direction.y > 0)
 	{
-		// Move right
+		// Move up
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
@@ -558,4 +551,25 @@ void CEnemy2D::UpdatePosition(void)
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
+}
+
+glm::vec2 CEnemy2D::getVec2Index()
+{
+	return vec2Index;
+}
+
+glm::vec2 CEnemy2D::getVec2MicroSteps()
+{
+	return vec2NumMicroSteps;
+}
+
+void CEnemy2D::takeDamage(float damage)
+{
+	health -= damage;
+	runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0);
+}
+
+float CEnemy2D::getHealth()
+{
+	return health;
 }

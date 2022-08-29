@@ -73,8 +73,13 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	// The vec2 which stores the indices of the enemy2D in the Map2D
-	glm::vec2 vec2Index;
+	glm::vec2 getVec2Index();
+	glm::vec2 getVec2MicroSteps();
+
+	void takeDamage(float damage);
+
+
+	float getHealth();
 
 	bool sleep;
 
@@ -82,9 +87,13 @@ protected:
 	enum DIRECTION
 	{
 		LEFT = 0,
-		RIGHT,
+		TOPLEFT,
 		UP,
+		TOPRIGHT,
+		RIGHT,
+		BOTTOMRIGHT,
 		DOWN,
+		BOTTOMLEFT,
 		NUM_DIRECTIONS
 	};
 

@@ -52,6 +52,9 @@ void slot::settextureID(int itemid)
 	case 81:
 		textureID = cInventoryManager->GetItem("Cooked Food")->GetTextureID();
 		break;
+	case 50:
+		textureID = cInventoryManager->GetItem("Swords")->GetTextureID();
+		break;
 	case 0:
 		textureID = 0;
 		break;

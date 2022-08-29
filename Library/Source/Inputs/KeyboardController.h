@@ -27,6 +27,7 @@ public:
 
 	// User Interface
 	bool IsKeyDown(const int key);
+
 	bool IsKeyUp(const int key);
 	bool IsKeyPressed(const int key);
 	bool IsKeyReleased(const int key);

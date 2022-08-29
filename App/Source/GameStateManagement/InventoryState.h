@@ -20,9 +20,10 @@
 
 #include"../Scene2D/GUI_Scene2D.h"
 #include "../Scene2D/slot.h"
+#include "../Scene2D/Map2D.h"
 
 
-
+#include "GameControl/Settings.h"
 
 
 #include "../Scene2D/Player2D.h"
@@ -67,6 +68,9 @@ protected:
 
 	CImageLoader* il;
 
+	CMap2D* cMap2D;
+
+	CSettings* cSettings;
 
 	int itemcounter;
 

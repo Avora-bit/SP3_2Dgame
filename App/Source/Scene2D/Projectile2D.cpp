@@ -87,7 +87,8 @@ bool CProjectile2D::Init(void)
 		return false;
 	}
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("throw", 0, 0);
+	animatedSprites->AddAnimation("active", 0, 0);
+	animatedSprites->PlayAnimation("active", -1, 1.f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -109,34 +110,7 @@ void CProjectile2D::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
-	vec2OldIndex = vec2Index;
-
-	if (cPlayer2D->getProjectileForce() >= 1.5) {
-		cPhysics2D.SetTime((float)dElapsedTime);
-		cPhysics2D.SetInitialVelocity(glm::vec2(cPlayer2D->getProjectileForce(), 0.0f));
-		cPhysics2D.Update();
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-		int iIndex_XAxis_OLD = vec2Index.x;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
-	}
-	else {
-		cPhysics2D.Update();
-		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
-		int iIndex_YAxis_OLD = vec2Index.y;
-		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS); {
-			if (vec2Index.y >= 0) {
-				vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-				if (vec2NumMicroSteps.y < 0) {
-					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-					vec2Index.y--;
-				}
-			}
-		}
-		int iIndex_YAxis_Proposed = vec2Index.y;
-		for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--) {
-			vec2Index.y = i;
-		}
-	}
+	trajectory();
 
 	InteractWithMap();
 	animatedSprites->Update(dElapsedTime);
@@ -256,11 +230,6 @@ void CProjectile2D::InteractWithMap(void)
 		distanceTravelled = 0;
 		break;
 	}
-}
-
-bool CProjectile2D::InteractWithPlayer()
-{
-	return false;
 }
 
 bool CProjectile2D::CheckPosition(DIRECTION eDirection)
@@ -422,4 +391,9 @@ void CProjectile2D::trajectory()			//update position
 	
 	// Interact with the Player
 	InteractWithPlayer();
+}
+
+bool CProjectile2D::InteractWithPlayer()
+{
+	return false;
 }

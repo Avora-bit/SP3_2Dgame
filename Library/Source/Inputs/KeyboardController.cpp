@@ -1,5 +1,5 @@
 #include "KeyboardController.h"
-
+#include <iostream>
 /**
  @brief This Constructor is a protected access modified as this class instance will be a Singleton.
  */
@@ -52,8 +52,11 @@ void CKeyboardController::Update(const int key, const int action)
  */
 bool CKeyboardController::IsKeyDown(const int key)
 {
+
 	return currStatus.test(key);
 }
+
+
 
 /**
  @brief Check if a key is up a.k.a. not pressed down

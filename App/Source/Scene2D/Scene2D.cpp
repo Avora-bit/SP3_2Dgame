@@ -351,6 +351,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_monster.ogg"), 10, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Fire.ogg"), 11, true);
 
 
 	cSoundController->AddToPlaylist(3);
@@ -395,7 +396,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	//CAN HEAR SOUND IF ENEMY IS CLOSE
-	for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
+	/*for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
 	{
 		float fDistance = cPhysics2D.CalculateDistance(eventcontroller->return_enemyIndex(i), cPlayer2D->vec2Index);
 		if (fDistance < 5.f)
@@ -418,7 +419,7 @@ bool CScene2D::Update(const double dElapsedTime)
 			}
 
 		}
-	}
+	}*/
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
@@ -484,10 +485,6 @@ void CScene2D::Render(void)
 	cMap2D->Render();
 	cMap2D->PostRender();
 
-	cPlayer2D->PreRender();
-	cPlayer2D->Render();
-	cPlayer2D->PostRender();
-
 	if (CInventoryManager::GetInstance()->Check("Sword") && cPlayer2D->getAttacking())
 	{
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
@@ -495,6 +492,10 @@ void CScene2D::Render(void)
 		sword->Render();
 		sword->PostRender();
 	}
+
+	cPlayer2D->PreRender();
+	cPlayer2D->Render();
+	cPlayer2D->PostRender();
 
 	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
 	{

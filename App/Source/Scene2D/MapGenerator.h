@@ -80,11 +80,11 @@ private:
 
 	enum Direction
 	{
-		North,
-		South,
-		West,
-		East,
-		DirectionCount
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		NUM_DIRECTIONS
 	};
 
 	char getTile(int x, int y) const
@@ -113,7 +113,7 @@ private:
 			int y = randminmax(exit[r].y, exit[r].y + exit[r].height - 1);
 
 			// north, south, west, east
-			for (int j = 0; j < DirectionCount; ++j)
+			for (int j = 0; j < NUM_DIRECTIONS; ++j)
 			{
 				if (createFeature(x, y, static_cast<Direction>(j)))
 				{
@@ -131,13 +131,13 @@ private:
 		int dx = 0;
 		int dy = 0;
 
-		if (dir == North)
+		if (dir == UP)
 			dy = 1;
-		else if (dir == South)
+		else if (dir == DOWN)
 			dy = -1;
-		else if (dir == West)
+		else if (dir == LEFT)
 			dx = 1;
-		else if (dir == East)
+		else if (dir == RIGHT)
 			dx = -1;
 
 		if (getTile(x + dx, y + dy) != Floor && getTile(x + dx, y + dy) != Corridor)
@@ -175,25 +175,25 @@ private:
 		roomID.width = randminmax(minRoomSize, maxRoomSize);
 		roomID.height = randminmax(minRoomSize, maxRoomSize);
 
-		if (dir == North)
+		if (dir == UP)
 		{
 			roomID.x = x - roomID.width / 2;
 			roomID.y = y - roomID.height;
 		}
 
-		else if (dir == South)
+		else if (dir == DOWN)
 		{
 			roomID.x = x - roomID.width / 2;
 			roomID.y = y + 1;
 		}
 
-		else if (dir == West)
+		else if (dir == LEFT)
 		{
 			roomID.x = x - roomID.width;
 			roomID.y = y - roomID.height / 2;
 		}
 
-		else if (dir == East)
+		else if (dir == RIGHT)
 		{
 			roomID.x = x + 1;
 			roomID.y = y - roomID.height / 2;
@@ -203,13 +203,13 @@ private:
 		{
 			room.emplace_back(roomID);
 
-			if (dir != South || firstRoom) // north side
+			if (dir != DOWN || firstRoom) // north side
 				exit.emplace_back(Rect{ roomID.x, roomID.y - 1, roomID.width, 1 });
-			if (dir != North || firstRoom) // south side
+			if (dir != UP || firstRoom) // south side
 				exit.emplace_back(Rect{ roomID.x, roomID.y + roomID.height, roomID.width, 1 });
-			if (dir != East || firstRoom) // west side
+			if (dir != RIGHT || firstRoom) // west side
 				exit.emplace_back(Rect{ roomID.x - 1, roomID.y, 1, roomID.height });
-			if (dir != West || firstRoom) // east side
+			if (dir != LEFT || firstRoom) // east side
 				exit.emplace_back(Rect{ roomID.x + roomID.width, roomID.y, 1, roomID.height });
 
 			return true;
@@ -229,7 +229,7 @@ private:
 			corridor.width = randminmax(minCorridorLength, maxCorridorLength);
 			corridor.height = 1;
 
-			if (dir == North)
+			if (dir == UP)
 			{
 				corridor.y = y - 1;
 
@@ -237,7 +237,7 @@ private:
 					corridor.x = x - corridor.width + 1;
 			}
 
-			else if (dir == South)
+			else if (dir == DOWN)
 			{
 				corridor.y = y + 1;
 
@@ -245,10 +245,10 @@ private:
 					corridor.x = x - corridor.width + 1;
 			}
 
-			else if (dir == West)
+			else if (dir == LEFT)
 				corridor.x = x - corridor.width;
 
-			else if (dir == East)
+			else if (dir == RIGHT)
 				corridor.x = x + 1;
 		}
 
@@ -257,13 +257,13 @@ private:
 			corridor.width = 1;
 			corridor.height = randminmax(minCorridorLength, maxCorridorLength);
 
-			if (dir == North)
+			if (dir == UP)
 				corridor.y = y - corridor.height;
 
-			else if (dir == South)
+			else if (dir == DOWN)
 				corridor.y = y + 1;
 
-			else if (dir == West)
+			else if (dir == LEFT)
 			{
 				corridor.x = x - 1;
 
@@ -271,7 +271,7 @@ private:
 					corridor.y = y - corridor.height + 1;
 			}
 
-			else if (dir == East)
+			else if (dir == RIGHT)
 			{
 				corridor.x = x + 1;
 
@@ -282,13 +282,13 @@ private:
 
 		if (placeRect(corridor, Corridor))
 		{
-			if (dir != South && corridor.width != 1) // north side
+			if (dir != DOWN && corridor.width != 1) // north side
 				exit.emplace_back(Rect{ corridor.x, corridor.y - 1, corridor.width, 1 });
-			if (dir != North && corridor.width != 1) // south side
+			if (dir != UP && corridor.width != 1) // south side
 				exit.emplace_back(Rect{ corridor.x, corridor.y + corridor.height, corridor.width, 1 });
-			if (dir != East && corridor.height != 1) // west side
+			if (dir != RIGHT && corridor.height != 1) // west side
 				exit.emplace_back(Rect{ corridor.x - 1, corridor.y, 1, corridor.height });
-			if (dir != West && corridor.height != 1) // east side
+			if (dir != LEFT && corridor.height != 1) // east side
 				exit.emplace_back(Rect{ corridor.x + corridor.width, corridor.y, 1, corridor.height });
 
 			return true;

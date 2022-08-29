@@ -83,8 +83,6 @@ protected:
 	glm::vec2 vec2OldIndex;		//coords
 	glm::vec2 direction;		//direction of movement
 
-	glm::vec2 scaleFactor;
-
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
