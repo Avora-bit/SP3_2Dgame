@@ -89,6 +89,7 @@
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
     <ClInclude Include="Source\Scene2D\IronHilt2D.h" />
     <ClInclude Include="Source\Scene2D\Map2D.h" />
+    <ClInclude Include="Source\Scene2D\MapGenerator.h" />
     <ClInclude Include="Source\Scene2D\Octopus.h" />
     <ClInclude Include="Source\Scene2D\Physics2D.h" />
     <ClInclude Include="Source\Scene2D\PlatinumHilt2D.h" />

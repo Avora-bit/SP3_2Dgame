@@ -85,9 +85,13 @@ protected:
 	enum DIRECTION
 	{
 		LEFT = 0,
-		RIGHT,
+		TOPLEFT,
 		UP,
+		TOPRIGHT,
+		RIGHT,
+		BOTTOMRIGHT,
 		DOWN,
+		BOTTOMLEFT,
 		NUM_DIRECTIONS
 	};
 
