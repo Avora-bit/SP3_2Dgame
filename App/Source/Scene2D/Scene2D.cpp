@@ -420,6 +420,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		cGameManager->bLevelDecrease = false;
 	}
 
+	cout << "CURRENT LEVEL IS " << cMap2D->GetCurrentLevel() << endl;
 	eventcontroller->update(dElapsedTime);
 
 	return true;

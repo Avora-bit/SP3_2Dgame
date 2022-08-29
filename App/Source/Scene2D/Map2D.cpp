@@ -501,11 +501,15 @@ void CMap2D::SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue
  */
 void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert, const int uilayer)
 {
+
 	if (bInvert)
 		arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value = iValue;
 	else
 		arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value = iValue;
 }
+
+
+v
 /**
  @brief Get the value at certain indices in the arrMapInfo
  @param iRow A const int variable containing the row index of the element to get from
