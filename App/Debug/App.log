@@ -1,40 +1,9 @@
-﻿  Map2D.cpp
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(519,1): error C2144: syntax error: 'int' should be preceded by ';'
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(519,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(697,36): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(697,24): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(698,36): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(698,23): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(750,41): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(750,26): warning C4244: 'argument': conversion from 'const T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(895,46): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(924,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\Map2D.cpp(933,20): warning C4018: '<': signed/unsigned mismatch
+﻿  Scene2D.cpp
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(86,14): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(422,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(578,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\EventController.h(55,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\EventController.h(60,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(466,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(473,20): warning C4018: '<': signed/unsigned mismatch
+  App.vcxproj -> C:\Users\winst\Desktop\SCHOOL\Year 2 Semester 1\SP3\SP3_2Dgame\SP3_2Dgame\Debug\App.exe

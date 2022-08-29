@@ -346,9 +346,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
-	std::cout << cMap2D->GetCurrentLevel() << std::endl;
-	//setvo
-
 	cPlayer2D->Update(dElapsedTime);
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
