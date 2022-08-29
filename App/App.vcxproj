@@ -35,6 +35,7 @@
     <ClCompile Include="Source\Scene2D\Camera.cpp" />
     <ClCompile Include="Source\Scene2D\Chicken.cpp" />
     <ClCompile Include="Source\Scene2D\CleaverBlade2D.cpp" />
+    <ClCompile Include="Source\Scene2D\DaggerBlade2D.cpp" />
     <ClCompile Include="Source\Scene2D\Enemy2D.cpp" />
     <ClCompile Include="Source\Scene2D\GameManager.cpp" />
     <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="Source\Scene2D\InventoryItem.cpp" />
     <ClCompile Include="Source\Scene2D\InventoryManager.cpp" />
     <ClCompile Include="Source\Scene2D\IronHilt2D.cpp" />
+    <ClCompile Include="Source\Scene2D\KatanaBlade2D.cpp" />
     <ClCompile Include="Source\Scene2D\Map2D.cpp" />
     <ClCompile Include="Source\Scene2D\Octopus.cpp" />
     <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
@@ -80,6 +82,7 @@
     <ClInclude Include="Source\Scene2D\Camera.h" />
     <ClInclude Include="Source\Scene2D\Chicken.h" />
     <ClInclude Include="Source\Scene2D\CleaverBlade2D.h" />
+    <ClInclude Include="Source\Scene2D\DaggerBlade2D.h" />
     <ClInclude Include="Source\Scene2D\Enemy2D.h" />
     <ClInclude Include="Source\Scene2D\EventController.h" />
     <ClInclude Include="Source\Scene2D\GameManager.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="Source\Scene2D\InventoryItem.h" />
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
     <ClInclude Include="Source\Scene2D\IronHilt2D.h" />
+    <ClInclude Include="Source\Scene2D\KatanaBlade2D.h" />
     <ClInclude Include="Source\Scene2D\Map2D.h" />
     <ClInclude Include="Source\Scene2D\MapGenerator.h" />
     <ClInclude Include="Source\Scene2D\Octopus.h" />

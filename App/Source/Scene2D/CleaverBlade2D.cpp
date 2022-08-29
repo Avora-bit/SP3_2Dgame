@@ -17,8 +17,8 @@ CCleaverBlade2D::CCleaverBlade2D(void)
 {
 	sName = "Cleaver Blade";
 
-	baseDamage = 35.0f;
-	baseAtkSpd = 1.2f;
+	baseDamage = 25.0f;
+	baseAtkSpd = 1.4f;
 	baseRange = 3.5f;
 	baseDef = 0.f;
 
