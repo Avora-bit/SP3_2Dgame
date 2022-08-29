@@ -101,88 +101,50 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		MapGen* island = new MapGen;
 		island->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
-		island->randomfill(2, 1);
+		island->randomfill(MapGen::Grass, MapGen::Water);
 		//stabilize map
-		for (int i = 0; i < 20; i++) {				//rounding out edges
+		for (int i = 0; i < 20; i++) {				//rounding out edges, stabilize islands
 			island->updateIsland();
 		}
-		island->growtile(2);		//smooth edge
-		island->growtile(3);		//grow sand
-		//replace proper keys
-		island->convertKeys();
+		island->growtile(MapGen::Grass);		//smooth edge
+		island->growtile(MapGen::Sand);		//grow sand
 
 		string BGfilename = "Maps/IslandBG.csv";
-		island->exportmap(BGfilename);
+		island->exportmap(BGfilename, 0);
 		std::cout << "BG exported";
+		island->printmap();
 		//foreground
-		//convert keys back into array
-		island->revertKeys();
 		//delete water
-		island->deleteall(1);			//delete all sand
+		island->deleteall(MapGen::Water);			//delete all sand
 		//spawn player
-		island->randreplace(200, 3);
-		//for (int i = 0; i < 2; i++)
-		//{
-		//	island->randreplace(303, 3); //test enemies
-		//}
+		island->randreplace(MapGen::Player, MapGen::Sand);
 		//populate the foreground
 		//cross on sand
 		int randspawn = rand() % 10 + 20;		//random number of cross, 20-30 cross
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(8, 3);			//replace sand with cross
+			island->randreplace(MapGen::Cross, MapGen::Sand);			//replace sand with cross
 		}
-		island->deleteall(3);			//delete all sand
-
+		island->deleteall(MapGen::Sand);			//delete all sand
 
 		//tree on grass
 		randspawn = rand() % 100 + 400;			//400-500 trees
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(6, 2);			//replace grass with tree
+			island->randreplace(MapGen::Tree, MapGen::Grass);			//replace grass with tree
 		}
-
 
 		randspawn = rand() % 50 + 100;			//50-100 stick
 		for (int i = 0; i < randspawn; i++) {
 			//randreplace(itemid, itemkey)
-			island->randreplace(30, 2);			//replace grass with sticks
+			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
 		}
 
 		randspawn = rand() % 50 + 100;
 		for (int i = 0; i < randspawn; i++) {
 			//randreplace(itemid, itemkey)
-			island->randreplace(40, 2);			//replace grass with wood
+			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
 
-
-		island->deleteall(2);			//delete all grass
-
-
-
-
-		//{0, 0},				//void
-		//{ 1, 97 },			//water		//cannot dash, slows movement speed
-		//{ 2, 99 },			//grass		//spawn tree
-		//{ 3, 98 },			//sand		//spawn cross
-		//{ 4, 96 },			//brick floor		//no behavior
-		//{ 5, 95 },			//trap				//deals small amount of damage to the player, 5 hp
-		////solid tiles
-		//{ 6, 100 },			//tree
-		//{ 7, 101 },			//brick wall
-		////foreground tiles
-		//{ 8, 80 },			//cross		//spawn treasure
-		//{ 9, 79 },			//treasure	//spawn loot
-		//{ 10, 78 },			//ladderdown
-		//{ 11, 77 },			//ladderup
-		//{ 12, 76 },			//web		//slows player
-
-		
-
-
-
-		
-
-
-
+		island->deleteall(MapGen::Grass);			//delete all grass
 
 		//spawn structure with ladderdown
 
@@ -191,9 +153,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		//	island->randreplace(96, 98);			//replace grass with tree
 		//}
 
-		island->convertKeys();
 		string FGfilename = "Maps/IslandFG.csv";
-		island->exportmap(FGfilename);
+		island->exportmap(FGfilename, 1);
 		std::cout << "FG exported";
 		//clean
 		delete island;
@@ -231,6 +192,16 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		////clean
 		//delete dungeon;
 		//dungeon = nullptr;
+
+
+
+		//int main(void) {
+		//	MapGen dungeon;
+		//	dungeon.createMap(100, 100);
+		//	dungeon.generateDungeon(100);		//max features
+		//	dungeon.printmap();
+		//	return 0;
+		//}
 	}
 
 

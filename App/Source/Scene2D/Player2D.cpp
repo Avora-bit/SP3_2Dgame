@@ -435,8 +435,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				//watersfx = nullptr;
 			}
 
-			
-
 			ISound* sandSound = cSoundController->PlaySoundByID_2(9);
 			if (sandSound != nullptr)
 			{

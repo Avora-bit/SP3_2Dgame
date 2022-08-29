@@ -151,13 +151,13 @@ bool CCraftingState::Update(const double dElapsedTime)
 	//IF ITEM IS PICKED UP WHILE IN THIS STATE, UPDATE THE SLOTS
 	/*if (cPlayer2D->AddItem())
 	{*/
-		for (int i = 9; i < 18; i++)
-		{
-			butnum[i].setitemID(cPlayer2D->getitemval(i - 9));
-			butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
-			butnum[i].settextureID(butnum[i].getitemID());
-		}
-	//}
+	//	for (int i = 9; i < 18; i++)
+	//	{
+	//		butnum[i].setitemID(cPlayer2D->getitemval(i - 9));
+	//		butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
+	//		butnum[i].settextureID(butnum[i].getitemID());
+	//	}
+	////}
 
 
 	{
@@ -310,15 +310,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
-								//butnum[n].SubtractQuantity(1);
 
 								break;
 							}
 						}
 					}
 				}
-
-				//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 			}
 			else
 			{
