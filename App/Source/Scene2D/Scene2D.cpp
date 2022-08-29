@@ -112,7 +112,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
 		std::cout << "BG exported";
-		island->printmap();
 		//foreground
 		//delete water
 		island->deleteall(MapGen::Water);			//delete all sand
@@ -127,18 +126,18 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		island->deleteall(MapGen::Sand);			//delete all sand
 
 		//tree on grass
-		randspawn = rand() % 100 + 400;			//400-500 trees
+		randspawn = rand() % 200 + 600;			//600-800 trees
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Tree, MapGen::Grass);			//replace grass with tree
 		}
 
-		randspawn = rand() % 50 + 100;			//50-100 stick
+		randspawn = rand() % 50 + 100;			//50-150 stick
 		for (int i = 0; i < randspawn; i++) {
 			//randreplace(itemid, itemkey)
 			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
 		}
 
-		randspawn = rand() % 50 + 100;
+		randspawn = rand() % 50 + 100;			//50-150 wood
 		for (int i = 0; i < randspawn; i++) {
 			//randreplace(itemid, itemkey)
 			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
@@ -155,11 +154,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 		//spawn structure with ladderdown
 
-		//randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
-		//for (int i = 0; i < randspawn; i++) {
-		//	island->randreplace(96, 98);			//replace grass with tree
-		//}
-
 		string FGfilename = "Maps/IslandFG.csv";
 		island->exportmap(FGfilename, 1);
 		std::cout << "FG exported";
@@ -169,46 +163,39 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	}
 	//generate dungeon
 	{
-		//MapGen* dungeon = new MapGen;
-		//dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
-		//	CSettings::GetInstance()->NUM_TILES_YAXIS);
-		//dungeon->randomfill();
-		////for (int i = 0; i < 20; i++) {				//rounding out edges
-		////	dungeon->updateMap();
-		////}
-		//dungeon->growsand();		//sand radius of 1
-		////replace proper keys
-		//dungeon->convertKeys();
-		//dungeon->randreplace(200, 98);			//replace sand with player
+		MapGen* dungeon = new MapGen;
+		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+			CSettings::GetInstance()->NUM_TILES_YAXIS);
 
-		//string BGfilename = "Maps/DungeonBG.csv";
-		//dungeon->exportmap(BGfilename);
+		dungeon->generateDungeon(20);			//max features
 
-		////foreground
-		//string FGfilename = "Maps/DungeonFG.csv";
+		//spike trap
+		int randspawn = rand() % 100 + 100;			//100-200 trap
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			dungeon->randreplace(MapGen::Trap, MapGen::BrickFloor);			//replace brickfloor with trap
+		}
 
-		////ladder up
+		string BGfilename = "Maps/DungeonBG.csv";
+		dungeon->exportmap(BGfilename, 0);
 
-		////spike trap
+		//foreground
+		//treasure chest
+		randspawn = rand() % 50 + 100;			//50-100 treasure
+		for (int i = 0; i < randspawn; i++) {
+			//randreplace(itemid, itemkey)
+			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
+		}
+		//spawn last room with boss
 
-		////treasure chest
+		//delete floors
+		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
 
-		////spawn last room with boss
-
-		//dungeon->exportmap(FGfilename);
-		////clean
-		//delete dungeon;
-		//dungeon = nullptr;
-
-
-
-		//int main(void) {
-		//	MapGen dungeon;
-		//	dungeon.createMap(100, 100);
-		//	dungeon.generateDungeon(100);		//max features
-		//	dungeon.printmap();
-		//	return 0;
-		//}
+		string FGfilename = "Maps/DungeonFG.csv";
+		dungeon->exportmap(FGfilename, 1);
+		//clean
+		delete dungeon;
+		dungeon = nullptr;
 	}
 
 
