@@ -342,7 +342,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 		else
 		{
-			MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(49, iTextureID));
 		}
 	}
 
