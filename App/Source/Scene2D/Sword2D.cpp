@@ -153,7 +153,7 @@ void CSword2D::Render(void)
 
 	transform = glm::translate(transform, 
 		glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-				vec2UVCoordinate.y + camera->vec2Index.y + +cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
+				vec2UVCoordinate.y + camera->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS,
 				0.0f));
 
 	float angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) / 3.14159265359) * 180.0;
@@ -162,7 +162,7 @@ void CSword2D::Render(void)
 	vec2UVCoordinate.y = CSettings::GetInstance()->ConvertIndexToUVSpace(CSettings::GetInstance()->y, cPlayer2D->vec2Index.y - 1.f, false, (vec2NumMicroSteps.y - CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS/2)* CSettings::GetInstance()->MICRO_STEP_YAXIS);
 	transform = glm::translate(transform,
 		glm::vec3(vec2UVCoordinate.x + camera->pureVec2Index.x + cPlayer2D->vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS,
-			vec2UVCoordinate.y + camera->pureVec2Index.y + (cPlayer2D->vec2NumMicroSteps.y-2) * cSettings->MICRO_STEP_YAXIS,
+			vec2UVCoordinate.y + camera->pureVec2Index.y + (cPlayer2D->vec2NumMicroSteps.y - (getTotalRange()/2-1.0f) * cSettings->NUM_STEPS_PER_TILE_YAXIS) * cSettings->MICRO_STEP_YAXIS,
 			0.0f));
 	transform = glm::scale(transform, glm::vec3(-getTotalRange()*1.5, -getTotalRange(), 0));
 
@@ -234,7 +234,7 @@ float CSword2D::getTotalRavenous()
 
 float CSword2D::getTotalAtkSpeed()
 {
-	return blade->getBaseAtkSpd() + hilt->getLight()*hilt->getBonusMultiplier()*0.1f;
+	return blade->getBaseAtkSpd() * pow(0.85f, hilt->getLight()*hilt->getBonusMultiplier());
 }
 
 float CSword2D::getTotalRange()

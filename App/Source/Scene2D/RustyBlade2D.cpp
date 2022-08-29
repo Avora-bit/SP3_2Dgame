@@ -18,7 +18,7 @@ CRustyBlade2D::CRustyBlade2D(void)
 	sName = "Rusty Blade";
 
 	baseDamage = 10.0f;
-	baseAtkSpd = 0.4f;
+	baseAtkSpd = 1.0f;
 	baseRange = 2.0f;
 	baseDef = 0.f;
 

@@ -23,8 +23,12 @@ using namespace std;
 
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
+#include "IronHilt2D.h"
+#include "PlatinumHilt2D.h"
 #include "RustyBlade2D.h"
 #include "CleaverBlade2D.h"
+#include "DaggerBlade2D.h"
+#include "KatanaBlade2D.h"
 
 #include "EventController.h"
 
@@ -271,7 +275,7 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
 
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CKatanaBlade2D());
 	cInventoryManager->Add(sword);
 
 	//sword->replaceBlade(new CRustyBlade2D());
