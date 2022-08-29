@@ -147,10 +147,18 @@ bool CPlayer2D::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = 1;
 	unsigned int uiCol = 1;
-	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1)) {}
+	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1)) {
+		cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);
+	}
 	else if (cMap2D->FindValue(78, uiRow, uiCol, true, 1)) {}
 	else if (cMap2D->FindValue(77, uiRow, uiCol, true, 1)) {}
 	else return false;		//unable to find valid position to spawn player
+
+
+	// Set the start position of the Player to iRow and iCol
+	vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	ProjectileForce = 0;
 
@@ -176,18 +184,9 @@ bool CPlayer2D::Init(void)
 	attacking = false;
 	attackTimer = 0;
 
-
-	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::i32vec2(0, 0);
-
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	
-
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -1458,41 +1457,13 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		movementSpeed = 0.5f;
 		break;
-	case 93:		//spikes
+	case 95:		//spikes
 		//deals damage
 		LoseHealth(5);
 		//slows by abit
-		movementSpeed = 0.9f;
+		movementSpeed = 0.7f;
 		break;
-	default:
-		movementSpeed = 1.f;
-		dashTrue = true;
-		break;
-	}
 
-	//foreground switch
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
-	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
-			//shovel the cross to spawn treasures/resources, which will be randomly generated
-			int random_generator = rand() % 2 + 1;
-
-			if (random_generator == 2)
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 30, true, 1);
-			}
-			else
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 40, true, 1);
-			}
-		}
-		break;
-	case 79:		//treasure
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/) {
-			//open chest to spawn loot
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
-		}
-		break;
 	case 78:		//dungeon ladderdown
 		//add level
 		cGameManager->bLevelIncrease = true;
@@ -1523,6 +1494,35 @@ void CPlayer2D::InteractWithMap(void)
 		cGameManager->bLevelDecrease = true;
 		break;
 	}
+	default:
+		movementSpeed = 1.f;
+		dashTrue = true;
+		break;
+	}
+
+	//foreground switch
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
+	case 80:		//cross
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+			//shovel the cross to spawn treasures/resources, which will be randomly generated
+			int random_generator = rand() % 2 + 1;
+
+			if (random_generator == 2)
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 30, true, 1);
+			}
+			else
+			{
+				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 40, true, 1);
+			}
+		}
+		break;
+	case 79:		//treasure
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& key check*/) {
+			//open chest to spawn loot
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		}
+		break;
 	case 76:		//web
 		//slow speed
 		//prevent dash

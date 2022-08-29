@@ -114,7 +114,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		std::cout << "BG exported";
 		//foreground
 		//delete water
-		island->deleteall(MapGen::Water);			//delete all sand
+		island->deleteall(MapGen::Water);			//delete all water
 		//spawn player
 		island->randreplace(MapGen::Player, MapGen::Sand);
 		//populate the foreground
@@ -178,10 +178,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 		string BGfilename = "Maps/DungeonBG.csv";
 		dungeon->exportmap(BGfilename, 0);
+		std::cout << "BG exported";
 
 		//foreground
 		//treasure chest
-		randspawn = rand() % 50 + 100;			//50-100 treasure
+		randspawn = rand() % 10 + 10;			//10-20 treasure
 		for (int i = 0; i < randspawn; i++) {
 			//randreplace(itemid, itemkey)
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
@@ -190,9 +191,11 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 		//delete floors
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
+		dungeon->deleteall(MapGen::Trap);				//delete all trap
 
 		string FGfilename = "Maps/DungeonFG.csv";
 		dungeon->exportmap(FGfilename, 1);
+		std::cout << "FG exported";
 		//clean
 		delete dungeon;
 		dungeon = nullptr;
@@ -343,6 +346,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
+	std::cout << cMap2D->GetCurrentLevel() << std::endl;
 	//setvo
 
 	cPlayer2D->Update(dElapsedTime);
@@ -396,13 +400,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F1) && !buttonPress)
 	{
 		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() != 0)
+		if (cMap2D->GetCurrentLevel() > 0)
 			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_F2) && !buttonPress)
 	{
 		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() != 3)
+		if (cMap2D->GetCurrentLevel() < 2 )
 			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 	}
 	else if (!(cKeyboardController->IsKeyDown(GLFW_KEY_F1)||cKeyboardController->IsKeyDown(GLFW_KEY_F2))&&buttonPress)

@@ -69,9 +69,9 @@ public:
 
 		//foreground tiles
 		Cross = 80,
-		Treasure = 79,
 		DownStairs = 78,
 		UpStairs = 77,
+		Treasure = 79,
 		Web = 76,
 
 		//items
@@ -505,7 +505,8 @@ public:
 				//convert map to foreground
 				if (layer == 0) {		//background
 					//remove all foreground items
-					if (coremap.at(i * width + j) == Tree || coremap.at(i * width + j) == BrickWall) {
+					if (coremap.at(i * width + j) == Tree || coremap.at(i * width + j) == BrickWall ||
+						coremap.at(i * width + j) == UpStairs || coremap.at(i * width + j) == DownStairs) {
 						//base generation of map does not create entity instances
 						map << coremap.at(Void);
 					}
@@ -513,10 +514,13 @@ public:
 						map << coremap.at(i * width + j);
 					}
 				}
-				if (layer == 1) {
-					//production code alr deletes all instances of foreground
+				else if (layer == 1) {
+					//production code alr deletes all instances of background
 					map << coremap.at(i * width + j);
+					
+					
 				}
+				else {}
 				if (j < width - 1) {
 					map << ",";
 				}
