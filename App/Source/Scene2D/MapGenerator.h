@@ -172,6 +172,11 @@ public:
 		coremap = tempmap;
 		tempmap.clear();
 	}
+
+	void placeRuins(int ruinarray) {
+
+	}
+
 	char getTile(int x, int y) const
 	{
 		if (x < 0 || y < 0 || x >= width || y >= height) return Unused;
@@ -409,11 +414,6 @@ public:
 			return;
 		}
 	}
-
-	void updateDungeon() {
-
-	}
-
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(tiletype replaced, tiletype type) {
 		//gather all index with the same type
@@ -587,4 +587,13 @@ public:
 			std::cout << std::endl;
 		}
 	}
+
+	int structure_ruins[5][5] = {
+	{101,96, 101,96, 101},
+	{101,96, 96, 96, 101},
+	{101,96, 78, 96, 96},
+	{101,96, 96, 96, 96},
+	{96, 101,96, 101,101}
+	};
+
 };
