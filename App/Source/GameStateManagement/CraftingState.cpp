@@ -267,6 +267,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							{
 								hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
 							}
+							
 						}
 					}
 				}

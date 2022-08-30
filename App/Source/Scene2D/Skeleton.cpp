@@ -88,7 +88,11 @@ void Skeleton::Update(const double dElapsedTime)
 		return;
 
 	if (health <= 0)
+	{
 		bIsActive = false;
+		//SPAWN FOOD IF DEAD
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
+	}
 
 	switch (sCurrentFSM)
 	{
