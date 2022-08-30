@@ -49,7 +49,7 @@ CPlayer2D::CPlayer2D(void)
 	, grasssfx(NULL)
 	, sandsfx(NULL)
 	, firesfx(NULL)
-	, enemysfx(NULL)
+	,enemysfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -290,7 +290,18 @@ bool CPlayer2D::Init(void)
 	for (int i = 0; i < 9; i++)
 	{
 		inventorySlots[i].setitemID(0);
-		
+		/*if (i % 2 == 0)
+		{
+			inventorySlots[i].setitemID(30);
+		}
+		else
+		{
+			inventorySlots[i].setitemID(40);
+		}*/
+
+		//inventorySlots[i].settextureID(inventorySlots[i].getitemID());
+
+		//inventorySlots[i].AddQuantity(5);
 	}
 
 
@@ -301,7 +312,6 @@ bool CPlayer2D::Init(void)
 
 	/*inventorySlots[1].setitemID(70);
 	inventorySlots[1].AddQuantity(3);*/
-
 
 
 	return true;
@@ -353,6 +363,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//null
 		}
 	}
+	// Store the old position
+
+
+	//IF PLAYER IS NEAR FIRE
+
+
+
 
 	//PLAY SOUND DEPENDING ON SURFACE TYPE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
@@ -370,6 +387,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case 99: //grass
 		{
 			//walkingTime = 0;
+
 			if (sandsfx != nullptr)
 			{
 				sandsfx->setVolume(0.f);
@@ -396,6 +414,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case 98: //sand
 		{
 			//walkingTime = 0;
+
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
@@ -422,6 +441,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case 97: //water
 		{
 			//walkingTime = 0;
+
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
@@ -479,15 +499,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
 
-	/*cout << cMouseController->GetMousePositionX() << endl;
-	cout << cMouseController->GetMousePositionY() << endl;*/
-
 
 	//FORAGE FOR TREES(Get sticks)
 	if (cMouseController->IsButtonDown(0))
 	{
 		//right
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, true, 1) == 100/* && (angle */)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, true, 1) == 100 /*&& direction == 1*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 30, true, 1);
 		}
@@ -498,38 +515,18 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 30, true, 1);
 		}
 		//down
-		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
+		if (vec2Index.y != 0 && cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
 			/*&& direction == 3*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 30, true, 1);
 		}
 		//up
-		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
+		if (vec2Index.y != cSettings->NUM_TILES_YAXIS - 1 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
 			/*&& direction == 2*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 30, true, 1);
 		}
 	}
-
-
-	/*CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
-	float enemyAngle = (atan2(((enemy->getVec2Index().y + enemy->getVec2MicroSteps().y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS) -
-		(vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS)),
-		((enemy->getVec2Index().x + enemy->getVec2MicroSteps().x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS) -
-			(vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS))) / 3.14159265359) * 180.0f;
-	if (enemyAngle - angle + 90 > 270)
-		enemyAngle -= 360;
-	if (cPhysics2D.CalculateDistance(vec2Index + vec2NumMicroSteps / cSettings->NUM_STEPS_PER_TILE_XAXIS,
-		enemy->getVec2Index() + enemy->getVec2MicroSteps() / cSettings->NUM_STEPS_PER_TILE_XAXIS) <= sword->getTotalRange() &&
-		enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
-		enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
-	{
-		std::cout << "bonk";
-		enemy->takeDamage(sword->getTotalDamage());
-	}*/
-
-
-
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
 	{
@@ -1498,27 +1495,46 @@ void CPlayer2D::InteractWithMap(void)
 		//prevent dash
 		break;
 	case 78:		//dungeon ladderdown
-	{
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
-		cMap2D->SetCurrentLevel(1);
-		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+	{	
+		static bool EInteractDown = false;
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) && !EInteractDown) {
+			EInteractDown = true;
+			cMap2D->SetCurrentLevel(1);
+			uiRow = -1; uiCol = -1;
+			if (cMap2D->FindValue(77, uiRow, uiCol) == true)
+			{
+				vec2Index.x = uiCol;
+				vec2Index.y = uiRow;
+			}
+			else {
+				cMap2D->SetCurrentLevel(0);
+			}
 		}
-		reset_pos();
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
+			EInteractDown = false;
+		}
 		//cGameManager->bLevelIncrease = true;
 		break;
 	}
 	case 77:		//dungeon ladderup
 	{
-		//remove level
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
-		cMap2D->SetCurrentLevel(0);
-		if (cMap2D->FindValue(78, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		static bool EInteractDown = false;
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) && !EInteractDown) {
+			EInteractDown = true;
+			cMap2D->SetCurrentLevel(0);
+			uiRow = -1; uiCol = -1;
+			if (cMap2D->FindValue(78, uiRow, uiCol) == true)
+			{
+				vec2Index.x = uiCol;
+				vec2Index.y = uiRow;
+			}
+			else {
+				cMap2D->SetCurrentLevel(1);
+			}
 		}
-		reset_pos();
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
+			EInteractDown = false;
+		}
 		//cGameManager->bLevelDecrease = true;
 		break;
 	}
@@ -1549,29 +1565,22 @@ void CPlayer2D::AttackEnemy()
 		if (enemy->bIsActive && !enemy->sleep)
 		{
 			CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
-			float enemyAngle = (atan2(((enemy->getVec2Index().y + enemy->getVec2MicroSteps().y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS) - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS)),
-				((enemy->getVec2Index().x + enemy->getVec2MicroSteps().x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS) - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS))) / 3.14159265359) * 180.0f;
+			float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
+				(enemy->getPreciseVec2Index(true).x - getPreciseVec2Index(true).x)) / 3.14159265359) * 180.0f;
 			if (enemyAngle - angle + 90 > 270)
 				enemyAngle -= 360;
-			if (cPhysics2D.CalculateDistance(vec2Index + vec2NumMicroSteps / cSettings->NUM_STEPS_PER_TILE_XAXIS,
-				enemy->getVec2Index() + enemy->getVec2MicroSteps() / cSettings->NUM_STEPS_PER_TILE_XAXIS) <= sword->getTotalRange() &&
+			if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
+				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() &&
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{
-				std::cout << "bonk";
 				enemy->takeDamage(sword->getTotalDamage());
+				if (sword->getEffect() != AILMENT::NONE)
+					enemy->SetStatus(sword->getEffect(), 3.f);
 			}
-
-			//SPAWN FOOD IF DEAD
-			/*if (enemy->getHealth() <= 0)
-			{
-				cMap2D->SetMapInfo(enemy->getVec2Index().y, enemy->getVec2Index().x, 70);
-			}*/
 		}
 		else if (enemy->bIsActive)
-		{
 			enemy->sleep = false;
-		}
 	}
 }
 

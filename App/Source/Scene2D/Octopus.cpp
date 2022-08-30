@@ -72,6 +72,8 @@ bool Octopus::Init(void)
 	timer = 0;
 	stuck = false;
 
+	status = AILMENT::NONE;
+
 	return true;
 }
 
@@ -173,13 +175,7 @@ void Octopus::Update(const double dElapsedTime)
 			break;
 		}
 	}
-
-
-
-
-	
-
-
+	UpdateStatus(dElapsedTime);
 	//animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);

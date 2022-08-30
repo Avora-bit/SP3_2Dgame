@@ -404,12 +404,10 @@ void CSoundController::Update(const double dElapsedTime, static float distance)
 	{
 		static int currentlyPlaying = 0;
 
-
 		currentSongDuration += (dElapsedTime * 1000);
 		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
 		{
-			
 			PlaySoundByID(musicPlaylist[currentlyPlaying]);
 		}
 

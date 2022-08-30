@@ -177,3 +177,11 @@ void CEntity2D::PostRender(void)
 	// Disable blending
 	glDisable(GL_BLEND);
 }
+
+glm::vec2 CEntity2D::getPreciseVec2Index(bool toOrigin)
+{
+	glm::vec2 preciseVec2Index = glm::vec2(vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS, vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS);
+	if (toOrigin)
+		preciseVec2Index = glm::vec2(preciseVec2Index.x + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS, preciseVec2Index.y + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS);
+	return preciseVec2Index;
+}

@@ -78,12 +78,14 @@ public:
 
 	void takeDamage(float damage);
 
+	void SetStatus(AILMENT status, float time);
 
 	float getHealth();
 
 	bool sleep;
 
 	float getScale();
+	glm::vec2 getPreciseVec2Index(bool toOrigin);
 protected:
 	enum DIRECTION
 	{
@@ -110,6 +112,9 @@ protected:
 		BOSSPHASE2,
 		NUM_FSM
 	};
+
+	AILMENT status;
+	float statusTimer;
 
 	glm::vec2 vec2OldIndex;
 	// Handler to the CMap2D instance
@@ -176,6 +181,9 @@ protected:
 	void UpdatePosition(void);
 
 	float speed_multiplier = 1.00f;
+	void UpdateStatus(const double dElapsedTime);
+
+	float speed_multiplier = 0.25f;
 	float atk;
 	float scaleX;
 	float scaleY;
