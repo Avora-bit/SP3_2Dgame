@@ -709,9 +709,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword")
-		//&& (inventorySlots[0].getitemID() == 60
-		//|| inventorySlots[1].getitemID() == 60
-		//|| inventorySlots[2].getitemID() == 60
+		&& (inventorySlots[0].getitemID() == 50
+		|| inventorySlots[1].getitemID() == 50
+		|| inventorySlots[2].getitemID() == 50)
 		)
 	{
 		static float attackTimer = 0;
@@ -1480,7 +1480,10 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
+			&& (inventorySlots[0].getitemID() == 89
+				|| inventorySlots[1].getitemID() == 89
+				|| inventorySlots[2].getitemID() == 89)) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 
