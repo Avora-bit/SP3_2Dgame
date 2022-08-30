@@ -406,3 +406,8 @@ bool CProjectile2D::InteractWithPlayer()
 {
 	return false;
 }
+
+void CProjectile2D::setDirection(glm::vec2 direction)
+{
+	vec2Direction = direction;
+}

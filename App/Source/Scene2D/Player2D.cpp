@@ -29,6 +29,7 @@ using namespace std;
 #include "CleaverBlade2D.h"
 #include "DaggerBlade2D.h"
 #include "KatanaBlade2D.h"
+#include "Shivs2D.h"
 
 #include "EventController.h"
 
@@ -1253,7 +1254,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-				
+				CShivs2D* Projectile_Shiv = new CShivs2D();
+				Projectile_Shiv->SetShader("Shader2D_Colour");
+				if (Projectile_Shiv->Init()) {
+					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, camera->playerOffset.y));
+					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
+				}
 			}
 			//thrown, reset
 			throwing = false;
@@ -1274,6 +1280,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
+	
 
 /**
  @brief Set up the OpenGL display environment before rendering
@@ -1565,7 +1572,7 @@ void CPlayer2D::AttackEnemy()
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-		if (enemy->bIsActive && !enemy->sleep)
+		if (enemy->bIsActive)
 		{
 			CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 			float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
@@ -1577,13 +1584,16 @@ void CPlayer2D::AttackEnemy()
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{
-				enemy->takeDamage(sword->getTotalDamage());
-				if (sword->getEffect() != AILMENT::NONE)
-					enemy->SetStatus(sword->getEffect(), 3.f);
+				if (!enemy->sleep)
+				{
+					enemy->takeDamage(sword->getTotalDamage());
+					if (sword->getEffect() != AILMENT::NONE)
+						enemy->SetStatus(sword->getEffect(), 3.f);
+				}
+				else if (enemy->sleep)
+					enemy->sleep = false;
 			}
 		}
-		else if (enemy->bIsActive)
-			enemy->sleep = false;
 	}
 }
 

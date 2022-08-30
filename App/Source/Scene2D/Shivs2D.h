@@ -7,6 +7,8 @@
 
 #include "Projectile2D.h"
 
+#include "Enemy2D.h"
+
 class CShivs2D : public CProjectile2D
 {
 public:
@@ -18,5 +20,5 @@ public:
 	// Update
 	void Update(const double dElapsedTime);
 
-	bool InteractWithPlayer();
+	bool InteractWithEnemy(CEnemy2D* enemy);
 };
