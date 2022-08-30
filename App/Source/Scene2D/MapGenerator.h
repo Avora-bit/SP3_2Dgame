@@ -176,7 +176,11 @@ public:
 	}
 
 	void placeRuins(int ruinarray) {
+		//choose random position
 
+		//check if position has open 5x5 space
+
+		//replace land with the structure
 	}
 
 	char getTile(int x, int y) const

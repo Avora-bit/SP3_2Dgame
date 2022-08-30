@@ -133,20 +133,17 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 		randspawn = rand() % 50 + 100;			//50-150 stick
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
 			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
 		}
 
 		randspawn = rand() % 50 + 100;			//50-150 wood
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
 			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
 
 
 		randspawn = rand() % 25 + 75;
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
 			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
 
@@ -172,7 +169,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		//spike trap
 		int randspawn = rand() % 100 + 100;			//100-200 trap
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
 			dungeon->randreplace(MapGen::Trap, MapGen::BrickFloor);			//replace brickfloor with trap
 		}
 
@@ -184,12 +180,10 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		//treasure chest
 		randspawn = rand() % 10 + 10;			//10-20 treasure
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
 		}
-		//spawn last room with boss
 
-		//delete floors
+		//delete background
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
 		dungeon->deleteall(MapGen::Trap);				//delete all trap
 
@@ -207,13 +201,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
-
-	if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv", 0) == false)
+	else if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv") == false)
 	{
 		cout << "Failed to load Island.csv" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
+	else if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
 		return false;

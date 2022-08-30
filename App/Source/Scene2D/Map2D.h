@@ -100,14 +100,11 @@ public:
 	// Set the value at certain indices in the arrMapInfo
 	void SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert = true, const int uilayer = 1);
 
-	void SetMapInfo_2(const unsigned int uiRow, const unsigned int uiCol, const int iValue, const bool bInvert, const unsigned int uilayer);
-
-
 	// Get the value at certain indices in the arrMapInfo
 	int GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert = true, const int uilayer = 1);		//0 is background, 1 if foreground
 
 	// Load a map
-	bool LoadMap(string BGfilename, string FGfilename, const unsigned int uiLevel = 0);
+	bool LoadMap(string BGfilename, string FGfilename, const int uiLevel = 0);
 	
 	// Find the indices of a certain value in arrMapInfo
 	bool FindValue(const int iValue, unsigned int& uirRow, unsigned int& uirCol, const bool bInvert = true, const int uilayer = 1);
@@ -157,7 +154,7 @@ protected:
 	virtual ~CMap2D(void);
 
 	// Render a tile
-	void RenderTile(const unsigned int uiRow, const unsigned int uiCol, int layer);
+	void RenderTile(const unsigned int uiRow, const unsigned int uiCol, int uilayer);
 
 	// For A-Star PathFinding
 	// Build a path from m_cameFromList after calling PathFind()
