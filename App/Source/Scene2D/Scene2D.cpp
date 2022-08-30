@@ -114,7 +114,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->updateIsland();
 		}
 		island->growtile(MapGen::Grass);		//smooth edge
-		island->growtile(MapGen::Sand);		//grow sand
+		island->growtile(MapGen::Sand);			//grow sand
+
+
+		//place structure
+
+
 
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
@@ -195,15 +200,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < randspawn; i++) {
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
 		}
-
-
-			
-		
-			dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
-		
-		
-
-
 
 
 		//delete background
