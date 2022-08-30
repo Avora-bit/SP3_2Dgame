@@ -97,12 +97,10 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
-		CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
-
+		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
 		
-		// Load the crafting state
-		cout << "Loading CraftingState" << endl;
-		CGameStateManager::GetInstance()->OffInventoryGameState();
+		
+		//CGameStateManager::GetInstance()->OffInventoryGameState();
 
 		
 
@@ -111,12 +109,10 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_I))
 	{
 		CKeyboardController::GetInstance()->Reset();
-		CGameStateManager::GetInstance()->OffCraftingGameState();
 
 
-		cout << "Loading InventoryState" << endl;
 		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
-		//cInventoryState->saveItemsinside();
+		//CGameStateManager::GetInstance()->OffCraftingGameState();
 
 
 	}
