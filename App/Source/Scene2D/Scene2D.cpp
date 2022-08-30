@@ -153,19 +153,13 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
 
-
 		randspawn = rand() % 25 + 75;
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
 
-
-
-		
-		/*island->randreplace(MapGen::ladderdown, MapGen::Grass);*/			//replace grass with ladder
-		
-
 		island->deleteall(MapGen::Grass);			//delete all grass
+		island->deleteall(MapGen::BrickFloor);			//delete all grass
 
 		//spawn structure with ladderdown
 

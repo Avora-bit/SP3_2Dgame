@@ -414,11 +414,11 @@ public:
 			std::cout << "Unable to place up stairs.\n";
 			return;
 		}
-		if (!placeObject(DownStairs))
+		/*if (!placeObject(DownStairs))
 		{
 			std::cout << "Unable to place down stairs.\n";
 			return;
-		}
+		}*/
 	}
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(tiletype replaced, tiletype type) {
