@@ -269,8 +269,13 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Cooked Food", "Image/Sp3Images/Food/Cooked_food.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cInventoryItem = cInventoryManager->Add("Shovel", "Image/Sp3Images/Weapons/shovel.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
+	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);
+
 
 	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
 	cInventoryManager->Add(sword);
@@ -529,7 +534,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_1))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[0].getitemID() == 102)
@@ -540,6 +545,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[0].getitemID() == 70)
 		{
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -549,6 +555,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[0].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -561,9 +569,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[0].SubtractQuantity(1);
 		}
 	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_2))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_2))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[1].getitemID() == 102)
@@ -575,6 +584,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[1].getitemID() == 70)
 		{
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -584,6 +594,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[1].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -596,9 +608,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[1].SubtractQuantity(1);
+
 		}
 	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_3))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_3))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[2].getitemID() == 102)
@@ -610,6 +624,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[2].getitemID() == 70)
 		{
+
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -619,6 +635,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[2].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -631,6 +649,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[2].SubtractQuantity(1);
+
 		}
 	}
 
@@ -706,9 +726,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword")
-		//&& (inventorySlots[0].getitemID() == 60
-		//|| inventorySlots[1].getitemID() == 60
-		//|| inventorySlots[2].getitemID() == 60
+		&& (inventorySlots[0].getitemID() == 50
+		|| inventorySlots[1].getitemID() == 50
+		|| inventorySlots[2].getitemID() == 50)
 		)
 	{
 		static float attackTimer = 0;
@@ -1477,7 +1497,10 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
+			&& (inventorySlots[0].getitemID() == 89
+				|| inventorySlots[1].getitemID() == 89
+				|| inventorySlots[2].getitemID() == 89)) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 
