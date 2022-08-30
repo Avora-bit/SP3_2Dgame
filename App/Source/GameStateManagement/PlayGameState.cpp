@@ -97,12 +97,14 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
-		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
-		
-		
+		CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
 		//CGameStateManager::GetInstance()->OffInventoryGameState();
 
-		
+		if (CGameStateManager::GetInstance()->returnInventoryState() != nullptr)
+		{
+
+			CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
+		}
 
 	}
 	//set inventory screen
@@ -114,9 +116,35 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
 		//CGameStateManager::GetInstance()->OffCraftingGameState();
 
+		if (CGameStateManager::GetInstance()->returnCraftingState() != nullptr)
+		{
+
+			CKeyboardController::GetInstance()->Reset();
+			CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
+		}
+
 
 	}
+	else if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_A)
+		|| CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_S)
+		|| CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_D)
+		|| CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_W))
+		{
+			if (CGameStateManager::GetInstance()->returnCraftingState() != nullptr)
+			{
 
+				CKeyboardController::GetInstance()->Reset();
+				CGameStateManager::GetInstance()->SetCraftingGameState("CraftingState");
+			}
+
+
+			if (CGameStateManager::GetInstance()->returnInventoryState() != nullptr)
+			{
+
+				CKeyboardController::GetInstance()->Reset();
+				CGameStateManager::GetInstance()->SetInventoryGameState("InventoryState");
+			}
+		}
 
 	if (cGameManager->bPlayerLost)
 	{
