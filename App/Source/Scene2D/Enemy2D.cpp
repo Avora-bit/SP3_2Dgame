@@ -113,6 +113,7 @@ bool CEnemy2D::Init(void)
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
+	status = AILMENT::NONE;
 
 	timer = 0;
 
@@ -380,6 +381,25 @@ bool CEnemy2D::CheckPosition(DIRECTION eDirection)
 	return true;
 }
 
+void CEnemy2D::SetStatus(AILMENT status, float time)
+{
+	this->status = status;
+	statusTimer = time;
+	switch (this->status) {
+	case NONE:
+		break;
+	case BLEEDING:
+		runtimeColour = glm::vec4(0.5f, 0.f, 0.f, 1.f);
+		break;
+	case BURN:
+		runtimeColour = glm::vec4(0.7f, 0.3f, 0.f, 1.f);
+		break;
+	case POISON:
+		runtimeColour = glm::vec4(0.f, 0.5f, 0.f, 1.f);
+		break;
+	}
+}
+
 /**
  @brief Let enemy2D interact with the player.
  */
@@ -571,6 +591,58 @@ void CEnemy2D::takeDamage(float damage)
 float CEnemy2D::getHealth()
 {
 	return health;
+}
+
+void CEnemy2D::UpdateStatus(const double dElapsedTime)
+{
+	if (status == AILMENT::NONE)
+		return;
+	std::cout << health << std::endl;
+	if (statusTimer > 0)
+	{
+		statusTimer -= dElapsedTime;
+		if (statusTimer <= 0)
+		{
+			switch (status) {
+			case BLEEDING:
+				atk /= 0.5;
+				break;
+			case POISON:
+				speed_multiplier /= 0.5;
+				atk /= 0.7;
+				break;
+			}
+			statusTimer = 0;
+			status = AILMENT::NONE;
+			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+		}
+	}
+
+	switch (status) {
+	case BLEEDING:
+		runtimeColour = glm::vec4(0.5f, 0.f, 0.f, 1.f);
+		health -= 6 * dElapsedTime;
+		atk *= 0.5;
+		break;
+	case BURN:
+		runtimeColour = glm::vec4(0.7f, 0.3f, 0.f, 1.f);
+		health -= 12 * dElapsedTime;
+		break;
+	case POISON:
+		runtimeColour = glm::vec4(0.f, 0.5f, 0.f, 1.f);
+		health -= 3 * dElapsedTime;
+		speed_multiplier *= 0.5;
+		atk *= 0.7;
+		break;
+	}
+}
+
+glm::vec2 CEnemy2D::getPreciseVec2Index(bool toOrigin)
+{
+	glm::vec2 preciseVec2Index = glm::vec2(vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS, vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS);
+	if (toOrigin)
+		preciseVec2Index = glm::vec2(preciseVec2Index.x + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS, preciseVec2Index.y + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS);
+	return preciseVec2Index;
 }
 
 float CEnemy2D::getScale()

@@ -38,6 +38,9 @@ public:
 	void OffCraftingGameState(void);
 	void OffInventoryGameState(void);
 
+	CGameStateBase* returnCraftingState();
+	CGameStateBase* returnInventoryState();
+
 
 protected:
 	// Constructor

@@ -77,6 +77,8 @@ bool Chicken::Init(void)
 	angle = 360;
 	timer = 0;
 
+	status = AILMENT::NONE;
+
 	return true;
 }
 
@@ -188,6 +190,9 @@ void Chicken::Update(const double dElapsedTime)
 			break;
 		}
 	}
+	
+	UpdateStatus(dElapsedTime);
+
 	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
