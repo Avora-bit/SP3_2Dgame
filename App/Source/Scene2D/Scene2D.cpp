@@ -264,7 +264,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}
+	}*/
 	while (true)
 	{
 		Chicken* chicken = new Chicken(cPlayer2D->vec2Index);
@@ -292,7 +292,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}*/
+	}
 	while (true)
 	{
 		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);

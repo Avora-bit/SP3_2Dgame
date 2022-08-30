@@ -81,6 +81,8 @@ public:
 
 	bool bIsActive;
 
+	void setDirection(glm::vec2 direction);
+
 protected:
 
 	int atk;

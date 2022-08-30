@@ -179,6 +179,11 @@ void CProjectile2D::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
+void CProjectile2D::setDirection(glm::vec2 direction)
+{
+	vec2Direction = direction;
+}
+
 void CProjectile2D::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)

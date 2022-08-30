@@ -95,6 +95,12 @@ void Bob::Update(const double dElapsedTime)
 		{
 			directionChosen = false;
 			vec2Direction = glm::vec2(0, 0);
+			if (iFSMCounter > iMaxFSMCounter)
+			{
+				sCurrentFSM = CHASE;
+				iFSMCounter = 0;
+				break;
+			}
 		}
 		case CEnemy2D::CHASE:
 		{
@@ -167,7 +173,40 @@ void Bob::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::BOSSPHASE2:
 		{
+			auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
+				cPlayer2D->vec2Index, heuristic::euclidean, 10);
 
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
+			{
+				if (bFirstPosition == true)
+				{
+					vec2Destination = coord;
+
+					vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = -vec2Direction;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - vec2Destination) == vec2Direction)
+					{
+						vec2Destination = coord;
+					}
+					else
+						break;
+				}
+			}
+			UpdatePosition();
+
+			if (iFSMCounter > iMaxFSMCounter)
+			{
+				sCurrentFSM = IDLE;
+				iFSMCounter = 0;
+				break;
+			}
+			iFSMCounter++;
+			break;
 		}
 	}
 	animatedSprites->Update(dElapsedTime);
@@ -185,7 +224,7 @@ void Bob::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
-			vec2NumMicroSteps.y--;
+			vec2NumMicroSteps.y-= speed_multiplier;
 			if (vec2NumMicroSteps.y < 0)
 			{
 				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -208,7 +247,7 @@ void Bob::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y++;
+			vec2NumMicroSteps.y+= speed_multiplier;
 
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
@@ -233,7 +272,7 @@ void Bob::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--;
+			vec2NumMicroSteps.x-= speed_multiplier;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -257,7 +296,7 @@ void Bob::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x+= speed_multiplier;
 
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{

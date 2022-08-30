@@ -1,5 +1,5 @@
 #include "Spider.h"
-
+#include "EventController.h"
 Spider::Spider()
 {
 	health = 30;
@@ -210,8 +210,13 @@ void Spider::Update(const double dElapsedTime)
 			shotInterval -= dElapsedTime;
 			if (shotInterval <= 0)
 			{
-				/*cout << "attacking" << endl;*/
-				
+				Webshot* webShot = new Webshot();
+				webShot->SetShader("Shader2D_Colour");
+				if (webShot->Init())
+				{
+					webShot->setDirection(glm::vec2(cPlayer2D->vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS), cPlayer2D->vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS)));
+					EventController::GetInstance()->spawnProjectiles(webShot, vec2Index);
+				}
 				shotInterval = 5;
 			}
 		}
@@ -231,7 +236,7 @@ void Spider::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
-			vec2NumMicroSteps.y--;
+			vec2NumMicroSteps.y-= speed_multiplier;
 			if (vec2NumMicroSteps.y < 0)
 			{
 				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -257,7 +262,7 @@ void Spider::UpdatePosition(void)
 		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y++;
+			vec2NumMicroSteps.y+= speed_multiplier;
 
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
@@ -285,7 +290,7 @@ void Spider::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--;
+			vec2NumMicroSteps.x-= speed_multiplier;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -312,7 +317,7 @@ void Spider::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x+= speed_multiplier;
 
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{

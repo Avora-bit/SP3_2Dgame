@@ -175,7 +175,7 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	float speed_multiplier = 0.25f;
+	float speed_multiplier = 1.00f;
 	float atk;
 	float scaleX;
 	float scaleY;
