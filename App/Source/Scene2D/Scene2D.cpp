@@ -362,7 +362,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cMap2D->Update(dElapsedTime);
 
-	cSoundController->Update(dElapsedTime);
+	//cSoundController->Update(dElapsedTime);
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)

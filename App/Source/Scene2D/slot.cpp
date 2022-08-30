@@ -58,6 +58,9 @@ void slot::settextureID(int itemid)
 	case 49:
 		textureID = cInventoryManager->GetItem("Rock")->GetTextureID();
 		break;
+	case 90:
+		textureID = cInventoryManager->GetItem("Shivs")->GetTextureID();
+		break;
 	case 0:
 		textureID = 0;
 		break;
