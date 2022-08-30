@@ -29,6 +29,7 @@ using namespace std;
 #include "CleaverBlade2D.h"
 #include "DaggerBlade2D.h"
 #include "KatanaBlade2D.h"
+#include "Shivs2D.h"
 
 #include "EventController.h"
 
@@ -268,13 +269,18 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Cooked Food", "Image/Sp3Images/Food/Cooked_food.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	cInventoryItem = cInventoryManager->Add("Shovel", "Image/Sp3Images/Weapons/shovel.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
+	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CKatanaBlade2D());
+
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
 	cInventoryManager->Add(sword);
 
-	//sword->replaceBlade(new CRustyBlade2D());
+	//sword->replaceBlade(new CDaggerBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -528,7 +534,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_1))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[0].getitemID() == 102)
@@ -539,6 +545,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[0].getitemID() == 70)
 		{
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -548,6 +555,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[0].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -560,9 +569,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[0].SubtractQuantity(1);
 		}
 	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_2))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_2))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[1].getitemID() == 102)
@@ -574,6 +584,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[1].getitemID() == 70)
 		{
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -583,6 +594,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[1].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -595,9 +608,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[1].SubtractQuantity(1);
+
 		}
 	}
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_3))
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_3))
 	{
 		//PLACE CAMPFIRE
 		if (inventorySlots[2].getitemID() == 102)
@@ -609,6 +624,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[2].getitemID() == 70)
 		{
+
+
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -618,6 +635,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
 					/*	&& direction == 2*/))
 			{
+				inventorySlots[2].SubtractQuantity(1);
+
 				cooking_mode = true;
 				campfireVec2.y = vec2Index.y;
 				campfireVec2.x = vec2Index.x;
@@ -630,6 +649,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cInventoryItem->Add(20);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
 			cInventoryItem->Add(20);
+			inventorySlots[2].SubtractQuantity(1);
+
 		}
 	}
 
@@ -705,9 +726,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword")
-		//&& (inventorySlots[0].getitemID() == 60
-		//|| inventorySlots[1].getitemID() == 60
-		//|| inventorySlots[2].getitemID() == 60
+		&& (inventorySlots[0].getitemID() == 50
+		|| inventorySlots[1].getitemID() == 50
+		|| inventorySlots[2].getitemID() == 50)
 		)
 	{
 		static float attackTimer = 0;
@@ -1250,7 +1271,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-				
+				CShivs2D* Projectile_Shiv = new CShivs2D();
+				Projectile_Shiv->SetShader("Shader2D_Colour");
+				if (Projectile_Shiv->Init()) {
+					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, camera->playerOffset.y));
+					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
+				}
 			}
 			//thrown, reset
 			throwing = false;
@@ -1271,6 +1297,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
+	
 
 /**
  @brief Set up the OpenGL display environment before rendering
@@ -1470,7 +1497,10 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
+			&& (inventorySlots[0].getitemID() == 89
+				|| inventorySlots[1].getitemID() == 89
+				|| inventorySlots[2].getitemID() == 89)) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 
@@ -1562,7 +1592,7 @@ void CPlayer2D::AttackEnemy()
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-		if (enemy->bIsActive && !enemy->sleep)
+		if (enemy->bIsActive)
 		{
 			CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 			float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
@@ -1570,17 +1600,20 @@ void CPlayer2D::AttackEnemy()
 			if (enemyAngle - angle + 90 > 270)
 				enemyAngle -= 360;
 			if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
-				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() &&
+				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() + 1.0f &&
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{
-				enemy->takeDamage(sword->getTotalDamage());
-				if (sword->getEffect() != AILMENT::NONE)
-					enemy->SetStatus(sword->getEffect(), 3.f);
+				if (!enemy->sleep)
+				{
+					enemy->takeDamage(sword->getTotalDamage());
+					if (sword->getEffect() != AILMENT::NONE)
+						enemy->SetStatus(sword->getEffect(), 3.f);
+				}
+				else if (enemy->sleep)
+					enemy->sleep = false;
 			}
 		}
-		else if (enemy->bIsActive)
-			enemy->sleep = false;
 	}
 }
 

@@ -123,7 +123,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60) ,
-		(CSettings::GetInstance()->iWindowHeight / 4.7)));				
+		(CSettings::GetInstance()->iWindowHeight / 8)));				
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 	for (int n = 0; n < 9; n++)
 	{

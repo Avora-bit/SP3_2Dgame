@@ -79,6 +79,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	void setDirection(glm::vec2 direction);
+
 	bool bIsActive;
 
 	void setDirection(glm::vec2 direction);
@@ -94,8 +96,8 @@ protected:
 
 	double distanceTravelled;
 
-	float scaleX = 1;
-	float scaleY = 1;
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
