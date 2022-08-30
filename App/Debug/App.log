@@ -1,10 +1,9 @@
 ﻿  Bob.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\SoundController\SoundController.h(73,62): warning C4042: 'distance': has bad storage class
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(55,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(60,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(51,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(56,21): warning C4018: '<': signed/unsigned mismatch
 D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(86,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(166,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(169,32): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(167,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(170,32): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
 D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(247,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
           with
           [
@@ -65,4 +64,15 @@ D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(329,23): warnin
           [
               T=float
           ]
+  Scene2D.cpp
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(86,14): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(426,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(582,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(51,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(56,21): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(396,20): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(523,20): warning C4018: '<': signed/unsigned mismatch
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(530,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(558): warning C4715: 'CScene2D::availableRandomSpawn': not all control paths return a value
   App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe

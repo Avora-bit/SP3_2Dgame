@@ -107,7 +107,7 @@ void Bob::Update(const double dElapsedTime)
 		case CEnemy2D::CHASE:
 		{
 			directionChosen = false;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 20.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 9.0f)
 			{
 				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
 					cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -145,7 +145,7 @@ void Bob::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::BOSSPHASE1:
 		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 20.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 9.0f)
 			{
 				randomDirection();
 				UpdatePosition();
@@ -158,6 +158,7 @@ void Bob::Update(const double dElapsedTime)
 			}
 			else
 			{
+				vec2Direction = glm::vec2(0, 0);
 				sCurrentFSM = CHASE;
 				iFSMCounter = 0;
 				break;
@@ -167,7 +168,7 @@ void Bob::Update(const double dElapsedTime)
 			if (shotInterval <= 0 && count < 3)
 			{
 				attackTimer += dElapsedTime;
-				if (attackTimer < 3)
+				if (attackTimer < 2)
 				{
 					BobShot* bobShot = new BobShot();
 					bobShot->SetShader("Shader2D_Colour");
@@ -175,7 +176,7 @@ void Bob::Update(const double dElapsedTime)
 					{
 						bobShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
 						int i = rand() % 1;
-						int j = rand() % 4;
+						int j = rand() % 10;
 						switch (i)
 						{
 						case 0:
@@ -185,12 +186,11 @@ void Bob::Update(const double dElapsedTime)
 							EventController::GetInstance()->spawnProjectiles(bobShot, glm::vec2(vec2Index.x, vec2Index.y - (j / 10)));
 							break;
 						}
-						
 					}
 				}
 				else
 				{
-					shotInterval = 5;
+					shotInterval = 7;
 					attackTimer = 0;
 					count++;
 				}
@@ -199,6 +199,7 @@ void Bob::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = BOSSPHASE2;
 				iFSMCounter = 0;
+				count = 0;
 				break;
 			}
 			iFSMCounter++;
@@ -217,7 +218,6 @@ void Bob::Update(const double dElapsedTime)
 					vec2Destination = coord;
 
 					vec2Direction = vec2Destination - vec2Index;
-					vec2Direction = -vec2Direction;
 					bFirstPosition = false;
 				}
 				else

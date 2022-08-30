@@ -73,7 +73,6 @@ bool Octopus::Init(void)
 	angle = 360;
 	timer = 0;
 	stuck = false;
-
 	status = AILMENT::NONE;
 
 	return true;

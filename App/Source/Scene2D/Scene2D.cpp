@@ -255,48 +255,60 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		else
 			break;
 	}*/
-	while (true)
+	int i = 0;
+	while (i < 10) //spawn 10 chicken
 	{
-		Chicken* chicken = new Chicken(cPlayer2D->vec2Index);
-		chicken->SetShader("Shader2D_Colour");
-
-		if (chicken->Init())
+		if (availableRandomSpawn())
 		{
-			chicken->SetPlayer2D(cPlayer2D);
-			eventcontroller->spawnEnemies(chicken);
-			break;
+			Chicken* chicken = new Chicken(glm::vec2(randX, randY));
+			chicken->SetShader("Shader2D_Colour");
+
+			if (chicken->Init())
+			{
+				chicken->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(chicken);
+				i++;
+			}
+			else
+				break;
 		}
-		else
-			break;
 	}
-	while (true)
+	i = 0;
+	while (i < 5)
 	{
-		Spider* spider = new Spider(cPlayer2D->vec2Index);
-		spider->SetShader("Shader2D_Colour");
-
-		if (spider->Init())
+		if (availableRandomSpawn())
 		{
-			spider->SetPlayer2D(cPlayer2D);
-			eventcontroller->spawnEnemies(spider);
-			break;
+			Spider* spider = new Spider(glm::vec2(randX, randY));
+			spider->SetShader("Shader2D_Colour");
+
+			if (spider->Init())
+			{
+				spider->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(spider);
+				i++;
+			}
+			else
+				break;
 		}
-		else
-			break;
 	}
-	/*while (true)
+	i = 0;
+	while (i < 2)
 	{
-		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
-		skeleton->SetShader("Shader2D_Colour");
-
-		if (skeleton->Init())
+		if (availableRandomSpawn())
 		{
-			skeleton->SetPlayer2D(cPlayer2D);
-			eventcontroller->spawnEnemies(skeleton);
-			break;
+			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY));
+			skeleton->SetShader("Shader2D_Colour");
+
+			if (skeleton->Init())
+			{
+				skeleton->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(skeleton);
+				i++;
+			}
+			else
+				break;
 		}
-		else
-			break;
-	}*/
+	}
 	while (true)
 	{
 		Bob* bob = new Bob(cPlayer2D->vec2Index);
@@ -331,9 +343,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Romance in the Air.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
-
-
-
 
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
@@ -390,7 +399,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 		cSoundController->Update(dElapsedTime, fDistance);
 
-		cout << "FDISTANCE IS " << fDistance << endl;
+		/*cout << "FDISTANCE IS " << fDistance << endl;*/
 		/*if (fDistance < 5.f)
 		{
 			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
@@ -449,6 +458,28 @@ bool CScene2D::Update(const double dElapsedTime)
 	//cout << "CURRENT LEVEL IS " << cMap2D->GetCurrentLevel() << endl;
 	eventcontroller->update(dElapsedTime);
 
+	static double octopusSpawnTime = 0;
+	octopusSpawnTime += dElapsedTime;
+	static int octopusCount = 0;
+	if (octopusSpawnTime >= 30)
+	{
+		if (availableRandomSpawn())
+		{
+			Octopus* octo = new Octopus(glm::vec2(randX, randY));
+			octo->SetShader("Shader2D_Colour");
+			if (octopusCount < 2)
+			{
+				if (octo->Init())
+				{
+					octo->SetPlayer2D(cPlayer2D);
+					eventcontroller->spawnEnemies(octo);
+					octopusCount++;
+					cout << "release the kraken" << endl;
+				}
+			}
+			octopusSpawnTime = 0;
+		}
+	}
 	return true;
 }
 
@@ -513,6 +544,17 @@ void CScene2D::Render(void)
  */
 void CScene2D::PostRender(void)
 {
+}
+
+bool CScene2D::availableRandomSpawn()
+{
+	randX = rand() % 100;
+	randY = rand() % 100;
+	if (cMap2D->GetMapInfo(randX, randY, true, 0) < 100) // to not random spawn into collidable walls
+		return true;
+	else
+		availableRandomSpawn();
+
 }
 
 float CScene2D::returnmusicvol()

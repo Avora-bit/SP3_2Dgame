@@ -13,7 +13,6 @@ public:
 	void UpdatePosition(void);
 	glm::vec2 getVec2Index();
 
-
 private:
 	bool stuck = false;
 	DIRECTION stuckDirection;
