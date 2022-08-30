@@ -2,14 +2,16 @@
 
 Chicken::Chicken()
 {
-	health = 20;
+	maxHealth = 20;
+	health = maxHealth;
 	atk = 0;
 }
 
 Chicken::Chicken(glm::vec2 pos)
 {
 	vec2Index = pos;
-	health = 20;
+	maxHealth = 20;
+	health = maxHealth;
 	atk = 0;
 }
 

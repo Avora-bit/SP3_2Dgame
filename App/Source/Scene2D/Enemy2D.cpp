@@ -481,9 +481,6 @@ void CEnemy2D::UpdatePosition(void)
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.y > 0)
 	{
@@ -509,10 +506,6 @@ void CEnemy2D::UpdatePosition(void)
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
-
-
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	if (vec2Direction.x < 0)
 	{
@@ -537,9 +530,6 @@ void CEnemy2D::UpdatePosition(void)
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
-		
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 	else if (vec2Direction.x > 0)
 	{
@@ -565,10 +555,6 @@ void CEnemy2D::UpdatePosition(void)
 			//vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
-
-		
-		// Interact with the Player
-		//InteractWithPlayer();
 	}
 }
 
@@ -591,6 +577,11 @@ void CEnemy2D::takeDamage(float damage)
 float CEnemy2D::getHealth()
 {
 	return health;
+}
+
+float CEnemy2D::getMaxHealth()
+{
+	return maxHealth;
 }
 
 void CEnemy2D::UpdateStatus(const double dElapsedTime)

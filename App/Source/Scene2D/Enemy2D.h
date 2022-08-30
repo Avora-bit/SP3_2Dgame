@@ -81,7 +81,7 @@ public:
 	void SetStatus(AILMENT status, float time);
 
 	float getHealth();
-
+	float getMaxHealth();
 	bool sleep;
 
 	float getScale();
@@ -160,6 +160,7 @@ protected:
 	int iFSMCounter;
 
 	float health;
+	float maxHealth;
 
 	float timer;
 	// Max count in a state
@@ -183,9 +184,8 @@ protected:
 	float speed_multiplier = 1.00f;
 	void UpdateStatus(const double dElapsedTime);
 
-	float speed_multiplier = 0.25f;
 	float atk;
-	float scaleX;
-	float scaleY;
+	float scaleX = 1;
+	float scaleY = 1;
 };
 

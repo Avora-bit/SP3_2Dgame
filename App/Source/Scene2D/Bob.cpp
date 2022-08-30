@@ -4,14 +4,16 @@
 
 Bob::Bob()
 {
-	health = 100;
+	maxHealth = 300;
+	health = maxHealth;
 	atk = 10;
 }
 
 Bob::Bob(glm::vec2 pos)
 {
 	vec2Index = pos;
-	health = 100;
+	maxHealth = 300;
+	health = maxHealth;
 	atk = 10;
 }
 
@@ -60,7 +62,7 @@ bool Bob::Init(void)
 	}
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 3, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("default", 0, 3);
+	animatedSprites->AddAnimation("default", 0, 2);
 	animatedSprites->PlayAnimation("default", -1, 0.3f);
 
 	//CS: Init the color to white
@@ -75,7 +77,7 @@ bool Bob::Init(void)
 	scaleY = 3;
 	timer = 0;
 	shotInterval = 0;
-	attackTimer = 1;
+	attackTimer = 0;
 	return true;
 }
 
@@ -105,7 +107,7 @@ void Bob::Update(const double dElapsedTime)
 		case CEnemy2D::CHASE:
 		{
 			directionChosen = false;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 25.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 20.0f)
 			{
 				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
 					cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -118,7 +120,6 @@ void Bob::Update(const double dElapsedTime)
 						vec2Destination = coord;
 
 						vec2Direction = vec2Destination - vec2Index;
-						vec2Direction = -vec2Direction;
 						bFirstPosition = false;
 					}
 					else
@@ -144,7 +145,7 @@ void Bob::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::BOSSPHASE1:
 		{
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 25.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 20.0f)
 			{
 				randomDirection();
 				UpdatePosition();
@@ -161,12 +162,44 @@ void Bob::Update(const double dElapsedTime)
 				iFSMCounter = 0;
 				break;
 			}
-			if (shotInterval < 5)
+			static int count = 0;
+			shotInterval -= dElapsedTime;
+			if (shotInterval <= 0 && count < 3)
 			{
-				for (int i = 0; i < 7; i += dElapsedTime)
+				attackTimer += dElapsedTime;
+				if (attackTimer < 3)
 				{
-
+					BobShot* bobShot = new BobShot();
+					bobShot->SetShader("Shader2D_Colour");
+					if (bobShot->Init())
+					{
+						bobShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
+						int i = rand() % 1;
+						int j = rand() % 4;
+						switch (i)
+						{
+						case 0:
+							EventController::GetInstance()->spawnProjectiles(bobShot, glm::vec2(vec2Index.x,vec2Index.y + (j/10)));
+							break;
+						case 1:
+							EventController::GetInstance()->spawnProjectiles(bobShot, glm::vec2(vec2Index.x, vec2Index.y - (j / 10)));
+							break;
+						}
+						
+					}
 				}
+				else
+				{
+					shotInterval = 5;
+					attackTimer = 0;
+					count++;
+				}
+			}
+			else if (count >= 3)
+			{
+				sCurrentFSM = BOSSPHASE2;
+				iFSMCounter = 0;
+				break;
 			}
 			iFSMCounter++;
 			break;

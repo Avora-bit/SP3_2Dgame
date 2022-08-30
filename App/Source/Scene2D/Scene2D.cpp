@@ -283,7 +283,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		else
 			break;
 	}
-	while (true)
+	/*while (true)
 	{
 		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
 		skeleton->SetShader("Shader2D_Colour");
@@ -292,6 +292,20 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		{
 			skeleton->SetPlayer2D(cPlayer2D);
 			eventcontroller->spawnEnemies(skeleton);
+			break;
+		}
+		else
+			break;
+	}*/
+	while (true)
+	{
+		Bob* bob = new Bob(cPlayer2D->vec2Index);
+		bob->SetShader("Shader2D_Colour");
+
+		if (bob->Init())
+		{
+			bob->SetPlayer2D(cPlayer2D);
+			eventcontroller->spawnEnemies(bob);
 			break;
 		}
 		else

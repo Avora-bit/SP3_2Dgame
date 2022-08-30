@@ -46,6 +46,7 @@
 #include "Chicken.h"
 #include "Spider.h"
 #include "Skeleton.h"
+#include "Bob.h"
 
 #include "GUI_Scene2D.h"
 

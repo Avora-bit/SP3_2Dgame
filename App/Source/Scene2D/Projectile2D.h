@@ -94,8 +94,8 @@ protected:
 
 	double distanceTravelled;
 
-	float scaleX;
-	float scaleY;
+	float scaleX = 1;
+	float scaleY = 1;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;

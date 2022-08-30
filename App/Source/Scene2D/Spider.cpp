@@ -2,14 +2,16 @@
 #include "EventController.h"
 Spider::Spider()
 {
-	health = 30;
+	maxHealth = 30;
+	health = maxHealth;
 	atk = 20;
 }
 
 Spider::Spider(glm::vec2 pos)
 {
 	vec2Index = pos;
-	health = 30;
+	maxHealth = 30;
+	health = maxHealth;
 	atk = 20;
 }
 
@@ -216,7 +218,7 @@ void Spider::Update(const double dElapsedTime)
 				webShot->SetShader("Shader2D_Colour");
 				if (webShot->Init())
 				{
-					webShot->setDirection(glm::vec2(cPlayer2D->vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS), cPlayer2D->vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS)));
+					webShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
 					EventController::GetInstance()->spawnProjectiles(webShot, vec2Index);
 				}
 				shotInterval = 5;

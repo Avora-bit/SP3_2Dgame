@@ -2,14 +2,16 @@
 
 Octopus::Octopus()
 {
-	health = 20;
+	maxHealth = 20;
+	health = maxHealth;
 	atk = 10;
 }
 
 Octopus::Octopus(glm::vec2 pos)
 {
 	vec2Index = pos;
-	health = 20;
+	maxHealth = 20;
+	health = maxHealth;
 	atk = 10;
 }
 

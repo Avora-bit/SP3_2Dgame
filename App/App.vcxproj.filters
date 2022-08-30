@@ -99,9 +99,6 @@
     <ClCompile Include="Source\Scene2D\Sword2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Webshot.cpp">
-      <Filter>Inventory</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene2D\WoodenHilt2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
@@ -131,6 +128,15 @@
     </ClCompile>
     <ClCompile Include="Source\Scene2D\IronHilt2D.cpp">
       <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\BobShot.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Bob.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Webshot.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +207,6 @@
     <ClInclude Include="Source\Scene2D\Scene2D.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Webshot.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\EventController.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -270,6 +273,15 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\IronHilt2D.h">
       <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\BobShot.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Bob.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Webshot.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
