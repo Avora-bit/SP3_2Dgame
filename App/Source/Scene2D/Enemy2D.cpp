@@ -133,12 +133,6 @@ void CEnemy2D::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
-	if (health <= 0)
-	{
-		bIsActive = false;
-		//SPAWN FOOD IF DEAD
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
-	}
 
 	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
