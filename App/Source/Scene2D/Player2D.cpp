@@ -1562,7 +1562,7 @@ void CPlayer2D::AttackEnemy()
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-		if (enemy->bIsActive && !enemy->sleep)
+		if (enemy->bIsActive)
 		{
 			CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 			float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
@@ -1574,13 +1574,16 @@ void CPlayer2D::AttackEnemy()
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{
-				enemy->takeDamage(sword->getTotalDamage());
-				if (sword->getEffect() != AILMENT::NONE)
-					enemy->SetStatus(sword->getEffect(), 3.f);
+				if (!enemy->sleep)
+				{
+					enemy->takeDamage(sword->getTotalDamage());
+					if (sword->getEffect() != AILMENT::NONE)
+						enemy->SetStatus(sword->getEffect(), 3.f);
+				}
+				else if (enemy->sleep)
+					enemy->sleep = false;
 			}
 		}
-		else if (enemy->bIsActive)
-			enemy->sleep = false;
 	}
 }
 
