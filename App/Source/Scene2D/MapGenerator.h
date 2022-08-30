@@ -78,6 +78,9 @@ public:
 		Stick = 30,
 		Wood = 40,
 		Rock = 49,
+
+		ladderup = 77,
+		ladderdown = 78
 		
 	};
 

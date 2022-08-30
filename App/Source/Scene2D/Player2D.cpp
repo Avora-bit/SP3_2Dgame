@@ -306,7 +306,7 @@ bool CPlayer2D::Init(void)
 	}
 
 
-	cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 77);
+	//cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 77, true, 1);
 
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
@@ -380,15 +380,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
 		walkingTime += 0.5f * dElapsedTime;
-		//walkingTime = max(0, 1);
-
 		if (walkingTime >= 1)
 		{
 			walkingTime = 1;
 		}
-
-		cout << "WALKING TIME" << walkingTime << endl;
-
 		switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 		{
 		case 99: //grass
@@ -1447,6 +1442,9 @@ bool CPlayer2D::reset_pos()
 
 void CPlayer2D::InteractWithMap(void)
 {
+
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
@@ -1464,35 +1462,7 @@ void CPlayer2D::InteractWithMap(void)
 		movementSpeed = 0.7f;
 		break;
 
-	case 78:		//dungeon ladderdown
-		//add level
-		cGameManager->bLevelIncrease = true;
-		break;
-
-	case 77:		//dungeon ladderup
-	{
-		//remove level
-		unsigned int uiRow = -1;
-		unsigned int uiCol = -1;
-		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
-		{
-			if (cMap2D->GetCurrentLevel() == 0)
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 0);
-				cMap2D->SetCurrentLevel(1);
-			}
-			else
-			{
-				cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
-
-				//cMap2D->SetMapInfo_2(getprevlevel(), gety(), getx() + 1, 200);
-				cMap2D->SetCurrentLevel(0);
-			}
-			reset_pos();
-		}
-		cGameManager->bLevelDecrease = true;
-		break;
-	}
+	
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1526,6 +1496,31 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		//prevent dash
 		break;
+	case 78:		//dungeon ladderdown
+	{
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
+		cMap2D->SetCurrentLevel(1);
+		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		}
+		reset_pos();
+		//cGameManager->bLevelIncrease = true;
+		break;
+	}
+	case 77:		//dungeon ladderup
+	{
+		//remove level
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
+		cMap2D->SetCurrentLevel(0);
+		if (cMap2D->FindValue(78, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		}
+		reset_pos();
+		//cGameManager->bLevelDecrease = true;
+		break;
+	}
 
 	//PICKING UP ITEMS
 	case 70:

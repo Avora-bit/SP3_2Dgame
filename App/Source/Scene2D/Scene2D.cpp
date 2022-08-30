@@ -83,6 +83,13 @@ CScene2D::~CScene2D(void)
 
 }
 
+
+
+//FIND LADDER
+//SPAWN PLAYER RIGHT NEXT TO THE LADDDER
+
+
+
 /**
 @brief Init Initialise this instance
 */ 
@@ -147,6 +154,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
 
+
+
+		
+		island->randreplace(MapGen::ladderdown, MapGen::Grass);			//replace grass with ladder
+		
+
 		island->deleteall(MapGen::Grass);			//delete all grass
 
 		//spawn structure with ladderdown
@@ -182,6 +195,15 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < randspawn; i++) {
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
 		}
+
+
+			
+	
+		dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
+		
+
+
+
 
 		//delete background
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
