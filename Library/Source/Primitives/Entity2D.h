@@ -61,6 +61,7 @@ public:
 	// The vec2 variable which stores the UV coordinates to render the Entity2D
 	glm::vec2 vec2UVCoordinate;
 
+	glm::vec2 getPreciseVec2Index(bool toOrigin);
 protected:
 	enum AILMENT {
 		NONE = 0,
@@ -73,6 +74,7 @@ protected:
 	std::string sShaderName;
 
 	//CS: The mesh that is used to draw objects
+
 	CMesh* mesh;
 
 	// OpenGL objects

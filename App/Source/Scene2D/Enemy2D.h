@@ -82,6 +82,7 @@ public:
 
 	float getHealth();
 
+	glm::vec2 getPreciseVec2Index(bool toOrigin);
 protected:
 	enum DIRECTION
 	{
