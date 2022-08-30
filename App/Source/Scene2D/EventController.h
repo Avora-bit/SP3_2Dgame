@@ -7,10 +7,8 @@
 //foreground and background
 //player instance
 #include "Map2D.h"
-#include "Player2D.h"
 #include "Enemy2D.h"
 #include "Projectile2D.h"
-//#include "item.h"
 
 using namespace std;
 
@@ -31,8 +29,6 @@ public:
 	vector<CEntity2D*> projectileVector;
 
 	void Init() {
-		//get player and map singleton
-
 		//creates all instances
 		enemyVector.clear();
 		projectileVector.clear();
@@ -62,8 +58,6 @@ public:
 			projectileVector[i]->Update(dElapsedTime);
 		}
 	}
-
-
 
 	//FOR SOUND - REAGAN
 	size_t rreturn_vectorSize()

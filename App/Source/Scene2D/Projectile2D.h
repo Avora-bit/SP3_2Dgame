@@ -79,6 +79,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	void setDirection(glm::vec2 direction);
+
 	bool bIsActive;
 
 protected:
