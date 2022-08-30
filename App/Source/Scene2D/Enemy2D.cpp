@@ -135,13 +135,12 @@ void CEnemy2D::Update(const double dElapsedTime)
 	if (!bIsActive)
 		return;
 
-	if (health <= 0)
-		bIsActive = false;
 
 	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
+
 }
 
 /**

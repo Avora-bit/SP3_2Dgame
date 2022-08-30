@@ -12,7 +12,7 @@ slot::slot()
 
 	//cSettings = CSettings::GetInstance();
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-
+	
 
 	cInventoryManager = CInventoryManager::GetInstance();
 	//cInventoryItem= CInventoryItem::GetIns
@@ -54,6 +54,9 @@ void slot::settextureID(int itemid)
 		break;
 	case 50:
 		textureID = cInventoryManager->GetItem("Swords")->GetTextureID();
+		break;
+	case 49:
+		textureID = cInventoryManager->GetItem("Rock")->GetTextureID();
 		break;
 	case 0:
 		textureID = 0;

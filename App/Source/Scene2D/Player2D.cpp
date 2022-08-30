@@ -23,8 +23,12 @@ using namespace std;
 
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
+#include "IronHilt2D.h"
+#include "PlatinumHilt2D.h"
 #include "RustyBlade2D.h"
 #include "CleaverBlade2D.h"
+#include "DaggerBlade2D.h"
+#include "KatanaBlade2D.h"
 
 #include "EventController.h"
 
@@ -45,7 +49,7 @@ CPlayer2D::CPlayer2D(void)
 	, grasssfx(NULL)
 	, sandsfx(NULL)
 	, firesfx(NULL)
-	,enemysfx(NULL)
+	, enemysfx(NULL)
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
@@ -141,10 +145,20 @@ bool CPlayer2D::Init(void)
 
 	cGameManager = CGameManager::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
+	unsigned int uiRow = 1;
+	unsigned int uiCol = 1;
+	if (cMap2D->FindValue(200, uiRow, uiCol, true, 1)) {
+		cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);
+	}
+	else if (cMap2D->FindValue(78, uiRow, uiCol, true, 1)) {}
+	else if (cMap2D->FindValue(77, uiRow, uiCol, true, 1)) {}
+	else return false;		//unable to find valid position to spawn player
+
+
+	// Set the start position of the Player to iRow and iCol
+	vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	ProjectileForce = 0;
 
@@ -170,26 +184,9 @@ bool CPlayer2D::Init(void)
 	attacking = false;
 	attackTimer = 0;
 
-
-	cMap2D->SetMapInfo(uiRow, uiCol, 0, true, 1);			//replace player with sand cause they spawn on sand
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::i32vec2(0, 0);
-
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	
-	// Load the player texture 
-	/*
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2D_player.png", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_PlayerTile.tga" << endl;
-		return false;
-	}
-	*/
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -255,6 +252,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("Rock", "Image/Sp3Images/Base/rock.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
@@ -271,7 +272,7 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
 
-	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CCleaverBlade2D());
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CKatanaBlade2D());
 	cInventoryManager->Add(sword);
 
 	//sword->replaceBlade(new CRustyBlade2D());
@@ -290,20 +291,11 @@ bool CPlayer2D::Init(void)
 	for (int i = 0; i < 9; i++)
 	{
 		inventorySlots[i].setitemID(0);
-		/*if (i % 2 == 0)
-		{
-			inventorySlots[i].setitemID(30);
-		}
-		else
-		{
-			inventorySlots[i].setitemID(40);
-		}*/
-
-		//inventorySlots[i].settextureID(inventorySlots[i].getitemID());
-
-		//inventorySlots[i].AddQuantity(5);
+		
 	}
 
+
+	cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
 
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
@@ -362,11 +354,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//null
 		}
 	}
-	// Store the old position
-
-
-	//IF PLAYER IS NEAR FIRE
-
 
 	//PLAY SOUND DEPENDING ON SURFACE TYPE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
@@ -375,21 +362,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
 		walkingTime += 0.5f * dElapsedTime;
-		//walkingTime = max(0, 1);
-
 		if (walkingTime >= 1)
 		{
 			walkingTime = 1;
 		}
-
-		cout << "WALKING TIME" << walkingTime << endl;
-
 		switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
 		{
 		case 99: //grass
 		{
 			//walkingTime = 0;
-
 			if (sandsfx != nullptr)
 			{
 				sandsfx->setVolume(0.f);
@@ -416,7 +397,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case 98: //sand
 		{
 			//walkingTime = 0;
-
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
@@ -428,8 +408,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				watersfx->setVolume(0.f);
 				//watersfx = nullptr;
 			}
-
-			
 
 			ISound* sandSound = cSoundController->PlaySoundByID_2(9);
 			if (sandSound != nullptr)
@@ -445,7 +423,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		case 97: //water
 		{
 			//walkingTime = 0;
-
 			if (grasssfx != nullptr)
 			{
 				grasssfx->setVolume(0.f);
@@ -503,34 +480,57 @@ void CPlayer2D::Update(const double dElapsedTime)
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
 
+	/*cout << cMouseController->GetMousePositionX() << endl;
+	cout << cMouseController->GetMousePositionY() << endl;*/
+
 
 	//FORAGE FOR TREES(Get sticks)
 	if (cMouseController->IsButtonDown(0))
 	{
 		//right
-		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 100) && direction == 1))
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, true, 1) == 100/* && (angle */)
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 30, true, 1);
 		}
 		//left
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 100)
-			&& direction == 0)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, true, 1) == 100
+			/*&& direction == 0*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 30, true, 1);
 		}
 		//down
-		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 100)
-			&& direction == 3)
+		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
+			/*&& direction == 3*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 30, true, 1);
 		}
 		//up
-		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 100)
-			&& direction == 2)
+		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
+			/*&& direction == 2*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 30, true, 1);
 		}
 	}
+
+
+	/*CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+	float enemyAngle = (atan2(((enemy->getVec2Index().y + enemy->getVec2MicroSteps().y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS) -
+		(vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_YAXIS)),
+		((enemy->getVec2Index().x + enemy->getVec2MicroSteps().x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS) -
+			(vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS + 2 / cSettings->NUM_STEPS_PER_TILE_XAXIS))) / 3.14159265359) * 180.0f;
+	if (enemyAngle - angle + 90 > 270)
+		enemyAngle -= 360;
+	if (cPhysics2D.CalculateDistance(vec2Index + vec2NumMicroSteps / cSettings->NUM_STEPS_PER_TILE_XAXIS,
+		enemy->getVec2Index() + enemy->getVec2MicroSteps() / cSettings->NUM_STEPS_PER_TILE_XAXIS) <= sword->getTotalRange() &&
+		enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
+		enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
+	{
+		std::cout << "bonk";
+		enemy->takeDamage(sword->getTotalDamage());
+	}*/
+
+
+
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_1))
 	{
@@ -1390,47 +1390,63 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 }
 
-void CPlayer2D::UseHotBar(const int GLFW_KEY)
+
+
+bool CPlayer2D::reset_pos()
 {
-	if (cKeyboardController->IsKeyDown(GLFW_KEY))
-	{
-		//PLACE CAMPFIRE
-		if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 102)
-		{
-			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 102, true, 1);
-			inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].setquantity(0);
-		}
-		//COOK FOOD
-		else if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 70)
-		{
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
-			{
-				cooking_mode = true;
-				campfireVec2.y = vec2Index.y;
-				campfireVec2.x = vec2Index.x;
-			}
-		}
-		//EAT FOOD
-		else if (inventorySlots[cKeyboardController->IsKeyDown(GLFW_KEY) - 1].getitemID() == 81)
-		{
-			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
-			cInventoryItem = cInventoryManager->GetItem("Hunger");
-			cInventoryItem->Add(20);
-		}
-		cout << "KEY IS " << cKeyboardController->IsKeyDown(GLFW_KEY) << endl;
-	}
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
+
+	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+		return false;	// Unable to find the start position of the player, so quit this game
+
+
+	// Erase the value of the player in the arrMapInfo
+	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+	// Set the start position of the Player to iRow and iCol
+	vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	vec2NumMicroSteps = glm::i32vec2(0, 0);
+	ProjectileForce = 0;
+
+	walkingTime = 0;
+
+	angle = 0;
+
+	direction = RIGHT;
+
+	soundVol = 1.f;
+
+	throwing = false;
+	maxPForce = 10;
+	minPForce = 5;
+	ProjectileForce = 0;
+
+	// vitals
+	invincibility = 0;
+
+	dashTrue = true;
+
+	movementSpeed = 1.f;
+	attacking = false;
+	attackTimer = 0;
+
+	//CS: Play the "idle" animation as default
+	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	return true;
+	
 }
 
 void CPlayer2D::InteractWithMap(void)
 {
+
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
 	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
 		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
 		//background switch
@@ -1441,12 +1457,14 @@ void CPlayer2D::InteractWithMap(void)
 		//slow speed
 		movementSpeed = 0.5f;
 		break;
-	case 93:		//spikes
+	case 95:		//spikes
 		//deals damage
 		LoseHealth(5);
 		//slows by abit
-		movementSpeed = 0.9f;
+		movementSpeed = 0.7f;
 		break;
+
+	
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1476,24 +1494,41 @@ void CPlayer2D::InteractWithMap(void)
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
 		}
 		break;
-	case 78:		//dungeon ladderdown
-		//add level
-		cGameManager->bLevelIncrease = true;
-		break;
-
-	case 77:		//dungeon ladderup
-		//remove level
-		cGameManager->bLevelDecrease = true;
-		break;
 	case 76:		//web
 		//slow speed
 		//prevent dash
 		break;
+	case 78:		//dungeon ladderdown
+	{
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
+		cMap2D->SetCurrentLevel(1);
+		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		}
+		reset_pos();
+		//cGameManager->bLevelIncrease = true;
+		break;
+	}
+	case 77:		//dungeon ladderup
+	{
+		//remove level
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
+		cMap2D->SetCurrentLevel(0);
+		if (cMap2D->FindValue(78, uiRow, uiCol) == true)
+		{
+			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		}
+		reset_pos();
+		//cGameManager->bLevelDecrease = true;
+		break;
+	}
 
 	//PICKING UP ITEMS
 	case 70:
 	case 81:
 	case 30:
+	case 49:
 	case 40:
 	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
@@ -1678,7 +1713,7 @@ bool CPlayer2D::AddItem(int itemid)
 			//IF ITEM IS NOT A NON STACKABLE ITEM (IE CAMPFIRE)
 			//IF THE DECLARED ITEMID IN THE SLOT IS THE SAME AS THE ITEM PICKED UP
 			if (inventorySlots[i].getitemID() == itemid
-				&& inventorySlots[i].getitemID() != 50)
+				&& (inventorySlots[i].getitemID() != 50))
 			{
 				//IF THE QUANTITY IS BELOW 5
 				if (inventorySlots[i].getquantity() < 5)

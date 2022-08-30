@@ -155,8 +155,8 @@ protected:
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
 
-	void UseHotBar(const int GLFW_KEY);
 
+	bool reset_pos();
 	void InteractWithMap(void);
 
 	void AttackEnemy();

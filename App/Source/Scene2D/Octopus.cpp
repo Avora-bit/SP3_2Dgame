@@ -83,8 +83,11 @@ void Octopus::Update(const double dElapsedTime)
 		return;
 
 	if (health <= 0)
+	{
 		bIsActive = false;
-
+		//SPAWN FOOD IF DEAD
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
+	}
 	switch (sCurrentFSM)
 	{
 		case CEnemy2D::IDLE:
@@ -170,6 +173,13 @@ void Octopus::Update(const double dElapsedTime)
 			break;
 		}
 	}
+
+
+
+
+	
+
+
 	//animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);

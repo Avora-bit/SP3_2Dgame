@@ -151,13 +151,13 @@ bool CCraftingState::Update(const double dElapsedTime)
 	//IF ITEM IS PICKED UP WHILE IN THIS STATE, UPDATE THE SLOTS
 	/*if (cPlayer2D->AddItem())
 	{*/
-		for (int i = 9; i < 18; i++)
-		{
-			butnum[i].setitemID(cPlayer2D->getitemval(i - 9));
-			butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
-			butnum[i].settextureID(butnum[i].getitemID());
-		}
-	//}
+	//	for (int i = 9; i < 18; i++)
+	//	{
+	//		butnum[i].setitemID(cPlayer2D->getitemval(i - 9));
+	//		butnum[i].setquantity(cPlayer2D->getitem(i - 9).getquantity());
+	//		butnum[i].settextureID(butnum[i].getitemID());
+	//	}
+	////}
 
 
 	{
@@ -260,13 +260,14 @@ bool CCraftingState::Update(const double dElapsedTime)
 							{
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(0);
-
-								//REDUCE THE QUANTITY IN HOTBAR AS WELL
-								if (n <= 2)
-								{
-									hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
-								}
 							}
+
+							//REDUCE THE QUANTITY IN HOTBAR AS WELL
+							if (n <= 2)
+							{
+								hotbar->set_hbcellid(n - 9, butnum[n].getitemID());
+							}
+							
 						}
 					}
 				}
@@ -310,15 +311,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
-								//butnum[n].SubtractQuantity(1);
 
 								break;
 							}
 						}
 					}
 				}
-
-				//butnum[n].loadimagebasedID(butnum[n].getitemID(), il);
 			}
 			else
 			{
@@ -374,8 +372,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 							butnum[n].AddQuantity(1);
 							butnum[payload_n].SubtractQuantity(1);
 						}
-
-
 						//IF IT'S DRAGGED TO THE FIRST 3 INVENTORY SLOTS
 						if (n < 12)
 						{

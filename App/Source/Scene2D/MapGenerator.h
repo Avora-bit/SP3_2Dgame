@@ -17,7 +17,7 @@ private:
 	int width = 100;
 	int height = 100;
 
-	vector<int>coremap;		//empty map
+	vector<int>coremap;			//empty map
 	vector<int>tempmap;			//temporary map for new generation
 
 	//island cellular automata
@@ -35,48 +35,8 @@ private:
 	int minCorridorLength = 5;
 	int maxCorridorLength = 10;
 
-	vector<char> tile;
 	vector<Rect> room; // rooms for place stairs or monsters
 	vector<Rect> exit; // 4 sides of rooms or corridors
-
-	int Key_Convert[13][2] = {
-		//background tiles
-		{0, 0},				//void
-		{1, 97},			//water		//cannot dash, slows movement speed
-		{2, 99},			//grass		//spawn tree
-		{3, 98},			//sand		//spawn cross
-		{4, 96},			//brick floor		//no behavior
-		{5, 95},			//trap				//deals small amount of damage to the player, 5 hp
-		//solid tiles
-		{6, 100},			//tree
-		{7, 101},			//brick wall
-		//foreground tiles
-		{8, 80},			//cross		//spawn treasure
-		{9, 79},			//treasure	//spawn loot
-		{10, 78},			//ladderdown
-		{11, 77},			//ladderup
-		{12, 76},			//web		//slows player
-	};
-
-	enum Tile {
-		Unused = ' ',
-		Floor = '.',
-		Corridor = ',',
-		Wall = '#',
-		Door = '+',
-		UpStairs = '<',
-		DownStairs = '>'
-	};
-
-	char Dungeon_Convert[7][2] = {
-		{' ', 96},		//empty			//brick floor
-		{'.', 0},		//out of bounds	//void
-		{',', 96},		//corridor		//brick floor
-		{'#', 101},		//wall			//brick wall
-		{'+', 96},		//door			//brick floor
-		{'<', 78},		////ladderdown
-		{'>', 77},		////ladderup
-	};
 
 	enum Direction
 	{
@@ -87,25 +47,158 @@ private:
 		NUM_DIRECTIONS
 	};
 
+public:
+	enum tiletype
+	{
+		//entities
+		Player = 200,
+
+		//background tiles
+		Unused = 0,
+		Void = 0,
+		Water = 97,
+		Grass = 99,
+		Sand = 98,
+		BrickFloor = 96,
+		Trap = 95,
+		Corridor = 96,
+
+		//solid tiles
+		Tree = 100,
+		BrickWall = 101,
+
+		//foreground tiles
+		Cross = 80,
+		DownStairs = 78,
+		UpStairs = 77,
+		Treasure = 79,
+		Web = 76,
+
+		//items
+		Stick = 30,
+		Wood = 40,
+		Rock = 49,
+
+		ladderup = 77,
+		ladderdown = 78
+		
+	};
+
+	MapGen() {
+		//seeding
+		seed = time(NULL);
+		srand(seed);
+	}
+	~MapGen() {
+		coremap.clear();
+		tempmap.clear();
+	}
+
+	void createMap(int x, int y) {
+		//erase
+		coremap.clear();
+		tempmap.clear();
+		room.clear();
+		exit.clear();
+		//resize
+		width = x; height = y;
+		//generate
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				coremap.push_back(Unused);
+			}
+		}
+	}
+
+	void randomfill(tiletype typea, tiletype typeb, const float distribution = 0.5f) {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				int randchance = rand() % 100;
+				if (randchance < (distribution * 100)) {
+					coremap.at(i * width + j) = typea;
+				}
+				else {
+					coremap.at(i * width + j) = typeb;
+				}
+
+			}
+		}
+	}
+
+	void updateIsland() {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				int type = Water; int neighbour = 0;
+				switch (coremap.at(i * width + j))	//value of index
+				{
+				case Water:
+					neighbour = countN((i * width + j), Grass);
+					if (neighbour > birthlimit) {				//counts alive, if enough, born
+						type = Grass;
+					}
+					break;
+				case Grass:
+					neighbour = countN((i * width + j), Grass);
+					if (neighbour > poplimit) {					//counts other alive, if over populated, die
+						type = Water;
+					}
+					else if (neighbour > sociallimit) {			//counts other alive, if enough, stay alive
+						type = Grass;
+					}
+					else {										//else die
+						type = Water;
+					}
+					break;
+				default:
+					//coremap.push_back(Void);
+					break;
+				}
+				//temp storage assigned to new generation
+				tempmap.push_back(type);
+			}
+		}
+
+		coremap = tempmap;
+		tempmap.clear();
+	}
+
+	void growtile(tiletype type) {
+		//grow a tile from existing tiles
+		tempmap = coremap;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (coremap.at(i * width + j) == Water &&			//if water
+					(countN(i * width + j, Grass) > 0 ||
+					countN(i * width + j, Sand) > 0)) {			//at least surrounded by land or sand
+					tempmap.at(i * width + j) = type;
+				}
+			}
+		}
+		coremap = tempmap;
+		tempmap.clear();
+	}
+
+	void placeRuins(int ruinarray) {
+		//choose random position
+
+		//check if position has open 5x5 space
+
+		//replace land with the structure
+	}
+
 	char getTile(int x, int y) const
 	{
-		if (x < 0 || y < 0 || x >= width || y >= height)
-			return Unused;
-
-		return tile[x + y * width];
+		if (x < 0 || y < 0 || x >= width || y >= height) return Unused;
+		return coremap[x + y * width];
 	}
 
-	void setTile(int x, int y, char tiletype)
-	{
-		tile[x + y * width] = tiletype;
+	void setTile(int x, int y, char tiletype) {
+		coremap[x + y * width] = tiletype;
 	}
 
-	bool createFeature()
-	{
-		for (int i = 0; i < 1000; ++i)
-		{
-			if (exit.empty())
-				break;
+	bool createFeature() {
+		for (int i = 0; i < 1000; ++i) {
+			if (exit.empty()) break;
 
 			// choose a random side of a random room or corridor
 			int r = randminmax(0, exit.size());
@@ -113,10 +206,8 @@ private:
 			int y = randminmax(exit[r].y, exit[r].y + exit[r].height - 1);
 
 			// north, south, west, east
-			for (int j = 0; j < NUM_DIRECTIONS; ++j)
-			{
-				if (createFeature(x, y, static_cast<Direction>(j)))
-				{
+			for (int j = 0; j < NUM_DIRECTIONS; ++j) {
+				if (createFeature(x, y, static_cast<Direction>(j))) {
 					exit.erase(exit.begin() + r);
 					return true;
 				}
@@ -126,83 +217,51 @@ private:
 		return false;
 	}
 
-	bool createFeature(int x, int y, Direction dir)
-	{
-		int dx = 0;
-		int dy = 0;
+	bool createFeature(int x, int y, Direction dir) {
+		int dx = 0; int dy = 0;
+		if (dir == UP) dy = 1;
+		else if (dir == DOWN) dy = -1;
+		else if (dir == LEFT) dx = 1;
+		else if (dir == RIGHT) dx = -1;
 
-		if (dir == UP)
-			dy = 1;
-		else if (dir == DOWN)
-			dy = -1;
-		else if (dir == LEFT)
-			dx = 1;
-		else if (dir == RIGHT)
-			dx = -1;
-
-		if (getTile(x + dx, y + dy) != Floor && getTile(x + dx, y + dy) != Corridor)
+		if (getTile(x + dx, y + dy) != BrickFloor && getTile(x + dx, y + dy) != Corridor)
 			return false;
 
-		if (randminmax(0, 100) < roomChance)
-		{
-			if (makeRoom(x, y, dir))
-			{
-				setTile(x, y, Door);
-
+		if (randminmax(0, 100) < roomChance) {
+			if (makeRoom(x, y, dir)) {
+				setTile(x, y, Corridor);
 				return true;
 			}
 		}
-
-		else
-		{
-			if (makeCorridor(x, y, dir))
-			{
-				if (getTile(x + dx, y + dy) == Floor)
-					setTile(x, y, Door);
-				else // don't place a door between corridors
-					setTile(x, y, Corridor);
-
-				return true;
-			}
+		else {
+			if (makeCorridor(x, y, dir)) return true;
 		}
-
 		return false;
 	}
 
-	bool makeRoom(int x, int y, Direction dir, bool firstRoom = false)
-	{
+	bool makeRoom(int x, int y, Direction dir, bool firstRoom = false) {
 		Rect roomID;
 		roomID.width = randminmax(minRoomSize, maxRoomSize);
 		roomID.height = randminmax(minRoomSize, maxRoomSize);
 
-		if (dir == UP)
-		{
+		if (dir == UP) {
 			roomID.x = x - roomID.width / 2;
 			roomID.y = y - roomID.height;
 		}
-
-		else if (dir == DOWN)
-		{
+		else if (dir == DOWN) {
 			roomID.x = x - roomID.width / 2;
 			roomID.y = y + 1;
 		}
-
-		else if (dir == LEFT)
-		{
+		else if (dir == LEFT) {
 			roomID.x = x - roomID.width;
 			roomID.y = y - roomID.height / 2;
 		}
-
-		else if (dir == RIGHT)
-		{
+		else if (dir == RIGHT) {
 			roomID.x = x + 1;
 			roomID.y = y - roomID.height / 2;
 		}
-
-		if (placeRect(roomID, Floor))
-		{
+		if (placeRect(roomID, BrickFloor)) {
 			room.emplace_back(roomID);
-
 			if (dir != DOWN || firstRoom) // north side
 				exit.emplace_back(Rect{ roomID.x, roomID.y - 1, roomID.width, 1 });
 			if (dir != UP || firstRoom) // south side
@@ -271,8 +330,7 @@ private:
 					corridor.y = y - corridor.height + 1;
 			}
 
-			else if (dir == RIGHT)
-			{
+			else if (dir == RIGHT) {
 				corridor.x = x + 1;
 
 				if (randBool()) // north
@@ -280,8 +338,7 @@ private:
 			}
 		}
 
-		if (placeRect(corridor, Corridor))
-		{
+		if (placeRect(corridor, Corridor)) {
 			if (dir != DOWN && corridor.width != 1) // north side
 				exit.emplace_back(Rect{ corridor.x, corridor.y - 1, corridor.width, 1 });
 			if (dir != UP && corridor.width != 1) // south side
@@ -297,144 +354,45 @@ private:
 		return false;
 	}
 
-	bool placeRect(const Rect& rect, char tile)
+	bool placeRect(const Rect& rect, tiletype type)
 	{
 		if (rect.x < 1 || rect.y < 1 || rect.x + rect.width > width - 1 || rect.y + rect.height > height - 1)
 			return false;
 
-		for (int y = rect.y; y < rect.y + rect.height; ++y)
-			for (int x = rect.x; x < rect.x + rect.width; ++x)
-			{
+		for (int y = rect.y; y < rect.y + rect.height; ++y) {
+			for (int x = rect.x; x < rect.x + rect.width; ++x) {
 				if (getTile(x, y) != Unused)
 					return false; // the area already used
 			}
+		}
 
-		for (int y = rect.y - 1; y < rect.y + rect.height + 1; ++y)
-			for (int x = rect.x - 1; x < rect.x + rect.width + 1; ++x)
-			{
+		for (int y = rect.y - 1; y < rect.y + rect.height + 1; ++y) {
+			for (int x = rect.x - 1; x < rect.x + rect.width + 1; ++x) {
 				if (x == rect.x - 1 || y == rect.y - 1 || x == rect.x + rect.width || y == rect.y + rect.height)
-					setTile(x, y, Wall);
+					setTile(x, y, BrickWall);
 				else
-					setTile(x, y, tile);
+					setTile(x, y, type);
 			}
+		}
 
 		return true;
 	}
 
-	bool placeObject(char tile)
-	{
-		if (room.empty())
-			return false;
+	bool placeObject(tiletype type) {
+		if (room.empty()) return false;
 
 		int r = randminmax(0, room.size()); // choose a random room
 		int x = randminmax(room[r].x + 1, room[r].x + room[r].width - 2);
 		int y = randminmax(room[r].y + 1, room[r].y + room[r].height - 2);
 
-		if (getTile(x, y) == Floor)
-		{
-			setTile(x, y, tile);
-
+		if (getTile(x, y) == BrickFloor) {
+			setTile(x, y, type);
 			//place one object in one room (optional)
 			room.erase(room.begin() + r);
-
 			return true;
 		}
-
 		return false;
 	}
-
-public:
-	MapGen() {
-		//seeding
-		seed = time(NULL);
-		srand(seed);
-	}
-	~MapGen() {
-		coremap.clear();
-		tempmap.clear();
-	}
-
-	void createMap(int x, int y) {
-		//erase
-		coremap.clear();
-		//resize
-		width = x; height = y;
-		//generate
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				coremap.push_back(0);
-			}
-		}
-	}
-
-	void randomfill(int typea, int typeb, const float distribution = 0.5f) {
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				int randchance = rand() % 100;
-				if (randchance < (distribution * 100)) {
-					coremap.at(i * width + j) = typea;
-				}
-				else {
-					coremap.at(i * width + j) = typeb;
-				}
-				
-			}
-		}
-	}
-
-	void updateIsland() {
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				int type = 1; int neighbour = 0;
-				switch (coremap.at(i * width + j))	//value of index
-				{
-				case 1:
-					neighbour = countN((i * width + j), 2);
-					if (neighbour > birthlimit) {				//counts alive, if enough, born
-						type = 2;
-					}
-					break;
-				case 2:
-					neighbour = countN((i * width + j), 2);
-					if (neighbour > poplimit) {					//counts other alive, if over populated, die
-						type = 1;
-					}
-					else if (neighbour > sociallimit) {			//counts other alive, if enough, stay alive
-						type = 2;
-					}
-					else {										//else die
-						type = 1;
-					}
-					break;
-				default:
-					//coremap.push_back(0);
-					break;
-				}
-				//temp storage assigned to new generation
-				tempmap.push_back(type);
-			}
-		}
-
-		coremap = tempmap;
-		tempmap.clear();
-	}
-
-	void growtile(int type) {
-		//grow a tile from existing tiles
-		tempmap = coremap;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				if (coremap.at(i * width + j) == 1 &&			//if water
-					(countN(i * width + j, 2) > 0 ||
-						countN(i * width + j, 3) > 0)) {			//at least surrounded by land or sand
-					tempmap.at(i * width + j) = type;
-				}
-			}
-		}
-		coremap = tempmap;
-		tempmap.clear();
-	}
-
 	void generateDungeon(int maxFeatures)
 	{
 		// place the first room in the center
@@ -453,47 +411,20 @@ public:
 				break;
 			}
 		}
-
+		//enter and exit
 		if (!placeObject(UpStairs))
 		{
 			std::cout << "Unable to place up stairs.\n";
 			return;
 		}
-
 		if (!placeObject(DownStairs))
 		{
 			std::cout << "Unable to place down stairs.\n";
 			return;
 		}
-
-		for (char& tiletype : tile)
-		{
-			if (tiletype == Unused)
-				tiletype = '.';
-			else if (tiletype == Floor || tiletype == Corridor)
-				tiletype = ' ';
-		}
 	}
-
-	void print()
-	{
-		for (int y = 0; y < height; ++y)
-		{
-			for (int x = 0; x < width; ++x)
-				std::cout << getTile(x, y);
-
-			std::cout << std::endl;
-		}
-	}
-
-	void updateDungeon() {
-		//Dungeon d(100, 100);	//size of the map
-		//d.generate(100);		//max features
-		//d.print();
-	}
-
 	//randomly chooses a tile of typeX, to be replaced with
-	void randreplace(int replaced, int type) {
+	void randreplace(tiletype replaced, tiletype type) {
 		//gather all index with the same type
 		for (int i = 0; i < coremap.size(); i++) {
 			if (coremap.at(i) == type) {
@@ -517,7 +448,7 @@ public:
 		//ignore first row
 
 		//check width and height of the map
-		
+
 		//push all tiles into new vector
 
 
@@ -564,7 +495,7 @@ public:
 		//book.close();
 	}
 
-	void exportmap(string filename) {
+	void exportmap(string filename, int layer) {
 		ofstream map(filename);
 		//first row
 		map << "//";
@@ -578,7 +509,25 @@ public:
 		//actual map
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				map << coremap.at(i * width + j);
+				//convert map to foreground
+				if (layer == 0) {		//background
+					//remove all foreground items
+					if (coremap.at(i * width + j) == Tree || coremap.at(i * width + j) == BrickWall ||
+						coremap.at(i * width + j) == UpStairs || coremap.at(i * width + j) == DownStairs) {
+						//base generation of map does not create entity instances
+						map << coremap.at(Void);
+					}
+					else {
+						map << coremap.at(i * width + j);
+					}
+				}
+				else if (layer == 1) {
+					//production code alr deletes all instances of background
+					map << coremap.at(i * width + j);
+					
+					
+				}
+				else {}
 				if (j < width - 1) {
 					map << ",";
 				}
@@ -594,7 +543,7 @@ public:
 	int getY(int index) { return (index - (index % width)) / width; }
 	//convert coord to index
 	int Coord2Index(int x, int y) { return x + (y * width); }
-	
+
 	int randminmax(int min, int max) {
 		if (max > min)  return (rand() % (max - min)) + min;
 		else return min;
@@ -604,7 +553,7 @@ public:
 		return rand() % 100 < distribution;
 	}
 
-	int countN(int index, int type) {		//counts the type of cells around itself
+	int countN(int index, tiletype type) {		//counts the type of cells around itself
 		int X = getX(index); int Y = getY(index);
 		int Neighbour = 0;
 		for (int i = -1; i <= 1; i++) {
@@ -612,7 +561,7 @@ public:
 				if (((X + i) < 0) || ((X + i) > (width - 1)) ||
 					((Y + j) < 0) || ((Y + j) > (height - 1))) {
 					//check map boundary
-					if (type == 0) {		//edge counts as 0
+					if (type == Void || type == Unused) {		//edge counts as 0
 						Neighbour++;
 					}
 				}
@@ -631,33 +580,11 @@ public:
 		return Neighbour;
 	}
 
-	void convertKeys() {
-		for (int i = 0; i < coremap.size(); i++) {
-			for (int j = 0; j < size(Key_Convert); j++) {
-				if (coremap.at(i) == Key_Convert[j][0]) {
-					coremap.at(i) = Key_Convert[j][1];
-					break;
-				}
-			}
-		}
-	}
-
-	void revertKeys() {
-		for (int i = 0; i < coremap.size(); i++) {
-			for (int j = 0; j < size(Key_Convert); j++) {
-				if (coremap.at(i) == Key_Convert[j][1]) {
-					coremap.at(i) = Key_Convert[j][0];
-					break;
-				}
-			}
-		}
-	}
-
-	void deleteall(int type) {
+	void deleteall(tiletype type) {
 		//replace tile with 0
 		for (int i = 0; i < coremap.size(); i++) {
 			if (coremap.at(i) == type) {
-				coremap.at(i) = 0;
+				coremap.at(i) = Void;
 			}
 		}
 	}
@@ -673,4 +600,13 @@ public:
 			std::cout << std::endl;
 		}
 	}
+
+	int structure_ruins[5][5] = {
+	{101,96, 101,96, 101},
+	{101,96, 96, 96, 101},
+	{101,96, 78, 96, 96},
+	{101,96, 96, 96, 96},
+	{96, 101,96, 101,101}
+	};
+
 };

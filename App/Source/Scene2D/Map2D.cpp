@@ -332,6 +332,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
 		}
+
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/rock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/rock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(49, iTextureID));
+		}
 	}
 
 	// Initialise the variables for AStar
@@ -494,6 +506,7 @@ void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, cons
 	else
 		arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value = iValue;
 }
+
 /**
  @brief Get the value at certain indices in the arrMapInfo
  @param iRow A const int variable containing the row index of the element to get from
@@ -506,20 +519,15 @@ int CMap2D::GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const
 		return arrMapInfo[uiCurLevel][uilayer][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value;
 	else
 		return arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value;
-	return 0;
 }
 
 /**
  @brief Load a map
  */ 
-bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int uiLevel)
+bool CMap2D::LoadMap(string BGfilename, string FGfilename, const int uiLevel)
 {
 	{		//background
 		doc = rapidcsv::Document(FileSystem::getPath(BGfilename).c_str());
-
-		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
-		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
-
 		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
 		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
 			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
@@ -545,17 +553,13 @@ bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int ui
 			// Load a particular CSV value into the arrMapInfo
 			for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
 			{
-				arrMapInfo[uiCurLevel][0][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+				arrMapInfo[uiLevel][0][uiRow][uiCol].value = (int)stoi(row[uiCol]);
 			}
 		}
 	}
 
 	{		//foreground
 		doc = rapidcsv::Document(FileSystem::getPath(FGfilename).c_str());
-
-		//(*arrMapSizes).uiRowSize = (unsigned int)doc.GetRowCount();
-		//(*arrMapSizes).uiColSize = (unsigned int)doc.GetColumnCount();
-
 		// Check if the sizes of CSV data matches the declared arrMapInfo sizes
 		if ((cSettings->NUM_TILES_XAXIS != (unsigned int)doc.GetColumnCount()) ||
 			(cSettings->NUM_TILES_YAXIS != (unsigned int)doc.GetRowCount()))
@@ -581,7 +585,7 @@ bool CMap2D::LoadMap(string BGfilename, string FGfilename, const unsigned int ui
 			// Load a particular CSV value into the arrMapInfo
 			for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
 			{
-				arrMapInfo[uiCurLevel][1][uiRow][uiCol].value = (int)stoi(row[uiCol]);
+				arrMapInfo[uiLevel][1][uiRow][uiCol].value = (int)stoi(row[uiCol]);
 			}
 		}
 	}
@@ -661,12 +665,12 @@ unsigned int CMap2D::GetCurrentLevel(void) const
  @param iRow A const int variable containing the row index of the tile
  @param iCol A const int variable containing the column index of the tile
  */
-void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol, int layer)
+void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol, int uilayer)
 {
-	if ((arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value > 0) &&
-		(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value < 200))
+	if ((arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value > 0) &&
+		(arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value < 200))
 	{
- 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][layer][uiRow][uiCol].value));
+ 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uilayer][uiRow][uiCol].value));
 
 		glBindVertexArray(VAO);
 		//CS: Render the tile

@@ -83,6 +83,13 @@ CScene2D::~CScene2D(void)
 
 }
 
+
+
+//FIND LADDER
+//SPAWN PLAYER RIGHT NEXT TO THE LADDDER
+
+
+
 /**
 @brief Init Initialise this instance
 */ 
@@ -101,99 +108,64 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		MapGen* island = new MapGen;
 		island->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 						CSettings::GetInstance()->NUM_TILES_YAXIS);
-		island->randomfill(2, 1);
+		island->randomfill(MapGen::Grass, MapGen::Water);
 		//stabilize map
-		for (int i = 0; i < 20; i++) {				//rounding out edges
+		for (int i = 0; i < 20; i++) {				//rounding out edges, stabilize islands
 			island->updateIsland();
 		}
-		island->growtile(2);		//smooth edge
-		island->growtile(3);		//grow sand
-		//replace proper keys
-		island->convertKeys();
+		island->growtile(MapGen::Grass);		//smooth edge
+		island->growtile(MapGen::Sand);		//grow sand
 
 		string BGfilename = "Maps/IslandBG.csv";
-		island->exportmap(BGfilename);
+		island->exportmap(BGfilename, 0);
 		std::cout << "BG exported";
 		//foreground
-		//convert keys back into array
-		island->revertKeys();
 		//delete water
-		island->deleteall(1);			//delete all sand
+		island->deleteall(MapGen::Water);			//delete all water
 		//spawn player
-		island->randreplace(200, 3);
-		//for (int i = 0; i < 2; i++)
-		//{
-		//	island->randreplace(303, 3); //test enemies
-		//}
+		island->randreplace(MapGen::Player, MapGen::Sand);
 		//populate the foreground
 		//cross on sand
 		int randspawn = rand() % 10 + 20;		//random number of cross, 20-30 cross
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(8, 3);			//replace sand with cross
+			island->randreplace(MapGen::Cross, MapGen::Sand);			//replace sand with cross
 		}
-		island->deleteall(3);			//delete all sand
-
+		island->deleteall(MapGen::Sand);			//delete all sand
 
 		//tree on grass
-		randspawn = rand() % 100 + 400;			//400-500 trees
+		randspawn = rand() % 200 + 600;			//600-800 trees
 		for (int i = 0; i < randspawn; i++) {
-			island->randreplace(6, 2);			//replace grass with tree
+			island->randreplace(MapGen::Tree, MapGen::Grass);			//replace grass with tree
+		}
+
+		randspawn = rand() % 50 + 100;			//50-150 stick
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
+		}
+
+		randspawn = rand() % 50 + 100;			//50-150 wood
+		for (int i = 0; i < randspawn; i++) {
+			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
 
 
-		randspawn = rand() % 50 + 100;			//50-100 stick
+		randspawn = rand() % 25 + 75;
 		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
-			island->randreplace(30, 2);			//replace grass with sticks
+			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
-
-		randspawn = rand() % 50 + 100;
-		for (int i = 0; i < randspawn; i++) {
-			//randreplace(itemid, itemkey)
-			island->randreplace(40, 2);			//replace grass with wood
-		}
-
-
-		island->deleteall(2);			//delete all grass
-
-
-
-
-		//{0, 0},				//void
-		//{ 1, 97 },			//water		//cannot dash, slows movement speed
-		//{ 2, 99 },			//grass		//spawn tree
-		//{ 3, 98 },			//sand		//spawn cross
-		//{ 4, 96 },			//brick floor		//no behavior
-		//{ 5, 95 },			//trap				//deals small amount of damage to the player, 5 hp
-		////solid tiles
-		//{ 6, 100 },			//tree
-		//{ 7, 101 },			//brick wall
-		////foreground tiles
-		//{ 8, 80 },			//cross		//spawn treasure
-		//{ 9, 79 },			//treasure	//spawn loot
-		//{ 10, 78 },			//ladderdown
-		//{ 11, 77 },			//ladderup
-		//{ 12, 76 },			//web		//slows player
-
-		
 
 
 
 		
+		/*island->randreplace(MapGen::ladderdown, MapGen::Grass);*/			//replace grass with ladder
+		
 
-
-
+		island->deleteall(MapGen::Grass);			//delete all grass
 
 		//spawn structure with ladderdown
 
-		//randspawn = rand() % 20 + 20;		//random number of trees, 20-40 trees
-		//for (int i = 0; i < randspawn; i++) {
-		//	island->randreplace(96, 98);			//replace grass with tree
-		//}
-
-		island->convertKeys();
 		string FGfilename = "Maps/IslandFG.csv";
-		island->exportmap(FGfilename);
+		island->exportmap(FGfilename, 1);
 		std::cout << "FG exported";
 		//clean
 		delete island;
@@ -201,38 +173,50 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	}
 	//generate dungeon
 	{
-		//MapGen* dungeon = new MapGen;
-		//dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
-		//	CSettings::GetInstance()->NUM_TILES_YAXIS);
-		//dungeon->randomfill();
-		////for (int i = 0; i < 20; i++) {				//rounding out edges
-		////	dungeon->updateMap();
-		////}
-		//dungeon->growsand();		//sand radius of 1
-		////replace proper keys
-		//dungeon->convertKeys();
-		//dungeon->randreplace(200, 98);			//replace sand with player
+		MapGen* dungeon = new MapGen;
+		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
+			CSettings::GetInstance()->NUM_TILES_YAXIS);
 
-		//string BGfilename = "Maps/DungeonBG.csv";
-		//dungeon->exportmap(BGfilename);
+		dungeon->generateDungeon(20);			//max features
 
-		////foreground
-		//string FGfilename = "Maps/DungeonFG.csv";
+		//spike trap
+		int randspawn = rand() % 100 + 100;			//100-200 trap
+		for (int i = 0; i < randspawn; i++) {
+			dungeon->randreplace(MapGen::Trap, MapGen::BrickFloor);			//replace brickfloor with trap
+		}
 
-		////ladder up
+		string BGfilename = "Maps/DungeonBG.csv";
+		dungeon->exportmap(BGfilename, 0);
+		std::cout << "BG exported";
 
-		////spike trap
+		//foreground
+		//treasure chest
+		randspawn = rand() % 10 + 10;			//10-20 treasure
+		for (int i = 0; i < randspawn; i++) {
+			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
+		}
 
-		////treasure chest
 
-		////spawn last room with boss
+			
+		
+			dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
+		
+		
 
-		//dungeon->exportmap(FGfilename);
-		////clean
-		//delete dungeon;
-		//dungeon = nullptr;
+
+
+
+		//delete background
+		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
+		dungeon->deleteall(MapGen::Trap);				//delete all trap
+
+		string FGfilename = "Maps/DungeonFG.csv";
+		dungeon->exportmap(FGfilename, 1);
+		std::cout << "FG exported";
+		//clean
+		delete dungeon;
+		dungeon = nullptr;
 	}
-
 
 	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
 						CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
@@ -240,17 +224,16 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
-
-	if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv", 0) == false)
+	else if (cMap2D->LoadMap("Maps/IslandBG.csv", "Maps/IslandFG.csv") == false)
 	{
-		cout << "Failed to load Island" << endl;
+		cout << "Failed to load Island.csv" << endl;
 		return false;
 	}
-	/*if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
+	else if (cMap2D->LoadMap("Maps/DungeonBG.csv", "Maps/DungeonFG.csv", 1) == false)
 	{
 		cout << "Failed to load Dungeon.csv" << endl;
 		return false;
-	}*/
+	}
 	
 	CShaderManager::GetInstance()->Use("Shader2D_Colour");
 
@@ -379,8 +362,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
-	//setvo
-
 	cPlayer2D->Update(dElapsedTime);
 
 	if (CInventoryManager::GetInstance()->Check("Sword"))
@@ -432,13 +413,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_F1) && !buttonPress)
 	{
 		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() != 0)
+		if (cMap2D->GetCurrentLevel() > 0)
 			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_F2) && !buttonPress)
 	{
 		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() != 3)
+		if (cMap2D->GetCurrentLevel() < 2 )
 			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 	}
 	else if (!(cKeyboardController->IsKeyDown(GLFW_KEY_F1)||cKeyboardController->IsKeyDown(GLFW_KEY_F2))&&buttonPress)
@@ -455,6 +436,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		cGameManager->bLevelDecrease = false;
 	}
 
+	//cout << "CURRENT LEVEL IS " << cMap2D->GetCurrentLevel() << endl;
 	eventcontroller->update(dElapsedTime);
 
 	return true;
