@@ -366,15 +366,18 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cMap2D->Update(dElapsedTime);
 
-	//cSoundController->Update(dElapsedTime);
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	//CAN HEAR SOUND IF ENEMY IS CLOSE
-	/*for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
+	for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
 	{
 		float fDistance = cPhysics2D.CalculateDistance(eventcontroller->return_enemyIndex(i), cPlayer2D->vec2Index);
-		if (fDistance < 5.f)
+
+		cSoundController->Update(dElapsedTime, fDistance);
+
+		cout << "FDISTANCE IS " << fDistance << endl;
+		/*if (fDistance < 5.f)
 		{
 			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
 			if (enemySound != nullptr)
@@ -393,8 +396,8 @@ bool CScene2D::Update(const double dElapsedTime)
 				soundsfx->setVolume(0.f);
 			}
 
-		}
-	}*/
+		}*/
+	}
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
