@@ -183,7 +183,7 @@ void Skeleton::Update(const double dElapsedTime)
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
-					skeletonShot->setDirection(cPlayer2D->vec2Index - vec2Index);
+					skeletonShot->setDirection(glm::vec2(cPlayer2D->vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS), cPlayer2D->vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS)));
 					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
 				}
 				shotInterval = 5;
