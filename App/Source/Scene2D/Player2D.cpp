@@ -272,10 +272,10 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CKatanaBlade2D());
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
 	cInventoryManager->Add(sword);
 
-	//sword->replaceBlade(new CRustyBlade2D());
+	//sword->replaceBlade(new CDaggerBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
@@ -1577,7 +1577,7 @@ void CPlayer2D::AttackEnemy()
 			if (enemyAngle - angle + 90 > 270)
 				enemyAngle -= 360;
 			if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
-				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() &&
+				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() + 1.0f &&
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{
