@@ -11,7 +11,7 @@
  */
 SkeletonShot::SkeletonShot()
 {
-	atk = 30;
+	atk = 5;
 }
 
 /**
@@ -77,9 +77,15 @@ bool SkeletonShot::Init(void)
 
 	cSoundController = CSoundController::GetInstance();
 
-	vec2Direction = cPlayer2D->vec2Index - vec2Index;
 	bIsActive = true;
+	scaleX = 2;
+	scaleY = scaleX;
 	return true;
+}
+
+void SkeletonShot::setDirection(glm::vec2 direction)
+{
+	vec2Direction = direction;
 }
 
 /**
@@ -102,11 +108,11 @@ bool SkeletonShot::InteractWithPlayer()
 	glm::vec2 vec2PlayerPos = cPlayer2D->vec2Index;
 
 	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= vec2PlayerPos.x - 0.5) &&
-		(vec2Index.x <= vec2PlayerPos.x + 0.5))
+	if (((vec2Index.x >= vec2PlayerPos.x - 0.5 + scaleX - 1) &&
+		(vec2Index.x <= vec2PlayerPos.x + 0.5 + scaleX - 1))
 		&&
-		((vec2Index.y >= vec2PlayerPos.y - 0.5) &&
-			(vec2Index.y <= vec2PlayerPos.y + 0.5)))
+		((vec2Index.y >= vec2PlayerPos.y - 0.5 + scaleY -1) &&
+			(vec2Index.y <= vec2PlayerPos.y + 0.5 + scaleY - 1)))
 	{
 		bIsActive = false;
 		cPlayer2D->LoseHealth(atk);

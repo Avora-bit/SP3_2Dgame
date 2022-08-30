@@ -5,14 +5,14 @@
 Skeleton::Skeleton()
 {
 	health = 100;
-	atk = 30;
+	atk = 10;
 }
 
 Skeleton::Skeleton(glm::vec2 pos)
 {
 	vec2Index = pos;
 	health = 100;
-	atk = 30;
+	atk = 10;
 }
 
 Skeleton::~Skeleton()
@@ -59,10 +59,12 @@ bool Skeleton::Init(void)
 		return false;
 	}
 
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("closed", 1, 1);
-	animatedSprites->AddAnimation("opened", 2, 2);
-	animatedSprites->PlayAnimation("closed", -1, 0.3f);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("closed", 0, 0);
+	animatedSprites->AddAnimation("opened", 1, 1);
+	animatedSprites->AddAnimation("animatedMouth", 0, 1);
+	animatedSprites->AddAnimation("sleep", 2, 2);
+	animatedSprites->PlayAnimation("sleep", -1, 0.3f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -72,9 +74,13 @@ bool Skeleton::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 	angle = 360;
+	scaleX = 3;
+	scaleY = 3;
 	timer = 0;
 	shotInterval = 0;
 	attackTimer = 1;
+	sleep = true;
+	sCurrentFSM = SLEEP;
 	return true;
 }
 
@@ -92,13 +98,24 @@ void Skeleton::Update(const double dElapsedTime)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
 	}
 
+	if (sleep)
+	{
+		scaleX = 1;
+		scaleY = 1;
+	}
+	else
+	{
+		scaleX = 3;
+		scaleY = 3;
+	}
+
 	switch (sCurrentFSM)
 	{
 		case CEnemy2D::IDLE:
 		{
 			animatedSprites->PlayAnimation("closed", -1, 0.3f);
 			vec2Direction = glm::vec2(0, 0);
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f + scaleX)
 			{
 				sCurrentFSM = CHASE;
 				iFSMCounter = 0;
@@ -106,15 +123,25 @@ void Skeleton::Update(const double dElapsedTime)
 			iFSMCounter++;
 			break;
 		}
-		case CEnemy2D::CHASE:
+		case CEnemy2D::SLEEP:
 		{
-			animatedSprites->PlayAnimation("closed", -1, 0.3f);
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			animatedSprites->PlayAnimation("sleep", -1, 0.3f);
+			vec2Direction = glm::vec2(0, 0);
+			if (!sleep)
 			{
-				sCurrentFSM = ATTACK;
+				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 			}
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f)
+			iFSMCounter++;
+			break;
+		}
+		case CEnemy2D::CHASE:
+		{
+			if (shotInterval < 1.5)
+				animatedSprites->PlayAnimation("opened", -1, 0.3f);
+			else 
+				animatedSprites->PlayAnimation("closed", -1, 0.3f);
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f + scaleX && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 2.5f + scaleX)
 			{
 				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
 					cPlayer2D->vec2Index, heuristic::euclidean, 10);
@@ -139,19 +166,24 @@ void Skeleton::Update(const double dElapsedTime)
 					}
 				}
 			}
-			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) >= 10.0f)
+			else if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) >= 10.0f + scaleX)
 			{
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 			}
 			shotInterval -= dElapsedTime;
-			if (shotInterval <= 0)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= -0.5f + scaleX)
 			{
-				animatedSprites->PlayAnimation("opened", -1, 0.3f);
+				sCurrentFSM = ATTACK;
+				iFSMCounter = 0;
+			}
+			else if (shotInterval <= 0)
+			{
 				SkeletonShot* skeletonShot = new SkeletonShot();
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
+					skeletonShot->setDirection(glm::vec2(cPlayer2D->vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS), cPlayer2D->vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS)));
 					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
 				}
 				shotInterval = 5;
@@ -162,13 +194,13 @@ void Skeleton::Update(const double dElapsedTime)
 		}
 		case CEnemy2D::ATTACK:
 		{
-			animatedSprites->PlayAnimation("opened", -1, 0.3f);
+			animatedSprites->PlayAnimation("animatedMouth", -1, 0.5f);
 			attackTimer += dElapsedTime;
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 1.0f)
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= -0.5f + scaleX)
 			{
-				if (attackTimer >= 1)
+				if (attackTimer >= 1.5)
 				{
-					cPlayer2D->LoseHealth(atk);
+					InteractWithPlayer();
 					attackTimer = 0;
 				}
 			}
@@ -208,7 +240,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
 
-		DIRECTION repositionDirection = LEFT;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(DOWN) == false)
 		{
@@ -233,7 +264,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
 
-		DIRECTION repositionDirection = LEFT;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(UP) == false)
 		{
@@ -258,7 +288,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
-		DIRECTION repositionDirection = DOWN;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(LEFT) == false)
 		{
@@ -284,7 +313,6 @@ void Skeleton::UpdatePosition(void)
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
 
-		DIRECTION repositionDirection = DOWN;
 		// Find a feasible position for the enemy2D's current position
 		if (CheckPosition(RIGHT) == false)
 		{

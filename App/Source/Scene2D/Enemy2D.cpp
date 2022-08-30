@@ -119,7 +119,9 @@ bool CEnemy2D::Init(void)
 	health = 40;
 
 	angle = 0;
-
+	scaleX = 1;
+	scaleY = 1;
+	sleep = false;
 	return true;
 }
 
@@ -183,6 +185,8 @@ void CEnemy2D::Render(void)
 		0.0f));
 
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
+
+	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -384,13 +388,14 @@ bool CEnemy2D::InteractWithPlayer(void)
 	glm::vec2 vec2PlayerPos = cPlayer2D->vec2Index;
 	
 	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= vec2PlayerPos.x - 0.5) && 
-		(vec2Index.x <= vec2PlayerPos.x + 0.5))
+	if (((vec2Index.x >= vec2PlayerPos.x - (0.5 + scaleX- 1)) && 
+		(vec2Index.x <= vec2PlayerPos.x + (0.5 + scaleX - 1)))
 		&& 
-		((vec2Index.y >= vec2PlayerPos.y - 0.5) &&
-		(vec2Index.y <= vec2PlayerPos.y + 0.5)))
+		((vec2Index.y >= vec2PlayerPos.y - (0.5 + scaleY - 1)) &&
+		(vec2Index.y <= vec2PlayerPos.y + (0.5 + scaleY - 1))))
 	{
 		// Since the player has been caught, then reset the FSM
+		cPlayer2D->LoseHealth(atk);
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
 		return true;
@@ -566,4 +571,11 @@ void CEnemy2D::takeDamage(float damage)
 float CEnemy2D::getHealth()
 {
 	return health;
+}
+
+float CEnemy2D::getScale()
+{
+	if (scaleX == scaleY)
+		return scaleX;
+	return 0.0f;
 }

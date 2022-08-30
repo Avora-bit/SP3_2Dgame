@@ -84,6 +84,12 @@ CScene2D::~CScene2D(void)
 }
 
 
+
+//FIND LADDER
+//SPAWN PLAYER RIGHT NEXT TO THE LADDDER
+
+
+
 /**
 @brief Init Initialise this instance
 */ 
@@ -108,7 +114,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->updateIsland();
 		}
 		island->growtile(MapGen::Grass);		//smooth edge
-		island->growtile(MapGen::Sand);		//grow sand
+		island->growtile(MapGen::Sand);			//grow sand
+
+
+		//place structure
+
+
 
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
@@ -132,21 +143,22 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->randreplace(MapGen::Tree, MapGen::Grass);			//replace grass with tree
 		}
 
-		randspawn = rand() % 25 + 50;			//50-150 stick
+		randspawn = rand() % 50 + 100;			//50-150 stick
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
 		}
 
-		randspawn = rand() % 15 + 25;			//50-150 wood
+		randspawn = rand() % 50 + 100;			//50-150 wood
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
 
 
-		randspawn = rand() % 50 + 100;
+		randspawn = rand() % 25 + 75;
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
+
 
 
 		
@@ -188,9 +200,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < randspawn; i++) {
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
 		}
-		
 
-			dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
 
 		//delete background
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
@@ -237,7 +247,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	eventcontroller = EventController::GetInstance();
 	eventcontroller->Init();
-	while (true)
+	/*while (true)
 	{
 		Octopus* octo = new Octopus(glm::vec2(50,50));
 		octo->SetShader("Shader2D_Colour");
@@ -278,8 +288,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}
-	/*while (true)
+	}*/
+	while (true)
 	{
 		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
 		skeleton->SetShader("Shader2D_Colour");
@@ -292,7 +302,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}*/
+	}
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -310,11 +320,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	// BGM
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Adventure.ogg"), 1, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 2, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 3, true);
-
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Romance in the Air.ogg"), 2, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 3, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 4, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sword Throw.ogg"), 5, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Grab.ogg"), 6, true);
+
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_GrassWalk.ogg"), 7, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_WaterWalk.ogg"), 8, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);
@@ -323,6 +334,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 
 	cSoundController->AddToPlaylist(3);
+	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);
 	cSoundController->AddToPlaylist(1);
 
@@ -356,24 +368,21 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cMap2D->Update(dElapsedTime);
 
+	cSoundController->Update(dElapsedTime);
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	//CAN HEAR SOUND IF ENEMY IS CLOSE
-	for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
+	/*for (int i = 0; i < eventcontroller->rreturn_vectorSize(); i++)
 	{
 		float fDistance = cPhysics2D.CalculateDistance(eventcontroller->return_enemyIndex(i), cPlayer2D->vec2Index);
-
-		cSoundController->Update(dElapsedTime, fDistance);
-
-		ISound* enemySound = cSoundController->PlaySoundByID_2(10);
-		if (enemySound != nullptr)
-		{
-			soundsfx = enemySound;
-		}
 		if (fDistance < 5.f)
 		{
-			
+			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
+			if (enemySound != nullptr)
+			{
+				soundsfx = enemySound;
+			}
 			if (soundsfx != nullptr)
 			{
 				soundsfx->setVolume(cPlayer2D->returnsound());
@@ -387,7 +396,7 @@ bool CScene2D::Update(const double dElapsedTime)
 			}
 
 		}
-	}
+	}*/
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);
