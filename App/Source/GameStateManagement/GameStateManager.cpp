@@ -318,6 +318,9 @@ void CGameStateManager::OffPauseGameState(void)
 
 void CGameStateManager::OffCraftingGameState(void)
 {
+	
+	
+
 	craftingGameState = nullptr;
 }
 

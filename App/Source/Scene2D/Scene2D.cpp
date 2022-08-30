@@ -114,7 +114,12 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			island->updateIsland();
 		}
 		island->growtile(MapGen::Grass);		//smooth edge
-		island->growtile(MapGen::Sand);		//grow sand
+		island->growtile(MapGen::Sand);			//grow sand
+
+
+		//place structure
+
+
 
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
@@ -197,15 +202,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 
 
-			
-		
-			dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
-		
-		
-
-
-
-
 		//delete background
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
 		dungeon->deleteall(MapGen::Trap);				//delete all trap
@@ -251,7 +247,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	eventcontroller = EventController::GetInstance();
 	eventcontroller->Init();
-	while (true)
+	/*while (true)
 	{
 		Octopus* octo = new Octopus(glm::vec2(50,50));
 		octo->SetShader("Shader2D_Colour");
@@ -292,8 +288,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}
-	/*while (true)
+	}*/
+	while (true)
 	{
 		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
 		skeleton->SetShader("Shader2D_Colour");
@@ -306,7 +302,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}*/
+	}
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())
@@ -372,7 +368,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cMap2D->Update(dElapsedTime);
 
-	cSoundController->Update(dElapsedTime);
+	//cSoundController->Update(dElapsedTime);
 
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)

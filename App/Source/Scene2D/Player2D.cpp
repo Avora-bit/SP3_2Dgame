@@ -242,15 +242,14 @@ bool CPlayer2D::Init(void)
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
-	//debug shivs
-	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	
 
 	//Add ITEMS
 	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Sp3Images/Weapons/shiv.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Rock", "Image/Sp3Images/Base/rock.tga", 5, 0);
@@ -729,7 +728,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
 			attackTimer = 0;
 
-			InteractWithEnemy();
+			AttackEnemy();
 		}
 		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
 		{
@@ -1540,25 +1539,30 @@ void CPlayer2D::InteractWithMap(void)
 
 }
 
-void CPlayer2D::InteractWithEnemy()
+void CPlayer2D::AttackEnemy()
 {
 	vector<CEnemy2D*> enemies = EventController::GetInstance()->enemyVector;
 	for (CEnemy2D* enemy : enemies)
 	{
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
-		float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
-			(enemy->getPreciseVec2Index(true).x - getPreciseVec2Index(true).x)) / 3.14159265359) * 180.0f;
-		if (enemyAngle - angle + 90 > 270)
-			enemyAngle -= 360;
-		if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
-			enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() &&
-			enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
-			enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
+		if (enemy->bIsActive && !enemy->sleep)
 		{
-			enemy->takeDamage(sword->getTotalDamage());
-			if (sword->getEffect() != AILMENT::NONE)
-				enemy->SetStatus(sword->getEffect(), 3.f);
+			CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+			float enemyAngle = (atan2((enemy->getPreciseVec2Index(true).y - getPreciseVec2Index(true).y),
+				(enemy->getPreciseVec2Index(true).x - getPreciseVec2Index(true).x)) / 3.14159265359) * 180.0f;
+			if (enemyAngle - angle + 90 > 270)
+				enemyAngle -= 360;
+			if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
+				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() &&
+				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
+				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
+			{
+				enemy->takeDamage(sword->getTotalDamage());
+				if (sword->getEffect() != AILMENT::NONE)
+					enemy->SetStatus(sword->getEffect(), 3.f);
+			}
 		}
+		else if (enemy->bIsActive)
+			enemy->sleep = false;
 	}
 }
 

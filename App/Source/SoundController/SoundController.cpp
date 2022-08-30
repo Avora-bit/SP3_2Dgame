@@ -17,7 +17,8 @@ CSoundController::CSoundController(void)
 	, vec3dfListenerPos(vec3df(0, 0, 0))
 	, vec3dfListenerDir(vec3df(0, 0, 1))
 	,musicsfx(NULL)
-	, musicVol( 0.001f) 
+	, musicVol( 0.4f) 
+	//, currentlyPlaying(0)
 {
 }
 
@@ -65,8 +66,12 @@ bool CSoundController::Init(void)
 	}
 	return true;
 
+	//musicVol = 0.001f;
+	musicVol = 1.0f;
 
-	musicVol = 0.001f;
+	//currentlyPlaying = 0;
+
+
 }
 
 /**
@@ -380,75 +385,52 @@ bool CSoundController::AddToPlaylist(const int ID)
 	}*/
 }
 
-//TSE TING'S UPDATE
-//void CSoundController::Update(const double dElapsedTime)
-//{
-//	if (musicPlaylist.size() > 0)
-//	{
-//		static int currentlyPlaying = 0;
-//		ISoundSource* currentSong = GetSound(musicPlaylist[currentlyPlaying])->GetSound();
-//		currentSongDuration += (dElapsedTime * 1000);
-//		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
-//		{
-//			PlaySoundByID(musicPlaylist[currentlyPlaying]);
-//			currentSong->setDefaultVolume(0.001f);
-//		}
-//
-//		if (currentSong->getDefaultVolume() < cSoundEngine->getSoundVolume())
-//		{
-//			currentSong->setDefaultVolume(currentSong->getDefaultVolume()+0.001f);
-//		}
-//		if (currentSongDuration >= currentSong->getPlayLength() / 1000)
-//		{
-//			currentSong->setDefaultVolume(currentSong->getDefaultVolume() - 0.001f);
-//		}
-//
-//		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
-//		{
-//			if (currentlyPlaying <= musicPlaylist.size() - 1)
-//				currentlyPlaying++;
-//			else
-//				currentlyPlaying = 0;
-//
-//			currentSongDuration = 0;
-//		}
-//		cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;
-//
-//
-//		/*ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
-//		if (snd != nullptr)
-//		{
-//			musicsfx = snd;
-//		}
-//		if (musicsfx != nullptr)
-//		{
-//			musicsfx->setVolume(musicVol);
-//		}*/
-//
-//		cout << musicVol << endl;
-//	}
-//
-//	
-//}
-//
+
 
 
 //REAGAN'S UPDATE
-void CSoundController::Update(const double dElapsedTime)
+void CSoundController::Update(const double dElapsedTime, static float distance)
 {
+
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Adventure.ogg"), 1, true);
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Advance.ogg"), 2, true);
+	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\The Bullet Bill Express.ogg"), 3, true);
+
+	//
+	//cSoundController->AddToPlaylist(3);
+	//cSoundController->AddToPlaylist(2);
+	//cSoundController->AddToPlaylist(1);
 	if (musicPlaylist.size() > 0)
 	{
 		static int currentlyPlaying = 0;
-		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+
+
 		currentSongDuration += (dElapsedTime * 1000);
+		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
 		{
+			
 			PlaySoundByID(musicPlaylist[currentlyPlaying]);
-			//currentSong->setVolume(0.001f * musicVol);
-
 		}
 
-		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
+		if (distance < 5.f)
+		{
+			StopPlayByID(musicPlaylist[currentlyPlaying]);
+			currentlyPlaying = 1;
+			currentSongDuration = 0;
+
+			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
+		}
+		else
+		{
+			StopPlayByID(musicPlaylist[currentlyPlaying]);
+			currentlyPlaying = 0;
+			currentSongDuration = 0;
+			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
+		}
+
+		//IF SONG REACHES THE LENGTH
+		/*if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
 		{
 			StopPlayByID(musicPlaylist[currentlyPlaying]);
 			if (currentlyPlaying <= musicPlaylist.size() - 1)
@@ -457,11 +439,7 @@ void CSoundController::Update(const double dElapsedTime)
 				currentlyPlaying = 0;
 
 			currentSongDuration = 0;
-		}
-		//cout << "Music id is " << musicPlaylist[currentlyPlaying] << endl;
-
-
-		//ISound* snd = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+		}*/
 
 		if (currentSong != nullptr)
 		{
@@ -471,11 +449,7 @@ void CSoundController::Update(const double dElapsedTime)
 		{
 			musicsfx->setVolume(musicVol);
 		}
-
-
 	}
-
-	//cout << musicVol << endl;
 }
 //
 
