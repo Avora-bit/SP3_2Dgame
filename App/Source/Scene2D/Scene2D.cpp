@@ -157,7 +157,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 
 		
-		island->randreplace(MapGen::ladderdown, MapGen::Grass);			//replace grass with ladder
+		/*island->randreplace(MapGen::ladderdown, MapGen::Grass);*/			//replace grass with ladder
 		
 
 		island->deleteall(MapGen::Grass);			//delete all grass
@@ -198,8 +198,9 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 
 			
-	
-		dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
+		
+			dungeon->randreplace(MapGen::ladderup, MapGen::BrickFloor);			//replace brickfloor with ladders
+		
 		
 
 

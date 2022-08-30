@@ -306,7 +306,7 @@ bool CPlayer2D::Init(void)
 	}
 
 
-	//cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 77, true, 1);
+	cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
 
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
