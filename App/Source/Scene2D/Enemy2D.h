@@ -83,6 +83,7 @@ public:
 
 	bool sleep;
 
+	float getScale();
 protected:
 	enum DIRECTION
 	{
@@ -105,6 +106,8 @@ protected:
 		ATTACK,
 		RUN,
 		SLEEP,
+		BOSSPHASE1,
+		BOSSPHASE2,
 		NUM_FSM
 	};
 

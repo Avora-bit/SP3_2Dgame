@@ -63,7 +63,7 @@ bool Skeleton::Init(void)
 	animatedSprites->AddAnimation("closed", 0, 0);
 	animatedSprites->AddAnimation("opened", 1, 1);
 	animatedSprites->AddAnimation("animatedMouth", 0, 1);
-	animatedSprites->AddAnimation("sleep", 2, 3);
+	animatedSprites->AddAnimation("sleep", 2, 2);
 	animatedSprites->PlayAnimation("sleep", -1, 0.3f);
 
 	//CS: Init the color to white
@@ -80,6 +80,7 @@ bool Skeleton::Init(void)
 	shotInterval = 0;
 	attackTimer = 1;
 	sleep = true;
+	sCurrentFSM = SLEEP;
 	return true;
 }
 
@@ -92,6 +93,17 @@ void Skeleton::Update(const double dElapsedTime)
 
 	if (health <= 0)
 		bIsActive = false;
+
+	if (sleep)
+	{
+		scaleX = 1;
+		scaleY = 1;
+	}
+	else
+	{
+		scaleX = 3;
+		scaleY = 3;
+	}
 
 	switch (sCurrentFSM)
 	{

@@ -573,3 +573,10 @@ float CEnemy2D::getHealth()
 {
 	return health;
 }
+
+float CEnemy2D::getScale()
+{
+	if (scaleX == scaleY)
+		return scaleX;
+	return 0.0f;
+}

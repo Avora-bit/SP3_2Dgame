@@ -159,7 +159,7 @@ protected:
 
 	void InteractWithMap(void);
 
-	void InteractWithEnemy();
+	void AttackEnemy();
 
 	bool CheckPosition(DIRECTION eDirection);
 

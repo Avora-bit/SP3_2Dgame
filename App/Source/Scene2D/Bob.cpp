@@ -91,10 +91,84 @@ void Bob::Update(const double dElapsedTime)
 
 	switch (sCurrentFSM)
 	{
-	case CEnemy2D::CHASE:
-	{
-		
-	}
+		case CEnemy2D::IDLE:
+		{
+			directionChosen = false;
+			vec2Direction = glm::vec2(0, 0);
+		}
+		case CEnemy2D::CHASE:
+		{
+			directionChosen = false;
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 25.0f)
+			{
+				auto path = CEnemy2D::cMap2D->PathFind(vec2Index,
+					cPlayer2D->vec2Index, heuristic::euclidean, 10);
+
+				bool bFirstPosition = true;
+				for (const auto& coord : path)
+				{
+					if (bFirstPosition == true)
+					{
+						vec2Destination = coord;
+
+						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = -vec2Direction;
+						bFirstPosition = false;
+					}
+					else
+					{
+						if ((coord - vec2Destination) == vec2Direction)
+						{
+							vec2Destination = coord;
+						}
+						else
+							break;
+					}
+				}
+				UpdatePosition();
+			}
+			else
+			{
+				sCurrentFSM = BOSSPHASE1;
+				iFSMCounter = 0;
+				break;
+			}
+			iFSMCounter++;
+			break;
+		}
+		case CEnemy2D::BOSSPHASE1:
+		{
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 25.0f)
+			{
+				randomDirection();
+				UpdatePosition();
+				if (iFSMCounter > iMaxFSMCounter)
+				{
+					sCurrentFSM = IDLE;
+					iFSMCounter = 0;
+					break;
+				}
+			}
+			else
+			{
+				sCurrentFSM = CHASE;
+				iFSMCounter = 0;
+				break;
+			}
+			if (shotInterval < 5)
+			{
+				for (int i = 0; i < 7; i += dElapsedTime)
+				{
+
+				}
+			}
+			iFSMCounter++;
+			break;
+		}
+		case CEnemy2D::BOSSPHASE2:
+		{
+
+		}
 	}
 	animatedSprites->Update(dElapsedTime);
 	// Update the UV Coordinates
@@ -202,4 +276,52 @@ void Bob::UpdatePosition(void)
 			vec2NumMicroSteps.x = 0;
 		}
 	}
+}
+
+bool Bob::randomDirection()
+{
+	if (!directionChosen)
+	{
+		int i = rand() % 4;
+		switch (i)
+		{
+		case 0:
+		{
+			if (CheckPosition(DOWN))
+			{
+				vec2Direction = glm::vec2(0, -1);
+				directionChosen = true;
+				return true;
+			}
+		}
+		case 1:
+		{
+			if (CheckPosition(UP))
+			{
+				vec2Direction = glm::vec2(0, 1);
+				directionChosen = true;
+				return true;
+			}
+		}
+		case 2:
+		{
+			if (CheckPosition(LEFT))
+			{
+				vec2Direction = glm::vec2(-1, 0);
+				directionChosen = true;
+				return true;
+			}
+		}
+		case 3:
+		{
+			if (CheckPosition(RIGHT))
+			{
+				vec2Direction = glm::vec2(1, 0);
+				directionChosen = true;
+				return true;
+			}
+		}
+		}
+	}
+	return false;
 }
