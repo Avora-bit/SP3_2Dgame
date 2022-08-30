@@ -247,7 +247,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	eventcontroller = EventController::GetInstance();
 	eventcontroller->Init();
-	while (true)
+	/*while (true)
 	{
 		Octopus* octo = new Octopus(glm::vec2(50,50));
 		octo->SetShader("Shader2D_Colour");
@@ -288,8 +288,8 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}
-	/*while (true)
+	}*/
+	while (true)
 	{
 		Skeleton* skeleton = new Skeleton(cPlayer2D->vec2Index);
 		skeleton->SetShader("Shader2D_Colour");
@@ -302,7 +302,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 		else
 			break;
-	}*/
+	}
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
 	if (!cGUI_Scene2D->Init())

@@ -81,6 +81,9 @@ public:
 
 	float getHealth();
 
+	bool sleep;
+
+	float getScale();
 protected:
 	enum DIRECTION
 	{
@@ -102,6 +105,9 @@ protected:
 		CHASE,
 		ATTACK,
 		RUN,
+		SLEEP,
+		BOSSPHASE1,
+		BOSSPHASE2,
 		NUM_FSM
 	};
 
@@ -113,9 +119,6 @@ protected:
 	glm::mat4 transform;
 
 	float angle;
-
-	// The vec2 which stores the indices of the enemy2D in the Map2D
-	glm::vec2 vec2Index;
 
 	// The vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
 	// A tile's width or height is in multiples of these microsteps
@@ -174,5 +177,7 @@ protected:
 
 	float speed_multiplier = 0.25f;
 	float atk;
+	float scaleX;
+	float scaleY;
 };
 

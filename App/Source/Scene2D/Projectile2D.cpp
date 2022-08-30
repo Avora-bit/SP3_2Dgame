@@ -98,7 +98,8 @@ bool CProjectile2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 
 	bIsActive = true;
-
+	scaleX = 1;
+	scaleY = 1;
 	return true;
 }
 
@@ -137,6 +138,8 @@ void CProjectile2D::PreRender(void)
  */
 void CProjectile2D::Render(void)
 {
+	if (!bIsActive)
+		return;
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
@@ -150,6 +153,8 @@ void CProjectile2D::Render(void)
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
 	transform = glm::rotate(transform, glm::radians(atan2(vec2Direction.y, vec2Direction.x)), glm::vec3(0, 0, 1));
+
+	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
@@ -182,6 +187,7 @@ void CProjectile2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.x = 0;
 			vec2NumMicroSteps.x = 0;
+			bIsActive = false;
 		}
 	}
 	else if (eDirection == RIGHT)
@@ -190,6 +196,7 @@ void CProjectile2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS) - 1;
 			vec2NumMicroSteps.x = 0;
+			bIsActive = false;
 		}
 	}
 	else if (eDirection == UP)
@@ -198,6 +205,7 @@ void CProjectile2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS) - 1;
 			vec2NumMicroSteps.y = 0;
+			bIsActive = false;
 		}
 	}
 	else if (eDirection == DOWN)
@@ -206,6 +214,7 @@ void CProjectile2D::Constraint(DIRECTION eDirection)
 		{
 			vec2Index.y = 0;
 			vec2NumMicroSteps.y = 0;
+			bIsActive = false;
 		}
 	}
 	else
@@ -356,8 +365,13 @@ void CProjectile2D::trajectory()			//update position
 		// Find a feasible position for the enemy2D's current position
 		// Constraint the enemy2D's position within the screen boundary
 		if (vec2Direction.y < 0) {
-			if (!CheckPosition(DOWN)) bIsActive = false;
 			Constraint(DOWN);
+			if (!CheckPosition(DOWN))
+			{
+				vec2Index.y = vec2OldIndex.y;
+				vec2NumMicroSteps.y = 0;
+				bIsActive = false;
+			}
 		}
 		else if (vec2Direction.y > 0) {
 			if (!CheckPosition(UP)) bIsActive = false;
