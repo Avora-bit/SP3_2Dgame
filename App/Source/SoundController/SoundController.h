@@ -24,6 +24,8 @@ using namespace std;
 // Include SoundInfo class; it stores the sound and other information
 #include "SoundInfo.h"
 
+
+
 class CSoundController : public CSingletonTemplate<CSoundController>
 {
 	friend CSingletonTemplate<CSoundController>;
@@ -68,7 +70,7 @@ public:
 
 
 
-	void Update(const double dElapsedTime);
+	void Update(const double dElapsedTime, static float distance);
 
 	// For 3D sounds only
 	// Set Listener position
@@ -78,7 +80,6 @@ public:
 
 	
 	void setVolume_2(int soundID);
-	int return_currentMusic();
 
 	void setsoundvol(float vol);
 	void setmusicvol(float vol);
@@ -95,16 +96,10 @@ protected:
 
 
 	ISound* musicsfx;
-
 	float soundVol;
 	float musicVol;
-
-
-
 	// Get an sound from this map
 	CSoundInfo* GetSound(const int ID);
-
-	ISound* GetSound_2(const int ID);
 
 
 	// Remove an sound from this map

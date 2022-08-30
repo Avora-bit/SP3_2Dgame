@@ -356,3 +356,8 @@ bool Chicken::randomDirection()
 	}
 	return false;
 }
+
+glm::vec2 Chicken::getVec2Index()
+{
+	return vec2Index;
+}

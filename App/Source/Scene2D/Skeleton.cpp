@@ -293,3 +293,9 @@ void Skeleton::UpdatePosition(void)
 		}
 	}
 }
+
+
+glm::vec2 Skeleton::getVec2Index()
+{
+	return vec2Index;
+}

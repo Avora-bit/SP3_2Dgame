@@ -242,15 +242,14 @@ bool CPlayer2D::Init(void)
 
 	cInventoryItem = cInventoryManager->Add("Hunger", "Image/hunger_logo.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
-
-	//debug shivs
-	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Scene2D_Health.tga", 100, 100);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	
 
 	//Add ITEMS
 	cInventoryItem = cInventoryManager->Add("Stick", "Image/Sp3Images/Base/stick.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cInventoryItem = cInventoryManager->Add("Wood", "Image/Sp3Images/Base/wood.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryItem = cInventoryManager->Add("Shivs", "Image/Sp3Images/Weapons/shiv.png", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Rock", "Image/Sp3Images/Base/rock.tga", 5, 0);
