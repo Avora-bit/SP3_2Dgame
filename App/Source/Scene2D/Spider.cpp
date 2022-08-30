@@ -389,6 +389,11 @@ bool Spider::randomDirection()
 	return false;
 }
 
+
+glm::vec2 Spider::getVec2Index()
+{
+	return vec2Index;
+}
 bool Spider::checkDirection(DIRECTION eDirection)
 {
 	if (sCurrentFSM == RUN)

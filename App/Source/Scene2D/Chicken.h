@@ -12,6 +12,8 @@ public:
 	void Update(const double dElapsedTime);
 	void UpdatePosition(void);
 	bool randomDirection();
+
+	glm::vec2 getVec2Index();
 private:
 
 };

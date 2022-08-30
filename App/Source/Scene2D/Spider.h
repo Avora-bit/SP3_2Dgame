@@ -14,6 +14,7 @@ public:
 	void UpdatePosition(void);
 	bool randomDirection();
 	bool checkDirection(DIRECTION eDirection);
+	glm::vec2 getVec2Index();
 private:
 	bool directionChosen;
 	float shotInterval;
