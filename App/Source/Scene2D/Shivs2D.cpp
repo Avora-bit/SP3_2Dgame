@@ -58,7 +58,7 @@ bool CShivs2D::Init(void)
 		std::cout << "Failed to load CShivs2D tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH/2, cSettings->TILE_HEIGHT/2);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	bIsActive = true;
 

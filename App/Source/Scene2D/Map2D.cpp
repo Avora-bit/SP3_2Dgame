@@ -510,7 +510,7 @@ void CMap2D::SetMapInfo(const unsigned int uiRow, const unsigned int uiCol, cons
 /**
  @brief Get the value at certain indices in the arrMapInfo
  @param iRow A const int variable containing the row index of the element to get from
- @param iCol A const int variable containing the column index of the element to get from
+ @param iCol A const int variable containing the column index of thd element to get from
  @param bInvert A const bool variable which indicates if the row information is inverted
  */
 int CMap2D::GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert, const int uilayer)

@@ -21,8 +21,6 @@ using namespace std;
 
 #include "Enemy2D.h"
 
-#include "Shivs2D.h"
-
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "IronHilt2D.h"
@@ -31,6 +29,7 @@ using namespace std;
 #include "CleaverBlade2D.h"
 #include "DaggerBlade2D.h"
 #include "KatanaBlade2D.h"
+#include "Shivs2D.h"
 
 #include "EventController.h"
 
@@ -1233,10 +1232,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//spawn projectile logic
 	{
+		//replace with mouse control
+		
 		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
-				ProjectileForce += (5 * dElapsedTime);
+				ProjectileForce += (3 * dElapsedTime);
 			throwing = true;
 		}
 		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
@@ -1254,7 +1255,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				Projectile_Shiv->SetShader("Shader2D_Colour");
 				if (Projectile_Shiv->Init()) {
 					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, camera->playerOffset.y));
-					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, vec2Index);
+					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
 				}
 			}
 			//thrown, reset
@@ -1276,6 +1277,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
+	
 
 /**
  @brief Set up the OpenGL display environment before rendering
@@ -1312,6 +1314,7 @@ void CPlayer2D::Render(void)
 
 	angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
+
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
