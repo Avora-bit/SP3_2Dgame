@@ -78,9 +78,6 @@ public:
 		Stick = 30,
 		Wood = 40,
 		Rock = 49,
-
-		ladderup = 77,
-		ladderdown = 78
 		
 	};
 
@@ -417,11 +414,11 @@ public:
 			std::cout << "Unable to place up stairs.\n";
 			return;
 		}
-		if (!placeObject(DownStairs))
+		/*if (!placeObject(DownStairs))
 		{
 			std::cout << "Unable to place down stairs.\n";
 			return;
-		}
+		}*/
 	}
 	//randomly chooses a tile of typeX, to be replaced with
 	void randreplace(tiletype replaced, tiletype type) {
