@@ -304,7 +304,6 @@ bool CPlayer2D::Init(void)
 	inventorySlots[1].AddQuantity(3);*/
 
 
-
 	return true;
 }
 
@@ -1499,27 +1498,46 @@ void CPlayer2D::InteractWithMap(void)
 		//prevent dash
 		break;
 	case 78:		//dungeon ladderdown
-	{
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
-		cMap2D->SetCurrentLevel(1);
-		if (cMap2D->FindValue(77, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+	{	
+		static bool EInteractDown = false;
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) && !EInteractDown) {
+			EInteractDown = true;
+			cMap2D->SetCurrentLevel(1);
+			uiRow = -1; uiCol = -1;
+			if (cMap2D->FindValue(77, uiRow, uiCol) == true)
+			{
+				vec2Index.x = uiCol;
+				vec2Index.y = uiRow;
+			}
+			else {
+				cMap2D->SetCurrentLevel(0);
+			}
 		}
-		reset_pos();
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
+			EInteractDown = false;
+		}
 		//cGameManager->bLevelIncrease = true;
 		break;
 	}
 	case 77:		//dungeon ladderup
 	{
-		//remove level
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 200, true, 1);
-		cMap2D->SetCurrentLevel(0);
-		if (cMap2D->FindValue(78, uiRow, uiCol) == true)
-		{
-			cMap2D->SetMapInfo(uiRow, uiCol + 1, 200, true, 1);
+		static bool EInteractDown = false;
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) && !EInteractDown) {
+			EInteractDown = true;
+			cMap2D->SetCurrentLevel(0);
+			uiRow = -1; uiCol = -1;
+			if (cMap2D->FindValue(78, uiRow, uiCol) == true)
+			{
+				vec2Index.x = uiCol;
+				vec2Index.y = uiRow;
+			}
+			else {
+				cMap2D->SetCurrentLevel(1);
+			}
 		}
-		reset_pos();
+		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
+			EInteractDown = false;
+		}
 		//cGameManager->bLevelDecrease = true;
 		break;
 	}
