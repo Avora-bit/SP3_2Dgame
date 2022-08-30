@@ -272,7 +272,7 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CKatanaBlade2D());
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
 	cInventoryManager->Add(sword);
 
 	//sword->replaceBlade(new CRustyBlade2D());
@@ -327,7 +327,7 @@ bool CPlayer2D::Reset()
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of taaaaaaaaaahe player, so quit this game
+		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
@@ -517,13 +517,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 30, true, 1);
 		}
 		//down
-		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
+		if (vec2Index.y != 0 && cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, true, 1) == 100
 			/*&& direction == 3*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y - 1, vec2Index.x, 30, true, 1);
 		}
 		//up
-		if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
+		if (vec2Index.y != cSettings->NUM_TILES_YAXIS - 1 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, true, 1) == 100
 			/*&& direction == 2*/)
 		{
 			cMap2D->SetMapInfo(vec2Index.y + 1, vec2Index.x, 30, true, 1);
@@ -1557,32 +1557,9 @@ void CPlayer2D::InteractWithEnemy()
 		{
 			std::cout << "bonk";
 			enemy->takeDamage(sword->getTotalDamage());
+			if (sword->getEffect() != AILMENT::NONE)
+				enemy->SetStatus(sword->getEffect(), 3.f);
 		}
-
-		
-
-		//PLAY SOUND DEPENDING ON PLAYER'S DISTANCE FROM ENEMY
-		/*float fDistance = cPhysics2D.CalculateDistance(enemy->getVec2Index(), vec2Index);
-		if (fDistance < 5.f)
-		{
-			ISound* enemySound = cSoundController->PlaySoundByID_2(10);
-			if (enemySound != nullptr)
-			{
-				enemysfx = enemySound;
-			}
-			if (enemysfx != nullptr)
-			{
-				enemysfx->setVolume(soundVol);
-			}
-		}
-		else
-		{
-			if (enemysfx != nullptr)
-			{
-				enemysfx->setVolume(0.f);
-			}
-
-		}*/
 	}
 }
 

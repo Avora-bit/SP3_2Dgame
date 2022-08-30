@@ -70,6 +70,8 @@ bool Spider::Init(void)
 	timer = 0;
 	directionChosen = false;
 	shotInterval = 0;
+
+	status = AILMENT::NONE;
 	return true;
 }
 
@@ -214,6 +216,7 @@ void Spider::Update(const double dElapsedTime)
 	}
 	/*animatedSprites->Update(dElapsedTime);*/
 	// Update the UV Coordinates
+	UpdateStatus(dElapsedTime);
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }

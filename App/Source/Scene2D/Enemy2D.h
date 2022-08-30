@@ -78,6 +78,7 @@ public:
 
 	void takeDamage(float damage);
 
+	void SetStatus(AILMENT status, float time);
 
 	float getHealth();
 
@@ -104,6 +105,9 @@ protected:
 		RUN,
 		NUM_FSM
 	};
+
+	AILMENT status;
+	float statusTimer;
 
 	glm::vec2 vec2OldIndex;
 	// Handler to the CMap2D instance
@@ -171,6 +175,8 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
+
+	void UpdateStatus(const double dElapsedTime);
 
 	float speed_multiplier = 0.25f;
 	float atk;

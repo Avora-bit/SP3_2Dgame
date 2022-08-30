@@ -62,6 +62,13 @@ public:
 	glm::vec2 vec2UVCoordinate;
 
 protected:
+	enum AILMENT {
+		NONE = 0,
+		POISON = 1,
+		BURN = 2,
+		BLEEDING = 3,
+		AILMENT_NUM
+	};
 	// Name of Shader Program instance
 	std::string sShaderName;
 

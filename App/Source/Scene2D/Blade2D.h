@@ -12,13 +12,6 @@ CBlade2D
 class CBlade2D : public CInventoryItem
 {
 public:
-	enum AILMENT {
-		NONE = 0,
-		POISON = 1,
-		BURN = 2,
-		BLEEDING = 3,
-		AILMENT_NUM
-	};
 	// Constructor
 	CBlade2D(void);
 

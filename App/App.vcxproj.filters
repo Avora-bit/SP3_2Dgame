@@ -120,12 +120,16 @@
     <ClCompile Include="Source\Scene2D\SkeletonShot.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\IronHilt2D.cpp" />
-    <ClCompile Include="Source\Scene2D\PlatinumHilt2D.cpp" />
     <ClCompile Include="Source\Scene2D\DaggerBlade2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\KatanaBlade2D.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\PlatinumHilt2D.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\IronHilt2D.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
   </ItemGroup>
@@ -255,12 +259,16 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\MapGenerator.h" />
-    <ClInclude Include="Source\Scene2D\IronHilt2D.h" />
-    <ClInclude Include="Source\Scene2D\PlatinumHilt2D.h" />
     <ClInclude Include="Source\Scene2D\DaggerBlade2D.h">
       <Filter>Inventory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\KatanaBlade2D.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\PlatinumHilt2D.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\IronHilt2D.h">
       <Filter>Inventory</Filter>
     </ClInclude>
   </ItemGroup>
