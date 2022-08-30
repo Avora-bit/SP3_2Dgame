@@ -21,6 +21,8 @@ using namespace std;
 
 #include "Enemy2D.h"
 
+#include "Shivs2D.h"
+
 #include "Sword2D.h"
 #include "WoodenHilt2D.h"
 #include "IronHilt2D.h"
@@ -1231,12 +1233,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	//spawn projectile logic
 	{
-		//replace with mouse control
-		
 		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
-				ProjectileForce += (3 * dElapsedTime);
+				ProjectileForce += (5 * dElapsedTime);
 			throwing = true;
 		}
 		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
@@ -1250,7 +1250,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cInventoryItem = cInventoryManager->GetItem("Shivs");
 				cInventoryItem->Remove(1);
 				//spawn projectile
-				
+				CShivs2D* Projectile_Shiv = new CShivs2D();
+				Projectile_Shiv->SetShader("Shader2D_Colour");
+				if (Projectile_Shiv->Init()) {
+					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, camera->playerOffset.y));
+					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, vec2Index);
+				}
 			}
 			//thrown, reset
 			throwing = false;
@@ -1307,7 +1312,6 @@ void CPlayer2D::Render(void)
 
 	angle = (atan2(camera->playerOffset.x, camera->playerOffset.y) /3.14159265359) * 180.0;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
-
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));

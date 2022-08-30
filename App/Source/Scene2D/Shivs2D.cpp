@@ -11,7 +11,7 @@
   */
 CShivs2D::CShivs2D(void)
 {
-	atk = 20;
+	atk = 10;
 }
 
 /**
@@ -52,19 +52,18 @@ bool CShivs2D::Init(void)
 	cSoundController = CSoundController::GetInstance();
 
 	// Load the ground texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Enemies/Attacks/CShivs2D.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SP3Images/Weapons/shiv.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load CShivs2D tile texture" << std::endl;
 		return false;
 	}
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH / 2, cSettings->TILE_HEIGHT / 2);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH/2, cSettings->TILE_HEIGHT/2);
 
 	bIsActive = true;
 
 	cPhysics2D.Init();
-	vec2Direction = cPlayer2D->vec2Index - vec2Index;
-	distanceTravelled = 0;
+	//vec2Direction = cPlayer2D->vec2Index - vec2Index;
 
 	return true;
 }
@@ -83,19 +82,17 @@ void CShivs2D::Update(const double dElapsedTime)
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS);
 }
 
-bool CShivs2D::InteractWithPlayer()
+bool CShivs2D::InteractWithEnemy(CEnemy2D* enemy)
 {
-	glm::vec2 vec2PlayerPos = cPlayer2D->vec2Index;
-
-	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= vec2PlayerPos.x - 0.5) &&
-		(vec2Index.x <= vec2PlayerPos.x + 0.5))
+	glm::vec2 vec2EnemyPos = enemy->vec2Index;
+	if (((vec2Index.x >= vec2EnemyPos.x - 0.5) &&
+		(vec2Index.x <= vec2EnemyPos.x + 0.5))
 		&&
-		((vec2Index.y >= vec2PlayerPos.y - 0.5) &&
-			(vec2Index.y <= vec2PlayerPos.y + 0.5)))
+		((vec2Index.y >= vec2EnemyPos.y - 0.5) &&
+			(vec2Index.y <= vec2EnemyPos.y + 0.5)))
 	{
 		bIsActive = false;
-		cPlayer2D->LoseHealth(atk);
+		enemy->takeDamage(atk);
 		return true;
 	}
 	return false;

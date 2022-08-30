@@ -19,13 +19,16 @@ CProjectile2D::CProjectile2D(void)
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
 	// Initialise vecIndex
-	vec2Index = glm::i32vec2(0);
+	vec2Index = glm::vec2(0);
 
 	// Initialise vecNumMicroSteps
-	vec2NumMicroSteps = glm::i32vec2(0);
+	vec2NumMicroSteps = glm::vec2(0);
 
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
+
+	// init direction
+	vec2Direction = glm::vec2(0.0f);
 }
 
 /**
@@ -152,7 +155,9 @@ void CProjectile2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
-	transform = glm::rotate(transform, glm::radians(atan2(vec2Direction.y, vec2Direction.x)), glm::vec3(0, 0, 1));
+
+	float angle = (atan2(vec2Direction.y, vec2Direction.x) / 3.14159265359) * 180.0;
+	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 	// Update the shaders with the latest transform
@@ -397,12 +402,14 @@ void CProjectile2D::trajectory()			//update position
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT); Constraint(RIGHT);
 	}
-	
-	// Interact with the Player
-	InteractWithPlayer();
 }
 
 bool CProjectile2D::InteractWithPlayer()
 {
 	return false;
+}
+
+void CProjectile2D::setDirection(glm::vec2 direction)
+{
+	vec2Direction = direction;
 }

@@ -83,11 +83,6 @@ bool SkeletonShot::Init(void)
 	return true;
 }
 
-void SkeletonShot::setDirection(glm::vec2 direction)
-{
-	vec2Direction = direction;
-}
-
 /**
  @brief Update this instance
  */

@@ -329,3 +329,13 @@ void CGameStateManager::OffInventoryGameState(void)
 	inventoryGameState = nullptr;
 }
 
+CGameStateBase* CGameStateManager::returnCraftingState()
+{
+	return craftingGameState;
+}
+
+CGameStateBase* CGameStateManager::returnInventoryState()
+{
+	return inventoryGameState;
+}
+
