@@ -499,7 +499,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	static float hungerTimer = 0;
 	hungerTimer += dElapsedTime;
 
-
 	//FORAGE FOR TREES(Get sticks)
 	if (cMouseController->IsButtonDown(0))
 	{
@@ -699,9 +698,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
 		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
-		//CSword2D* sword = inventorySlots[2].returnSword();
-
-
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
 			attacking = false;
@@ -717,8 +713,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			AttackEnemy();
 		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking) {
-
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
+		{
+			leftClickDown = false;
 		}
 
 	}
@@ -746,7 +743,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.x--;
 				}
 			}
-
 			if (!CheckPosition(LEFT))
 			{
 				vec2Index.x = vec2OldIndex.x;
@@ -767,14 +763,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.y--;
 				}
 			}
-			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
 				vec2NumMicroSteps.y = 0;
 			}
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
+			Constraint(DOWN);
 			direction = DOWN;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
