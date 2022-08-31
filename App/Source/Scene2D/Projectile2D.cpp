@@ -355,8 +355,8 @@ void CProjectile2D::trajectory()			//update position
 				//vertical movement
 	const int iOldIndexY = vec2Index.y;
 
-	glm::vec2 trajectoryDir = vec2Direction;
-	//glm::vec2 trajectoryDir = glm::normalize(vec2Direction) * distancePerSecond;
+	//glm::vec2 trajectoryDir = vec2Direction;
+	glm::vec2 trajectoryDir = glm::normalize(vec2Direction);
 
 	vec2NumMicroSteps.y += trajectoryDir.y;
 	if (vec2NumMicroSteps.y < 0)

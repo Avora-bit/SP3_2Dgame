@@ -331,7 +331,7 @@ bool CPlayer2D::Reset()
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
 	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of taaaaaaaaaahe player, so quit this game
+		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
@@ -1274,7 +1274,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				CShivs2D* Projectile_Shiv = new CShivs2D();
 				Projectile_Shiv->SetShader("Shader2D_Colour");
 				if (Projectile_Shiv->Init()) {
-					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, camera->playerOffset.y));
+					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, -camera->playerOffset.y));
 					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
 				}
 			}
