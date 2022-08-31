@@ -364,7 +364,6 @@ bool CPlayer2D::Init(void)
 	/*inventorySlots[1].setitemID(70);
 	inventorySlots[1].AddQuantity(3);*/
 
-
 	return true;
 }
 
@@ -1297,11 +1296,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		//replace with mouse control
 		
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		//if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
 		{
-			if (ProjectileForce < maxPForce)
-				ProjectileForce += (3 * dElapsedTime);
-			throwing = true;
+			//if shivs are in inventory
+			for (int i = 0; i < 9; i++)
+			{
+				if (inventorySlots[i].getitemID() == 90)
+				{
+					if (ProjectileForce < maxPForce)
+						ProjectileForce += (3 * dElapsedTime);
+					throwing = true;
+				}
+			}
 		}
 		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
 		{
@@ -1311,8 +1318,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if (ProjectileForce > minPForce) {		//throw if force is high enough
 				//cSoundController->PlaySoundByID(10);		//replace with fire sound
 				//reduce ammo count
-				cInventoryItem = cInventoryManager->GetItem("Shivs");
-				cInventoryItem->Remove(1);
+				/*cInventoryItem = cInventoryManager->GetItem("Shivs");*/
+				//cInventoryItem->Remove(1);
+				for (int i = 0; i < 9; i++)
+				{
+					if (inventorySlots[i].getitemID() == 90)
+					{
+						inventorySlots[i].SubtractQuantity(1);
+					}
+				}
 				//spawn projectile
 				CShivs2D* Projectile_Shiv = new CShivs2D();
 				Projectile_Shiv->SetShader("Shader2D_Colour");
