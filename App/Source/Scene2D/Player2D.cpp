@@ -31,6 +31,9 @@ using namespace std;
 #include "KatanaBlade2D.h"
 #include "Shivs2D.h"
 
+
+#include "../GameStateManagement/CraftingState.h"
+
 #include "EventController.h"
 
 /**
@@ -206,6 +209,8 @@ bool CPlayer2D::Init(void)
 	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
 	
+	//cCraftingGameState = CCraftingState::GetInstance();
+
 
 	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
@@ -259,7 +264,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Campfire", "Image/Campfire.tga", 0, 0);
+	cInventoryItem = cInventoryManager->Add("Campfire", "Image/CP.tga", 0, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
@@ -283,16 +288,16 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
-	cInventoryItem = cInventoryManager->Add("cBlade", "Image/Sp3Images/Weapons/Blades/placeholder_CleaverBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("cBlade", "Image/Sp3Images/Weapons/Blades/cleaverblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("kBlade", "Image/Sp3Images/Weapons/Blades/placeholder_KatanaBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("kBlade", "Image/Sp3Images/Weapons/Blades/katanablade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("rBlade", "Image/Sp3Images/Weapons/Blades/placeholder_RustyBlade.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/placeholder_DaggerBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/daggerblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -316,7 +321,7 @@ bool CPlayer2D::Init(void)
 
 	inventorySlots[1].setitemID(35);
 	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);
+	inventorySlots[1].settextureID(35);*/
 
 	return true;
 }
@@ -689,15 +694,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword")
-		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
-		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
-		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
-		)
+	if (cInventoryManager->Check("Sword"))
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
+		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
+		//CSword2D* sword = inventorySlots[2].returnSword();
+
+
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
 			attacking = false;
@@ -714,9 +718,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 			AttackEnemy();
 		}
 		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
-		{
-			leftClickDown = false;
-		}
+		
+
+		
 	}
 	
 	static float staminaTimer = 0;
@@ -852,10 +856,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
-	}
-	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
+		static float dodgeTimer = 0;
+		dodgeTimer += dElapsedTime;
+		if (staminaTimer > 0)
+			staminaTimer = 0;
 	{
-		if (staminaTimer > 0) staminaTimer = 0;
+		if (staminaTimer > 0)
+			staminaTimer = 0;
 		
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
 		cPhysics2D.SetTime(float(dElapsedTime));
@@ -1166,17 +1173,28 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
+		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dodgeTimer >= 1.5)
 		{
+			dodgeTimer = 0;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 	}
-
-	//spawn projectile logic
-	{
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		//replace with mouse control
+		
+		//if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
 		{
-			if (ProjectileForce < maxPForce)
+			//if shivs are in inventory
+			for (int i = 0; i < 9; i++)
+			{
+				if (inventorySlots[i].getitemID() == 90)
+				{
+					if (ProjectileForce < maxPForce)
+						ProjectileForce += (3 * dElapsedTime);
+					throwing = true;
+				}
+			}
+		}
 				ProjectileForce += (3 * dElapsedTime);
 			throwing = true;
 		}
@@ -1187,8 +1205,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 			if (ProjectileForce > minPForce) {		//throw if force is high enough
 				//cSoundController->PlaySoundByID(10);		//replace with fire sound
 				//reduce ammo count
-				cInventoryItem = cInventoryManager->GetItem("Shivs");
-				cInventoryItem->Remove(1);
+				/*cInventoryItem = cInventoryManager->GetItem("Shivs");*/
+				//cInventoryItem->Remove(1);
+				for (int i = 0; i < 9; i++)
+				{
+					if (inventorySlots[i].getitemID() == 90)
+					{
+						inventorySlots[i].SubtractQuantity(1);
+					}
+				}
 				//spawn projectile
 				CShivs2D* Projectile_Shiv = new CShivs2D();
 				Projectile_Shiv->SetShader("Shader2D_Colour");
@@ -1432,6 +1457,14 @@ void CPlayer2D::InteractWithMap(void)
 	case 30:
 	case 49:
 	case 40:
+	case 39:
+	case 38:
+	case 37:
+	case 36:
+	case 35:
+	case 34:
+	case 33:
+	case 90:
 	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
 		break;

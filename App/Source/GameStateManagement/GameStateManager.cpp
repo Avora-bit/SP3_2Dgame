@@ -254,7 +254,10 @@ bool CGameStateManager::SetCraftingGameState(const std::string& _name)
 					if (cPlayer2D->getitemval(n) == 0
 						|| 
 						(cPlayer2D->getitemval(n) == craftingGameState->returnbutnumval(i)
-							&& cPlayer2D->getitem(n).getquantity() < 5))
+							&& cPlayer2D->getitem(n).getquantity() < 5 
+							&& craftingGameState->returnbutnumval(i) != 50
+							&& craftingGameState->returnbutnumval(i) != 102)
+						)
 					{
 						cPlayer2D->setitem(n, craftingGameState->returnbutnumval(i));
 						cPlayer2D->setitemquantity(n, craftingGameState->return_butnumQuantity(i) + cPlayer2D->getitem(n).getquantity());

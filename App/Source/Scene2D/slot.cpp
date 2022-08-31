@@ -16,11 +16,6 @@ slot::slot()
 	active = false;
 	cInventoryManager = CInventoryManager::GetInstance();
 
-
-
-	hilt = nullptr;
-	blade = nullptr;
-	sword = nullptr;
 	//cInventoryItem= CInventoryItem::GetIns
 }
 
@@ -49,33 +44,33 @@ void slot::settextureID(int itemid)
 	//HILTS
 	case 39:
 		textureID = cInventoryManager->GetItem("pHilt")->GetTextureID();
-		hilt = new CPlatinumHilt2D();
+		//hilt = new CPlatinumHilt2D();
 		break;
 	case 38:
 		textureID = cInventoryManager->GetItem("wHilt")->GetTextureID();
-		hilt = new CWoodenHilt2D();
+		//hilt = new CWoodenHilt2D();
 		break;
 	case 37:
 		textureID = cInventoryManager->GetItem("iHilt")->GetTextureID();
-		hilt = new CIronHilt2D();
+		//hilt = new CIronHilt2D();
 		break;
 	//
 	//BLADES
 	case 36:
 		textureID = cInventoryManager->GetItem("rBlade")->GetTextureID();
-		blade = new CRustyBlade2D();
+		//blade = new CRustyBlade2D();
 		break;
 	case 35:
 		textureID = cInventoryManager->GetItem("dBlade")->GetTextureID();
-		blade = new CDaggerBlade2D();
+		//blade = new CDaggerBlade2D();
 		break;
 	case 34:
 		textureID = cInventoryManager->GetItem("cBlade")->GetTextureID();
-		blade = new CCleaverBlade2D();
+		//blade = new CCleaverBlade2D();
 		break;
 	case 33:
 		textureID = cInventoryManager->GetItem("kBlade")->GetTextureID();
-		blade = new CKatanaBlade2D();
+		//blade = new CKatanaBlade2D();
 		break;
 	//
 	case 102:
@@ -126,81 +121,10 @@ void slot::AddQuantity(int amt)
 
 void slot::SubtractQuantity(int amt)
 {
-
 	quantity -= amt;
 }
 
-CHilt2D* slot::returnHilt()
-{
-	return hilt;
-}
 
-CBlade2D* slot::returnBlade()
-{
-	return blade;
-}
-
-CSword2D* slot::returnSword()
-{
-	return sword;
-}
-
-
-void slot::setSword(CSword2D* sw)
-{
-	sword = sw;
-}
-
-void slot::setHilt(int itemid)
-{
-	switch (itemid)
-	{
-	
-		//HILTS
-	case 39:
-		//textureID = cInventoryManager->GetItem("pHilt")->GetTextureID();
-		hilt = new CPlatinumHilt2D();
-		break;
-	case 38:
-		//textureID = cInventoryManager->GetItem("wHilt")->GetTextureID();
-		hilt = new CWoodenHilt2D();
-		break;
-	case 37:
-		//textureID = cInventoryManager->GetItem("iHilt")->GetTextureID();
-		hilt = new CIronHilt2D();
-		break;
-		//
-	
-	default:
-		break;
-	}
-}
-
-void slot::setBlade(int itemid)
-{
-	switch (itemid)
-	{
-		//BLADES
-	case 36:
-		//textureID = cInventoryManager->GetItem("rBlade")->GetTextureID();
-		blade = new CRustyBlade2D();
-		break;
-	case 35:
-		//textureID = cInventoryManager->GetItem("dBlade")->GetTextureID();
-		blade = new CDaggerBlade2D();
-		break;
-	case 34:
-		//textureID = cInventoryManager->GetItem("cBlade")->GetTextureID();
-		blade = new CCleaverBlade2D();
-		break;
-	case 33:
-		//textureID = cInventoryManager->GetItem("kBlade")->GetTextureID();
-		blade = new CKatanaBlade2D();
-		break;
-	default:
-		break;
-	}
-}
 
 void slot::setitemID(int iid)
 {
@@ -226,4 +150,9 @@ slot::~slot()
 
 	/*delete il;
 	il = nullptr;*/
+}
+
+CInventoryItem* slot::getInventoryItem()
+{
+	return cInventoryItem;
 }

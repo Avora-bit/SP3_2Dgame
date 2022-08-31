@@ -388,7 +388,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, enemy->getVec2Index()) < distance)
 			distance = cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, enemy->getVec2Index());
 	}
-	cSoundController->Update(dElapsedTime, distance); // update with shortest enemy distance in the frame
+	cSoundController->Update(dElapsedTime); // update with shortest enemy distance in the frame
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);

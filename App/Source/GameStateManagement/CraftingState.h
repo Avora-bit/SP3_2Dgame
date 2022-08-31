@@ -90,7 +90,7 @@ public:
 	void setquantity(int arr, int quantity);
 	//butnum[i].setitemID(0);
 
-	CSword2D* getsword(int arr);
+	CSword2D* getsword();
 
 protected:
 	ImGuiPayload ig;
@@ -102,10 +102,6 @@ protected:
 	CPlayer2D* cPlayer2D;
 	
 	CMap2D* cMap2D;
-
-	CHilt2D* hilt;
-	CBlade2D* blade;
-	CSword2D* sword;
 
 	CSettings* cSettings;
 

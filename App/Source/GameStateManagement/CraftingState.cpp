@@ -49,9 +49,6 @@ CCraftingState::CCraftingState(void)
 	, hotbar(NULL)
 	, il(NULL)
 	, recipebook(NULL)
-	, sword(NULL)
-	, hilt (NULL)
-	, blade(NULL)
 	, cInventoryManager(NULL)
 {
 
@@ -176,7 +173,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		//ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60),
-			(CSettings::GetInstance()->iWindowHeight / 3.4f)));
+			(CSettings::GetInstance()->iWindowHeight / 2.4f)));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -255,7 +252,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 					//Discard items
 					if (ImGui::IsItemHovered())
 					{
-						if (cMouseController->IsButtonDown(1) && butnum[n].getquantity() != 0)
+						if (cMouseController->IsButtonDown(1) && butnum[n].getquantity() != 0 && butnum[n].getitemID() != 50)
 						{
 							butnum[n].settextureID(butnum[n].getitemID());
 							butnum[n].SubtractQuantity(1);
@@ -264,7 +261,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 							{
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(0);
-								butnum[n].setSword(nullptr);
 							}
 
 							//REDUCE THE QUANTITY IN HOTBAR AS WELL
@@ -287,43 +283,18 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
 				butnum[n].settextureID(butnum[n].getitemID());
 
-				//IF OUTPUT HAS SWORDID
-				if (butnum[n].getitemID() == 50)
-				{
-					//FIND THE HILT AND BLADE
-					for (int i = 0; i < 9; i++)
-					{
-						if (butnum[i].getitemID() != 0)
-						{
-							//IF IT'S A BLADE
-							if (butnum[i].returnBlade() != nullptr)
-							{
-								//cout << "IT'S BLADE " << butnum[i].returnBlade() << endl;
-								//butnum[i].setBlade(butnum[i].getitemID());
-								blade = butnum[i].returnBlade();
-								continue;
-							}
-							//IF IT'S A HILT
-							if (butnum[i].returnHilt() != nullptr)
-							{
-								//cout << "IT'S HILT " << butnum[i].returnHilt() << endl;
-								//butnum[i].setHilt(butnum[i].getitemID());
-								hilt = butnum[i].returnHilt();
-								continue;
-							}
-							
-						}
-					}
-					//MAKE NEW SWORD
-					sword = new CSword2D(hilt, blade);
-					butnum[n].setSword(sword);
-				}
 
 				//BRING OUTPUT ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
 					if (cMouseController->IsButtonDown(0) && butnum[n].getitemID() != 0)
 					{
+						//ADD SWORD
+						if (butnum[n].getitemID() == 50)
+						{
+							if (!cInventoryManager->GetItem("Sword"))
+								cInventoryManager->Add(new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D()));
+						}
 						for (int x = 9; x < 18; x++)
 						{
 							//IF ITEM IS EMPTY
@@ -332,12 +303,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//set in inventory slot 
 								butnum[x].setitemID(butnum[n].getitemID());
 								butnum[x].settextureID(butnum[x].getitemID());
-								//IF THERES SWORD INSIDE
-								if (butnum[x].returnSword() != nullptr)
-								{
-									butnum[x].setSword(butnum[n].returnSword());
-									cInventoryManager->Add(butnum[n].returnSword());
-								}
 								butnum[x].AddQuantity(1);
 
 								//set the inventory to the item
@@ -354,15 +319,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
-								//IF THERES SWORD INSIDE
-								if (butnum[n].returnSword() != nullptr)
-								{
-									butnum[n].setSword(nullptr);
-								}
+								
 
 								break;
 							}
 						}
+
 					}
 				}
 			}
@@ -449,7 +411,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 			{
 				butnum[n].setitemID(0);
 				butnum[n].settextureID(0);
-				butnum[n].setSword(nullptr);
 
 			}
 
@@ -539,11 +500,6 @@ void CCraftingState::setbutnumvalto(int arr, int val)
 void CCraftingState::setquantity(int arr, int quantity)
 {
 	butnum[arr].setquantity(quantity);
-}
-
-CSword2D* CCraftingState::getsword(int arr)
-{
-	return butnum[arr].returnSword();
 }
 
 
