@@ -1393,58 +1393,6 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 }
 
-
-
-bool CPlayer2D::reset_pos()
-{
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
-
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::i32vec2(0, 0);
-	ProjectileForce = 0;
-
-	walkingTime = 0;
-
-	angle = 0;
-
-	direction = RIGHT;
-
-	soundVol = 1.f;
-
-	throwing = false;
-	maxPForce = 10;
-	minPForce = 5;
-	ProjectileForce = 0;
-
-	// vitals
-	invincibility = 0;
-
-	dashTrue = true;
-
-	movementSpeed = 1.f;
-	attacking = false;
-	attackTimer = 0;
-
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-
-	//CS: Init the color to white
-	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-	return true;
-	
-}
-
 void CPlayer2D::InteractWithMap(void)
 {
 

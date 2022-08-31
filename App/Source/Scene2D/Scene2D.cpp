@@ -116,10 +116,16 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		island->growtile(MapGen::Grass);		//smooth edge
 		island->growtile(MapGen::Sand);			//grow sand
 
+		vector<int>structure_ruins = {		//5,5 structure
+			101,96, 101,96, 101,
+			101,96, 96, 96, 101,
+			101,96, 78, 96, 96,
+			101,96, 96, 96, 96,
+			96, 101,96, 101,101
+		};
 
 		//place structure
-
-
+		island->placeRuins(structure_ruins, 5, 5);
 
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
@@ -127,7 +133,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		//foreground
 		//delete water
 		island->deleteall(MapGen::Water);			//delete all water
-		//spawn player
+		//spawn player on sand
 		island->randreplace(MapGen::Player, MapGen::Sand);
 		//populate the foreground
 		//cross on sand
