@@ -116,7 +116,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		island->growtile(MapGen::Grass);		//smooth edge
 		island->growtile(MapGen::Sand);			//grow sand
 
-		vector<int>structure_ruins = {		//5,5 structure
+		vector<int>structure_ruins = {		//9,9 structure
 			99,99,99,96,101,96,101,101,96,
 			96,99,96,96,101,99,99,101,99,
 			96,99,101,96,101,99,99,101,99,
@@ -127,13 +127,10 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			101,96,101,96,96,101,96,96,96,
 			96,101,101,101,101,96,96,96,96,
 		};
-
 		//place structure
 		island->placeRuins(structure_ruins, 9, 9);
-
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
-		std::cout << "BG exported";
 		//foreground
 		//delete water
 		island->deleteall(MapGen::Water);			//delete all water
@@ -145,77 +142,57 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Cross, MapGen::Sand);			//replace sand with cross
 		}
-		island->deleteall(MapGen::Sand);			//delete all sand
-
 		//tree on grass
 		randspawn = rand() % 200 + 600;			//600-800 trees
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Tree, MapGen::Grass);			//replace grass with tree
 		}
-
 		randspawn = rand() % 50 + 100;			//50-150 stick
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Stick, MapGen::Grass);			//replace grass with sticks
 		}
-
 		randspawn = rand() % 50 + 100;			//50-150 wood
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Wood, MapGen::Grass);			//replace grass with wood
 		}
-
 		randspawn = rand() % 25 + 75;
 		for (int i = 0; i < randspawn; i++) {
 			island->randreplace(MapGen::Rock, MapGen::Grass);			//replace grass with rocks
 		}
-
+		island->deleteall(MapGen::Sand);			//delete all sands
 		island->deleteall(MapGen::Grass);			//delete all grass
-		island->deleteall(MapGen::BrickFloor);			//delete all brickfloor
-
-		//spawn structure with ladderdown
+		island->deleteall(MapGen::BrickFloor);		//delete all brickfloor
 
 		string FGfilename = "Maps/IslandFG.csv";
 		island->exportmap(FGfilename, 1);
-		std::cout << "FG exported";
 		//clean
-		delete island;
-		island = nullptr;
+		delete island; island = nullptr;
 	}
 	//generate dungeon
 	{
 		MapGen* dungeon = new MapGen;
 		dungeon->createMap(CSettings::GetInstance()->NUM_TILES_XAXIS,
 			CSettings::GetInstance()->NUM_TILES_YAXIS);
-
-		dungeon->generateDungeon(20);			//max features
-
+		dungeon->generateDungeon(40);			//max features
 		//spike trap
 		int randspawn = rand() % 100 + 100;			//100-200 trap
 		for (int i = 0; i < randspawn; i++) {
 			dungeon->randreplace(MapGen::Trap, MapGen::BrickFloor);			//replace brickfloor with trap
 		}
-
 		string BGfilename = "Maps/DungeonBG.csv";
 		dungeon->exportmap(BGfilename, 0);
-		std::cout << "BG exported";
-
 		//foreground
 		//treasure chest
 		randspawn = rand() % 10 + 10;			//10-20 treasure
 		for (int i = 0; i < randspawn; i++) {
 			dungeon->randreplace(MapGen::Treasure, MapGen::BrickFloor);			//replace brickfloor with treasure
 		}
-
-
-		//delete background
 		dungeon->deleteall(MapGen::BrickFloor);			//delete all brickfloor
 		dungeon->deleteall(MapGen::Trap);				//delete all trap
-
 		string FGfilename = "Maps/DungeonFG.csv";
 		dungeon->exportmap(FGfilename, 1);
-		std::cout << "FG exported";
 		//clean
-		delete dungeon;
-		dungeon = nullptr;
+		delete dungeon; dungeon = nullptr;
 	}
 
 	if (cMap2D->Init(2, CSettings::GetInstance()->NUM_TILES_YAXIS,
@@ -411,7 +388,7 @@ bool CScene2D::Update(const double dElapsedTime)
 		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, enemy->getVec2Index()) < distance)
 			distance = cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, enemy->getVec2Index());
 	}
-	cSoundController->Update(dElapsedTime, distance); // update with shortest enemy distance in the frame
+	cSoundController->Update(dElapsedTime); // update with shortest enemy distance in the frame
 
 	float trackingPosX = cPlayer2D->vec2Index.x + (cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS);
 	float trackingPosY = cPlayer2D->vec2Index.y + (cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS);

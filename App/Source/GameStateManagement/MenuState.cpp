@@ -63,7 +63,7 @@ bool CMenuState::Init(void)
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/ForestBackground.png");
+	background = new CBackgroundEntity("Image/MenuBackground.png");
 	background->SetShader("Shader2D");
 	background->Init();
 
@@ -128,7 +128,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/3.0 - buttonWidth/2.0, 
 			CSettings::GetInstance()->iWindowHeight/5.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
@@ -159,6 +159,11 @@ bool CMenuState::Update(const double dElapsedTime)
 		//	CGameStateManager::GetInstance()->SetActiveGameState("Play3DGameState");
 		//}
 		// Add codes for Exit button here
+
+		ImGui::SetWindowFontScale(10.f);
+		// Display the FPS
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "MOBYLAND");
+
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{

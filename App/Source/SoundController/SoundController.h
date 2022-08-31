@@ -70,7 +70,7 @@ public:
 
 
 
-	void Update(const double dElapsedTime, float distance);
+	void Update(const double dElapsedTime);
 
 	// For 3D sounds only
 	// Set Listener position
