@@ -90,7 +90,7 @@ public:
 	void setquantity(int arr, int quantity);
 	//butnum[i].setitemID(0);
 
-	CSword2D* getsword(int arr);
+	CSword2D* getsword();
 
 protected:
 	ImGuiPayload ig;
