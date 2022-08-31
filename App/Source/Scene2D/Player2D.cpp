@@ -309,8 +309,8 @@ bool CPlayer2D::Init(void)
 	inventorySlots[1].AddQuantity(5);
 	inventorySlots[1].settextureID(35);
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
-	cInventoryManager->Add(sword);
+	//CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	//cInventoryManager->Add(sword);
 
 	octopusKillCount = 0;
 	chickenKillCount = 0;

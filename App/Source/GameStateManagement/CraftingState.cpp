@@ -292,6 +292,12 @@ bool CCraftingState::Update(const double dElapsedTime)
 				{
 					if (cMouseController->IsButtonDown(0) && butnum[n].getitemID() != 0)
 					{
+						//ADD SWORD
+						if (butnum[n].getitemID() == 50)
+						{
+							sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+							cInventoryManager->Add(sword);
+						}
 						for (int x = 9; x < 18; x++)
 						{
 							//IF ITEM IS EMPTY
@@ -319,15 +325,6 @@ bool CCraftingState::Update(const double dElapsedTime)
 								break;
 							}
 						}
-
-						//ADD SWORD
-						if (butnum[n].getitemID() == 50)
-						{
-							sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
-							cInventoryManager->Add(sword);
-
-						}
-
 					}
 				}
 			}
