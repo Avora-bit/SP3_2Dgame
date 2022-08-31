@@ -272,6 +272,16 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Shovel", "Image/Sp3Images/Weapons/shovel.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+
+	cInventoryItem = cInventoryManager->Add("pHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("wHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("iHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);
@@ -311,7 +321,7 @@ bool CPlayer2D::Init(void)
 	}
 
 
-	cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
+	//cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
 
 	/*inventorySlots[0].setitemID(102);
 	inventorySlots[0].AddQuantity(1);*/
