@@ -396,21 +396,7 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cGUI_Scene2D->Update(dElapsedTime);
 
-	static bool buttonPress = false;
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_F1) && !buttonPress)
-	{
-		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() > 0)
-			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() - 1);
-	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_F2) && !buttonPress)
-	{
-		buttonPress = true;
-		if (cMap2D->GetCurrentLevel() < 2 )
-			cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
-	}
-	else if (!(cKeyboardController->IsKeyDown(GLFW_KEY_F1)||cKeyboardController->IsKeyDown(GLFW_KEY_F2))&&buttonPress)
-		buttonPress = false;
+	
 
 	if (cGameManager->bLevelIncrease)
 	{

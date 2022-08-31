@@ -286,7 +286,7 @@ bool CPlayer2D::Init(void)
 	il = CImageLoader::GetInstance();
 	
 	cooking_mode = false;
-	cooking_time = 10.f;
+	cooking_time = 5.f;
 	campfireVec2.x = 0;
 	campfireVec2.y = 0;
 
@@ -295,13 +295,7 @@ bool CPlayer2D::Init(void)
 		inventorySlots[i].setitemID(0);
 	}
 
-	inventorySlots[0].setitemID(39);
-	inventorySlots[0].AddQuantity(5);
-	inventorySlots[0].settextureID(39);
-
-	inventorySlots[1].setitemID(35);
-	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);
+	
 
 	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
@@ -628,7 +622,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		cooking_mode = false;
 		cMap2D->SetMapInfo(vec2Index.y + 2, vec2Index.x, 81, true, 1);
-		cooking_time = 10.f;
+		cooking_time = 5.f;
 	}
 
 	//SET INVENTORY TEXTURE ID To 0 IF QUANTITY IS 0
@@ -1353,9 +1347,9 @@ void CPlayer2D::InteractWithMap(void)
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E)
-			&& ((inventorySlots[0].getitemID() == 89 && inventorySlots[0].getAct() == true)
-				|| (inventorySlots[1].getitemID() == 89 && inventorySlots[1].getAct() == true)
-				|| (inventorySlots[2].getitemID() == 89 && inventorySlots[2].getAct() == true))) {
+			&& ((inventorySlots[0].getitemID() == 89)
+				|| (inventorySlots[1].getitemID() == 89 )
+				|| (inventorySlots[2].getitemID() == 89))) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 
