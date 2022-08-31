@@ -72,7 +72,7 @@ CCraftingState::~CCraftingState(void)
  */
 bool CCraftingState::Init(void)
 {
-	cout << "CCraftingState::Init()\n" << endl;
+	//cout << "CCraftingState::Init()\n" << endl;
 
 	CShaderManager::GetInstance()->Use("Shader2D");
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
@@ -95,7 +95,7 @@ bool CCraftingState::Init(void)
 	
 	recipebook = new RecipeBook("Recipes.txt");
 	recipebook->CreateRecipe();
-	recipebook->PrintBook();
+	//recipebook->PrintBook();
 
 	gridrecipe.SetRecipeIndex(0, 0);
 

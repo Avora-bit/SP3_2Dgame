@@ -738,10 +738,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			leftClickDown = false;
 		}
 	}
-	else
-	{
-		//cout << "SWORD IS NULLPTR" << endl;
-	}
+	
 	
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)

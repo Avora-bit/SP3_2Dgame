@@ -1,133 +1,28 @@
-﻿  Skeleton.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(47,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(52,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(94,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(106,45): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(106,32): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(109,45): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(109,32): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(187,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(212,31): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(235,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(236,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(250,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Skeleton.cpp(282,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Spider.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(47,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(52,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(83,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(95,45): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(95,32): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(98,45): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(98,32): warning C4244: 'argument': conversion from 'T' to 'const unsigned int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(223,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(241,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(242,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(251,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(251,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(257,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(277,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(277,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(305,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(305,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(311,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(332,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Spider.cpp(332,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Generating Code...
+﻿  CraftingState.cpp
+D:\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\glfw\include\GLFW\glfw3.h(98): message : see previous definition of 'APIENTRY'
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(178,70): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(180,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(180,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(221,45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(220,70): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(223,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(223,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(250,156): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(250,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(282,156): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(282,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(333,156): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\GameStateManagement\CraftingState.cpp(333,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+Library.lib(Settings.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui_impl_glfw.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui_impl_opengl3.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui_draw.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui_tables.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(imgui_widgets.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(Entity2D.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(MeshBuilder.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(SpriteAnimation.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
+Library.lib(ImageLoader.obj) : warning LNK4204: 'D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\Library.pdb' is missing debugging information for referencing module; linking object as if no debug info
   App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe
