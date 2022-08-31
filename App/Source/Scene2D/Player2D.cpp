@@ -301,13 +301,7 @@ bool CPlayer2D::Init(void)
 		inventorySlots[i].setitemID(0);
 	}
 
-	inventorySlots[0].setitemID(39);
-	inventorySlots[0].AddQuantity(5);
-	inventorySlots[0].settextureID(39);
-
-	inventorySlots[1].setitemID(35);
-	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);
+	
 
 	//CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
 	//cInventoryManager->Add(sword);
@@ -1485,10 +1479,10 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
-			&& ((inventorySlots[0].getitemID() == 89 && inventorySlots[0].getAct() == true)
-				|| (inventorySlots[1].getitemID() == 89 && inventorySlots[1].getAct() == true)
-				|| (inventorySlots[2].getitemID() == 89 && inventorySlots[2].getAct() == true))) {
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E)
+			&& ((inventorySlots[0].getitemID() == 89)
+				|| (inventorySlots[1].getitemID() == 89 )
+				|| (inventorySlots[2].getitemID() == 89))) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 

@@ -411,8 +411,8 @@ void CSoundController::Update(const double dElapsedTime, float distance)
 		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
 		{
-			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
-			currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+			PlaySoundByID(musicPlaylist[currentlyPlaying]);
+			//currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 
 		}
 
