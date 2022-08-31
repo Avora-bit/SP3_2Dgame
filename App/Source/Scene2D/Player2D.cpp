@@ -372,8 +372,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 
 
-	//IF PLAYER IS NEAR FIRE
-
+	/*for (int i = 0; i < 3; i++) {
+		if (inventorySlots[i].getAct() == true)
+		{
+			cout << "CURRENTLY ACTIVE IS " << i << endl;
+		}
+	}*/
 
 
 
@@ -726,9 +730,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	static bool leftClickDown = false;
 	if (cInventoryManager->Check("Sword")
-		&& (inventorySlots[0].getitemID() == 50
-		|| inventorySlots[1].getitemID() == 50
-		|| inventorySlots[2].getitemID() == 50)
+		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
+		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
+		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
 		)
 	{
 		static float attackTimer = 0;
@@ -1413,6 +1417,16 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 	}
 }
 
+void CPlayer2D::setActive(int arr, bool act)
+{
+	inventorySlots[arr].setAct(act);
+}
+
+bool CPlayer2D::getActive(int arr)
+{
+	return inventorySlots[arr].getAct();
+}
+
 
 
 bool CPlayer2D::reset_pos()
@@ -1498,9 +1512,9 @@ void CPlayer2D::InteractWithMap(void)
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
-			&& (inventorySlots[0].getitemID() == 89
-				|| inventorySlots[1].getitemID() == 89
-				|| inventorySlots[2].getitemID() == 89)) {
+			&& ((inventorySlots[0].getitemID() == 89 && inventorySlots[0].getAct() == true)
+				|| (inventorySlots[1].getitemID() == 89 && inventorySlots[1].getAct() == true)
+				|| (inventorySlots[2].getitemID() == 89 && inventorySlots[2].getAct() == true))) {
 			//shovel the cross to spawn treasures/resources, which will be randomly generated
 			int random_generator = rand() % 2 + 1;
 

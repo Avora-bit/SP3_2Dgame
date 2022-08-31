@@ -144,7 +144,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	// Create an invisible window which covers the entire OpenGL window
 	ImGui::Begin("Invisible window", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
-	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
+	//ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 
 	// Display the FPS
@@ -257,7 +259,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::Begin("Health", NULL, healthWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.03f));
-		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -290,7 +292,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		/*ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.03f));*/
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.09f));
-		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Hunger");
@@ -327,7 +329,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 		ImGui::Begin("Stamina", NULL, staminaFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f, cSettings->iWindowHeight * 0.15f));
-		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItem = cInventoryManager->GetItem("Stamina");
 		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
@@ -351,7 +353,10 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.85f) / 2, cSettings->iWindowHeight * .85f));
+	//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
+
 	for (int n = 0; n < 3; n++)
 	{
 		ImGui::PushID(n);
@@ -380,66 +385,58 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("Hotbar", NULL, hotbarWindowFlags);
-		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.60f)/2, cSettings->iWindowHeight * .85f));
-		ImGui::SetWindowSize(ImVec2(180.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth * 0.60f) / 2, cSettings->iWindowHeight * .85f));
+		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		for (int i = 0; i < 3; i++) {
 			ImGui::PushID(i);
 			ImGui::SameLine(0.f, 50.f);
-			
-			ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(50, 50));
 
-			if (hbcells[i].getitemID() != 0)
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+			if (cPlayer2D->getActive(i) == true)
 			{
-				hbcells[i].setitemID(cPlayer2D->getitemval(i));
-				hbcells[i].settextureID(hbcells[i].getitemID());
-			}
-
-			ImGui::PopID();
-		}
-			
-		//if textureid is o, show default image
-
-		//assign texturid to one of them
-		for (int n = 0; n < 3; n++)
-		{
-			ImGui::PushID(n);
-			//don't break line if doesn't reach 3 cells
-			if ((n % 3) != 0)
-				ImGui::SameLine();
-			
-			if (hbcells[n].getitemID() != 0)
-			{
-				// Our buttons are both drag sources and drag targets here!
-				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+				if (ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(cSettings->iWindowWidth * relativeScale_x * 0.05, cSettings->iWindowHeight * relativeScale_y * 0.05)))
 				{
-					// Set payload to carry the index of our item (could be anything)
-					//&n is to get the data directly from IMGUI
-					ImGui::SetDragDropPayload("DND_DEMO_CELL", &n, sizeof(int));
-					ImGui::EndDragDropSource();
+					for (int n = 0; n < 3; n++)
+					{
+						cPlayer2D->setActive(n, false);
+						hbcells[n].setAct(cPlayer2D->getActive(n));
+					}
+
+					cPlayer2D->setActive(i, true);
+					hbcells[i].setAct(cPlayer2D->getActive(i));
+				}
+				ImGui::PopStyleColor();
+			}
+			else
+			{
+				if (ImGui::ImageButton((ImTextureID)hbcells[i].gettextureID(), ImVec2(cSettings->iWindowWidth * relativeScale_x * 0.05, cSettings->iWindowHeight * relativeScale_y * 0.05)))
+				{
+					for (int n = 0; n < 3; n++)
+					{
+						cPlayer2D->setActive(n, false);
+						hbcells[n].setAct(cPlayer2D->getActive(n));
+					}
+
+					cPlayer2D->setActive(i, true);
+					hbcells[i].setAct(cPlayer2D->getActive(i));
 				}
 			}
-			if (ImGui::BeginDragDropTarget())
-			{
-				//get with the id
-				//when mouse is released
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
-				{
-					IM_ASSERT(payload->DataSize == sizeof(int));
-					int payload_n = *(const int*)payload->Data;
 
-					//swap images and itemId inside
-					slot tmp = hbcells[n];
-					hbcells[n] = hbcells[payload_n];
-					hbcells[payload_n] = tmp;
-					//std::cout << endl;
-				}
-				ImGui::EndDragDropTarget();
+
+			if (hbcells[i].getAct() == true)
+			{
+				//ImGui::IsItemActive();
+				cout << "CURRENTLY ACTIVE IS " << i << endl;
 			}
+			ImGui::PopStyleColor();
 			ImGui::PopID();
 		}
 		ImGui::PopStyleColor();
+
 		ImGui::End();
+
 	}
 
 	// projectile force

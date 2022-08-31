@@ -69,6 +69,9 @@ public:
 
 	bool getAttacking();
 
+	void setActive(int arr, bool act);
+	bool getActive(int arr);
+
 protected:
 	enum DIRECTION
 	{
@@ -155,6 +158,8 @@ protected:
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
 
+
+	
 
 	bool reset_pos();
 	void InteractWithMap(void);
