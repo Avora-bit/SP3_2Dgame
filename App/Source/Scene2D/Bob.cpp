@@ -6,7 +6,7 @@ Bob::Bob()
 {
 	maxHealth = 300;
 	health = maxHealth;
-	atk = 10;
+	atk = 30;
 }
 
 Bob::Bob(glm::vec2 pos)
@@ -14,7 +14,7 @@ Bob::Bob(glm::vec2 pos)
 	vec2Index = pos;
 	maxHealth = 300;
 	health = maxHealth;
-	atk = 10;
+	atk = 30;
 }
 
 Bob::~Bob()
@@ -199,6 +199,7 @@ void Bob::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = BOSSPHASE2;
 				iFSMCounter = 0;
+				attackTimer = 0;
 				count = 0;
 				break;
 			}
@@ -232,6 +233,15 @@ void Bob::Update(const double dElapsedTime)
 			}
 			UpdatePosition();
 
+			attackTimer += dElapsedTime;
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= -0.5f + scaleX)
+			{
+				if (attackTimer >= 1)
+				{
+					cPlayer2D->LoseHealth(atk);
+					attackTimer = 0;
+				}
+			}
 			if (iFSMCounter > iMaxFSMCounter)
 			{
 				sCurrentFSM = IDLE;

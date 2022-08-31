@@ -439,26 +439,91 @@ bool CScene2D::Update(const double dElapsedTime)
 	//cout << "CURRENT LEVEL IS " << cMap2D->GetCurrentLevel() << endl;
 	eventcontroller->update(dElapsedTime);
 
+	octopusCount = 0;
+	chickenCount = 0;
+	spiderCount = 0;
+	skeletonCount = 0;
+	for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
+	{
+		if (dynamic_cast<Octopus*>(eventcontroller->enemyVector[i]) && eventcontroller->enemyVector[i]->bIsActive)
+			octopusCount++;
+		if (dynamic_cast<Chicken*>(eventcontroller->enemyVector[i]) && eventcontroller->enemyVector[i]->bIsActive)
+			chickenCount++;
+		if (dynamic_cast<Spider*>(eventcontroller->enemyVector[i]) && eventcontroller->enemyVector[i]->bIsActive)
+			spiderCount++;
+		if (dynamic_cast<Skeleton*>(eventcontroller->enemyVector[i]) && eventcontroller->enemyVector[i]->bIsActive)
+			skeletonCount++;
+	}
 	static double octopusSpawnTime = 0;
 	octopusSpawnTime += dElapsedTime;
-	static int octopusCount = 0;
-	if (octopusSpawnTime >= 30)
+	if (octopusSpawnTime >= 60 && cMap2D->GetCurrentLevel() == 0)
 	{
-		if (availableRandomSpawn())
+		if (availableRandomSpawn() && octopusCount < 2)
 		{
 			Octopus* octo = new Octopus(glm::vec2(randX, randY));
 			octo->SetShader("Shader2D_Colour");
-			if (octopusCount < 2)
 			{
 				if (octo->Init())
 				{
 					octo->SetPlayer2D(cPlayer2D);
 					eventcontroller->spawnEnemies(octo);
 					octopusCount++;
-					cout << "release the kraken" << endl;
 				}
 			}
-			octopusSpawnTime = 0;
+		}
+		octopusSpawnTime = 0;
+	}
+	static double chickenSpawnTime = 0;
+	chickenSpawnTime += dElapsedTime;
+	if (chickenSpawnTime >= 30 && cMap2D->GetCurrentLevel() == 0)
+	{
+		if (availableRandomSpawn() && chickenCount < 10)
+		{
+			Chicken* chicken = new Chicken(glm::vec2(randX, randY));
+			chicken->SetShader("Shader2D_Colour");
+			if (chicken->Init())
+			{
+				chicken->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(chicken);
+				chickenCount++;
+			}
+		}
+		chickenSpawnTime = 0;
+	}
+	static double spiderSpawnTime = 0;
+	spiderSpawnTime += dElapsedTime;
+	if (spiderSpawnTime >= 90 && cMap2D->GetCurrentLevel() == 0)
+	{
+		if (availableRandomSpawn() && spiderCount < 4)
+		{
+			Spider* spider = new Spider(glm::vec2(randX, randY));
+			spider->SetShader("Shader2D_Colour");
+
+			if (spider->Init())
+			{
+				spider->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(spider);
+				spiderCount++;
+			}
+			spiderSpawnTime = 0;
+		}
+	}
+	static double skeletonSpawnTime = 0;
+	skeletonSpawnTime += dElapsedTime;
+	if (skeletonSpawnTime >= 10 && cMap2D->GetCurrentLevel() == 0)
+	{
+		if (availableRandomSpawn() && skeletonCount < 2)
+		{
+			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY));
+			skeleton->SetShader("Shader2D_Colour");
+
+			if (skeleton->Init())
+			{
+				skeleton->SetPlayer2D(cPlayer2D);
+				eventcontroller->spawnEnemies(skeleton);
+				skeletonCount++;
+			}
+			skeletonSpawnTime = 0;
 		}
 	}
 	return true;

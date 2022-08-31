@@ -346,6 +346,20 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 	}
 
+	// Enemy drops
+	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/rock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/rock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(10, iTextureID));
+		}
+	}
+
 	// Initialise the variables for AStar
 	m_weight = 1;
 	m_startPos = glm::vec2(0, 0);

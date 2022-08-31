@@ -124,6 +124,11 @@ protected:
 
 	int randX;
 	int randY;
+	int octopusCount;
+	int chickenCount;
+	int spiderCount;
+	int skeletonCount;
+	int bobCount;
 	// Constructor
 	CScene2D(void);
 	// Destructor

@@ -103,11 +103,7 @@ bool SkeletonShot::InteractWithPlayer()
 	glm::vec2 vec2PlayerPos = cPlayer2D->vec2Index;
 
 	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= vec2PlayerPos.x - 0.5 + scaleX - 1) &&
-		(vec2Index.x <= vec2PlayerPos.x + 0.5 + scaleX - 1))
-		&&
-		((vec2Index.y >= vec2PlayerPos.y - 0.5 + scaleY -1) &&
-			(vec2Index.y <= vec2PlayerPos.y + 0.5 + scaleY - 1)))
+	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->getPreciseVec2Index(true)) <= -0.5f + scaleX)
 	{
 		bIsActive = false;
 		cPlayer2D->LoseHealth(atk);
