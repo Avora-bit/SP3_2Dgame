@@ -13,7 +13,7 @@ slot::slot()
 	//cSettings = CSettings::GetInstance();
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	
-
+	active = false;
 	cInventoryManager = CInventoryManager::GetInstance();
 	//cInventoryItem= CInventoryItem::GetIns
 }
@@ -40,9 +40,6 @@ void slot::settextureID(int itemid)
 	case 40:
 		textureID = cInventoryManager->GetItem("Wood")->GetTextureID();
 		break;
-	case 60:
-		textureID = cInventoryManager->GetItem("Swords")->GetTextureID();
-		break;
 	case 102:
 		textureID = cInventoryManager->GetItem("Campfire")->GetTextureID();
 		break;
@@ -61,6 +58,9 @@ void slot::settextureID(int itemid)
 	case 90:
 		textureID = cInventoryManager->GetItem("Shivs")->GetTextureID();
 		break;
+	case 89:
+		textureID = cInventoryManager->GetItem("Shovel")->GetTextureID();
+		break;
 	case 0:
 		textureID = 0;
 		break;
@@ -68,6 +68,16 @@ void slot::settextureID(int itemid)
 		break;
 	}
 
+}
+
+void slot::setAct(bool act)
+{
+	active = act;
+}
+
+bool slot::getAct()
+{
+	return active;
 }
 
 void slot::AddQuantity(int amt)

@@ -389,7 +389,7 @@ bool CSoundController::AddToPlaylist(const int ID)
 
 
 //REAGAN'S UPDATE
-void CSoundController::Update(const double dElapsedTime, static float distance)
+void CSoundController::Update(const double dElapsedTime, float distance)
 {
 
 	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Adventure.ogg"), 1, true);
@@ -400,31 +400,42 @@ void CSoundController::Update(const double dElapsedTime, static float distance)
 	//cSoundController->AddToPlaylist(3);
 	//cSoundController->AddToPlaylist(2);
 	//cSoundController->AddToPlaylist(1);
+
+	static int currentlyPlaying = 0;
+
 	if (musicPlaylist.size() > 0)
 	{
-		static int currentlyPlaying = 0;
-
 		currentSongDuration += (dElapsedTime * 1000);
 		ISound* currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 		if (!cSoundEngine->isCurrentlyPlaying(GetSound(musicPlaylist[currentlyPlaying])->GetSound()))
 		{
-			PlaySoundByID(musicPlaylist[currentlyPlaying]);
+			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
+			currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+
 		}
 
+		//SWITCH SOUNDTRACK DEPENDING ON DISTANCE
 		if (distance < 5.f)
 		{
-			StopPlayByID(musicPlaylist[currentlyPlaying]);
-			currentlyPlaying = 1;
-			currentSongDuration = 0;
-
-			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
+			if (currentSong != nullptr)
+			{
+				currentSong->setVolume(0.0f);
+				currentSong = nullptr;
+				currentlyPlaying = 1;
+				currentSongDuration = 0;
+				currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+			}
 		}
 		else
 		{
-			StopPlayByID(musicPlaylist[currentlyPlaying]);
-			currentlyPlaying = 0;
-			currentSongDuration = 0;
-			//PlaySoundByID(musicPlaylist[currentlyPlaying]);
+			if (currentSong != nullptr)
+			{
+				currentSong->setVolume(0.0f);
+				currentSong = nullptr;
+				currentlyPlaying = 0;
+				currentSongDuration = 0;
+				currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
+			}
 		}
 
 		//IF SONG REACHES THE LENGTH
@@ -438,6 +449,9 @@ void CSoundController::Update(const double dElapsedTime, static float distance)
 
 			currentSongDuration = 0;
 		}*/
+
+
+		
 
 		if (currentSong != nullptr)
 		{

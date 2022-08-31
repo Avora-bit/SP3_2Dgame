@@ -46,6 +46,7 @@
 #include "Chicken.h"
 #include "Spider.h"
 #include "Skeleton.h"
+#include "Bob.h"
 
 #include "GUI_Scene2D.h"
 
@@ -85,6 +86,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool availableRandomSpawn();
+
 	float returnmusicvol();
 	float returnsoundvol();
 	void setsoundvol(float vol);
@@ -119,6 +122,8 @@ protected:
 	ISound* musicsfx; ISound* soundsfx;
 	float musicVol; float soundVol;
 
+	int randX;
+	int randY;
 	// Constructor
 	CScene2D(void);
 	// Destructor

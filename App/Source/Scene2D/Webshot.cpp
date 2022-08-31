@@ -52,9 +52,6 @@ bool Webshot::Init(void)
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
-	// Find the indices for the player in arrMapInfo, and assign it to CShivs2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
 
 	// Set the start position of the Player to iRow and iCol
 	

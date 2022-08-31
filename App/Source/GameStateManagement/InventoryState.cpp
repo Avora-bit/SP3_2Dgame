@@ -123,7 +123,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 	ImGui::Begin("QuantityText", NULL, window_flags);
 	ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60) ,
-		(CSettings::GetInstance()->iWindowHeight / 4.7)));				
+		(CSettings::GetInstance()->iWindowHeight / 8)));				
 	ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 	for (int n = 0; n < 9; n++)
 	{
@@ -260,9 +260,20 @@ bool CInventoryState::Update(const double dElapsedTime)
 					int payload_n = *(const int*)payload->Data;
 
 					//swap images and itemId inside
-					slot tmp = butnum[n];
-					butnum[n] = butnum[payload_n];
-					butnum[payload_n] = tmp;
+					int tmp = butnum[n].gettextureID();
+					int tmp_2 = butnum[n].getitemID();
+					int tmp_3 = butnum[n].getquantity();
+
+
+					butnum[n].settextureID(butnum[payload_n].gettextureID());
+					butnum[n].setitemID(butnum[payload_n].getitemID());
+					butnum[n].setquantity(butnum[payload_n].getquantity());
+
+					butnum[payload_n].settextureID(tmp);
+					butnum[payload_n].setitemID(tmp_2);
+					butnum[payload_n].setquantity(tmp_3);
+
+
 
 					//cPlayer2D->setitem
 

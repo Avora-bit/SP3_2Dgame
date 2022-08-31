@@ -4,14 +4,16 @@
 
 Skeleton::Skeleton()
 {
-	health = 100;
+	maxHealth = 100;
+	health = maxHealth;
 	atk = 10;
 }
 
 Skeleton::Skeleton(glm::vec2 pos)
 {
 	vec2Index = pos;
-	health = 100;
+	maxHealth = 100;
+	health = maxHealth;
 	atk = 10;
 }
 
@@ -183,7 +185,7 @@ void Skeleton::Update(const double dElapsedTime)
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
-					skeletonShot->setDirection(glm::vec2(cPlayer2D->vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS - (vec2Index.x + vec2NumMicroSteps.x / cSettings->NUM_STEPS_PER_TILE_XAXIS), cPlayer2D->vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS - (vec2Index.y + vec2NumMicroSteps.y / cSettings->NUM_STEPS_PER_TILE_YAXIS)));
+					skeletonShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
 					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
 				}
 				shotInterval = 5;
@@ -227,10 +229,9 @@ void Skeleton::UpdatePosition(void)
 	vec2OldIndex = vec2Index;
 	if (vec2Direction.y < 0)
 	{
-		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y >= 0)
 		{
-			vec2NumMicroSteps.y--;
+			vec2NumMicroSteps.y-= speed_multiplier;
 			if (vec2NumMicroSteps.y < 0)
 			{
 				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
@@ -240,20 +241,12 @@ void Skeleton::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(DOWN);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(DOWN) == false)
-		{
-			vec2Index.y = vec2OldIndex.y;
-			vec2NumMicroSteps.y = 0;
-		}
 	}
 	else if (vec2Direction.y > 0)
 	{
-		const int iOldIndex = vec2Index.y;
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			vec2NumMicroSteps.y++;
+			vec2NumMicroSteps.y+= speed_multiplier;
 
 			if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
 			{
@@ -264,21 +257,13 @@ void Skeleton::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(UP);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(UP) == false)
-		{
-			//vec2Index = vec2OldIndex;
-			vec2NumMicroSteps.y = 0;
-		}
 	}
 	if (vec2Direction.x < 0)
 	{
 		// Move left
-		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			vec2NumMicroSteps.x--;
+			vec2NumMicroSteps.x-= speed_multiplier;
 			if (vec2NumMicroSteps.x < 0)
 			{
 				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
@@ -288,21 +273,13 @@ void Skeleton::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(LEFT) == false)
-		{
-			vec2Index.x = vec2OldIndex.x;
-			vec2NumMicroSteps.x = 0;
-		}
 	}
 	else if (vec2Direction.x > 0)
 	{
 		// Move right
-		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x+= speed_multiplier;
 
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
@@ -313,13 +290,6 @@ void Skeleton::UpdatePosition(void)
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
-
-		// Find a feasible position for the enemy2D's current position
-		if (CheckPosition(RIGHT) == false)
-		{
-			//vec2Index = vec2OldIndex;
-			vec2NumMicroSteps.x = 0;
-		}
 	}
 }
 

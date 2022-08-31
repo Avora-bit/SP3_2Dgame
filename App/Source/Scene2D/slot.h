@@ -47,7 +47,7 @@ private:
 	CInventoryManager* cInventoryManager;
 	CInventoryItem* cInventoryItem;
 
-
+	bool active;
 
 
 public:
@@ -66,7 +66,9 @@ public:
 	unsigned gettextureID(void);
 	void settextureID(int itemid);
 
-	
+	void setAct(bool act);
+	bool getAct();
+
 
 
 

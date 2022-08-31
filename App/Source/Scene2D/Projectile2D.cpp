@@ -152,7 +152,8 @@ void CProjectile2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
-	transform = glm::rotate(transform, glm::radians(atan2(vec2Direction.y, vec2Direction.x)), glm::vec3(0, 0, 1));
+	float angle = (atan2(vec2Direction.y, vec2Direction.x) / 3.14159265359) * 180.0;
+	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 	// Update the shaders with the latest transform
@@ -177,6 +178,11 @@ void CProjectile2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+void CProjectile2D::setDirection(glm::vec2 direction)
+{
+	vec2Direction = direction;
 }
 
 void CProjectile2D::Constraint(DIRECTION eDirection)
@@ -347,56 +353,53 @@ bool CProjectile2D::CheckPosition(DIRECTION eDirection)
 
 void CProjectile2D::trajectory()			//update position
 {
-	{			//vertical movement
-		const int iOldIndex = vec2Index.y;
+				//vertical movement
+	const int iOldIndexY = vec2Index.y;
 
-		vec2NumMicroSteps.y += vec2Direction.y;
-		if (vec2NumMicroSteps.y < 0)
-		{
-			vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-			vec2Index.y--;
-		}
-		else if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
-		{
-			vec2NumMicroSteps.y = 0;
-			vec2Index.y++;
-		}
+	//glm::vec2 trajectoryDir = vec2Direction;
+	glm::vec2 trajectoryDir = glm::normalize(vec2Direction);
 
-		// Find a feasible position for the enemy2D's current position
-		// Constraint the enemy2D's position within the screen boundary
-		if (vec2Direction.y < 0) {
-			Constraint(DOWN);
-			if (!CheckPosition(DOWN))
-			{
-				vec2Index.y = vec2OldIndex.y;
-				vec2NumMicroSteps.y = 0;
-				bIsActive = false;
-			}
-		}
-		else if (vec2Direction.y > 0) {
-			if (!CheckPosition(UP)) bIsActive = false;
-			Constraint(UP);
-		}
+	vec2NumMicroSteps.y += trajectoryDir.y;
+	if (vec2NumMicroSteps.y < 0)
+	{
+		vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+		vec2Index.y--;
+
+		Constraint(DOWN);
 	}
-	{			//horizontal movement
-		const int iOldIndex = vec2Index.x;
+	else if (vec2NumMicroSteps.y >= cSettings->NUM_STEPS_PER_TILE_YAXIS)
+	{
+		vec2NumMicroSteps.y = 0;
+		vec2Index.y++;
 
-		vec2NumMicroSteps.x += vec2Direction.x;
-		if (vec2NumMicroSteps.x < 0)
-		{
-			vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-			vec2Index.x--;
-		}
-		else if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-		{
-			vec2NumMicroSteps.x = 0;
-			vec2Index.x++;
-		}
-		// Find a feasible position for the enemy2D's current position
-		if (!CheckPosition(LEFT) || !CheckPosition(RIGHT)) bIsActive = false;
-		// Constraint the enemy2D's position within the screen boundary
-		Constraint(LEFT); Constraint(RIGHT);
+		Constraint(UP);
 	}
+
+	// Find a feasible position for the enemy2D's current position
+	// Constraint the enemy2D's position within the screen boundary
+	
+			//horizontal movement
+	const int iOldIndexX = vec2Index.x;
+
+	vec2NumMicroSteps.x += trajectoryDir.x;
+	if (vec2NumMicroSteps.x < 0)
+	{
+		vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+		vec2Index.x--;
+
+		Constraint(LEFT);
+	}
+	else if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+	{
+		vec2NumMicroSteps.x = 0;
+		vec2Index.x++;
+
+		Constraint(RIGHT);
+	}
+	// Find a feasible position for the enemy2D's current position
+	if (!CheckPosition(LEFT) || !CheckPosition(RIGHT) || !CheckPosition(UP) || !CheckPosition(DOWN)) 
+		bIsActive = false;
+	// Constraint the enemy2D's position within the screen boundary
 	
 	// Interact with the Player
 	InteractWithPlayer();
@@ -405,9 +408,4 @@ void CProjectile2D::trajectory()			//update position
 bool CProjectile2D::InteractWithPlayer()
 {
 	return false;
-}
-
-void CProjectile2D::setDirection(glm::vec2 direction)
-{
-	vec2Direction = direction;
 }

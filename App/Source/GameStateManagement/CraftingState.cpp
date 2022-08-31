@@ -172,7 +172,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		//ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60),
-			(CSettings::GetInstance()->iWindowHeight / 2.4f)));
+			(CSettings::GetInstance()->iWindowHeight / 3.4f)));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
@@ -285,7 +285,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 				//BRING OUTPUT ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
-					if (cMouseController->IsButtonDown(0))
+					if (cMouseController->IsButtonDown(0) && butnum[n].getitemID() != 0)
 					{
 						for (int x = 9; x < 18; x++)
 						{
@@ -401,6 +401,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID(0);
 				butnum[n].settextureID(0);
 			}
+
+
+			//IF ITEM IS A HILT AND BLADE
 		}
 		ImGui::End();
 	}
