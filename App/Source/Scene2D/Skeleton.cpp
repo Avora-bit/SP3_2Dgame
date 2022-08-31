@@ -9,10 +9,10 @@ Skeleton::Skeleton()
 	atk = 10;
 }
 
-Skeleton::Skeleton(glm::vec2 pos)
+Skeleton::Skeleton(glm::vec2 pos, int hpMulti)
 {
 	vec2Index = pos;
-	maxHealth = 100;
+	maxHealth = 100 * hpMulti;
 	health = maxHealth;
 	atk = 10;
 }

@@ -124,6 +124,7 @@ protected:
 
 	int randX;
 	int randY;
+	int hpMulti;
 	int octopusCount;
 	int chickenCount;
 	int spiderCount;

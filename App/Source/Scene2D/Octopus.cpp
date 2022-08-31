@@ -7,10 +7,10 @@ Octopus::Octopus()
 	atk = 10;
 }
 
-Octopus::Octopus(glm::vec2 pos)
+Octopus::Octopus(glm::vec2 pos , int hpMulti)
 {
 	vec2Index = pos;
-	maxHealth = 20;
+	maxHealth = 20 * hpMulti;
 	health = maxHealth;
 	atk = 10;
 }

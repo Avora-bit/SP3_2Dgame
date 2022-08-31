@@ -7,7 +7,7 @@ class Bob : public CEnemy2D
 {
 public:
 	Bob();
-	Bob(glm::vec2 pos);
+	Bob(glm::vec2 pos, int hpMulti);
 	~Bob();
 	bool Init(void);
 	void Update(const double dElapsedTime);

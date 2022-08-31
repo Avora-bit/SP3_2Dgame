@@ -7,7 +7,7 @@ class Skeleton : public CEnemy2D
 {
 public:
 	Skeleton();
-	Skeleton(glm::vec2 pos);
+	Skeleton(glm::vec2 pos, int hpMulti);
 	~Skeleton();
 	bool Init(void);
 	void Update(const double dElapsedTime);

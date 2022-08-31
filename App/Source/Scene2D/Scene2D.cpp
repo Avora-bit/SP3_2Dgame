@@ -251,6 +251,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	eventcontroller = EventController::GetInstance();
 	eventcontroller->Init();
+	hpMulti = 1;
 	int i = 0;
 	while (i < 10) //spawn 10 chicken
 	{
@@ -274,7 +275,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	{
 		if (availableRandomSpawn())
 		{
-			Spider* spider = new Spider(glm::vec2(randX, randY));
+			Spider* spider = new Spider(glm::vec2(randX, randY),hpMulti);
 			spider->SetShader("Shader2D_Colour");
 
 			if (spider->Init())
@@ -292,7 +293,7 @@ i++;
 	{
 		if (availableRandomSpawn())
 		{
-			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY));
+			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY), hpMulti);
 			skeleton->SetShader("Shader2D_Colour");
 
 			if (skeleton->Init())
@@ -378,7 +379,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	//CAN HEAR SOUND IF ENEMY IS CLOSE
-
+	static double scaleTimer = 0;
+	scaleTimer += dElapsedTime;
+	if (scaleTimer >= 200)
+	{
+		hpMulti++;
+		scaleTimer = 0;
+	}
 	vector<CEnemy2D*> enemies = eventcontroller->enemyVector;
 	if (cMap2D->GetCurrentLevel() == 1)
 	{
@@ -395,7 +402,7 @@ bool CScene2D::Update(const double dElapsedTime)
 					enemy->bIsActive = false;
 				}
 				eventcontroller->enemyVector.clear();
-				Bob* bob = new Bob(cPlayer2D->vec2Index);
+				Bob* bob = new Bob(cPlayer2D->vec2Index, hpMulti);
 				bob->SetShader("Shader2D_Colour");
 
 				if (bob->Init())
@@ -457,7 +464,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		if (availableRandomSpawn() && octopusCount < 2)
 		{
-			Octopus* octo = new Octopus(glm::vec2(randX, randY));
+			Octopus* octo = new Octopus(glm::vec2(randX, randY), hpMulti);
 			octo->SetShader("Shader2D_Colour");
 			{
 				if (octo->Init())
@@ -493,7 +500,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		if (availableRandomSpawn() && spiderCount < 4)
 		{
-			Spider* spider = new Spider(glm::vec2(randX, randY));
+			Spider* spider = new Spider(glm::vec2(randX, randY), hpMulti);
 			spider->SetShader("Shader2D_Colour");
 
 			if (spider->Init())
@@ -511,7 +518,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	{
 		if (availableRandomSpawn() && skeletonCount < 2)
 		{
-			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY));
+			Skeleton* skeleton = new Skeleton(glm::vec2(randX, randY), hpMulti);
 			skeleton->SetShader("Shader2D_Colour");
 
 			if (skeleton->Init())

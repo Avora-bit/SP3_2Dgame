@@ -5,7 +5,7 @@ class Octopus : public CEnemy2D
 {
 public:
 	Octopus();
-	Octopus(glm::vec2 pos);
+	Octopus(glm::vec2 pos, int hpMulti);
 	~Octopus();
 
 	bool Init(void);

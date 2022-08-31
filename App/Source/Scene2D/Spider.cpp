@@ -7,10 +7,10 @@ Spider::Spider()
 	atk = 20;
 }
 
-Spider::Spider(glm::vec2 pos)
+Spider::Spider(glm::vec2 pos,int hpMulti)
 {
 	vec2Index = pos;
-	maxHealth = 30;
+	maxHealth = 30 * hpMulti;
 	health = maxHealth;
 	atk = 20;
 }

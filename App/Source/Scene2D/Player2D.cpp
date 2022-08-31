@@ -1629,7 +1629,7 @@ void CPlayer2D::AttackEnemy()
 			if (enemyAngle - angle + 90 > 270)
 				enemyAngle -= 360;
 			if (cPhysics2D.CalculateDistance(getPreciseVec2Index(true),
-				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() + 1.0f &&
+				enemy->getPreciseVec2Index(true)) <= sword->getTotalRange() + 1.5f &&
 				enemyAngle - angle + 90 >= -40 + sword->getTotalRange() * 2 &&
 				enemyAngle - angle + 90 <= 40 + sword->getTotalRange() * 2)
 			{

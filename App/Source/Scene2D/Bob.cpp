@@ -9,10 +9,10 @@ Bob::Bob()
 	atk = 30;
 }
 
-Bob::Bob(glm::vec2 pos)
+Bob::Bob(glm::vec2 pos, int hpMulti)
 {
 	vec2Index = pos;
-	maxHealth = 300;
+	maxHealth = 300 * hpMulti;
 	health = maxHealth;
 	atk = 30;
 }

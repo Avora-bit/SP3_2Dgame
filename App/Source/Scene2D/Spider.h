@@ -7,7 +7,7 @@ class Spider : public CEnemy2D
 {
 public:
 	Spider();
-	Spider(glm::vec2 pos);
+	Spider(glm::vec2 pos, int hpMulti);
 	~Spider();
 	bool Init(void);
 	void Update(const double dElapsedTime);
