@@ -243,7 +243,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("Rock", "Image/Sp3Images/Base/rock.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("Swords", "Image/Sp3Images/Weapons/sword.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("Campfire", "Image/Campfire.tga", 0, 0);
