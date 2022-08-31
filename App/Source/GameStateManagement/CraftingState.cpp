@@ -401,6 +401,9 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID(0);
 				butnum[n].settextureID(0);
 			}
+
+
+			//IF ITEM IS A HILT AND BLADE
 		}
 		ImGui::End();
 	}

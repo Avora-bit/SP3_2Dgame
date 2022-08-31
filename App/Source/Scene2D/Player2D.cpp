@@ -288,7 +288,7 @@ bool CPlayer2D::Init(void)
 	il = CImageLoader::GetInstance();
 	
 	cooking_mode = false;
-	cooking_time = 3.f;
+	cooking_time = 10.f;
 	campfireVec2.x = 0;
 	campfireVec2.y = 0;
 
@@ -677,7 +677,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		cooking_mode = false;
 		cMap2D->SetMapInfo(vec2Index.y + 2, vec2Index.x, 81, true, 1);
-		cooking_time = 3.f;
+		cooking_time = 10.f;
 	}
 
 	//SET INVENTORY TEXTURE ID To 0 IF QUANTITY IS 0
