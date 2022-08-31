@@ -769,41 +769,41 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword")
-		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
-		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
-		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
-		)
+	if (cInventoryManager->Check("Sword"))
 	{
-		static float attackTimer = 0;
-		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
-		//CSword2D* sword = inventorySlots[2].returnSword();
-
-
-		if (attackTimer > sword->getTotalAtkSpeed())
+		for (int i = 0; i < 3; i++)
 		{
-			attacking = false;
-			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+			if (inventorySlots[i].getitemID() == 50 && inventorySlots[i].getAct())
+			{
+				static float attackTimer = 0;
+				attackTimer += dElapsedTime;
+				CSword2D* sword = dynamic_cast<CSword2D*>(inventorySlots[i].getInventoryItem());
+				//CSword2D* sword = inventorySlots[2].returnSword();
+
+
+				if (attackTimer > sword->getTotalAtkSpeed())
+				{
+					attacking = false;
+					sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+				}
+				if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
+				{
+					attacking = true;
+					leftClickDown = true;
+
+					sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
+					attackTimer = 0;
+
+					AttackEnemy();
+				}
+				else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
+				{
+					leftClickDown = false;
+				}
+				break;
+			}
 		}
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
-		{
-			attacking = true;
-			leftClickDown = true;
 
-			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
-			attackTimer = 0;
-
-			AttackEnemy();
-		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
-		{
-			leftClickDown = false;
-		}
-
-		
-
-		
 	}
 	
 	static float staminaTimer = 0;
