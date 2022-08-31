@@ -63,7 +63,7 @@ bool CMenuState::Init(void)
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/ForestBackground.png");
+	background = new CBackgroundEntity("Image/MenuBackground.png");
 	background->SetShader("Shader2D");
 	background->Init();
 
@@ -85,9 +85,6 @@ bool CMenuState::Init(void)
 	CImageLoader* il = CImageLoader::GetInstance();
 	startButtonData.fileName = "Image\\GUI\\PlayButton2.png";
 	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
-
-	/*play3DButtonData.fileName = "Image\\GUI\\PlayButton_3D.png";
-	play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);*/
 
 	exitButtonData.fileName = "Image\\GUI\\ExitButton2.png";
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
@@ -128,7 +125,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/3.0 - buttonWidth/2.0, 
 			CSettings::GetInstance()->iWindowHeight/5.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
@@ -147,18 +144,7 @@ bool CMenuState::Update(const double dElapsedTime)
 			cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
-		// Add codes for Play3D button here
-		//if (ImGui::ImageButton((ImTextureID)play3DButtonData.textureID,
-		//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		//{
-		//	// Reset the CKeyboardController
-		//	CKeyboardController::GetInstance()->Reset();
 
-		//	// Load the menu state
-		//	cout << "Loading Play3DGameState" << endl;
-		//	CGameStateManager::GetInstance()->SetActiveGameState("Play3DGameState");
-		//}
-		// Add codes for Exit button here
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{

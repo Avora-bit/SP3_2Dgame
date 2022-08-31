@@ -86,12 +86,6 @@ bool CGameOverState::Init(void)
 	menuButtonData.fileName = "Image\\GUI\\MenuButton.png";
 	menuButtonData.textureID = il->LoadTextureGetID(menuButtonData.fileName.c_str(), false);
 
-	//play3DButtonData.fileName = "Image\\GUI\\PlayButton_3D.png";
-	//play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);
-
-	//exitButtonData.fileName = "Image\\GUI\\ExitButton.png";
-	//exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
-
 	// Enable the cursor
 	if (CSettings::GetInstance()->bDisableMousePointer == true)
 		glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);

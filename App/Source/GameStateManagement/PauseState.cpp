@@ -72,24 +72,15 @@ bool CPauseState::Init(void)
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
 
-
-
-
 	cScene2D = CScene2D::GetInstance();
-
 
 	cPlayer2D = CPlayer2D::GetInstance();
 
-
 	cSoundController = CSoundController::GetInstance();
-
 
 	musicvol = cSoundController->returnmusicvol() * 100;
 	//soundvol = cScene2D->returnsoundvol() * 100;
 	soundvol = cPlayer2D->returnsound() * 100;
-
-
-
 
 	return true;
 }
@@ -134,7 +125,6 @@ bool CPauseState::Update(const double dElapsedTime)
 		{
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "MUSIC");
 			cSoundController->setmusicvol(musicvol / 100);
-
 		}
 
 		if (ImGui::SliderFloat("Sound", &soundvol, 10, 100))
@@ -142,7 +132,6 @@ bool CPauseState::Update(const double dElapsedTime)
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "SOUND");
 			//cScene2D->setsoundvol(soundvol / 100);
 			cPlayer2D->setsound(soundvol / 100);
-
 		}
 	ImGui::End();
 	}
