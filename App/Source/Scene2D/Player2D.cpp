@@ -295,17 +295,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/placeholder_DaggerBlade.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	/*cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);*/
-
-
-	//sword = inventorySlot[i].getsword(i);
-	/*CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
-	cInventoryManager->Add(sword);*/
-
-	//sword->replaceBlade(new CDaggerBlade2D());
-
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 	cSoundController = CSoundController::GetInstance();
 
@@ -317,30 +306,8 @@ bool CPlayer2D::Init(void)
 	campfireVec2.y = 0;
 
 	//set inventory slots to 0 at the start of the game
-	for (int i = 0; i < 9; i++)
-	{
-
-		/*if (i < 7)
-		{
-			inventorySlots[i].setitemID(39 - i);
-			inventorySlots[i].AddQuantity(5);
-		}
-		else
-		{*/
-			inventorySlots[i].setitemID(0);
-		//}
-		/*if (i % 2 == 0)
-		{
-			inventorySlots[i].setitemID(30);
-		}
-		else
-		{
-			inventorySlots[i].setitemID(40);
-		}*/
-
-		//inventorySlots[i].settextureID(inventorySlots[i].getitemID());
-
-		//inventorySlots[i].AddQuantity(5);
+	for (int i = 0; i < 9; i++) {
+		inventorySlots[i].setitemID(0);
 	}
 
 	inventorySlots[0].setitemID(39);
@@ -350,15 +317,6 @@ bool CPlayer2D::Init(void)
 	inventorySlots[1].setitemID(35);
 	inventorySlots[1].AddQuantity(5);
 	inventorySlots[1].settextureID(35);
-
-	//cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
-
-	/*inventorySlots[0].setitemID(102);
-	inventorySlots[0].AddQuantity(1);*/
-
-	/*inventorySlots[1].setitemID(70);
-	inventorySlots[1].AddQuantity(3);*/
-
 
 	return true;
 }
@@ -392,11 +350,6 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	cout << "PA" << i << " is " << getitemval(i) << endl;
-	//	//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
-	//}
 	//invincibility timer
 	{
 		if (invincibility > 0) {
@@ -409,35 +362,118 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//null
 		}
 	}
-	// Store the old position
 
-
-	/*for (int i = 0; i < 3; i++) {
-		if (inventorySlots[i].getAct() == true)
-		{
-			cout << "CURRENTLY ACTIVE IS " << i << endl;
-		}
-	}*/
-
-
-
-	//PLAY SOUND DEPENDING ON SURFACE TYPE
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
-		|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
-		walkingTime += 0.5f * dElapsedTime;
-		if (walkingTime >= 1)
+		//PLAY SOUND DEPENDING ON SURFACE TYPE
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
+			|| cKeyboardController->IsKeyDown(GLFW_KEY_S)
+			|| cKeyboardController->IsKeyDown(GLFW_KEY_D)
+			|| cKeyboardController->IsKeyDown(GLFW_KEY_W))
 		{
-			walkingTime = 1;
-		}
-		switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
-		{
-		case 99: //grass
-		{
-			//walkingTime = 0;
+			walkingTime += 0.5f * dElapsedTime;
+			if (walkingTime >= 1)
+			{
+				walkingTime = 1;
+			}
+			switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0))
+			{
+			case 99: //grass
+			{
+				//walkingTime = 0;
 
+				if (sandsfx != nullptr)
+				{
+					sandsfx->setVolume(0.f);
+					//sandsfx = nullptr;
+				}
+				if (watersfx != nullptr)
+				{
+					watersfx->setVolume(0.f);
+					//watersfx = nullptr;
+				}
+
+				ISound* grassSound = cSoundController->PlaySoundByID_2(7);
+				if (grassSound != nullptr)
+				{
+					grasssfx = grassSound;
+				}
+				if (grasssfx != nullptr)
+				{
+					grasssfx->setVolume(soundVol * walkingTime);
+				}
+
+				break;
+			}
+			case 98: //sand
+			{
+				//walkingTime = 0;
+
+				if (grasssfx != nullptr)
+				{
+					grasssfx->setVolume(0.f);
+					//grasssfx = nullptr;
+				}
+
+				if (watersfx != nullptr)
+				{
+					watersfx->setVolume(0.f);
+					//watersfx = nullptr;
+				}
+
+				ISound* sandSound = cSoundController->PlaySoundByID_2(9);
+				if (sandSound != nullptr)
+				{
+					sandsfx = sandSound;
+				}
+				if (sandsfx != nullptr)
+				{
+					sandsfx->setVolume(soundVol * walkingTime);
+				}
+				break;
+			}
+			case 97: //water
+			{
+				//walkingTime = 0;
+
+				if (grasssfx != nullptr)
+				{
+					grasssfx->setVolume(0.f);
+					//grasssfx = nullptr;
+				}
+				if (sandsfx != nullptr)
+				{
+					sandsfx->setVolume(0.f);
+					//sandsfx = nullptr;
+				}
+
+				ISound* waterSound = cSoundController->PlaySoundByID_2(8);
+				if (waterSound != nullptr)
+				{
+					watersfx = waterSound;
+				}
+				if (watersfx != nullptr)
+				{
+					watersfx->setVolume(soundVol * walkingTime);
+
+				}
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}
+
+		}
+		else
+		{
+			walkingTime = 0;
+
+			if (grasssfx != nullptr)
+			{
+				grasssfx->setVolume(0.f);
+				//grasssfx = nullptr;
+			}
 			if (sandsfx != nullptr)
 			{
 				sandsfx->setVolume(0.f);
@@ -449,100 +485,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 				//watersfx = nullptr;
 			}
 
-			ISound* grassSound = cSoundController->PlaySoundByID_2(7);
-			if (grassSound != nullptr)
-			{
-				grasssfx = grassSound;
-			}
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(soundVol * walkingTime);
-			}
-
-			break;
 		}
-		case 98: //sand
-		{
-			//walkingTime = 0;
-
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(0.f);
-				//grasssfx = nullptr;
-			}
-
-			if (watersfx != nullptr)
-			{
-				watersfx->setVolume(0.f);
-				//watersfx = nullptr;
-			}
-
-			ISound* sandSound = cSoundController->PlaySoundByID_2(9);
-			if (sandSound != nullptr)
-			{
-				sandsfx = sandSound;
-			}
-			if (sandsfx != nullptr)
-			{
-				sandsfx->setVolume(soundVol * walkingTime);
-			}
-			break;
-		}
-		case 97: //water
-		{
-			//walkingTime = 0;
-
-			if (grasssfx != nullptr)
-			{
-				grasssfx->setVolume(0.f);
-				//grasssfx = nullptr;
-			}
-			if (sandsfx != nullptr)
-			{
-				sandsfx->setVolume(0.f);
-				//sandsfx = nullptr;
-			}
-
-			ISound* waterSound = cSoundController->PlaySoundByID_2(8);
-			if (waterSound != nullptr)
-			{
-				watersfx = waterSound;
-			}
-			if (watersfx != nullptr)
-			{
-				watersfx->setVolume(soundVol* walkingTime);
-
-			}
-			break;
-		}
-		default:
-		{
-			break;
-		}
-		}
-
 	}
-	else
-	{
-		walkingTime = 0;
 
-		if (grasssfx != nullptr)
-		{
-			grasssfx->setVolume(0.f);
-			//grasssfx = nullptr;
-		}
-		if (sandsfx != nullptr)
-		{
-			sandsfx->setVolume(0.f);
-			//sandsfx = nullptr;
-		}
-		if (watersfx != nullptr)
-		{
-			watersfx->setVolume(0.f);
-			//watersfx = nullptr;
-		}
-
-	}
 	vec2OldIndex = vec2Index;
 
 	// vitals
@@ -590,14 +535,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (inventorySlots[0].getitemID() == 70)
 		{
 
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102))
 			{
 				inventorySlots[0].SubtractQuantity(1);
 
@@ -629,14 +570,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (inventorySlots[1].getitemID() == 70)
 		{
 
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102))
 			{
 				inventorySlots[1].SubtractQuantity(1);
 
@@ -670,14 +607,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 
 
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
-				/*&& direction == 1*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
-					/*	&& direction == 0*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102)
-					/*	&& direction == 3*/)
-				|| (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102)
-					/*	&& direction == 2*/))
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x, 102) ||
+				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x, 102))
 			{
 				inventorySlots[2].SubtractQuantity(1);
 
@@ -697,15 +630,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		}
 	}
-
-	//cout << "COOKING MODE " << cooking_mode << endl;
-	/*cout << "VEC Y " << campfireVec2.y << endl;
-	cout << "VEC X " << campfireVec2.x << endl;*/
-
-	/*UseHotBar(GLFW_KEY_1);
-	UseHotBar(GLFW_KEY_2);
-	UseHotBar(GLFW_KEY_3);*/
-
 
 	//TIMER TO COOK FOOD
 	if (cooking_mode)
@@ -749,12 +673,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	else if (cInventoryManager->GetItem("Hunger")->GetCount() > 0 && starveTimer > 0)
 		starveTimer = 0;
 
-
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
-
-	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	static bool walkKeyDown = false;
 	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W) || cKeyboardController->IsKeyDown(GLFW_KEY_A) || cKeyboardController->IsKeyDown(GLFW_KEY_S) || cKeyboardController->IsKeyDown(GLFW_KEY_D)) && !walkKeyDown)
@@ -778,9 +698,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
-		//CSword2D* sword = inventorySlots[2].returnSword();
-
-
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
 			attacking = false;
@@ -800,10 +717,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			leftClickDown = false;
 		}
-
-		
-
-		
 	}
 	
 	static float staminaTimer = 0;
@@ -838,16 +751,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(LEFT);
-
-			/*if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-			else
-				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-			//angle = 270;
 			direction = LEFT;
 		}
-
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_S)) {
 			if (vec2Index.y >= 0)
 			{
@@ -858,22 +763,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.y--;
 				}
 			}
-
 			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
 				vec2NumMicroSteps.y = 0;
 			}
-
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
-			/*if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-			else
-				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-			//angle = 0;
 			direction = DOWN;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -887,21 +784,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.y++;
 				}
 			}
-
 			if (!CheckPosition(UP))
 			{
 				vec2NumMicroSteps.y = 0;
 			}
-
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(UP);
-
-			/*if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-			else
-				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-
-			//angle = 180;
 			direction = UP;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
@@ -915,42 +803,30 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.x++;
 				}
 			}
-
 			if (!CheckPosition(RIGHT))
 			{
 				vec2NumMicroSteps.x = 0;
 			}
-
 			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(RIGHT);
-
-			/*if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("walkRightSW", -1, 0.1f);
-			else
-				animatedSprites->PlayAnimation("walkRight", -1, 0.15f);*/
-			//angle = 90;
 			direction = RIGHT;
 		}
 
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // top right
 		{
 			direction = TOP_RIGHT;
-			//angle = 135;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_D)) // bottom right
 		{
 			direction = BOTTOM_RIGHT;
-			//angle = 45;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_S) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // bottom left
 		{
 			direction = BOTTOM_LEFT;
-			//angle = 315;
 		}
 		else if (cKeyboardController->IsKeyDown(GLFW_KEY_W) && cKeyboardController->IsKeyDown(GLFW_KEY_A)) // top left
 		{
 			direction = TOP_LEFT;
-			//angle = 225;
 		}
 
 		static bool dodgeKeyDown = false;
@@ -977,12 +853,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
 	}
-	//std::cout << cInventoryManager->GetItem("Stamina")->GetCount() << std::endl;
-	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
-		if (staminaTimer > 0)
-			staminaTimer = 0;
+		if (staminaTimer > 0) staminaTimer = 0;
 		
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
 		cPhysics2D.SetTime(float(dElapsedTime));
@@ -1299,11 +1172,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-
 	//spawn projectile logic
 	{
-		//replace with mouse control
-		
 		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
 		{
 			if (ProjectileForce < maxPForce)
@@ -1312,7 +1182,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
 		{
-			//replace with mouse position
 			attackDirection = direction;
 			//min force
 			if (ProjectileForce > minPForce) {		//throw if force is high enough
@@ -1354,12 +1223,8 @@ void CPlayer2D::Update(const double dElapsedTime)
  */
 void CPlayer2D::PreRender(void)
 {
-	// Activate blending mode
-	// Activate blending mode
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// Activate the shader
 	CShaderManager::GetInstance()->Use(sShaderName);
 }
 
@@ -1394,12 +1259,6 @@ void CPlayer2D::Render(void)
 	glActiveTexture(GL_TEXTURE0);
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
-
-	/*
-		//Render the Player sprite
-		glBindVertexArray(VAO);
-		quadMesh->Render();
-	*/
 
 	animatedSprites->Render();
 
@@ -1473,66 +1332,10 @@ bool CPlayer2D::getActive(int arr)
 	return inventorySlots[arr].getAct();
 }
 
-
-
-bool CPlayer2D::reset_pos()
-{
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
-
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::i32vec2(0, 0);
-	ProjectileForce = 0;
-
-	walkingTime = 0;
-
-	angle = 0;
-
-	direction = RIGHT;
-
-	soundVol = 1.f;
-
-	throwing = false;
-	maxPForce = 10;
-	minPForce = 5;
-	ProjectileForce = 0;
-
-	// vitals
-	invincibility = 0;
-
-	dashTrue = true;
-
-	movementSpeed = 1.f;
-	attacking = false;
-	attackTimer = 0;
-
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-
-	//CS: Init the color to white
-	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-	return true;
-	
-}
-
 void CPlayer2D::InteractWithMap(void)
 {
-
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-	/*std::cout << cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0) << ", "
-		<< cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1) << std::endl;*/
-		//background switch
+	unsigned int uiRow = -1; unsigned int uiCol = -1;
+	//background switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 0)) {
 	case 97:		//water
 		//disable dash
@@ -1546,8 +1349,6 @@ void CPlayer2D::InteractWithMap(void)
 		//slows by abit
 		movementSpeed = 0.7f;
 		break;
-
-	
 	default:
 		movementSpeed = 1.f;
 		dashTrue = true;
@@ -1557,7 +1358,7 @@ void CPlayer2D::InteractWithMap(void)
 	//foreground switch
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1)) {
 	case 80:		//cross
-		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) /*&& shovelcheck*/
+		if (cKeyboardController->IsKeyDown(GLFW_KEY_E)
 			&& ((inventorySlots[0].getitemID() == 89 && inventorySlots[0].getAct() == true)
 				|| (inventorySlots[1].getitemID() == 89 && inventorySlots[1].getAct() == true)
 				|| (inventorySlots[2].getitemID() == 89 && inventorySlots[2].getAct() == true))) {
@@ -1591,8 +1392,7 @@ void CPlayer2D::InteractWithMap(void)
 			EInteractDown = true;
 			cMap2D->SetCurrentLevel(1);
 			uiRow = -1; uiCol = -1;
-			if (cMap2D->FindValue(77, uiRow, uiCol) == true)
-			{
+			if (cMap2D->FindValue(77, uiRow, uiCol) == true) {
 				vec2Index.x = uiCol;
 				vec2Index.y = uiRow;
 			}
@@ -1603,7 +1403,6 @@ void CPlayer2D::InteractWithMap(void)
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
 			EInteractDown = false;
 		}
-		//cGameManager->bLevelIncrease = true;
 		break;
 	}
 	case 77:		//dungeon ladderup
@@ -1613,8 +1412,7 @@ void CPlayer2D::InteractWithMap(void)
 			EInteractDown = true;
 			cMap2D->SetCurrentLevel(0);
 			uiRow = -1; uiCol = -1;
-			if (cMap2D->FindValue(78, uiRow, uiCol) == true)
-			{
+			if (cMap2D->FindValue(78, uiRow, uiCol) == true) {
 				vec2Index.x = uiCol;
 				vec2Index.y = uiRow;
 			}
@@ -1625,7 +1423,6 @@ void CPlayer2D::InteractWithMap(void)
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_E) && EInteractDown) {
 			EInteractDown = false;
 		}
-		//cGameManager->bLevelDecrease = true;
 		break;
 	}
 
