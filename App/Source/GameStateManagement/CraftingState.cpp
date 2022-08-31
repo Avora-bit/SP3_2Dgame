@@ -173,7 +173,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 		//ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		ImGui::SetWindowPos(ImVec2((CSettings::GetInstance()->iWindowWidth * 0.60),
-			(CSettings::GetInstance()->iWindowHeight / 3.4f)));
+			(CSettings::GetInstance()->iWindowHeight / 2.4f)));
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
