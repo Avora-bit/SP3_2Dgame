@@ -273,22 +273,36 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
-	cInventoryItem = cInventoryManager->Add("pHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("pHilt", "Image/Sp3Images/Weapons/Hilts/ironHilt.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("wHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("wHilt", "Image/Sp3Images/Weapons/Hilts/platinumHilt.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("iHilt", "Image/Sp3Images/Weapons/Hilts/shovel.tga", 5, 0);
+	cInventoryItem = cInventoryManager->Add("iHilt", "Image/Sp3Images/Weapons/Hilts/woodenHilt.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
+
+	cInventoryItem = cInventoryManager->Add("cBlade", "Image/Sp3Images/Weapons/Blades/placeholder_CleaverBlade.png", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("kBlade", "Image/Sp3Images/Weapons/Blades/placeholder_KatanaBlade.png", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("rBlade", "Image/Sp3Images/Weapons/Blades/placeholder_RustyBlade.png", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/placeholder_DaggerBlade.png", 5, 0);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	/*cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);
+	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);*/
 
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
-	cInventoryManager->Add(sword);
+	//sword = inventorySlot[i].getsword(i);
+	/*CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	cInventoryManager->Add(sword);*/
 
 	//sword->replaceBlade(new CDaggerBlade2D());
 
@@ -305,7 +319,16 @@ bool CPlayer2D::Init(void)
 	//set inventory slots to 0 at the start of the game
 	for (int i = 0; i < 9; i++)
 	{
-		inventorySlots[i].setitemID(0);
+
+		/*if (i < 7)
+		{
+			inventorySlots[i].setitemID(39 - i);
+			inventorySlots[i].AddQuantity(5);
+		}
+		else
+		{*/
+			inventorySlots[i].setitemID(0);
+		//}
 		/*if (i % 2 == 0)
 		{
 			inventorySlots[i].setitemID(30);
@@ -320,6 +343,13 @@ bool CPlayer2D::Init(void)
 		//inventorySlots[i].AddQuantity(5);
 	}
 
+	inventorySlots[0].setitemID(39);
+	inventorySlots[0].AddQuantity(5);
+	inventorySlots[0].settextureID(39);
+
+	inventorySlots[1].setitemID(35);
+	inventorySlots[1].AddQuantity(5);
+	inventorySlots[1].settextureID(35);
 
 	//cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
 
@@ -747,7 +777,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
+		//CSword2D* sword = inventorySlots[2].returnSword();
+
 
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
@@ -768,6 +800,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			leftClickDown = false;
 		}
+
+		
+
+		
 	}
 	
 	static float staminaTimer = 0;
@@ -1816,8 +1852,7 @@ void CPlayer2D::setitem(int arr, int itemid)
 {
 	inventorySlots[arr].setitemID(itemid);
 	inventorySlots[arr].settextureID(itemid);
-	//inventorySlots[arr].loadimagebasedID(inventorySlots[arr].getitemID(), il);
-
+	
 }
 
 void CPlayer2D::setitemquantity(int arr, int quantity)

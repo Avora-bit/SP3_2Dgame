@@ -264,7 +264,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 	}
 	
-	//FOR INVENTORY TESTING PURPOSES - REAGAN
+	//ALSO COLLECTIBLES - REAGAN
 	{
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/stick.tga", true);
 		if (iTextureID == 0)
@@ -277,6 +277,9 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(30, iTextureID));
 		}
 
+
+
+
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/wood.tga", true);
 		if (iTextureID == 0)
 		{
@@ -287,6 +290,44 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			MapOfTextureIDs.insert(pair<int, int>(40, iTextureID));
 		}
+
+
+
+
+		/*cInventoryItem = cInventoryManager->Add("pHilt", "Image/Sp3Images/Weapons/Hilts/ironHilt.png", 5, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+		cInventoryItem = cInventoryManager->Add("wHilt", "Image/Sp3Images/Weapons/Hilts/platinumHilt.png", 5, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+		cInventoryItem = cInventoryManager->Add("iHilt", "Image/Sp3Images/Weapons/Hilts/woodenHilt.png", 5, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);*/
+
+		/*case 39:
+			textureID = cInventoryManager->GetItem("pHilt")->GetTextureID();
+			hilt = new CPlatinumHilt2D();
+			break;
+		case 38:
+			textureID = cInventoryManager->GetItem("wHilt")->GetTextureID();
+			hilt = new CWoodenHilt2D();
+			break;
+		case 37:
+			textureID = cInventoryManager->GetItem("iHilt")->GetTextureID();
+			hilt = new CIronHilt2D();
+			break;*/
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Hilts/platinumHilt.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to loadImage/Sp3Images/Weapons/Hilts/platinumHilt.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(39, iTextureID));
+		}
+
+
 
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Campfire.tga", true);
 		if (iTextureID == 0)

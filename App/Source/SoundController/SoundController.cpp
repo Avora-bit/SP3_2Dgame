@@ -17,7 +17,7 @@ CSoundController::CSoundController(void)
 	, vec3dfListenerPos(vec3df(0, 0, 0))
 	, vec3dfListenerDir(vec3df(0, 0, 1))
 	,musicsfx(NULL)
-	, musicVol( 0.4f) 
+	, musicVol( 0.001f) 
 	//, currentlyPlaying(0)
 {
 }
@@ -67,7 +67,9 @@ bool CSoundController::Init(void)
 	return true;
 
 	//musicVol = 0.001f;
-	musicVol = 1.0f;
+	//musicVol = 1.0f;
+	musicVol = 0.001f;
+
 
 	//currentlyPlaying = 0;
 

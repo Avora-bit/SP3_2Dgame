@@ -49,6 +49,10 @@ CCraftingState::CCraftingState(void)
 	, hotbar(NULL)
 	, il(NULL)
 	, recipebook(NULL)
+	, sword(NULL)
+	, hilt (NULL)
+	, blade(NULL)
+	, cInventoryManager(NULL)
 {
 
 }
@@ -79,7 +83,7 @@ bool CCraftingState::Init(void)
 	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
-
+	cInventoryManager  = CInventoryManager::GetInstance();
 
 	cSettings = CSettings::GetInstance();
 
@@ -260,6 +264,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							{
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(0);
+								butnum[n].setSword(nullptr);
 							}
 
 							//REDUCE THE QUANTITY IN HOTBAR AS WELL
@@ -282,6 +287,38 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
 				butnum[n].settextureID(butnum[n].getitemID());
 
+				//IF OUTPUT HAS SWORDID
+				if (butnum[n].getitemID() == 50)
+				{
+					//FIND THE HILT AND BLADE
+					for (int i = 0; i < 9; i++)
+					{
+						if (butnum[i].getitemID() != 0)
+						{
+							//IF IT'S A BLADE
+							if (butnum[i].returnBlade() != nullptr)
+							{
+								//cout << "IT'S BLADE " << butnum[i].returnBlade() << endl;
+								//butnum[i].setBlade(butnum[i].getitemID());
+								blade = butnum[i].returnBlade();
+								continue;
+							}
+							//IF IT'S A HILT
+							if (butnum[i].returnHilt() != nullptr)
+							{
+								//cout << "IT'S HILT " << butnum[i].returnHilt() << endl;
+								//butnum[i].setHilt(butnum[i].getitemID());
+								hilt = butnum[i].returnHilt();
+								continue;
+							}
+							
+						}
+					}
+					//MAKE NEW SWORD
+					sword = new CSword2D(hilt, blade);
+					butnum[n].setSword(sword);
+				}
+
 				//BRING OUTPUT ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
@@ -292,9 +329,15 @@ bool CCraftingState::Update(const double dElapsedTime)
 							//IF ITEM IS EMPTY
 							if (butnum[x].getitemID() == 0)
 							{
-								//set in inventiory slot 
+								//set in inventory slot 
 								butnum[x].setitemID(butnum[n].getitemID());
 								butnum[x].settextureID(butnum[x].getitemID());
+								//IF THERES SWORD INSIDE
+								if (butnum[x].returnSword() != nullptr)
+								{
+									butnum[x].setSword(butnum[n].returnSword());
+									cInventoryManager->Add(butnum[n].returnSword());
+								}
 								butnum[x].AddQuantity(1);
 
 								//set the inventory to the item
@@ -311,6 +354,11 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
+								//IF THERES SWORD INSIDE
+								if (butnum[n].returnSword() != nullptr)
+								{
+									butnum[n].setSword(nullptr);
+								}
 
 								break;
 							}
@@ -349,7 +397,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 					//PAYLOAD_N IS WHAT IS SELECTED TO DRAG
 					//N IS WHAT IT'S BEEN SELECTED TO BE DRAGGED TO
 
-					//IF ITEM IS NOT DRAGGED INTO INVENTORY
+					//IF ITEM IS DRAGGED INTO CRAFTING SECTION
 					if (n < 9)
 					{
 						if (butnum[n].getitemID() == 0)
@@ -358,6 +406,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							butnum[n].setitemID(tmp);
 							butnum[n].settextureID(butnum[n].getitemID());
 							butnum[n].AddQuantity(1);
+
 							butnum[payload_n].SubtractQuantity(1);
 						}
 					}
@@ -400,10 +449,11 @@ bool CCraftingState::Update(const double dElapsedTime)
 			{
 				butnum[n].setitemID(0);
 				butnum[n].settextureID(0);
+				butnum[n].setSword(nullptr);
+
 			}
 
 
-			//IF ITEM IS A HILT AND BLADE
 		}
 		ImGui::End();
 	}
@@ -490,3 +540,10 @@ void CCraftingState::setquantity(int arr, int quantity)
 {
 	butnum[arr].setquantity(quantity);
 }
+
+CSword2D* CCraftingState::getsword(int arr)
+{
+	return butnum[arr].returnSword();
+}
+
+
