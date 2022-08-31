@@ -303,7 +303,7 @@ bool CPlayer2D::Init(void)
 	inventorySlots[1].AddQuantity(5);
 	inventorySlots[1].settextureID(35);
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
 
 	return true;
@@ -538,9 +538,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (inventorySlots[0].getitemID() == 81)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(30);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(80);
 			inventorySlots[0].SubtractQuantity(1);
 		}
 	}
@@ -573,9 +573,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (inventorySlots[1].getitemID() == 81)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(30);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(80);
 			inventorySlots[1].SubtractQuantity(1);
 
 		}
@@ -610,9 +610,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (inventorySlots[2].getitemID() == 81)
 		{
 			cInventoryItem = cInventoryManager->GetItem("Health");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(30);
 			cInventoryItem = cInventoryManager->GetItem("Hunger");
-			cInventoryItem->Add(20);
+			cInventoryItem->Add(80);
 			inventorySlots[2].SubtractQuantity(1);
 
 		}
