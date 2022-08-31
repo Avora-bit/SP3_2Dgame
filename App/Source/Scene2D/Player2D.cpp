@@ -766,24 +766,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword")
-		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
-		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
-		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
-		&& CCraftingState::GetInstance() ->getsword() != nullptr)
+	if (cInventoryManager->Check("Sword"))
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
-		//CSword2D* sword = inventorySlots[2].returnSword();
-
-		//ADD SWORD
-		/*if (butnum[n].getitemID() == 50)
-		{
-			sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
-			cInventoryManager->Add(sword);
-		}*/
-
+		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
 			attacking = false;
@@ -803,11 +790,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			leftClickDown = false;
 		}
-
-		
-
-		
-	}
+}
 	else
 	{
 		//cout << "SWORD IS NULLPTR" << endl;
@@ -988,6 +971,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
+		static float dodgeTimer = 0;
+		dodgeTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
 		
@@ -1300,8 +1285,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
+		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dodgeTimer >= 1.5)
 		{
+			dodgeTimer = 0;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 	}

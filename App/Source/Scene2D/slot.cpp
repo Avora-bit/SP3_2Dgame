@@ -16,11 +16,6 @@ slot::slot()
 	active = false;
 	cInventoryManager = CInventoryManager::GetInstance();
 
-
-
-	hilt = nullptr;
-	blade = nullptr;
-	sword = nullptr;
 	//cInventoryItem= CInventoryItem::GetIns
 }
 
@@ -155,4 +150,9 @@ slot::~slot()
 
 	/*delete il;
 	il = nullptr;*/
+}
+
+CInventoryItem* slot::getInventoryItem()
+{
+	return cInventoryItem;
 }
