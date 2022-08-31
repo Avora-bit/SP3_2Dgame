@@ -27,6 +27,8 @@
 class CMap2D;
 class Camera;
 
+#include "../GameStateManagement/GameStateBase.h"
+
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
 #include "Inputs\MouseController.h"
@@ -43,6 +45,8 @@ class Camera;
 #include "GameManager.h"
 
 #include "slot.h"
+
+
 
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
@@ -97,6 +101,7 @@ protected:
 	CKeyboardController* cKeyboardController;
 	CMouseController* cMouseController;
 
+	CGameStateBase* cGameStateBase;
 	CPhysics2D cPhysics2D;
 
 	CInventoryManager* cInventoryManager;

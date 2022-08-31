@@ -15,6 +15,12 @@ slot::slot()
 	
 	active = false;
 	cInventoryManager = CInventoryManager::GetInstance();
+
+
+
+	hilt = nullptr;
+	blade = nullptr;
+	sword = nullptr;
 	//cInventoryItem= CInventoryItem::GetIns
 }
 
@@ -40,6 +46,38 @@ void slot::settextureID(int itemid)
 	case 40:
 		textureID = cInventoryManager->GetItem("Wood")->GetTextureID();
 		break;
+	//HILTS
+	case 39:
+		textureID = cInventoryManager->GetItem("pHilt")->GetTextureID();
+		//hilt = new CPlatinumHilt2D();
+		break;
+	case 38:
+		textureID = cInventoryManager->GetItem("wHilt")->GetTextureID();
+		//hilt = new CWoodenHilt2D();
+		break;
+	case 37:
+		textureID = cInventoryManager->GetItem("iHilt")->GetTextureID();
+		//hilt = new CIronHilt2D();
+		break;
+	//
+	//BLADES
+	case 36:
+		textureID = cInventoryManager->GetItem("rBlade")->GetTextureID();
+		//blade = new CRustyBlade2D();
+		break;
+	case 35:
+		textureID = cInventoryManager->GetItem("dBlade")->GetTextureID();
+		//blade = new CDaggerBlade2D();
+		break;
+	case 34:
+		textureID = cInventoryManager->GetItem("cBlade")->GetTextureID();
+		//blade = new CCleaverBlade2D();
+		break;
+	case 33:
+		textureID = cInventoryManager->GetItem("kBlade")->GetTextureID();
+		//blade = new CKatanaBlade2D();
+		break;
+	//
 	case 102:
 		textureID = cInventoryManager->GetItem("Campfire")->GetTextureID();
 		break;
@@ -88,11 +126,8 @@ void slot::AddQuantity(int amt)
 
 void slot::SubtractQuantity(int amt)
 {
-
 	quantity -= amt;
 }
-
-
 
 
 

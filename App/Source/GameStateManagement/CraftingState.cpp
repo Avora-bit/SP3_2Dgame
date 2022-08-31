@@ -49,6 +49,10 @@ CCraftingState::CCraftingState(void)
 	, hotbar(NULL)
 	, il(NULL)
 	, recipebook(NULL)
+	, sword(NULL)
+	, hilt (NULL)
+	, blade(NULL)
+	, cInventoryManager(NULL)
 {
 
 }
@@ -79,7 +83,7 @@ bool CCraftingState::Init(void)
 	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
 	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton2.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);*/
-
+	cInventoryManager  = CInventoryManager::GetInstance();
 
 	cSettings = CSettings::GetInstance();
 
@@ -282,6 +286,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 				butnum[n].setitemID( recipebook->CheckRecipe(gridrecipe));
 				butnum[n].settextureID(butnum[n].getitemID());
 
+
 				//BRING OUTPUT ITEM TO INVENTORY	
 				if (ImGui::IsItemHovered())
 				{
@@ -292,7 +297,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							//IF ITEM IS EMPTY
 							if (butnum[x].getitemID() == 0)
 							{
-								//set in inventiory slot 
+								//set in inventory slot 
 								butnum[x].setitemID(butnum[n].getitemID());
 								butnum[x].settextureID(butnum[x].getitemID());
 								butnum[x].AddQuantity(1);
@@ -311,10 +316,20 @@ bool CCraftingState::Update(const double dElapsedTime)
 								//empty the output slot
 								butnum[n].setitemID(0);
 								butnum[n].settextureID(butnum[n].getitemID());
+								
 
 								break;
 							}
 						}
+
+						//ADD SWORD
+						if (butnum[n].getitemID() == 50)
+						{
+							sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+							cInventoryManager->Add(sword);
+
+						}
+
 					}
 				}
 			}
@@ -349,7 +364,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 					//PAYLOAD_N IS WHAT IS SELECTED TO DRAG
 					//N IS WHAT IT'S BEEN SELECTED TO BE DRAGGED TO
 
-					//IF ITEM IS NOT DRAGGED INTO INVENTORY
+					//IF ITEM IS DRAGGED INTO CRAFTING SECTION
 					if (n < 9)
 					{
 						if (butnum[n].getitemID() == 0)
@@ -358,6 +373,7 @@ bool CCraftingState::Update(const double dElapsedTime)
 							butnum[n].setitemID(tmp);
 							butnum[n].settextureID(butnum[n].getitemID());
 							butnum[n].AddQuantity(1);
+
 							butnum[payload_n].SubtractQuantity(1);
 						}
 					}
@@ -400,10 +416,10 @@ bool CCraftingState::Update(const double dElapsedTime)
 			{
 				butnum[n].setitemID(0);
 				butnum[n].settextureID(0);
+
 			}
 
 
-			//IF ITEM IS A HILT AND BLADE
 		}
 		ImGui::End();
 	}
@@ -490,3 +506,11 @@ void CCraftingState::setquantity(int arr, int quantity)
 {
 	butnum[arr].setquantity(quantity);
 }
+
+CSword2D* CCraftingState::getsword()
+{
+
+	return sword;
+}
+
+

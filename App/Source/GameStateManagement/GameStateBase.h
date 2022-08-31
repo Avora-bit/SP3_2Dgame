@@ -1,4 +1,5 @@
 #pragma once
+#include "../Scene2D/Sword2D.h"
 
 /**
  CGameStateBase
@@ -36,4 +37,8 @@ public:
 	virtual int return_butnumQuantity(int arr) {
 		return arr;
 	}
+
+	
+	
+
 };

@@ -33,6 +33,8 @@
 #include "../Scene2D/Player2D.h"
 #include "GameControl/Settings.h"
 
+#include "../Scene2D/InventoryManager.h"
+
  // Include IMGUI
  // Important: GLEW and GLFW must be included before IMGUI
 #ifndef IMGUI_ACTIVE
@@ -43,6 +45,20 @@
 #endif
 
 #include "DesignPatterns\SingletonTemplate.h"
+
+#include "../Scene2D/Sword2D.h"
+
+
+#include "../Scene2D/Hilt2D.h"
+#include "../Scene2D/PlatinumHilt2D.h"
+#include "../Scene2D/WoodenHilt2D.h"
+#include "../Scene2D/IronHilt2D.h"
+
+#include "../Scene2D/Blade2D.h"
+#include "../Scene2D/KatanaBlade2D.h"
+#include "../Scene2D/DaggerBlade2D.h"
+#include "../Scene2D/CleaverBlade2D.h"
+#include "../Scene2D/RustyBlade2D.h"
 
 class CCraftingState : public CGameStateBase, public CSingletonTemplate<CCraftingState>
 {
@@ -74,15 +90,22 @@ public:
 	void setquantity(int arr, int quantity);
 	//butnum[i].setitemID(0);
 
+	CSword2D* getsword();
 
 protected:
 	ImGuiPayload ig;
 
 	CMouseController* cMouseController;
 
+
+	CInventoryManager* cInventoryManager;
 	CPlayer2D* cPlayer2D;
 	
 	CMap2D* cMap2D;
+
+	CHilt2D* hilt;
+	CBlade2D* blade;
+	CSword2D* sword;
 
 	CSettings* cSettings;
 
