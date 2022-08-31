@@ -175,12 +175,46 @@ public:
 		tempmap.clear();
 	}
 
-	void placeRuins(int ruinarray) {
-		//choose random position
-
-		//check if position has open 5x5 space
-
+	void placeRuins(vector<int> ruinarray, int row, int col) {
+		bool checkPos = false;
+		int randx = -1;
+		int randy = -1;
+		while (!checkPos) {
+			//choose random position
+			randx = rand() % width;
+			randy = rand() % height;
+			if (randx < 0 || randx >(width - (row + 1)) ||
+				randy < 0 || randy >(height - (col + 1))) {		//bounds check
+				continue;
+			}
+			else {
+				//check if position has open 5x5 space
+				vector<int> temp;
+				for (int i = 0; i < col; i++) {
+					for (int j = 0; j < row; j++) {
+						//check from top left
+						temp.push_back(Coord2Index(randx + j, randy + i));
+					}
+				}
+				for (int i = 0; i < temp.size(); i++) {
+					if (coremap.at(temp.at(i)) != Grass) {
+						checkPos = false;
+						break;
+					}
+					else {
+						checkPos = true;
+					}
+				}
+			}
+		}
 		//replace land with the structure
+		std::cout << "Dungeon is at: " << randx << ", " << randy << std::endl;
+		for (int i = 0; i < col; i++) {
+			for (int j = 0; j < row; j++) {
+				//check from top left
+				coremap.at(Coord2Index(randx + i, randy + j)) = ruinarray[j + i * row];
+			}
+		}
 	}
 
 	char getTile(int x, int y) const

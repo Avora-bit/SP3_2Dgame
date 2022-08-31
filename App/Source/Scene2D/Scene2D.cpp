@@ -169,7 +169,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		}
 
 		island->deleteall(MapGen::Grass);			//delete all grass
-		island->deleteall(MapGen::BrickFloor);			//delete all grass
+		island->deleteall(MapGen::BrickFloor);			//delete all brickfloor
 
 		//spawn structure with ladderdown
 
