@@ -181,6 +181,10 @@ protected:
 
 	map<int, int> MapOfTextureIDs;
 
+	int octopusKillCount;
+	int spiderKillCount;
+	int chickenKillCount;
+	int skeletonKillCount;
 
 public:
 	DIRECTION getAttackDirection();
@@ -196,6 +200,17 @@ public:
 
 	int getitemval(int arr);
 	int gettextureid(int arr);
+
+	int getOctopusKillCount();
+	int getSpiderKillCount();
+	int getChickenKillCount();
+	int getSkeletonKillCount();
+
+	void addOctopusKillCount(int kill);
+	void addSpiderKillCount(int kill);
+	void addChickenKillCount(int kill);
+	void addSkeletonKillCount(int kill);
+
 
 	void setsound(float vol);
 	float returnsound();

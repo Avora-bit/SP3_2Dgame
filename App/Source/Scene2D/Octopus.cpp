@@ -88,8 +88,16 @@ void Octopus::Update(const double dElapsedTime)
 	if (health <= 0)
 	{
 		bIsActive = false;
-		//SPAWN FOOD IF DEAD
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
+		// spawn loot
+		int i = rand() % 5;
+		if (i == 3)
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 10);
+		}
+		else if (i > 3)
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 20);
+		// add kill counter
+		cPlayer2D->addOctopusKillCount(1);
 	}
 	switch (sCurrentFSM)
 	{

@@ -87,8 +87,16 @@ void Spider::Update(const double dElapsedTime)
 	if (health <= 0)
 	{
 		bIsActive = false;
-		//SPAWN FOOD IF DEAD
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
+		// spawn loot
+		int i = rand() % 5;
+		if (i == 3)
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 11);
+		}
+		else if (i > 3)
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 21);
+		// add kill counter
+		cPlayer2D->addSpiderKillCount(1);
 	}
 
 	switch (sCurrentFSM)

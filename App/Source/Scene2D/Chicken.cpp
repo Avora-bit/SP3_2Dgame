@@ -96,6 +96,8 @@ void Chicken::Update(const double dElapsedTime)
 		bIsActive = false;
 		//SPAWN FOOD IF DEAD
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 70);
+		// add kill counter
+		cPlayer2D->addChickenKillCount(1);
 	}
 
 	switch (sCurrentFSM)

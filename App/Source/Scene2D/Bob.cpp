@@ -84,12 +84,14 @@ bool Bob::Init(void)
 void Bob::Update(const double dElapsedTime)
 {
 	timer += dElapsedTime;
-
 	if (!bIsActive)
 		return;
 
 	if (health <= 0)
+	{
 		bIsActive = false;
+		CGameManager::GetInstance()->bPlayerWon = true;
+	}
 
 	switch (sCurrentFSM)
 	{

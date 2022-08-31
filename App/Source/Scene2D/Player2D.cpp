@@ -305,8 +305,8 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);*/
 
 
-	//sword = inventorySlot[i].getsword(i);
-	/*CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	/*sword = inventorySlot[i].getsword(i);*/
+	/*CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CKatanaBlade2D());
 	cInventoryManager->Add(sword);*/
 
 	//sword->replaceBlade(new CDaggerBlade2D());
@@ -364,7 +364,10 @@ bool CPlayer2D::Init(void)
 	/*inventorySlots[1].setitemID(70);
 	inventorySlots[1].AddQuantity(3);*/
 
-
+	octopusKillCount = 0;
+	chickenKillCount = 0;
+	spiderKillCount = 0;
+	skeletonKillCount = 0;
 	return true;
 }
 
@@ -397,11 +400,31 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	cout << "PA" << i << " is " << getitemval(i) << endl;
-	//	//cout << "player array" << i << " is " << hotbar->return_hbcellid(i) << endl;
-	//}
+	// add attributes when kill count is met
+	if (octopusKillCount >= 5)
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->getHilt()->addWide(1);
+		octopusKillCount = 0;
+	}
+	if (chickenKillCount >= 5)
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->getHilt()->addLight(1);
+		chickenKillCount = 0;
+	}
+	if (spiderKillCount >= 3)
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->getHilt()->addRavenous(1);
+		spiderKillCount = 0;
+	}
+	if (skeletonKillCount >= 1)
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->getHilt()->addSharp(1);
+		skeletonKillCount = 0;
+	}
 	//invincibility timer
 	{
 		if (invincibility > 0) {
@@ -414,17 +437,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			//null
 		}
 	}
-	// Store the old position
-
-
-	/*for (int i = 0; i < 3; i++) {
-		if (inventorySlots[i].getAct() == true)
-		{
-			cout << "CURRENTLY ACTIVE IS " << i << endl;
-		}
-	}*/
-
-
 
 	//PLAY SOUND DEPENDING ON SURFACE TYPE
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A)
@@ -766,15 +778,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword")
-		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
-		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
-		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
-		&& CCraftingState::GetInstance() ->getsword() != nullptr)
+	if (cInventoryManager->Check("Sword"))
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		//CSword2D* sword = inventorySlots[2].returnSword();
 
 		//ADD SWORD
@@ -803,10 +811,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			leftClickDown = false;
 		}
-
-		
-
-		
 	}
 	else
 	{
@@ -1592,7 +1596,7 @@ void CPlayer2D::InteractWithMap(void)
 		//prevent dash
 		break;
 	case 78:		//dungeon ladderdown
-	{	
+	{
 		static bool EInteractDown = false;
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_E) && !EInteractDown) {
 			EInteractDown = true;
@@ -1653,7 +1657,48 @@ void CPlayer2D::InteractWithMap(void)
 	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
 		break;
-	
+	case 10:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceBlade(new CDaggerBlade2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
+	case 11:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceBlade(new CCleaverBlade2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
+	case 12:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceBlade(new CKatanaBlade2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
+	case 20:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceHilt(new CWoodenHilt2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
+	case 21:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceHilt(new CIronHilt2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
+	case 22:
+	{
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
+		sword->replaceHilt(new CPlatinumHilt2D());
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0, true, 1);
+		break;
+	}
 	default:
 		//reset speed
 		//reset dash true
@@ -1885,6 +1930,26 @@ int CPlayer2D::gettextureid(int arr)
 	return inventorySlots[arr].gettextureID();
 }
 
+int CPlayer2D::getOctopusKillCount()
+{
+	return octopusKillCount;
+}
+
+int CPlayer2D::getSpiderKillCount()
+{
+	return spiderKillCount;
+}
+
+int CPlayer2D::getChickenKillCount()
+{
+	return chickenKillCount;
+}
+
+int CPlayer2D::getSkeletonKillCount()
+{
+	return skeletonKillCount;
+}
+
 void CPlayer2D::setsound(float vol)
 {
 	soundVol = vol;
@@ -1893,4 +1958,23 @@ void CPlayer2D::setsound(float vol)
 float CPlayer2D::returnsound()
 {
 	return soundVol;
+}
+
+void CPlayer2D::addOctopusKillCount(int kill)
+{
+	octopusKillCount += kill;
+}
+
+void CPlayer2D::addSpiderKillCount(int kill)
+{
+	spiderKillCount += kill;
+}
+
+void CPlayer2D::addChickenKillCount(int kill)
+{
+	chickenKillCount += kill;
+}
+void CPlayer2D::addSkeletonKillCount(int kill)
+{
+	skeletonKillCount += kill;
 }

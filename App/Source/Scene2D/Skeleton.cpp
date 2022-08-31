@@ -98,6 +98,16 @@ void Skeleton::Update(const double dElapsedTime)
 	if (health <= 0)
 	{
 		bIsActive = false;
+		// spawn loot
+		int i = rand() % 5;
+		if (i == 3)
+		{
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 12);
+		}
+		else if (i > 3)
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 22);
+		// add kill counter
+		cPlayer2D->addSkeletonKillCount(1);
 	}
 
 	if (sleep)

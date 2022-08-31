@@ -251,20 +251,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	eventcontroller = EventController::GetInstance();
 	eventcontroller->Init();
-	/*while (true)
-	{
-		Octopus* octo = new Octopus(glm::vec2(50,50));
-		octo->SetShader("Shader2D_Colour");
-
-		if (octo->Init())
-		{
-			octo->SetPlayer2D(cPlayer2D);
-			eventcontroller->spawnEnemies(octo);
-			break;
-		}
-		else
-			break;
-	}*/
 	int i = 0;
 	while (i < 10) //spawn 10 chicken
 	{
@@ -295,10 +281,10 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			{
 				spider->SetPlayer2D(cPlayer2D);
 				eventcontroller->spawnEnemies(spider);
-				i++;
+i++;
 			}
 			else
-				break;
+			break;
 		}
 	}
 	i = 0;
@@ -318,20 +304,6 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 			else
 				break;
 		}
-	}
-	while (true)
-	{
-		Bob* bob = new Bob(cPlayer2D->vec2Index);
-		bob->SetShader("Shader2D_Colour");
-
-		if (bob->Init())
-		{
-			bob->SetPlayer2D(cPlayer2D);
-			eventcontroller->spawnEnemies(bob);
-			break;
-		}
-		else
-			break;
 	}
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 
@@ -375,12 +347,9 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 
 	/*for (int i = 1; i < 5; i++)
 	{*/
-		//cSoundController->setVolume(cSoundController->return_currentMusic(), musicsfx, musicVol);
-	/*}*/
-	//cSoundController->SetMasterVolume(0.01f);
-
-
-
+	//cSoundController->setVolume(cSoundController->return_currentMusic(), musicsfx, musicVol);
+/*}*/
+//cSoundController->SetMasterVolume(0.01f);
 	return true;
 }
 
@@ -399,12 +368,37 @@ bool CScene2D::Update(const double dElapsedTime)
 
 	cMap2D->Update(dElapsedTime);
 
-
 	//vec2Destination = cPlayer2D->vec2Index;
 	//(enemy, player)
 	//CAN HEAR SOUND IF ENEMY IS CLOSE
 
 	vector<CEnemy2D*> enemies = eventcontroller->enemyVector;
+	if (cMap2D->GetCurrentLevel() == 1)
+	{
+		for (int i = 0; i < eventcontroller->enemyVector.size(); i++)
+		{
+			if (dynamic_cast<Bob*>(eventcontroller->enemyVector[i]) && eventcontroller->enemyVector[i]->bIsActive)
+			{
+				break;
+			}
+			else
+			{
+				for (CEnemy2D* enemy : enemies)
+				{
+					enemy->bIsActive = false;
+				}
+				eventcontroller->enemyVector.clear();
+				Bob* bob = new Bob(cPlayer2D->vec2Index);
+				bob->SetShader("Shader2D_Colour");
+
+				if (bob->Init())
+				{
+					bob->SetPlayer2D(cPlayer2D);
+					eventcontroller->spawnEnemies(bob);
+				}
+			}
+		}
+	}
 	float distance = cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, enemies[0]->getVec2Index());
 	for (CEnemy2D* enemy : enemies)
 	{

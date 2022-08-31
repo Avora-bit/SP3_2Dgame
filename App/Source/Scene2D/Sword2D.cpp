@@ -222,6 +222,11 @@ bool CSword2D::replaceBlade(CBlade2D* blade)
 	return true;
 }
 
+CHilt2D* CSword2D::getHilt()
+{
+	return hilt;
+}
+
 float CSword2D::getTotalDamage()
 {
 	return blade->getBaseDamage() + hilt->getSharp()*hilt->getBonusMultiplier()*5.0f;

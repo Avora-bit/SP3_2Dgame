@@ -387,17 +387,72 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 	}
 
-	// Enemy drops
+	// Enemy drops except food
 	{
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Base/rock.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Blades/daggerblade.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Image/Sp3Images/Weapons/rock.tga" << endl;
+			cout << "Image/Sp3Images/Weapons/Blades/daggerblade.tga" << endl;
 			return false;
 		}
 		else
 		{
 			MapOfTextureIDs.insert(pair<int, int>(10, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Blades/cleaverblade.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/Blades/cleaverblade.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(11, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Blades/katanablade.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/Blades/katanablade.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(12, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Hilts/woodenHilt.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/Hilts/woodenHilt.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(20, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Hilts/ironHilt.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/Hilts/ironHilt.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(21, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Hilts/platinumHilt.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/Hilts/platinumHilt.tga" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(22, iTextureID));
 		}
 	}
 

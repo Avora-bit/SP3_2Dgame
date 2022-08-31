@@ -69,6 +69,7 @@ public:
 
 	bool replaceHilt(CHilt2D* hilt);
 	bool replaceBlade(CBlade2D* blade);
+	CHilt2D* getHilt();
 
 	float getTotalDamage();
 	float getTotalRavenous();

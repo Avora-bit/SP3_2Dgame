@@ -43,10 +43,6 @@ public:
 		projectileVector.push_back(projectile);
 	}
 
-	void spawnitems(int itemID/*, location*/) {
-		cout << "itemspawn" << endl;
-	}
-
 	void update(const double dElapsedTime) {
 		for (int i = 0; i < enemyVector.size(); i++)
 		{
