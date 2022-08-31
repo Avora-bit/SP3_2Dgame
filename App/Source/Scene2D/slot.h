@@ -33,6 +33,19 @@
 using namespace std;
 #include <iostream>
 
+#include "Hilt2D.h"
+#include "PlatinumHilt2D.h"
+#include "WoodenHilt2D.h"
+#include "IronHilt2D.h"
+
+#include "Blade2D.h"
+#include "KatanaBlade2D.h"
+#include "DaggerBlade2D.h"
+#include "CleaverBlade2D.h"
+#include "RustyBlade2D.h"
+
+#include "Sword2D.h"
+
 
 class slot 
 {
@@ -49,6 +62,9 @@ private:
 
 	bool active;
 
+	CHilt2D* hilt;
+	CBlade2D* blade;
+	CSword2D* sword;
 
 public:
 	slot();
@@ -69,7 +85,15 @@ public:
 	void setAct(bool act);
 	bool getAct();
 
+	CHilt2D* returnHilt();
+	CBlade2D* returnBlade();
+	CSword2D* returnSword();
+	
 
+
+    void setSword(CSword2D* sw);
+	void setHilt(int itemid);
+	void setBlade(int itemid);
 
 
 	void setitemID(int iid);

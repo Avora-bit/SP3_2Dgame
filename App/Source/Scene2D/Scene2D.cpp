@@ -137,7 +137,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		//foreground
 		//delete water
 		island->deleteall(MapGen::Water);			//delete all water
-		//spawn player on sand
+		//spawn player
 		island->randreplace(MapGen::Player, MapGen::Sand);
 		//populate the foreground
 		//cross on sand
