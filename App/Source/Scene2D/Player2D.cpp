@@ -321,7 +321,7 @@ bool CPlayer2D::Init(void)
 
 	inventorySlots[1].setitemID(35);
 	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);*/
+	inventorySlots[1].settextureID(35);
 
 	return true;
 }
@@ -717,12 +717,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 			AttackEnemy();
 		}
-		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
-		
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking) {
 
-		
+		}
+
 	}
-	
+
 	static float staminaTimer = 0;
 	if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::DODGE)
 	{
@@ -852,7 +852,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			{
 				dodgesfx->setVolume(soundVol * .8f);
 			}
-			
+
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
@@ -860,10 +860,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		dodgeTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
-	{
-		if (staminaTimer > 0)
-			staminaTimer = 0;
-		
+
+
 		cPhysics2D.SetAcceleration(glm::vec2(-8.0f, 0.0f));
 		cPhysics2D.SetTime(float(dElapsedTime));
 		cPhysics2D.Update();
@@ -1171,7 +1169,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			break;
 		}
 		}
-		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
 		if ((cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3) || dodgeTimer >= 1.5)
 		{
@@ -1179,58 +1176,53 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 	}
-		//replace with mouse control
-		
-		//if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT) && cInventoryManager->GetItem("Shivs")->GetCount() > 0)
-		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
+
+	if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
+	{
+		//if shivs are in inventory
+		for (int i = 0; i < 9; i++)
 		{
-			//if shivs are in inventory
+			if (inventorySlots[i].getitemID() == 90)
+			{
+				if (ProjectileForce < maxPForce)
+					ProjectileForce += (3 * dElapsedTime);
+				throwing = true;
+			}
+		}
+	}
+
+	else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
+	{
+		attackDirection = direction;
+		//min force
+		if (ProjectileForce > minPForce) {		//throw if force is high enough
+			//cSoundController->PlaySoundByID(10);		//replace with fire sound
+			//reduce ammo count
+			/*cInventoryItem = cInventoryManager->GetItem("Shivs");*/
+			//cInventoryItem->Remove(1);
 			for (int i = 0; i < 9; i++)
 			{
 				if (inventorySlots[i].getitemID() == 90)
 				{
-					if (ProjectileForce < maxPForce)
-						ProjectileForce += (3 * dElapsedTime);
-					throwing = true;
+					inventorySlots[i].SubtractQuantity(1);
 				}
 			}
-		}
-				ProjectileForce += (3 * dElapsedTime);
-			throwing = true;
-		}
-		else if (cMouseController->IsButtonUp(GLFW_MOUSE_BUTTON_RIGHT) && throwing == true)
-		{
-			attackDirection = direction;
-			//min force
-			if (ProjectileForce > minPForce) {		//throw if force is high enough
-				//cSoundController->PlaySoundByID(10);		//replace with fire sound
-				//reduce ammo count
-				/*cInventoryItem = cInventoryManager->GetItem("Shivs");*/
-				//cInventoryItem->Remove(1);
-				for (int i = 0; i < 9; i++)
-				{
-					if (inventorySlots[i].getitemID() == 90)
-					{
-						inventorySlots[i].SubtractQuantity(1);
-					}
-				}
-				//spawn projectile
-				CShivs2D* Projectile_Shiv = new CShivs2D();
-				Projectile_Shiv->SetShader("Shader2D_Colour");
-				if (Projectile_Shiv->Init()) {
-					Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, -camera->playerOffset.y));
-					EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
-				}
+			//spawn projectile
+			CShivs2D* Projectile_Shiv = new CShivs2D();
+			Projectile_Shiv->SetShader("Shader2D_Colour");
+			if (Projectile_Shiv->Init()) {
+				Projectile_Shiv->setDirection(glm::vec2(camera->playerOffset.x, -camera->playerOffset.y));
+				EventController::GetInstance()->spawnProjectiles(Projectile_Shiv, getPreciseVec2Index(true));
 			}
-			//thrown, reset
-			throwing = false;
-			ProjectileForce = 0;
 		}
-		else {
-			//reset force
-			throwing = false;
-			ProjectileForce = 0;
-		}
+		//thrown, reset
+		throwing = false;
+		ProjectileForce = 0;
+	}
+	else {
+		//reset force
+		throwing = false;
+		ProjectileForce = 0;
 	}
 
 	InteractWithMap();
