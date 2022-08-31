@@ -63,12 +63,13 @@ bool Chicken::Init(void)
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	animatedSprites->AddAnimation("idle", 1, 4);
-	animatedSprites->AddAnimation("moveLeft", 4, 8);
-	animatedSprites->AddAnimation("sitLeft", 8, 12);
-	animatedSprites->AddAnimation("moveRight", 12, 16);
+	animatedSprites->AddAnimation("idle", 0, 3);
+	animatedSprites->AddAnimation("moveLeft", 4, 7);
+	animatedSprites->AddAnimation("sitLeft", 8, 11);
+	animatedSprites->AddAnimation("moveRight", 12, 15);
 	animatedSprites->PlayAnimation("moveLeft", -1, 0.3f);
 
+	cSoundController = CSoundController::GetInstance();
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 

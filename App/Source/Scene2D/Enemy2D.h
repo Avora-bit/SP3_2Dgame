@@ -153,6 +153,8 @@ protected:
 
 	Camera* camera;
 
+	CSoundController* cSoundController;
+
 	// Current FSM
 	FSM sCurrentFSM;
 

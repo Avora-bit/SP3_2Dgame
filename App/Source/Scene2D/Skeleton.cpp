@@ -68,6 +68,7 @@ bool Skeleton::Init(void)
 	animatedSprites->AddAnimation("sleep", 2, 2);
 	animatedSprites->PlayAnimation("sleep", -1, 0.3f);
 
+	cSoundController = CSoundController::GetInstance();
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -191,12 +192,13 @@ void Skeleton::Update(const double dElapsedTime)
 			}
 			else if (shotInterval <= 0)
 			{
+				cSoundController->PlaySoundByID_2(14);
 				SkeletonShot* skeletonShot = new SkeletonShot();
 				skeletonShot->SetShader("Shader2D_Colour");
 				if (skeletonShot->Init())
 				{
 					skeletonShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
-					EventController::GetInstance()->spawnProjectiles(skeletonShot, vec2Index);
+					EventController::GetInstance()->spawnProjectiles(skeletonShot, getPreciseVec2Index(true));
 				}
 				shotInterval = 5;
 			}
@@ -212,6 +214,7 @@ void Skeleton::Update(const double dElapsedTime)
 			{
 				if (attackTimer >= 1.5)
 				{
+					cSoundController->PlaySoundByID_2(13);
 					InteractWithPlayer();
 					attackTimer = 0;
 				}

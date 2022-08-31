@@ -336,6 +336,10 @@ i++;
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Fire.ogg"), 11, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\hitSound.ogg"), 12, true);
 
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyMelee.ogg"), 13, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\skeletonAttack.ogg"), 14, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\bobRangeAttack.ogg"), 15, true);
+
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
 	cSoundController->AddToPlaylist(2);

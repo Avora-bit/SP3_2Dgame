@@ -61,6 +61,7 @@ bool Spider::Init(void)
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
+	cSoundController = CSoundController::GetInstance();
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -222,12 +223,13 @@ void Spider::Update(const double dElapsedTime)
 			shotInterval -= dElapsedTime;
 			if (shotInterval <= 0)
 			{
+				cSoundController->PlaySoundByID_2(13);
 				Webshot* webShot = new Webshot();
 				webShot->SetShader("Shader2D_Colour");
 				if (webShot->Init())
 				{
 					webShot->setDirection(cPlayer2D->getPreciseVec2Index(true) - getPreciseVec2Index(true));
-					EventController::GetInstance()->spawnProjectiles(webShot, vec2Index);
+					EventController::GetInstance()->spawnProjectiles(webShot, getPreciseVec2Index(true));
 				}
 				shotInterval = 5;
 			}

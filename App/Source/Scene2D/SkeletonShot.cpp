@@ -11,7 +11,7 @@
  */
 SkeletonShot::SkeletonShot()
 {
-	atk = 5;
+	atk = 30;
 }
 
 /**

@@ -65,6 +65,8 @@ bool Bob::Init(void)
 	animatedSprites->AddAnimation("default", 0, 2);
 	animatedSprites->PlayAnimation("default", -1, 0.3f);
 
+	cSoundController = CSoundController::GetInstance();
+
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -172,6 +174,7 @@ void Bob::Update(const double dElapsedTime)
 				attackTimer += dElapsedTime;
 				if (attackTimer < 2)
 				{
+					cSoundController->PlaySoundByID_2(15);
 					BobShot* bobShot = new BobShot();
 					bobShot->SetShader("Shader2D_Colour");
 					if (bobShot->Init())
@@ -240,6 +243,7 @@ void Bob::Update(const double dElapsedTime)
 			{
 				if (attackTimer >= 1)
 				{
+					cSoundController->PlaySoundByID_2(13);
 					cPlayer2D->LoseHealth(atk);
 					attackTimer = 0;
 				}

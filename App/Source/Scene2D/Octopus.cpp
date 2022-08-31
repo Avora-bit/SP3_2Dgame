@@ -60,9 +60,8 @@ bool Octopus::Init(void)
 	}
 
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 1, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//animatedSprites->AddAnimation("idle", 1, 1);
 
-	//animatedSprites->PlayAnimation("idle", -1, 0.3f);
+	cSoundController = CSoundController::GetInstance();
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -169,6 +168,7 @@ void Octopus::Update(const double dElapsedTime)
 			{
 				if (attackTimer >= 1)
 				{
+					cSoundController->PlaySoundByID_2(13);
 					cPlayer2D->LoseHealth(atk);
 					attackTimer = 0;
 				}
