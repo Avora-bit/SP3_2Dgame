@@ -1,9 +1,10 @@
 # SP3_2Dgame
 
 Storyline
-stuff
 player wakes up on shore
 wants to get off the island
+explores the island while surviving
+find a ruined house with 
 
 Objectives
 survive

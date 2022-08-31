@@ -117,15 +117,19 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 		island->growtile(MapGen::Sand);			//grow sand
 
 		vector<int>structure_ruins = {		//5,5 structure
-			101,96, 101,96, 101,
-			101,96, 96, 96, 101,
-			101,96, 78, 96, 96,
-			101,96, 96, 96, 96,
-			96, 101,96, 101,101
+			99,99,99,96,101,96,101,101,96,
+			96,99,96,96,101,99,99,101,99,
+			96,99,101,96,101,99,99,101,99,
+			96,101,101,96,96,99,101,101,101,
+			96,101,96,96,78,96,96,96,101,
+			99,101,96,96,96,96,101,96,101,
+			99,96,96,96,96,96,101,96,101,
+			101,96,101,96,96,101,96,96,96,
+			96,101,101,101,101,96,96,96,96,
 		};
 
 		//place structure
-		island->placeRuins(structure_ruins, 5, 5);
+		island->placeRuins(structure_ruins, 9, 9);
 
 		string BGfilename = "Maps/IslandBG.csv";
 		island->exportmap(BGfilename, 0);
