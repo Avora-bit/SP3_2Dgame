@@ -118,7 +118,7 @@ bool CPauseState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/10.0 , 
 			CSettings::GetInstance()->iWindowHeight/3.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
@@ -127,18 +127,19 @@ bool CPauseState::Update(const double dElapsedTime)
 		style.FrameRounding = 200.0f;
 
 		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "In-Game Menu");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "VOLUME");
 
 
 		if (ImGui::SliderFloat("Music", &musicvol, 0, 100))
 		{
-
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "MUSIC");
 			cSoundController->setmusicvol(musicvol / 100);
 
 		}
 
 		if (ImGui::SliderFloat("Sound", &soundvol, 10, 100))
 		{
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "SOUND");
 			//cScene2D->setsoundvol(soundvol / 100);
 			cPlayer2D->setsound(soundvol / 100);
 
