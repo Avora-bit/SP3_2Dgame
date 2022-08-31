@@ -148,6 +148,8 @@ bool CPlayer2D::Init(void)
 	cMap2D = CMap2D::GetInstance();
 
 	cGameManager = CGameManager::GetInstance();
+
+	cInventoryManager = CInventoryManager::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = 1;
 	unsigned int uiCol = 1;
@@ -280,10 +282,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/daggerblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	/*sword = inventorySlot[i].getsword(i);*/
-	/*CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CKatanaBlade2D());
-	cInventoryManager->Add(sword);*/
-
 	//sword->replaceBlade(new CDaggerBlade2D());
 
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
@@ -301,10 +299,8 @@ bool CPlayer2D::Init(void)
 		inventorySlots[i].setitemID(0);
 	}
 
-	
-
 	//CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
-	//cInventoryManager->Add(sword);
+	//CInventoryManager::GetInstance()->Add(sword);
 
 	octopusKillCount = 0;
 	chickenKillCount = 0;

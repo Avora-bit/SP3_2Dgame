@@ -587,7 +587,7 @@ void CEnemy2D::UpdateStatus(const double dElapsedTime)
 {
 	if (status == AILMENT::NONE)
 		return;
-	std::cout << health << std::endl;
+	//std::cout << health << std::endl;
 	if (statusTimer > 0)
 	{
 		statusTimer -= dElapsedTime;
