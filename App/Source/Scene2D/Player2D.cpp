@@ -791,8 +791,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				vec2Index.x = vec2OldIndex.x;
 				vec2NumMicroSteps.x = 0;
 			}
-
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(LEFT);
 
 			/*if (hasSword || chargeSword)
@@ -821,15 +819,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				vec2Index.y = vec2OldIndex.y;
 				vec2NumMicroSteps.y = 0;
 			}
-
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
-			/*if (hasSword || chargeSword)
-				animatedSprites->PlayAnimation("walkLeftSW", -1, 0.1f);
-			else
-				animatedSprites->PlayAnimation("walkLeft", -1, 0.15f);*/
-
-			//angle = 0;
 			direction = DOWN;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -848,8 +837,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			{
 				vec2NumMicroSteps.y = 0;
 			}
-
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(UP);
 
 			/*if (hasSword || chargeSword)
@@ -876,8 +863,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			{
 				vec2NumMicroSteps.x = 0;
 			}
-
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(RIGHT);
 
 			/*if (hasSword || chargeSword)
@@ -935,6 +920,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
+		static float dodgeTimer = 0;
+		dodgeTimer += dElapsedTime;
 		if (staminaTimer > 0)
 			staminaTimer = 0;
 		
@@ -1675,6 +1662,8 @@ void CPlayer2D::AttackEnemy()
 				}
 				else if (enemy->sleep)
 					enemy->sleep = false;
+				cInventoryManager->GetItem("Health")->Add(sword->getTotalRavenous());
+				cSoundController->PlaySoundByID(12);
 			}
 		}
 	}

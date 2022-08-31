@@ -234,7 +234,7 @@ float CSword2D::getTotalDamage()
 
 float CSword2D::getTotalRavenous()
 {
-	return hilt->getRavenous() * hilt->getBonusMultiplier() * 0.05f;
+	return hilt->getRavenous() * hilt->getBonusMultiplier() * 5.0f;
 }
 
 float CSword2D::getTotalAtkSpeed()
