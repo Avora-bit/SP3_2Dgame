@@ -89,7 +89,7 @@ public:
 	CBlade2D* returnBlade();
 	CSword2D* returnSword();
 	
-	CInventoryItem* getInventoryItem();
+
 
     void setSword(CSword2D* sw);
 	void setHilt(int itemid);

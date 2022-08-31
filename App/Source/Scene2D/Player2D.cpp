@@ -31,6 +31,9 @@ using namespace std;
 #include "KatanaBlade2D.h"
 #include "Shivs2D.h"
 
+
+#include "../GameStateManagement/CraftingState.h"
+
 #include "EventController.h"
 
 /**
@@ -206,6 +209,8 @@ bool CPlayer2D::Init(void)
 	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
 	
+	//cCraftingGameState = CCraftingState::GetInstance();
+
 
 	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("idleLeft", 2, 2);
@@ -283,16 +288,16 @@ bool CPlayer2D::Init(void)
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 
-	cInventoryItem = cInventoryManager->Add("cBlade", "Image/Sp3Images/Weapons/Blades/placeholder_CleaverBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("cBlade", "Image/Sp3Images/Weapons/Blades/cleaverblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("kBlade", "Image/Sp3Images/Weapons/Blades/placeholder_KatanaBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("kBlade", "Image/Sp3Images/Weapons/Blades/katanablade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	cInventoryItem = cInventoryManager->Add("rBlade", "Image/Sp3Images/Weapons/Blades/placeholder_RustyBlade.png", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/placeholder_DaggerBlade.png", 5, 0);
+	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/daggerblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	/*cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
@@ -343,13 +348,13 @@ bool CPlayer2D::Init(void)
 		//inventorySlots[i].AddQuantity(5);
 	}
 
-	inventorySlots[0].setitemID(39);
+	/*inventorySlots[0].setitemID(39);
 	inventorySlots[0].AddQuantity(5);
 	inventorySlots[0].settextureID(39);
 
 	inventorySlots[1].setitemID(35);
 	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);
+	inventorySlots[1].settextureID(35);*/
 
 	//cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
 
@@ -589,7 +594,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[0].getitemID() == 70)
 		{
-
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -698,14 +702,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	//cout << "COOKING MODE " << cooking_mode << endl;
-	/*cout << "VEC Y " << campfireVec2.y << endl;
-	cout << "VEC X " << campfireVec2.x << endl;*/
-
-	/*UseHotBar(GLFW_KEY_1);
-	UseHotBar(GLFW_KEY_2);
-	UseHotBar(GLFW_KEY_3);*/
-
+	
 
 	//TIMER TO COOK FOOD
 	if (cooking_mode)
@@ -769,41 +766,51 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	static bool leftClickDown = false;
-	if (cInventoryManager->Check("Sword"))
+	if (cInventoryManager->Check("Sword")
+		&& ((inventorySlots[0].getitemID() == 50 && inventorySlots[0].getAct() == true)
+		|| (inventorySlots[1].getitemID() == 50 && inventorySlots[1].getAct() == true)
+		|| (inventorySlots[2].getitemID() == 50 && inventorySlots[2].getAct() == true))
+		&& CCraftingState::GetInstance() ->getsword() != nullptr)
 	{
-		for (int i = 0; i < 3; i++)
+		static float attackTimer = 0;
+		attackTimer += dElapsedTime;
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword")) ;
+		//CSword2D* sword = inventorySlots[2].returnSword();
+
+		//ADD SWORD
+		/*if (butnum[n].getitemID() == 50)
 		{
-			if (inventorySlots[i].getitemID() == 50 && inventorySlots[i].getAct())
-			{
-				static float attackTimer = 0;
-				attackTimer += dElapsedTime;
-				CSword2D* sword = dynamic_cast<CSword2D*>(inventorySlots[i].getInventoryItem());
-				//CSword2D* sword = inventorySlots[2].returnSword();
+			sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
+			cInventoryManager->Add(sword);
+		}*/
 
+		if (attackTimer > sword->getTotalAtkSpeed())
+		{
+			attacking = false;
+			sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
+		}
+		if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
+		{
+			attacking = true;
+			leftClickDown = true;
 
-				if (attackTimer > sword->getTotalAtkSpeed())
-				{
-					attacking = false;
-					sword->getAnimatedSprites()->PlayAnimation("idle", -1, 0.1f);
-				}
-				if (cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && !leftClickDown && !attacking)
-				{
-					attacking = true;
-					leftClickDown = true;
+			sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
+			attackTimer = 0;
 
-					sword->getAnimatedSprites()->PlayAnimation("slash", 0, sword->getTotalAtkSpeed());
-					attackTimer = 0;
-
-					AttackEnemy();
-				}
-				else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
-				{
-					leftClickDown = false;
-				}
-				break;
-			}
+			AttackEnemy();
+		}
+		else if (!cMouseController->IsButtonDown(GLFW_MOUSE_BUTTON_LEFT) && leftClickDown && !attacking)
+		{
+			leftClickDown = false;
 		}
 
+		
+
+		
+	}
+	else
+	{
+		//cout << "SWORD IS NULLPTR" << endl;
 	}
 	
 	static float staminaTimer = 0;
@@ -1635,6 +1642,14 @@ void CPlayer2D::InteractWithMap(void)
 	case 30:
 	case 49:
 	case 40:
+	case 39:
+	case 38:
+	case 37:
+	case 36:
+	case 35:
+	case 34:
+	case 33:
+	case 90:
 	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
 		break;

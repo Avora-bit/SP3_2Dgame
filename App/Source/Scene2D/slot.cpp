@@ -156,8 +156,3 @@ slot::~slot()
 	/*delete il;
 	il = nullptr;*/
 }
-
-CInventoryItem* slot::getInventoryItem()
-{
-	return cInventoryItem;
-}
