@@ -94,7 +94,7 @@ void Octopus::Update(const double dElapsedTime)
 			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 10);
 		}
 		else if (i > 3)
-			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 20);
+			cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 51);
 		// add kill counter
 		cPlayer2D->addOctopusKillCount(1);
 	}

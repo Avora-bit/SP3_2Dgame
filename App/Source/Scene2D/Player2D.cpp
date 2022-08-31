@@ -1565,6 +1565,11 @@ void CPlayer2D::InteractWithMap(void)
 	case 50:
 		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
 		break;
+	case 51:
+	{
+		AddItem(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x, true, 1));
+		break;
+	}
 	case 10:
 	{
 		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));

@@ -315,20 +315,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			textureID = cInventoryManager->GetItem("iHilt")->GetTextureID();
 			hilt = new CIronHilt2D();
 			break;*/
-
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/Hilts/platinumHilt.tga", true);
-		if (iTextureID == 0)
-		{
-			cout << "Unable to loadImage/Sp3Images/Weapons/Hilts/platinumHilt.tga" << endl;
-			return false;
-		}
-		else
-		{
-			MapOfTextureIDs.insert(pair<int, int>(39, iTextureID));
-		}
-
-
-
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Campfire.tga", true);
 		if (iTextureID == 0)
 		{
@@ -453,6 +439,17 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			MapOfTextureIDs.insert(pair<int, int>(22, iTextureID));
+		}
+
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Sp3Images/Weapons/shiv.png", true);
+		if (iTextureID == 0)
+		{
+			cout << "Image/Sp3Images/Weapons/shiv.png" << endl;
+			return false;
+		}
+		else
+		{
+			MapOfTextureIDs.insert(pair<int, int>(51, iTextureID));
 		}
 	}
 
