@@ -1,78 +1,10 @@
-﻿  Bob.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(51,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(56,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(86,23): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(167,32): warning C4244: '-=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(170,32): warning C4244: '+=': conversion from 'const double' to 'float', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(247,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(248,79): warning C4244: 'argument': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(257,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(257,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(263,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(280,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(280,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(305,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(305,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(311,70): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(329,34): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Bob.cpp(329,23): warning C4244: 'initializing': conversion from 'T' to 'const int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Scene2D.cpp
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(86,14): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(426,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\MapGenerator.h(582,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(51,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\EventController.h(56,21): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(396,20): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(523,20): warning C4018: '<': signed/unsigned mismatch
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(530,20): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-D:\Documents\NYP stuff\SP3\SP3_2Dgame\App\Source\Scene2D\Scene2D.cpp(558): warning C4715: 'CScene2D::availableRandomSpawn': not all control paths return a value
-  App.vcxproj -> D:\Documents\NYP stuff\SP3\SP3_2Dgame\Debug\App.exe
+﻿  GUI_Scene2D.cpp
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(357,94): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(357,54): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(389,95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(389,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(399,168): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(399,117): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(414,168): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\App\Source\Scene2D\GUI_Scene2D.cpp(414,117): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  App.vcxproj -> C:\Users\yuzhe\OneDrive\Desktop\SP3\Github\SP3_2Dgame\Debug\App.exe

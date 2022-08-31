@@ -13,7 +13,7 @@ slot::slot()
 	//cSettings = CSettings::GetInstance();
 	//quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	
-
+	active = false;
 	cInventoryManager = CInventoryManager::GetInstance();
 	//cInventoryItem= CInventoryItem::GetIns
 }
@@ -68,6 +68,16 @@ void slot::settextureID(int itemid)
 		break;
 	}
 
+}
+
+void slot::setAct(bool act)
+{
+	active = act;
+}
+
+bool slot::getAct()
+{
+	return active;
 }
 
 void slot::AddQuantity(int amt)

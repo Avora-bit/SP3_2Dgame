@@ -43,7 +43,7 @@
 #include "../Scene2D/slot.h"
 
 #include "System\ImageLoader.h"
-
+#include "Inputs/MouseController.h"
 #include <string>
 using namespace std;
 
@@ -73,7 +73,6 @@ public:
 
 	void set_hbcellid(int arr, int itemid);
 
-
 protected:
 
 
@@ -101,7 +100,7 @@ protected:
 	//for hotbar
 	slot hbcells[3];
 
-
+	CMouseController* cMouseController;
 	CImageLoader* il;
 
 	
