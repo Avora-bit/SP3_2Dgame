@@ -748,8 +748,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				vec2Index.x = vec2OldIndex.x;
 				vec2NumMicroSteps.x = 0;
 			}
-
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(LEFT);
 			direction = LEFT;
 		}
@@ -763,13 +761,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 					vec2Index.y--;
 				}
 			}
+
+			Constraint(DOWN);
 			if (!CheckPosition(DOWN))
 			{
 				vec2Index.y = vec2OldIndex.y;
 				vec2NumMicroSteps.y = 0;
 			}
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-			Constraint(DOWN);
 			direction = DOWN;
 		}
 		if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -787,7 +785,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			{
 				vec2NumMicroSteps.y = 0;
 			}
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(UP);
 			direction = UP;
 		}
@@ -806,7 +803,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 			{
 				vec2NumMicroSteps.x = 0;
 			}
-			runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
 			Constraint(RIGHT);
 			direction = RIGHT;
 		}
@@ -851,6 +847,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
+	}
+	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
+	{
 		static float dodgeTimer = 0;
 		dodgeTimer += dElapsedTime;
 		if (staminaTimer > 0)
@@ -1489,7 +1488,7 @@ void CPlayer2D::AttackEnemy()
 				}
 				else if (enemy->sleep)
 					enemy->sleep = false;
-				health += sword->getTotalRavenous();
+				cInventoryManager->GetItem("Health")->Add(sword->getTotalRavenous());
 				cSoundController->PlaySoundByID(12);
 			}
 		}

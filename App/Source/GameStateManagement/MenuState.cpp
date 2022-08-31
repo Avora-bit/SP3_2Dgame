@@ -86,9 +86,6 @@ bool CMenuState::Init(void)
 	startButtonData.fileName = "Image\\GUI\\PlayButton2.png";
 	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
 
-	/*play3DButtonData.fileName = "Image\\GUI\\PlayButton_3D.png";
-	play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);*/
-
 	exitButtonData.fileName = "Image\\GUI\\ExitButton2.png";
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 
@@ -147,22 +144,6 @@ bool CMenuState::Update(const double dElapsedTime)
 			cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
-		// Add codes for Play3D button here
-		//if (ImGui::ImageButton((ImTextureID)play3DButtonData.textureID,
-		//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		//{
-		//	// Reset the CKeyboardController
-		//	CKeyboardController::GetInstance()->Reset();
-
-		//	// Load the menu state
-		//	cout << "Loading Play3DGameState" << endl;
-		//	CGameStateManager::GetInstance()->SetActiveGameState("Play3DGameState");
-		//}
-		// Add codes for Exit button here
-
-		ImGui::SetWindowFontScale(10.f);
-		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "MOBYLAND");
 
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))

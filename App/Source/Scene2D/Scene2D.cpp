@@ -354,7 +354,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	{*/
 		//cSoundController->setVolume(cSoundController->return_currentMusic(), musicsfx, musicVol);
 	/*}*/
-	cSoundController->SetMasterVolume(0.01f);
+	cSoundController->SetMasterVolume(0.03f);
 
 
 
