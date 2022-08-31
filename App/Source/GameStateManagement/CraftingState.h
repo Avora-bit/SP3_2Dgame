@@ -103,6 +103,10 @@ protected:
 	
 	CMap2D* cMap2D;
 
+	CHilt2D* hilt;
+	CBlade2D* blade;
+	CSword2D* sword;
+
 	CSettings* cSettings;
 
 	CGUI_Scene2D* hotbar;

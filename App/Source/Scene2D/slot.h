@@ -62,6 +62,10 @@ private:
 
 	bool active;
 
+	CHilt2D* hilt;
+	CBlade2D* blade;
+	CSword2D* sword;
+
 public:
 	slot();
 	~slot();
@@ -81,7 +85,16 @@ public:
 	void setAct(bool act);
 	bool getAct();
 
-	CInventoryItem* getInventoryItem();
+	CHilt2D* returnHilt();
+	CBlade2D* returnBlade();
+	CSword2D* returnSword();
+	
+
+
+    void setSword(CSword2D* sw);
+	void setHilt(int itemid);
+	void setBlade(int itemid);
+
 
 	void setitemID(int iid);
 };

@@ -163,6 +163,10 @@ protected:
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
 
+
+	
+
+	bool reset_pos();
 	void InteractWithMap(void);
 
 	void AttackEnemy();

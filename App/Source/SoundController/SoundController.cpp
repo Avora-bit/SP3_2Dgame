@@ -391,7 +391,7 @@ bool CSoundController::AddToPlaylist(const int ID)
 
 
 //REAGAN'S UPDATE
-void CSoundController::Update(const double dElapsedTime)
+void CSoundController::Update(const double dElapsedTime, float distance)
 {
 
 	//cSoundController->LoadSound(FileSystem::getPath("Sounds\\Adventure.ogg"), 1, true);
@@ -417,7 +417,7 @@ void CSoundController::Update(const double dElapsedTime)
 		}
 
 		//SWITCH SOUNDTRACK DEPENDING ON DISTANCE
-		/*if (distance < 5.f)
+		if (distance < 5.f)
 		{
 			if (currentSong != nullptr)
 			{
@@ -438,10 +438,10 @@ void CSoundController::Update(const double dElapsedTime)
 				currentSongDuration = 0;
 				currentSong = PlaySoundByID_2(musicPlaylist[currentlyPlaying]);
 			}
-		}*/
+		}
 
 		//IF SONG REACHES THE LENGTH
-		if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
+		/*if (currentSongDuration >= GetSound(musicPlaylist[currentlyPlaying])->GetSound()->getPlayLength())
 		{
 			StopPlayByID(musicPlaylist[currentlyPlaying]);
 			if (currentlyPlaying <= musicPlaylist.size() - 1)
@@ -450,7 +450,7 @@ void CSoundController::Update(const double dElapsedTime)
 				currentlyPlaying = 0;
 
 			currentSongDuration = 0;
-		}
+		}*/
 
 
 		

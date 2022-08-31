@@ -35,7 +35,7 @@ int RecipeBook::CheckRecipe(Recipe tempRecipe) {
 		bool check = true;
 		for (int i = 1; i < 10; i++) {
 			if (tempRecipe.GetRecipeIndex(i) != it->GetRecipeIndex(i)) {
-				//std::cout << tempRecipe.GetRecipeIndex(i) << ", " << it->GetRecipeIndex(i) << std::endl;
+				std::cout << tempRecipe.GetRecipeIndex(i) << ", " << it->GetRecipeIndex(i) << std::endl;
 				check = false;
 				break;
 			}
@@ -52,9 +52,9 @@ int RecipeBook::CheckRecipe(Recipe tempRecipe) {
 void RecipeBook::PrintBook(void) {
 	for (std::vector<Recipe>::iterator it = recipeList.begin(); it != recipeList.end(); ++it) {
 		for (int i = 0; i < 10; i++) {
-			//std::cout << it->GetRecipeIndex(i) << ", ";
+			std::cout << it->GetRecipeIndex(i) << ", ";
 		}
-		//std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
 
 	}
 }

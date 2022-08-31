@@ -428,7 +428,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			if (hbcells[i].getAct() == true)
 			{
 				//ImGui::IsItemActive();
-				//cout << "CURRENTLY ACTIVE IS " << i << endl;
+				cout << "CURRENTLY ACTIVE IS " << i << endl;
 			}
 			ImGui::PopStyleColor();
 			ImGui::PopID();

@@ -207,12 +207,6 @@ bool CSword2D::replaceHilt(CHilt2D* hilt)
 {
 	if (this->hilt->sName == hilt->sName)
 		return false;
-
-	hilt->addLight(this->hilt->getLight());
-	hilt->addRavenous(this->hilt->getRavenous());
-	hilt->addSharp(this->hilt->getSharp());
-	hilt->addWide(this->hilt->getWide());
-
 	this->hilt->~CHilt2D();
 	this->hilt = hilt;
 	return true;

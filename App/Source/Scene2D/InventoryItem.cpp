@@ -24,7 +24,7 @@ CInventoryItem::CInventoryItem(const char* imagePath)
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID(imagePath, true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load " << imagePath << endl;
+			/*cout << "Unable to load " << imagePath << endl;*/
 		}
 	}
 }

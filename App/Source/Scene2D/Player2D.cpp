@@ -300,11 +300,6 @@ bool CPlayer2D::Init(void)
 	cInventoryItem = cInventoryManager->Add("dBlade", "Image/Sp3Images/Weapons/Blades/daggerblade.tga", 5, 0);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
-	/*cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 50);
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 2, 50);
-	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);*/
-
-
 	/*sword = inventorySlot[i].getsword(i);*/
 	/*CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CKatanaBlade2D());
 	cInventoryManager->Add(sword);*/
@@ -320,49 +315,6 @@ bool CPlayer2D::Init(void)
 	cooking_time = 10.f;
 	campfireVec2.x = 0;
 	campfireVec2.y = 0;
-
-	//set inventory slots to 0 at the start of the game
-	for (int i = 0; i < 9; i++)
-	{
-
-		/*if (i < 7)
-		{
-			inventorySlots[i].setitemID(39 - i);
-			inventorySlots[i].AddQuantity(5);
-		}
-		else
-		{*/
-			inventorySlots[i].setitemID(0);
-		//}
-		/*if (i % 2 == 0)
-		{
-			inventorySlots[i].setitemID(30);
-		}
-		else
-		{
-			inventorySlots[i].setitemID(40);
-		}*/
-
-		//inventorySlots[i].settextureID(inventorySlots[i].getitemID());
-
-		//inventorySlots[i].AddQuantity(5);
-	}
-
-	/*inventorySlots[0].setitemID(39);
-	inventorySlots[0].AddQuantity(5);
-	inventorySlots[0].settextureID(39);
-
-	inventorySlots[1].setitemID(35);
-	inventorySlots[1].AddQuantity(5);
-	inventorySlots[1].settextureID(35);*/
-
-	//cMap2D->SetMapInfo(vec2Index.y - 5, vec2Index.x, 78, true, 1);
-
-	/*inventorySlots[0].setitemID(102);
-	inventorySlots[0].AddQuantity(1);*/
-
-	/*inventorySlots[1].setitemID(70);
-	inventorySlots[1].AddQuantity(3);*/
 
 	octopusKillCount = 0;
 	chickenKillCount = 0;
@@ -684,8 +636,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		//COOK FOOD
 		else if (inventorySlots[2].getitemID() == 70)
 		{
-
-
 			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1, 102)
 				/*&& direction == 1*/)
 				|| (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1, 102)
@@ -713,8 +663,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		}
 	}
-
-	
 
 	//TIMER TO COOK FOOD
 	if (cooking_mode)
@@ -761,9 +709,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cInventoryManager->GetItem("Health")->GetCount() <= 0)
 		CGameManager::GetInstance()->bPlayerLost = true;
-
-	//std::cout << "Hunger: " << cInventoryManager->GetItem("Hunger")->GetCount() << std::endl;
-	//std::cout << "Health: " << cInventoryManager->GetItem("Health")->GetCount() << std::endl;
 
 	static bool walkKeyDown = false;
 	if ((cKeyboardController->IsKeyDown(GLFW_KEY_W) || cKeyboardController->IsKeyDown(GLFW_KEY_A) || cKeyboardController->IsKeyDown(GLFW_KEY_S) || cKeyboardController->IsKeyDown(GLFW_KEY_D)) && !walkKeyDown)
@@ -988,8 +933,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		else if (!cKeyboardController->IsKeyDown(GLFW_KEY_SPACE) && !cKeyboardController->IsKeyDown(GLFW_KEY_LEFT_SHIFT) && dodgeKeyDown)
 			dodgeKeyDown = false;
 	}
-	//std::cout << cInventoryManager->GetItem("Stamina")->GetCount() << std::endl;
-	//std::cout << cInventoryManager->GetItem("Stamina")->GetMaxCount() << std::endl;
 	else if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::DODGE)
 	{
 		if (staminaTimer > 0)
