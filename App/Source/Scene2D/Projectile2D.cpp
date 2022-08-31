@@ -152,7 +152,8 @@ void CProjectile2D::Render(void)
 	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x + camera->vec2Index.x,
 													vec2UVCoordinate.y + camera->vec2Index.y,
 													0.0f));
-	transform = glm::rotate(transform, glm::radians(atan2(vec2Direction.y, vec2Direction.x)), glm::vec3(0, 0, 1));
+	float angle = (atan2(vec2Direction.y, vec2Direction.x) / 3.14159265359) * 180.0;
+	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0, 0, 1));
 
 	transform = glm::scale(transform, glm::vec3(scaleX, scaleY, 1));
 	// Update the shaders with the latest transform
