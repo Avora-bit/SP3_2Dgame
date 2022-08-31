@@ -1673,6 +1673,8 @@ void CPlayer2D::AttackEnemy()
 				}
 				else if (enemy->sleep)
 					enemy->sleep = false;
+				health += sword->getTotalRavenous();
+				cSoundController->PlaySoundByID(12);
 			}
 		}
 	}

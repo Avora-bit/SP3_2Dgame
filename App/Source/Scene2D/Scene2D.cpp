@@ -362,7 +362,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_SandWalk.ogg"), 9, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_monster.ogg"), 10, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Fire.ogg"), 11, true);
-
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\hitSound.ogg"), 12, true);
 
 	cSoundController->AddToPlaylist(3);
 	cSoundController->AddToPlaylist(4);
@@ -377,7 +377,7 @@ bool CScene2D::Init( const unsigned int uiNumLevels,
 	{*/
 		//cSoundController->setVolume(cSoundController->return_currentMusic(), musicsfx, musicVol);
 	/*}*/
-	//cSoundController->SetMasterVolume(0.01f);
+	cSoundController->SetMasterVolume(0.01f);
 
 
 
