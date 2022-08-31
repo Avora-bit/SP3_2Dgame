@@ -287,7 +287,7 @@ bool CPlayer2D::Init(void)
 	cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 3, 70);
 
 
-	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	CSword2D* sword = new CSword2D(new CWoodenHilt2D(), new CRustyBlade2D());
 	cInventoryManager->Add(sword);
 
 	//sword->replaceBlade(new CDaggerBlade2D());
@@ -1257,7 +1257,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 		
 		cPhysics2D.SetInitialVelocity(cPhysics2D.GetFinalVelocity());
-		if (cPhysics2D.GetInitialVelocity().x >= -0.3 && cPhysics2D.GetInitialVelocity().x <= 0.3)
+		if (cPhysics2D.GetInitialVelocity().x >= -0.5 && cPhysics2D.GetInitialVelocity().x <= 0.5)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
