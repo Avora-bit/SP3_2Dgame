@@ -208,26 +208,6 @@ bool CPlayer2D::Init(void)
 	animatedSprites->AddAnimation("idle", 0, 0);
 	animatedSprites->AddAnimation("walk", 0, 2);
 	animatedSprites->PlayAnimation("idle", -1, 0.3f);
-	
-	//cCraftingGameState = CCraftingState::GetInstance();
-
-
-	/*animatedSprites = CMeshBuilder::GenerateSpriteAnimation(2, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleLeft", 2, 2);
-	animatedSprites->AddAnimation("idleRight", 0, 0);
-	animatedSprites->AddAnimation("walkLeft", 2, 3);
-	animatedSprites->AddAnimation("walkRight", 0, 1);
-	animatedSprites->AddAnimation("jumpLeft", 3, 3);
-	animatedSprites->AddAnimation("jumpRight", 1, 1);
-
-	animatedSprites->AddAnimation("idleLeftSW", 6, 6);
-	animatedSprites->AddAnimation("idleRightSW", 4, 4);
-	animatedSprites->AddAnimation("walkLeftSW", 6, 7);
-	animatedSprites->AddAnimation("walkRightSW", 4, 5);
-	animatedSprites->AddAnimation("jumpLeftSW", 7, 7);
-	animatedSprites->AddAnimation("jumpRightSW", 5, 5);
-
-	animatedSprites->PlayAnimation("idleRightSW", -1, 0.3f);*/
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -323,10 +303,13 @@ bool CPlayer2D::Init(void)
 	inventorySlots[1].AddQuantity(5);
 	inventorySlots[1].settextureID(35);
 
+	CSword2D* sword = new CSword2D(new CPlatinumHilt2D(), new CDaggerBlade2D());
+	cInventoryManager->Add(sword);
+
 	return true;
 }
 
-/**dddd
+/**
  @brief Reset this instance
  */
 bool CPlayer2D::Reset()
@@ -697,7 +680,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		static float attackTimer = 0;
 		attackTimer += dElapsedTime;
-		CSword2D* sword = dynamic_cast<CSword2D*>(cInventoryManager->GetItem("Sword"));
+		CSword2D* sword = dynamic_cast<CSword2D*>(CInventoryManager::GetInstance()->GetItem("Sword"));
 		if (attackTimer > sword->getTotalAtkSpeed())
 		{
 			attacking = false;
@@ -1488,7 +1471,7 @@ void CPlayer2D::AttackEnemy()
 				}
 				else if (enemy->sleep)
 					enemy->sleep = false;
-				cInventoryManager->GetItem("Health")->Add(sword->getTotalRavenous());
+				CInventoryManager::GetInstance()->GetItem("Health")->Add(sword->getTotalRavenous());
 				cSoundController->PlaySoundByID(12);
 			}
 		}
